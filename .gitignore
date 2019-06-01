@@ -12,6 +12,6 @@
 
 
 # Transpiled files
-./**/*.js
-./**/*.js.map
-./**/*.d.ts
+**/**/*.js
+**/**/*.js.map
+**/**/*.d.ts
