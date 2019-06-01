@@ -9,9 +9,3 @@
 # Misc
 **/node_modules
 **/package-lock.json
-
-
-# Transpiled files
-**/**/*.js
-**/**/*.js.map
-**/**/*.d.ts

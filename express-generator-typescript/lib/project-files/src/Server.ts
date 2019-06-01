@@ -8,18 +8,23 @@ import { ParentController } from './controllers/ParentController';
 
 class Server extends OvernightServer {
 
-    private readonly BROWSER_MSG = 'Express server started in development mode.';
     private readonly EXPRESS_STARTED_MSG = 'Express server started on port: ';
-    private readonly VIEWS_DIR = 'views';
-    private readonly IDX_FILE = 'index.html';
 
 
     constructor() {
         super(process.env.NODE_ENV === 'development');
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({extended: true}));
+        this.setupExpress();
         this.serveFrontEnd();
         this.addControllers(new ParentController());
+    }
+
+
+    public setupExpress(): void {
+        this.app.use(logger('dev'));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(cookieParser());
+        this.app.use(express.static(path.join(__dirname, 'public')));
     }
 
 
@@ -28,14 +33,15 @@ class Server extends OvernightServer {
      * using a single-page-application framework like
      * react or angular which has it's own development
      * server, you might want to configure this to only
-     * serve and index file while in production mode.
+     * serve the index file while in production mode.
      */
     private serveFrontEnd(): void {
-        const dir = path.join(__dirname, this.VIEWS_DIR);
-        this.app.set(this.VIEWS_DIR,  dir);
-        this.app.use(express.static(dir));
+        const viewsDir = path.join(__dirname, 'views');
+        this.app.set('views', viewsDir);
+        const staticDir = path.join(__dirname, 'public');
+        this.app.use(express.static(staticDir));
         this.app.get('*', (req, res) => {
-            res.sendFile(this.IDX_FILE, {root: dir});
+            res.sendFile('index.html', {root: viewsDir});
         });
     }
 

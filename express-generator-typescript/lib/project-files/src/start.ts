@@ -19,6 +19,5 @@ if (result2.error) {
 }
 
 // Start the server
-const isDevMode = (nodeEnv === 'development');
-const server = new Server(isDevMode);
+const server = new Server();
 server.start(Number(process.env.PORT));
