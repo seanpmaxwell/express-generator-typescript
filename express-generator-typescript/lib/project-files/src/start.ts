@@ -1,0 +1,24 @@
+/**
+ * Local environment variables and start the server
+ *
+ * created by Sean Maxwell, 5/31/2019
+ */
+
+import * as dotenv from 'dotenv';
+import Server from './Server';
+
+
+// Set default env
+const nodeEnv = process.argv[2] || 'development';
+
+// Load the environment variables
+const envFilePath = `./env/${nodeEnv}.env`;
+const result2 = dotenv.config({path: envFilePath});
+if (result2.error) {
+    throw result2.error;
+}
+
+// Start the server
+const isDevMode = (nodeEnv === 'development');
+const server = new Server(isDevMode);
+server.start(Number(process.env.PORT));
