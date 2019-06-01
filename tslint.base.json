@@ -1,0 +1,19 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "max-line-length": {
+      "options": [100]
+    },
+    "lines-between-class-members": [true, 2],
+    "member-ordering": false,
+    "no-consecutive-blank-lines": false,
+    "ordered-imports": false,
+    "quotemark": [true, "single"],
+    "variable-name": [true, "allow-leading-underscore"]
+  },
+  "jsRules": {
+    "max-line-length": {
+      "options": [100]
+    }
+  }
+}

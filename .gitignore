@@ -1,18 +1,17 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Created by .ignore support plugin (hsz.mobi)
 
-# Other files and folders
-.settings/
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# IntelliJ project files
+*.iml
+.idea/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+
+# Misc
+**/node_modules
+**/package-lock.json
+
+
+# Transpiled files
+./**/*.js
+./**/*.js.map
+./**/*.d.ts
