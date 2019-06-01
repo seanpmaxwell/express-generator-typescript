@@ -1,8 +1,11 @@
 import * as express from 'express';
 import * as path from 'path';
+import * as logger from 'morgan';
+import * as cookieParser from 'cookie-parser';
 
 import { Server as OvernightServer } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
+import { Request, Response } from 'express';
 import { ParentController } from './controllers/ParentController';
 
 
@@ -14,15 +17,20 @@ class Server extends OvernightServer {
     constructor() {
         super(process.env.NODE_ENV === 'development');
         this.setupExpress();
-        this.serveFrontEnd();
         this.addControllers(new ParentController());
+        this.serveFrontEnd();
     }
 
 
+    /**
+     * Add middleware/settings to express.
+     */
     public setupExpress(): void {
         this.app.use(logger('dev'));
         this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(express.urlencoded({
+            extended: false,
+        }));
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, 'public')));
     }
@@ -40,7 +48,7 @@ class Server extends OvernightServer {
         this.app.set('views', viewsDir);
         const staticDir = path.join(__dirname, 'public');
         this.app.use(express.static(staticDir));
-        this.app.get('*', (req, res) => {
+        this.app.get('*', (req: Request, res: Response) => {
             res.sendFile('index.html', {root: viewsDir});
         });
     }
