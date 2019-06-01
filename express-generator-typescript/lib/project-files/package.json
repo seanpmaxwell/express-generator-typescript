@@ -1,0 +1,10 @@
+{
+  "name": "",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "rm -rf ./dist/ && tsc --sourceMap false",
+    "start": "node dist/start.js production",
+    "start-dev": "nodemon --config \"util/express/nodemon.json\"",
+    "test": "nodemon --config \"util/express/nodemon.test.json\""
+  }
+}
