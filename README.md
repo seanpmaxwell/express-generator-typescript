@@ -27,7 +27,7 @@ in your project (such as an ORM), or don't take full advantage of TypeScript.
 Due to the heavy use of single-page-applications, no view-engine is configured by default. Express is 
 only setup with the minimal settings for calling APIs and serving an index.html file. All the tools you 
 need to run for development (while restarting on changes), build, test, and run for production are packaged 
-with it.
+with this library.
 
 One huge advantage of _express-generator-typescript_ is it installs OvernightJS. OvernightJS
 is a small library to add decorators to express routes and initialize them in the server file. It is not
