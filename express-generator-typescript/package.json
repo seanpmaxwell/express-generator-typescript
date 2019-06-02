@@ -1,0 +1,46 @@
+{
+  "name": "express-generator-typescript",
+  "version": "1.0.0",
+  "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanpmaxwell/express-generator-typescript.git"
+  },
+  "keywords": [
+    "express",
+    "ex",
+    "generator",
+    "generate",
+    "gen",
+    "typescript",
+    "ts",
+    "types",
+    "typing",
+    "overnight",
+    "overnightjs",
+    "js",
+    "new",
+    "app",
+    "express-ts",
+    "decorators",
+    "decorate",
+    "test",
+    "testing",
+    "routes",
+    "router",
+    "routing"
+  ],
+  "author": "sean maxwell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanpmaxwell/express-generator-typescript/issues"
+  },
+  "homepage": "https://github.com/seanpmaxwell/express-generator-typescript#readme"
+}
