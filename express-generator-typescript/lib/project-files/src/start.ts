@@ -20,4 +20,4 @@ if (result2.error) {
 
 // Start the server
 const server = new Server();
-server.start(Number(process.env.PORT));
+server.start(Number(process.env.PORT || 3000));
