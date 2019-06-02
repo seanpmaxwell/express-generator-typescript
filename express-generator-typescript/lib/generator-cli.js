@@ -4,8 +4,8 @@
  * created by Sean Maxwell, 5/31/2019
  */
 
-const async = require('async');
 const path = require('path');
+const editJsonFile = require('edit-json-file');
 const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
 
@@ -21,6 +21,7 @@ async function start() {
         const source = path.join(__dirname, './project-files');
         const destination = path.join(process.cwd(), (process.argv[2] || ''));
         await copyProjectFiles(source, destination);
+        updatePackageJson(destination)
         downloadNodeModules(destination);
     } catch (err) {
         console.error(err);
@@ -40,6 +41,15 @@ function copyProjectFiles(source, destination) {
     })
 }
 
+
+function updatePackageJson(destination) {
+    let file = editJsonFile(destination + '/package.json', {
+        autosave: true
+    });
+    file.set('name', path.basename(destination));
+}
+
+
 function downloadNodeModules(destination) {
 
     const dependencies = 'express @overnightjs/core @overnightjs/logger dotenv ' +
@@ -47,7 +57,7 @@ function downloadNodeModules(destination) {
 
     const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
-        '@types/cookie-parser @types/supertest';
+        '@types/cookie-parser @types/supertest fs-extra';
 
     const options = {cwd: destination};
 

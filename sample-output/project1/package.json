@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "project1",
   "version": "0.0.0",
   "scripts": {
-    "build": "rm -rf ./dist/ && tsc --sourceMap false",
+    "build": "node ./util/build.js",
     "start": "node dist/start.js production",
     "start-dev": "nodemon --config \"./util/nodemon.json\"",
     "test": "nodemon --config \"./util/nodemon.test.json\""
@@ -25,6 +25,7 @@
     "@types/node": "^12.0.4",
     "@types/supertest": "^2.0.7",
     "find": "^0.3.0",
+    "fs-extra": "^8.0.1",
     "jasmine": "^3.4.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
