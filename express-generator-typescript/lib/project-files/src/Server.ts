@@ -39,7 +39,7 @@ class Server extends OvernightServer {
     /**
      * Point express to the 'views' directory. If you're
      * using a single-page-application framework like
-     * react or angular which has it's own development
+     * react or angular which has its own development
      * server, you might want to configure this to only
      * serve the index file while in production mode.
      */
