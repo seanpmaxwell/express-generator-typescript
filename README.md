@@ -1,4 +1,4 @@
-[![Express Logo](https://i.cloudup.com/zfY6lL7eFa-3000x3000.png)](http://expressjs.com/) // pick up here, create custom logo tomorrow
+<img alt='overnightjs' src='https://github.com/seanpmaxwell/express-generator-typescript/raw/master/express-typescript.png' border='0'>
 
 [Express with Typescript's](https://www.npmjs.com/package/express) application generator.
 
@@ -46,7 +46,6 @@ $ npm install -g express-generator-typescript
 ```
 
 
-
 ## Quick Start
 
 The quickest way to get started is use npx and pass in the name of the project you want to create.
@@ -56,21 +55,13 @@ Create the app:
 
 ```bash
 $ npx express-generator-typescript "project name"
-$ cd "project name"
-```
-
-Install dependencies:
-
-```bash
-$ npm install
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
 ```bash
-$ npm run start-dev
+$ cd "project name" && npm run start-dev
 ```
-
 
 
 ## Available commands for the server.
