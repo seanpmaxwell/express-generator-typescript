@@ -11,15 +11,12 @@ const ncp = require('ncp').ncp;
 
 
 
-start().then(() => {
-    console.log('Setting up new Express/TypeScript project complete')
-});
+module.exports = expressGenTs;
 
 
-async function start() {
+async function expressGenTs(destination) {
     try {
         const source = path.join(__dirname, './project-files');
-        const destination = path.join(process.cwd(), (process.argv[2] || 'express-gen-ts'));
         await copyProjectFiles(source, destination);
         updatePackageJson(destination);
         downloadNodeModules(destination);
