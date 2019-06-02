@@ -9,7 +9,11 @@
 
 ## What is it
 
-Creates a new express application similar to the `express-generator` module. Except 
+Creates a new express application similar to the `express-generator` module. Except this is 
+configure to use TypeScript instead of plain JavaScript. There are some other tools out 
+
+All the tools you need for running,
+building, and testing are packaged with it. 
 
 
 
@@ -23,12 +27,14 @@ $ npm install -g express-generator-typescript
 
 ## Quick Start
 
-The quickest way to get started with express is to utilize the executable `express(1)` to generate an application as shown below:
+The quickest way to get started is use npx and pass in the name of the project you want to create.
+If you don't specify a project name, the default _express-gen-project_ will be used instead.
 
 Create the app:
 
 ```bash
-$ express --view=hbs /tmp/foo && cd /tmp/foo
+$ npx express-generator-typescript "optionally pass named of project you want to create"
+$ cd "name of the project"
 ```
 
 Install dependencies:
@@ -37,10 +43,10 @@ Install dependencies:
 $ npm install
 ```
 
-Start your Express.js app at `http://localhost:3000/`:
+Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
 ```bash
-$ npm start
+$ npm run start-dev
 ```
 
 ## Command Line Options

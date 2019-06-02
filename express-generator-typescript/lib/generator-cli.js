@@ -19,9 +19,9 @@ start().then(() => {
 async function start() {
     try {
         const source = path.join(__dirname, './project-files');
-        const destination = path.join(process.cwd(), (process.argv[2] || ''));
+        const destination = path.join(process.cwd(), (process.argv[2] || 'express-gen-ts'));
         await copyProjectFiles(source, destination);
-        updatePackageJson(destination)
+        updatePackageJson(destination);
         downloadNodeModules(destination);
     } catch (err) {
         console.error(err);
