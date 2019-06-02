@@ -12,8 +12,7 @@ import Server from './Server';
 const nodeEnv = process.argv[2] || 'development';
 
 // Load the environment variables
-const envFilePath = `./env/${nodeEnv}.env`;
-const result2 = dotenv.config({path: envFilePath});
+const result2 = dotenv.config({path: `./env/${nodeEnv}.env`});
 if (result2.error) {
     throw result2.error;
 }
