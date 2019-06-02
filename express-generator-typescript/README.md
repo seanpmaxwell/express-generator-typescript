@@ -29,8 +29,8 @@ only setup with the minimal settings for calling APIs and serving an index.html 
 need to run for development (while restarting on changes), build, test, and run for production are packaged 
 with this library.
 
-One huge advantage of _express-generator-typescript_ is it installs OvernightJS. OvernightJS
-is a small library to add decorators to express routes and initialize them in the server file. It is not
+One huge advantage of _express-generator-typescript_ is it installs [OvernightJS](https://www.npmjs.com/package/@overnightjs/core). 
+OvernightJS is a small library to add decorators to express routes and initialize them in the server file. It is not
 a separate framework or an abstraction layer on top of express. It's just a simple library to add
 decorators and do some basic logging. With Overnight you can build your server in a more structured,
 object-oriented way instead of have to use `express.Router` objects and callbacks.
