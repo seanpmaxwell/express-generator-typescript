@@ -1,12 +1,20 @@
-class User {
+interface IUser {
+    name: string;
+    email: string;
+}
+
+export class User {
 
     public name: string;
     public email: string;
 
-    constructor(name: string, email: string) {
-        this.name = name;
-        this.email = email;
+    constructor(nameOrUser: string | IUser, email?: string) {
+        if (typeof nameOrUser === 'string') {
+            this.name = nameOrUser;
+            this.email = email || '';
+        } else {
+            this.name = nameOrUser.name;
+            this.email = nameOrUser.email;
+        }
     }
 }
-
-export default User;
