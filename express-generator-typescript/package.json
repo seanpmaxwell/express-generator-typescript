@@ -2,10 +2,7 @@
   "name": "express-generator-typescript",
   "version": "1.0.0",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "main": "lib/generator-cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -42,5 +39,9 @@
   "bugs": {
     "url": "https://github.com/seanpmaxwell/express-generator-typescript/issues"
   },
-  "homepage": "https://github.com/seanpmaxwell/express-generator-typescript#readme"
+  "homepage": "https://github.com/seanpmaxwell/express-generator-typescript#readme",
+  "dependencies": {
+    "async": "^3.0.1",
+    "ncp": "^2.0.0"
+  }
 }
