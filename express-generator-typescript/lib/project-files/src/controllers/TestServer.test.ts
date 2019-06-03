@@ -1,9 +1,7 @@
 import { Server } from '@overnightjs/core';
 import * as express from 'express';
 
-
 export class TestServer extends Server {
-
 
     constructor() {
         super();
@@ -11,11 +9,9 @@ export class TestServer extends Server {
         this.app.use(express.urlencoded({extended: true}));
     }
 
-
     public setController(controller: InstanceType<any>): void {
         super.addControllers(controller);
     }
-
 
     public getExpressInstance(): express.Application {
         return this.app;

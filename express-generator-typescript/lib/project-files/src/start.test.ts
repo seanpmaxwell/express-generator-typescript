@@ -4,14 +4,11 @@ import { Logger } from '@overnightjs/logger';
 import * as dotenv from 'dotenv';
 import * as find from 'find';
 
-
 // Init Jasmine
 const jasmine = new Jasmine();
 
-
 // Load test env vars
 dotenv.config({path: `./env/testing.env`});
-
 
 // Set location of test files
 jasmine.loadConfig({
@@ -23,7 +20,6 @@ jasmine.loadConfig({
     stopSpecOnExpectationFailure: false,
 });
 
-
 // On complete callback function
 jasmine.onComplete((passed: boolean) => {
     if (passed) {
@@ -32,7 +28,6 @@ jasmine.onComplete((passed: boolean) => {
         Logger.Err('At least one test has failed :(');
     }
 });
-
 
 // Run all or a single unit-test
 if (process.argv[2]) {
