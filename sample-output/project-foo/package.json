@@ -1,5 +1,5 @@
 {
-  "name": "from-npx",
+  "name": "project-foo",
   "version": "0.0.0",
   "scripts": {
     "build": "node ./util/build.js",
@@ -8,8 +8,8 @@
     "test": "nodemon --config \"./util/nodemon.test.json\""
   },
   "dependencies": {
-    "@overnightjs/core": "^1.6.7",
-    "@overnightjs/logger": "^1.1.6",
+    "@overnightjs/core": "^1.6.8",
+    "@overnightjs/logger": "^1.1.7",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
