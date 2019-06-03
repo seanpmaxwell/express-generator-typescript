@@ -1,5 +1,5 @@
 {
-  "name": "project-foo",
+  "name": "express-gen-ts",
   "version": "0.0.0",
   "scripts": {
     "build": "node ./util/build.js",
