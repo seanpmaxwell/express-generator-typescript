@@ -16,8 +16,7 @@ module.exports = expressGenTs;
 
 async function expressGenTs(destination) {
     try {
-        const source = path.join(__dirname, './project-files');
-        await copyProjectFiles(source, destination);
+        await copyProjectFiles(destination);
         updatePackageJson(destination);
         downloadNodeModules(destination);
     } catch (err) {
@@ -26,7 +25,8 @@ async function expressGenTs(destination) {
 }
 
 
-function copyProjectFiles(source, destination) {
+function copyProjectFiles(destination) {
+    const source = path.join(__dirname, './project-files');
     return new Promise((resolve, reject) => {
         ncp.limit = 16;
         ncp(source, destination, function (err) {
