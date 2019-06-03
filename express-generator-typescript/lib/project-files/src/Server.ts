@@ -1,18 +1,16 @@
-import * as express from 'express';
-import * as path from 'path';
-import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
+import * as express from 'express';
+import * as logger from 'morgan';
+import * as path from 'path';
 
 import { Server as OvernightServer } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 import { Request, Response } from 'express';
 import { ParentController } from './controllers/ParentController';
 
-
 class Server extends OvernightServer {
 
     private readonly EXPRESS_STARTED_MSG = 'Express server started on port: ';
-
 
     constructor() {
         super(process.env.NODE_ENV === 'development');
@@ -20,7 +18,6 @@ class Server extends OvernightServer {
         this.addControllers(new ParentController());
         this.serveFrontEnd();
     }
-
 
     /**
      * Add middleware/settings to express.
@@ -34,7 +31,6 @@ class Server extends OvernightServer {
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, 'public')));
     }
-
 
     /**
      * Point express to the 'views' directory. If you're
@@ -52,7 +48,6 @@ class Server extends OvernightServer {
             res.sendFile('index.html', {root: viewsDir});
         });
     }
-
 
     /**
      * Start the express server.

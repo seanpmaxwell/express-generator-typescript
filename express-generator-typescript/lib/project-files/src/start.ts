@@ -9,8 +9,6 @@ if (result2.error) {
     throw result2.error;
 }
 
-
-
 // Start the server, server must be imported
 // after loading the environment variables
 import Server from './Server';
