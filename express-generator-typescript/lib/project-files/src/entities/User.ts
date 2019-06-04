@@ -4,7 +4,7 @@ interface IUser {
     email: string;
 }
 
-export class User {
+export class User implements IUser {
 
     public name: string;
     public email: string;
