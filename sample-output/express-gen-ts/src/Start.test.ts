@@ -1,21 +1,19 @@
+// Must be first
+import '../env/loadEnv';
+
+import * as find from 'find';
+import logger from './Logger';
+
 /* tslint:disable-next-line */
 const Jasmine = require('jasmine');
-import { Logger } from '@overnightjs/logger';
-import * as dotenv from 'dotenv';
-import * as find from 'find';
-
-// Init Jasmine
 const jasmine = new Jasmine();
-
-// Load test env vars
-dotenv.config({path: `./env/testing.env`});
 
 // Set location of test files
 jasmine.loadConfig({
     random: true,
     spec_dir: 'src',
     spec_files: [
-        './controllers/**/*.test.ts',
+        './routes/**/*.test.ts',
     ],
     stopSpecOnExpectationFailure: false,
 });
@@ -23,9 +21,9 @@ jasmine.loadConfig({
 // On complete callback function
 jasmine.onComplete((passed: boolean) => {
     if (passed) {
-        Logger.Info('All tests have passed :)');
+        logger.info('All tests have passed :)');
     } else {
-        Logger.Err('At least one test has failed :(');
+        logger.error('At least one test has failed :(');
     }
 });
 
@@ -36,7 +34,7 @@ if (process.argv[2]) {
         if (files.length === 1) {
             jasmine.execute([files[0]], testFile);
         } else {
-            Logger.Err('Test file not found!');
+            logger.error('Test file not found!');
         }
     });
 } else {

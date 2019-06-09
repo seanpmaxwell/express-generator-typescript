@@ -4,7 +4,7 @@ interface IUser {
     email: string;
 }
 
-export class User {
+class User {
 
     public name: string;
     public email: string;
@@ -19,3 +19,5 @@ export class User {
         }
     }
 }
+
+export default User;

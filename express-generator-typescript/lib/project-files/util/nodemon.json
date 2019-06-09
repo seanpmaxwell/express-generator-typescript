@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts",
   "ignore": ["src/public"],
-  "exec": "ts-node src/start.ts development"
+  "exec": "ts-node src/Start.ts development"
 }
