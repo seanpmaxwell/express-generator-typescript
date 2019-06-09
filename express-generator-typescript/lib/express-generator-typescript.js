@@ -49,8 +49,7 @@ function updatePackageJson(destination) {
 
 function downloadNodeModules(destination) {
 
-    const dependencies = 'express @overnightjs/core @overnightjs/logger dotenv ' +
-        'http-status-codes morgan cookie-parser';
+    const dependencies = 'express dotenv http-status-codes morgan cookie-parser winston';
 
     const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
