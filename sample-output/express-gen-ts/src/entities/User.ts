@@ -4,7 +4,8 @@ interface IUser {
     email: string;
 }
 
-class User {
+
+class User implements IUser {
 
     public name: string;
     public email: string;
