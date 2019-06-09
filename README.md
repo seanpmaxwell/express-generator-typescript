@@ -67,7 +67,8 @@ $ cd "project name" && npm run start-dev
 ## Available commands for the server.
 
 - Run the server in development mode: `npm run start-dev`.
-- Run unit-tests: `npm test`.
+- Run all unit-tests: `npm test`.
+- Run a single unit-test: `npm test -- "name of test file (i.e. Users)"`.
 - Build the project for production: `npm run build`.
 - Run the production build: `npm start`.
 
