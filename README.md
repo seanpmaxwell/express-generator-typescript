@@ -21,19 +21,13 @@ type-safety. TypeScript solves this issue and (along with its linter file) can e
 more robust than some other static languages like Java.
 
 There are some other tools out there to generate express apps with TypeScript such as 
-_express-generator-ts_, but these either haven't been updated in a while, install a lot of junk 
-in your project (such as an ORM), or don't take full advantage of TypeScript. 
+_express-generator-ts_, but these either haven't been updated in a while or install a lot of junk 
+in your project (such as an ORM). 
 
 Due to the heavy use of single-page-applications, no view-engine is configured by default. Express is 
 only setup with the minimal settings for calling APIs and serving an index.html file. All the tools you 
-need to run for development (while restarting on changes), build, test, and run for production are packaged 
-with this library.
-
-One huge advantage of _express-generator-typescript_ is it installs [OvernightJS](https://www.npmjs.com/package/@overnightjs/core). 
-OvernightJS is a small library to add decorators to express routes and initialize them in the server file. It is not
-a separate framework or an abstraction layer on top of express. It's just a simple library to add
-decorators and do some basic logging. With Overnight you can build your server in a more structured,
-object-oriented way instead of have to use `express.Router` objects and callbacks.
+need to run for development (while restarting on changes), building, testing, and running for production 
+are packaged with this library.
 
 
 
