@@ -1,19 +1,17 @@
-import * as supertest from 'supertest';
-import * as userRouterItems from './Users';
-
 import { BAD_REQUEST, OK } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
+import { User } from '@entities';
+import { logger } from '@shared';
 
-import 'jasmine';
-import User from '../../entities/User';
-import logger from '../../Logger';
-import app from '../../Server';
-import BaseRouter from '../Base';
+import supertest from 'supertest';
+import userRouterItems from './Users'
+import app from '@server';
 import UserRouter from './Users';
+
 
 describe('Users Routes', () => {
 
-    const usersPath = BaseRouter.path + UserRouter.path;
+    const usersPath = '/api' + UserRouter.path;
     let agent: SuperTest<Test>;
 
     beforeAll((done) => {

@@ -1,11 +1,11 @@
 
-interface IUser {
+export interface IUser {
     name: string;
     email: string;
 }
 
 
-class User implements IUser {
+export class User implements IUser {
 
     public name: string;
     public email: string;
@@ -20,5 +20,3 @@ class User implements IUser {
         }
     }
 }
-
-export default User;

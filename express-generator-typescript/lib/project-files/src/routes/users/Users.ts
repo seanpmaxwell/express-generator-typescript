@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, OK } from 'http-status-codes';
-import User from '../../entities/User';
-import logger from '../../Logger';
+import { User } from '@entities';
+import { logger } from '@shared';
 
 // Init router and path
 const router = Router();
