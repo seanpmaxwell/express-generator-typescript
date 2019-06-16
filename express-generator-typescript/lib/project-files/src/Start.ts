@@ -1,8 +1,7 @@
 // Must be first
 import '../env/loadEnv';
-
-import logger from './Logger';
-import app from './Server';
+import { logger } from '@shared';
+import app from '@server';
 
 // Start the server
 const port = Number(process.env.PORT || 3000);

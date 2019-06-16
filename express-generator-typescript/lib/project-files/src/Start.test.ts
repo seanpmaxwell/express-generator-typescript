@@ -1,12 +1,12 @@
-// Must be first
+// loadEnv must be first!
 import '../env/loadEnv';
+import find from 'find';
+import Jasmine from 'jasmine';
+import { logger } from '@shared';
 
-import * as find from 'find';
-import logger from './Logger';
 
-/* tslint:disable-next-line */
-const Jasmine = require('jasmine');
-const jasmine = new Jasmine();
+// Init Jasmine
+const jasmine = new Jasmine(null);
 
 // Set location of test files
 jasmine.loadConfig({

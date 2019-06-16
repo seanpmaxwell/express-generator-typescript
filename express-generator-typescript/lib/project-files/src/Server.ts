@@ -1,10 +1,10 @@
-import * as cookieParser from 'cookie-parser';
-import * as express from 'express';
-import * as logger from 'morgan';
-import * as path from 'path';
-
-import { Request, Response } from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import express from 'express';
 import BaseRouter from './routes/Base';
+import { Request, Response } from 'express';
+
 
 // Init express
 const app = express();
