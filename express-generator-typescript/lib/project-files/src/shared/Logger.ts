@@ -6,11 +6,12 @@
 
 import { createLogger, format, transports } from 'winston';
 
+
 // Import Functions
 const { File, Console } = transports;
 
 // Init Logger
-const logger = createLogger({
+const wintstonLogger = createLogger({
     level: 'info',
 });
 
@@ -26,16 +27,16 @@ if (process.env.NODE_ENV === 'production') {
         format.json(),
     );
     const errTransport = new File({
-        filename: 'error.log',
-        level: 'error',
+        filename: './logs/error.log',
         format: fileFormat,
+        level: 'error',
     });
     const infoTransport = new File({
-        filename: 'combined.log',
+        filename: './logs/combined.log',
         format: fileFormat,
     });
-    logger.add(errTransport);
-    logger.add(infoTransport);
+    wintstonLogger.add(errTransport);
+    wintstonLogger.add(infoTransport);
 
 } else {
 
@@ -54,8 +55,8 @@ if (process.env.NODE_ENV === 'production') {
             errorStackFormat(),
         ),
     });
-    logger.add(consoleTransport);
+    wintstonLogger.add(consoleTransport);
 }
 
 // Export logger
-export default logger;
+export const logger = wintstonLogger;

@@ -6,7 +6,7 @@ const childProcess = require('child_process');
 fs.removeSync('./dist/');
 
 // transpile the typescript files
-childProcess.execSync('tsc --sourceMap false');
+childProcess.execSync('tsc --build tsconfig.prod.json');
 
 // Copy src and public files
 fs.copySync('./src/public', './dist/public');

@@ -49,11 +49,12 @@ function updatePackageJson(destination) {
 
 function downloadNodeModules(destination) {
 
-    const dependencies = 'express dotenv http-status-codes morgan cookie-parser winston';
+    const dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
+        'module-alias';
 
     const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
-        '@types/cookie-parser @types/supertest fs-extra';
+        '@types/cookie-parser @types/supertest fs-extra tsconfig-paths';
 
     const options = {cwd: destination};
 
