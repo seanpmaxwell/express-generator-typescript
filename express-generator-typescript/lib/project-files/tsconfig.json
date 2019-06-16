@@ -1,17 +1,28 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
     "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "removeComments": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "baseUrl": "./",
-    "outDir": "dist",
     "sourceMap": true,
-    "removeComments": true,
-    "experimentalDecorators": true,
     "target": "es6",
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
+    "paths": {
+      "@entities": [
+        "src/entities"
+      ],
+      "@shared": [
+        "src/shared"
+      ],
+      "@server": [
+        "src/Server"
+      ]
+    },
     "types": [
       "node"
     ],
@@ -23,7 +34,6 @@
     "./src/**/*.ts"
   ],
   "exclude": [
-    "./src/**/*.test.ts",
     "./src/public/"
   ]
 }

@@ -6,5 +6,10 @@
     "start": "node dist/Start.js production",
     "start-dev": "nodemon --config \"./util/nodemon.json\"",
     "test": "nodemon --config \"./util/nodemon.test.json\""
+  },
+  "_moduleAliases": {
+    "@entities": "dist/entities",
+    "@shared": "dist/shared",
+    "@server": "dist/Server"
   }
 }
