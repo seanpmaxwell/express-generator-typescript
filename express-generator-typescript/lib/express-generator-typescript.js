@@ -54,7 +54,8 @@ function downloadNodeModules(destination) {
 
     const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
-        '@types/cookie-parser @types/supertest fs-extra tsconfig-paths';
+        '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
+        'jsonfile';
 
     const options = {cwd: destination};
 
