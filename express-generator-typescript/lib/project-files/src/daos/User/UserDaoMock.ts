@@ -27,7 +27,7 @@ export class UserDaoMock extends MockDao implements IUserDao {
     }
 
 
-    public async edit(user: IUser): Promise<void> {
+    public async update(user: IUser): Promise<void> {
         try {
             const db = await super.openDb();
             for (let i = 0; i < db.users.length; i++) {
