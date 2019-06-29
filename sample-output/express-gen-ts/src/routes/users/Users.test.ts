@@ -96,7 +96,7 @@ describe('Users Routes', () => {
 
             spyOn(userDao, 'add').and.returnValue(Promise.resolve());
 
-            agent.post(addUsersFullPath).type('form').send(userData)
+            callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);

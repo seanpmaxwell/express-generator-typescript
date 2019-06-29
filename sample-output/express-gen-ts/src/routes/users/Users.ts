@@ -81,7 +81,7 @@ export const updateUserPath = '/update';
 export const userUpdateMissingErr = 'User property was not present for updating user route.';
 
 /**
- * Update one user.
+ * Add one user.
  * Full Path: "PUT /api/users/update"
  */
 router.put(updateUserPath, async (req: Request, res: Response) => {
@@ -117,7 +117,13 @@ export const userDeleteMissingErr = 'Id property was not present for delete user
  */
 router.delete(deleteUserPath, async (req: Request, res: Response) => {
     try {
-        await userDao.delete(req.params.id);
+        const { id } = req.params;
+        if (!id) {
+            return res.status(BAD_REQUEST).json({
+                error: userDeleteMissingErr,
+            });
+        }
+        await userDao.delete(id);
         return res.status(OK).end();
     } catch (err) {
         logger.error('', err);
