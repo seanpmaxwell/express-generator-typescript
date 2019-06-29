@@ -1,13 +1,11 @@
+import { IUserDao, UserDao, UserDaoMock } from '@daos';
+import { logger } from '@shared';
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
-import { logger } from '@shared';
-import { IUserDao, UserDao, UserDaoMock } from '@daos';
-
 
 // Init router and path
 const router = Router();
 const path = '/users';
-
 
 export let userDao: IUserDao;
 if (process.env.NODE_ENV === 'development') {
@@ -15,7 +13,6 @@ if (process.env.NODE_ENV === 'development') {
 } else {
     userDao = new UserDao();
 }
-
 
 /******************************************************************************
  *                                Get All Users
@@ -33,13 +30,12 @@ router.get(getUsersPath, async (req: Request, res: Response) => {
         const users = await userDao.getAll();
         return res.status(OK).json({users});
     } catch (err) {
-        logger.error('', err);
+        logger.error(err.message, err);
         return res.status(BAD_REQUEST).json({
             error: err.message,
         });
     }
 });
-
 
 /******************************************************************************
  *                                Add One
@@ -64,13 +60,12 @@ router.post(addUserPath, async (req: Request, res: Response) => {
         await userDao.add(user);
         return res.status(CREATED).end();
     } catch (err) {
-        logger.error('', err);
+        logger.error(err.message, err);
         return res.status(BAD_REQUEST).json({
             error: err.message,
         });
     }
 });
-
 
 /******************************************************************************
  *                                      Update
@@ -95,13 +90,12 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
         await userDao.update(user);
         return res.status(OK).end();
     } catch (err) {
-        logger.error('', err);
+        logger.error(err.message, err);
         return res.status(BAD_REQUEST).json({
             error: err.message,
         });
     }
 });
-
 
 /******************************************************************************
  *                                      Delete
@@ -120,13 +114,12 @@ router.delete(deleteUserPath, async (req: Request, res: Response) => {
         await userDao.delete(req.params.id);
         return res.status(OK).end();
     } catch (err) {
-        logger.error('', err);
+        logger.error(err.message, err);
         return res.status(BAD_REQUEST).json({
             error: err.message,
         });
     }
 });
-
 
 /******************************************************************************
  *                                     Export

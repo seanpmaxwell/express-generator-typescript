@@ -1,10 +1,9 @@
-import path from 'path';
 import cookieParser from 'cookie-parser';
-import logger from 'morgan';
 import express from 'express';
-import BaseRouter from './routes/Base';
 import { Request, Response } from 'express';
-
+import logger from 'morgan';
+import path from 'path';
+import BaseRouter from './routes/Base';
 
 // Init express
 const app = express();
@@ -12,7 +11,7 @@ const app = express();
 // Add middleware/settings/routes to express.
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(BaseRouter.path, BaseRouter.router);
