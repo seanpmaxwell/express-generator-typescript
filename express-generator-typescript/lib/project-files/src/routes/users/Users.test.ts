@@ -1,11 +1,11 @@
+import supertest from 'supertest';
+import app from '@server';
+import UserRouter from './Users';
+
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
 import { User } from '@entities';
 import { pErr } from '@shared';
-
-import supertest from 'supertest';
-import app from '@server';
-import UserRouter from './Users';
 
 import * as userRouterItems from './Users';
 
@@ -191,7 +191,7 @@ describe('Users Routes', () => {
         } = userRouterItems;
 
         const callApi = (id: number) => {
-            return agent.post(deleteUserFullPath.replace(':id', id));
+            return agent.delete(deleteUserFullPath.replace(':id', id));
         };
 
         it(`should return a status code of ${OK} if the request was successful.`, (done) => {
@@ -209,7 +209,7 @@ describe('Users Routes', () => {
         it(`should return a JSON object with an error message of ${userDeleteMissingErr} and a 
             status code of ${BAD_REQUEST} if the id param was missing.`, (done) => {
 
-            callApi({})
+            agent.delete('/api/users/delete')
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
