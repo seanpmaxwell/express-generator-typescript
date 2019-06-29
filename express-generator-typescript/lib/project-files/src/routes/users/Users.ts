@@ -9,7 +9,7 @@ const router = Router();
 const path = '/users';
 
 
-let userDao: IUserDao;
+export let userDao: IUserDao;
 if (process.env.NODE_ENV === 'development') {
     userDao = new UserDaoMock();
 } else {
@@ -22,13 +22,13 @@ if (process.env.NODE_ENV === 'development') {
  ******************************************************************************/
 
 // Constants
-const getUserPath = '/all';
+export const getUsersPath = '/all';
 
 /**
  * Return user using name and email.
  * Full Path: "GET /api/users/all"
  */
-router.get(getUserPath, async (req: Request, res: Response) => {
+router.get(getUsersPath, async (req: Request, res: Response) => {
     try {
         const users = await userDao.getAll();
         return res.status(OK).json({users});
@@ -46,8 +46,8 @@ router.get(getUserPath, async (req: Request, res: Response) => {
  ******************************************************************************/
 
 // Constants
-const addUserPath = '/add';
-const userMissingErr = 'User property was not present for adding user route.';
+export const addUserPath = '/add';
+export const userMissingErr = 'User property was not present for adding user route.';
 
 /**
  * Add one user.
@@ -77,8 +77,8 @@ router.post(addUserPath, async (req: Request, res: Response) => {
  ******************************************************************************/
 
 // Constants
-const updateUserPath = '/update';
-const userUpdateMissingErr = 'User property was not present for updating user route.';
+export const updateUserPath = '/update';
+export const userUpdateMissingErr = 'User property was not present for updating user route.';
 
 /**
  * Add one user.
@@ -108,12 +108,12 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
  ******************************************************************************/
 
 // Constants
-const deleteUserPath = '/delete/:id';
-const userDeleteMissingErr = 'Id property was not present for delete user route.';
+export const deleteUserPath = '/delete/:id';
+export const userDeleteMissingErr = 'Id property was not present for delete user route.';
 
 /**
  * Add one user.
- * Full Path: "DELETE /api/users/update"
+ * Full Path: "DELETE /api/users/delete/:id"
  */
 router.delete(deleteUserPath, async (req: Request, res: Response) => {
     try {
