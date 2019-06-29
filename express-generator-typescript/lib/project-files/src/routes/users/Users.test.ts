@@ -190,15 +190,15 @@ describe('Users Routes', () => {
             userDeleteMissingErr,
         } = userRouterItems;
 
-        const callApi = (reqBody: object) => {
-            return agent.post(deleteUserFullPath).type('form').send(reqBody);
+        const callApi = (id: number) => {
+            return agent.post(deleteUserFullPath.replace(':id', id));
         };
 
         it(`should return a status code of ${OK} if the request was successful.`, (done) => {
 
             spyOn(userDao, 'delete').and.returnValue(Promise.resolve());
 
-            callApi({id: 5})
+            callApi(5)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
@@ -224,7 +224,7 @@ describe('Users Routes', () => {
             const deleteErrMsg = 'Could not delete user.';
             spyOn(userDao, 'delete').and.throwError(deleteErrMsg);
 
-            callApi({id: 5})
+            callApi(1)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
