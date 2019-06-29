@@ -84,11 +84,15 @@ describe('Users Routes', () => {
             return agent.post(addUsersFullPath).type('form').send(reqBody);
         };
 
-        it(`should return a status code of ${CREATED} if the request was successful`, (done) => {
+        const userData = {
+            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com')
+        };
+
+        it(`should return a status code of ${CREATED} if the request was successful.`, (done) => {
 
             spyOn(userDao, 'add').and.returnValue(Promise.resolve());
 
-            callApi({user})
+            callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);
@@ -111,10 +115,10 @@ describe('Users Routes', () => {
         it(`should return a JSON object with an error message and a status code of ${BAD_REQUEST}
             if the request was unsuccessful.`, (done) => {
 
-            const errMsg = 'Could not add user';
+            const errMsg = 'Could not add user.';
             spyOn(userDao, 'add').and.throwError(errMsg);
 
-            callApi({})
+            callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);
@@ -135,11 +139,15 @@ describe('Users Routes', () => {
             return agent.post(updateUserFullPath).type('form').send(reqBody);
         };
 
-        it(`should return a status code of ${OK} if the request was successful`, (done) => {
+        const userData = {
+            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com')
+        };
+
+        it(`should return a status code of ${OK} if the request was successful.`, (done) => {
 
             spyOn(userDao, 'update').and.returnValue(Promise.resolve());
 
-            callApi({user})
+            callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
@@ -148,9 +156,9 @@ describe('Users Routes', () => {
         });
 
         it(`should return a JSON object with an error message of ${userUpdateMissingErr} and a 
-            status code of ${BAD_REQUEST} if the request was successful.`, (done) => {
+            status code of ${BAD_REQUEST} if the user param was missing.`, (done) => {
 
-            callApi({user})
+            callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
@@ -160,12 +168,12 @@ describe('Users Routes', () => {
         });
 
         it(`should return a JSON object with an error message and a status code of ${BAD_REQUEST} 
-            if the request was successful.`, (done) => {
+            if the request was unsuccessful.`, (done) => {
 
-            const updateErrMsg = 'Could not update user';
+            const updateErrMsg = 'Could not update user.';
             spyOn(userDao, 'update').and.throwError(updateErrMsg);
 
-            callApi({user})
+            callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
@@ -179,21 +187,48 @@ describe('Users Routes', () => {
     describe(`"DELETE:${deleteUserFullPath}"`, () => {
 
         const {
-            deleteUserPath,
+            userDeleteMissingErr,
         } = userRouterItems;
 
         const callApi = (reqBody: object) => {
             return agent.post(deleteUserFullPath).type('form').send(reqBody);
         };
 
-        it(`should return a status code of ${OK} if the request was successful`, (done) => {
+        it(`should return a status code of ${OK} if the request was successful.`, (done) => {
 
-            spyOn(userDao, 'update').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'delete').and.returnValue(Promise.resolve());
 
-            callApi({user})
+            callApi({id: 5})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
+                    done();
+                });
+        });
+
+        it(`should return a JSON object with an error message of ${userDeleteMissingErr} and a 
+            status code of ${BAD_REQUEST} if the id param was missing.`, (done) => {
+
+            callApi({})
+                .end((err: Error, res: Response) => {
+                    pErr(err);
+                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.body.error).toBe(userDeleteMissingErr);
+                    done();
+                });
+        });
+
+        it(`should return a JSON object with an error message and a status code of ${BAD_REQUEST} 
+            if the request was unsuccessful.`, (done) => {
+
+            const deleteErrMsg = 'Could not delete user.';
+            spyOn(userDao, 'delete').and.throwError(deleteErrMsg);
+
+            callApi({id: 5})
+                .end((err: Error, res: Response) => {
+                    pErr(err);
+                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.body.error).toBe(deleteErrMsg);
                     done();
                 });
         });
