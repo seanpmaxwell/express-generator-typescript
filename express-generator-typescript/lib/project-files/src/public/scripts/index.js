@@ -1,4 +1,4 @@
-fetch('/api/users/sean/sean@express-generator-typescript', {
+fetch('/api/users/all', {
         method: 'get',
         dataType: 'json',
         headers: {
