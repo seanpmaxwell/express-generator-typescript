@@ -1,13 +1,12 @@
-import supertest from 'supertest';
 import app from '@server';
+import supertest from 'supertest';
 
+import { IUser, User } from '@entities';
+import { pErr } from '@shared';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
-import { User, IUser } from '@entities';
-import { pErr } from '@shared';
 
 import * as userRouterItems from './Users';
-
 
 describe('Users Routes', () => {
 
@@ -27,12 +26,10 @@ describe('Users Routes', () => {
 
     let agent: SuperTest<Test>;
 
-
     beforeAll((done) => {
         agent = supertest.agent(app);
         done();
     });
-
 
     describe(`"GET: ${getUsersFullPath}"`, () => {
 
@@ -56,7 +53,7 @@ describe('Users Routes', () => {
                         return new User(user);
                     });
                     expect(retUsers).toEqual(users);
-                    expect(res.body.error).toBeFalsy();
+                    expect(res.body.error).toBeUndefined();
                     done();
                 });
         });
@@ -77,7 +74,6 @@ describe('Users Routes', () => {
         });
     });
 
-
     describe(`"POST: ${addUsersFullPath}"`, () => {
 
         const {
@@ -89,23 +85,23 @@ describe('Users Routes', () => {
         };
 
         const userData = {
-            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com')
+            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
         };
 
         it(`should return a status code of "${CREATED}" if the request was successful.`, (done) => {
 
             spyOn(userDao, 'add').and.returnValue(Promise.resolve());
 
-            agent.post(addUsersFullPath).type('form').send(userData)
+            agent.post(addUsersFullPath).type('form').send(userData) // pick up here
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);
-                    expect(res.body.error).toBeFalsy();
+                    expect(res.body.error).toBeUndefined();
                     done();
                 });
         });
 
-        it(`should return a JSON object with an error message of "${userMissingErr}" and a status 
+        it(`should return a JSON object with an error message of "${userMissingErr}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
 
             callApi({})
@@ -133,7 +129,6 @@ describe('Users Routes', () => {
         });
     });
 
-
     describe(`"PUT: ${updateUserFullPath}"`, () => {
 
         const {
@@ -156,12 +151,12 @@ describe('Users Routes', () => {
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
-                    expect(res.body.error).toBeFalsy();
+                    expect(res.body.error).toBeUndefined();
                     done();
                 });
         });
 
-        it(`should return a JSON object with an error message of "${userUpdateMissingErr}" and a 
+        it(`should return a JSON object with an error message of "${userUpdateMissingErr}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
 
             callApi({})
@@ -189,12 +184,7 @@ describe('Users Routes', () => {
         });
     });
 
-
     describe(`"DELETE: ${deleteUserFullPath}"`, () => {
-
-        const {
-            userDeleteMissingErr,
-        } = userRouterItems;
 
         const callApi = (id: number) => {
             return agent.delete(deleteUserFullPath.replace(':id', id.toString()));
@@ -208,7 +198,7 @@ describe('Users Routes', () => {
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
-                    expect(res.body.error).toBeFalsy();
+                    expect(res.body.error).toBeUndefined();
                     done();
                 });
         });

@@ -1,9 +1,9 @@
 // loadEnv must be first!
 import '../env/loadEnv';
+
+import { logger } from '@shared';
 import find from 'find';
 import Jasmine from 'jasmine';
-import { logger } from '@shared';
-
 
 // Init Jasmine
 const jasmine = new Jasmine(null);
