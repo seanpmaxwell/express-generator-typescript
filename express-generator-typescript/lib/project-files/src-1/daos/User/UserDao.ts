@@ -1,5 +1,6 @@
 import { IUser } from '@entities';
 
+
 export interface IUserDao {
     getAll: () => Promise<IUser[]>;
     add: (user: IUser) => Promise<void>;
@@ -9,6 +10,7 @@ export interface IUserDao {
 
 export class UserDao implements IUserDao {
 
+
     /**
      *
      */
@@ -16,6 +18,7 @@ export class UserDao implements IUserDao {
         // TODO
         return {} as any;
     }
+
 
     /**
      *
@@ -26,6 +29,7 @@ export class UserDao implements IUserDao {
         return {} as any;
     }
 
+
     /**
      *
      * @param user
@@ -34,6 +38,7 @@ export class UserDao implements IUserDao {
         // TODO
         return {} as any;
     }
+
 
     /**
      *

@@ -1,9 +1,10 @@
 import { IUser } from '@entities';
-import { getRandomInt } from '@shared';
-import { MockDao } from '../MockDb/MockDao';
 import { IUserDao } from './UserDao';
+import { MockDao } from '../MockDb/MockDao';
+
 
 export class UserDaoMock extends MockDao implements IUserDao {
+
 
     public async getAll(): Promise<IUser[]> {
         try {
@@ -14,16 +15,17 @@ export class UserDaoMock extends MockDao implements IUserDao {
         }
     }
 
+
     public async add(user: IUser): Promise<void> {
         try {
             const db = await super.openDb();
-            user.id = getRandomInt();
             db.users.push(user);
             await super.saveDb(db);
         } catch (err) {
             throw err;
         }
     }
+
 
     public async update(user: IUser): Promise<void> {
         try {
@@ -40,6 +42,7 @@ export class UserDaoMock extends MockDao implements IUserDao {
             throw err;
         }
     }
+
 
     public async delete(id: number): Promise<void> {
         try {
