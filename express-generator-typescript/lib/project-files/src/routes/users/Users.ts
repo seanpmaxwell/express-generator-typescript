@@ -52,13 +52,13 @@ export const userMissingErr = 'User property was not present for adding user rou
 router.post(addUserPath, async (req: Request, res: Response) => {
     try {
         // tslint:disable-next-line:no-console
-        const { name, email } = req.body;
-        if (!name || !email) {
+        const { user } = req.body;
+        if (!user) {
             return res.status(BAD_REQUEST).json({
                 error: userMissingErr,
             });
         }
-        await userDao.add({name, email});
+        await userDao.add(user);
         return res.status(CREATED).end();
     } catch (err) {
         logger.error(err.message, err);

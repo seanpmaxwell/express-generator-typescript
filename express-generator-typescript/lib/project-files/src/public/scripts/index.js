@@ -16,12 +16,14 @@ document.addEventListener('click', function (event) {
 	event.preventDefault();
 
 	// Setup data
-	let user = {
-	    name: (document.getElementById('name-input').value),
-        email: (document.getElementById('email-input').value)
+    let data = {
+        user: {
+            name: (document.getElementById('name-input').value),
+            email: (document.getElementById('email-input').value)
+        },
     };
 
-	HttpPost('/api/users/add', user)
+	HttpPost('/api/users/add', data)
         .then(() => {
             displayUsers();
         })
