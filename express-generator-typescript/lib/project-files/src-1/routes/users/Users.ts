@@ -8,7 +8,7 @@ const router = Router();
 const path = '/users';
 
 export let userDao: IUserDao;
-if (process.env.USE_MOCK_DB === 'true') {
+if (process.env.NODE_ENV === 'development') {
     userDao = new UserDaoMock();
 } else {
     userDao = new UserDao();
@@ -51,14 +51,13 @@ export const userMissingErr = 'User property was not present for adding user rou
  */
 router.post(addUserPath, async (req: Request, res: Response) => {
     try {
-        // tslint:disable-next-line:no-console
-        const { name, email } = req.body;
-        if (!name || !email) {
+        const { user } = req.body;
+        if (!user) {
             return res.status(BAD_REQUEST).json({
                 error: userMissingErr,
             });
         }
-        await userDao.add({name, email});
+        await userDao.add(user);
         return res.status(CREATED).end();
     } catch (err) {
         logger.error(err.message, err);
@@ -88,7 +87,6 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
                 error: userUpdateMissingErr,
             });
         }
-        user.id = Number(user.id);
         await userDao.update(user);
         return res.status(OK).end();
     } catch (err) {
@@ -105,6 +103,7 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
 
 // Constants
 export const deleteUserPath = '/delete/:id';
+export const userDeleteMissingErr = 'Id property was not present for delete user route.';
 
 /**
  * Add one user.
@@ -112,7 +111,7 @@ export const deleteUserPath = '/delete/:id';
  */
 router.delete(deleteUserPath, async (req: Request, res: Response) => {
     try {
-        await userDao.delete(Number(req.params.id));
+        await userDao.delete(req.params.id);
         return res.status(OK).end();
     } catch (err) {
         logger.error(err.message, err);

@@ -88,7 +88,6 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
                 error: userUpdateMissingErr,
             });
         }
-        user.id = Number(user.id);
         await userDao.update(user);
         return res.status(OK).end();
     } catch (err) {

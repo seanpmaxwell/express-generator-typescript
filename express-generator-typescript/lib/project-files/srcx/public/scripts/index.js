@@ -3,7 +3,6 @@
  */
 displayUsers();
 
-
 /**
  * Add User
  */
@@ -28,9 +27,8 @@ document.addEventListener('click', function (event) {
 
 }, false);
 
-
 /**
- * Display Edit mode
+ * Update User
  */
 document.addEventListener('click', function (event) {
 
@@ -41,71 +39,25 @@ document.addEventListener('click', function (event) {
 	event.preventDefault();
 
 	// Get display/edit divs
-	let userEle = event.target.parentNode.parentNode;
+	let userEle = event.target.parentNode.parentNode; // pick up here
     let normalView = userEle.getElementsByClassName('normal-view')[0];
     let editView = userEle.getElementsByClassName('edit-view')[0];
 
     normalView.style.display = 'none';
     editView.style.display = 'block';
 
-}, false);
+	// Setup data
+	// let newVals = {
+	//     name: (document.getElementById('name-input').value),
+    //     email: (document.getElementById('email-input').value)
+    // };
 
-
-/**
- * Display Normal mode (Cancel button)
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.cancel-edit-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get display/edit divs
-	let userEle = event.target.parentNode.parentNode;
-    let normalView = userEle.getElementsByClassName('normal-view')[0];
-    let editView = userEle.getElementsByClassName('edit-view')[0];
-
-    normalView.style.display = 'block';
-    editView.style.display = 'none';
-
-}, false);
-
-
-/**
- * Edit user
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.submit-edit-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get id
-    let userEle = event.target.parentNode.parentNode;
-    let nameInput = userEle.getElementsByClassName('name-edit-input')[0];
-    let emailInput = userEle.getElementsByClassName('email-edit-input')[0];
-
-    let id = event.target.getAttribute('data-user-id');
-
-    let data = {
-        user: {
-            name: nameInput.value,
-            email: emailInput.value,
-            id: id
-        }
-    };
-
-	HttpPut('/api/users/update', data)
+	HttpPut('/api/users/update', newVals)
         .then(() => {
             displayUsers();
         })
 
 }, false);
-
 
 /**
  * Delete user
@@ -144,17 +96,13 @@ function getUserDisplayEle(user) {
         </div>
         
         <div class="edit-view">
-            <div>
-                Name: <input class="name-edit-input" value="${user.name}">
-            </div>
-            <div>
-                Email: <input class="email-edit-input" value="${user.email}">
-            </div>
+            <div>Name: <input ></div>
+            <div>Email: <input></div>
             <button class="submit-edit-btn" data-user-id="${user.id}">
-                Submit
+                Edit
             </button>
             <button class="cancel-edit-btn" data-user-id="${user.id}">
-                Cancel
+                Delete
             </button>
         </div>
     </div>`;

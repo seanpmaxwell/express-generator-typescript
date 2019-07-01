@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "name": "foo"
+    },
+    {
+      "name": "horse"
+    }
+  ]
+}

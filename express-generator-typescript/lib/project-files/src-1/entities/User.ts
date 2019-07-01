@@ -1,13 +1,14 @@
 
 export interface IUser {
-    id?: number;
+    id: number | undefined;
     name: string;
     email: string;
 }
 
+
 export class User implements IUser {
 
-    public id?: number;
+    public id: number | undefined;
     public name: string;
     public email: string;
 
