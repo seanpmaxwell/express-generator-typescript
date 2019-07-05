@@ -1,6 +1,3 @@
-// Must be first
-import '../env/loadEnv';
-
 import app from '@server';
 import { logger } from '@shared';
 
