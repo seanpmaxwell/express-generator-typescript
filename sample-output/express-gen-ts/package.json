@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "node ./util/build.js",
-    "start": "node -r module-alias/register dist/Start.js production",
+    "start": "LOAD_ENV=production node -r ./env -r module-alias/register dist/Start.js",
     "start-dev": "nodemon --config \"./util/nodemon.json\"",
     "test": "nodemon --config \"./util/nodemon.test.json\""
   },
@@ -30,8 +30,8 @@
     "@types/jasmine": "^3.3.13",
     "@types/jsonfile": "^5.0.0",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^12.0.10",
-    "@types/supertest": "^2.0.7",
+    "@types/node": "^12.0.12",
+    "@types/supertest": "^2.0.8",
     "find": "^0.3.0",
     "fs-extra": "^8.1.0",
     "jasmine": "^3.4.0",
