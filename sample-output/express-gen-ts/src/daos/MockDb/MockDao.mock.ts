@@ -1,6 +1,6 @@
 import jsonfile from 'jsonfile';
 
-export class MockDao {
+export class MockDaoMock {
 
     private readonly dbFilePath = 'src/daos/MockDb/MockDb.json';
 

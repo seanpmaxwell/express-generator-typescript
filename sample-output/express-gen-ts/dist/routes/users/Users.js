@@ -7,12 +7,7 @@ const express_1 = require("express");
 const http_status_codes_1 = require("http-status-codes");
 const router = express_1.Router();
 const path = '/users';
-if (process.env.USE_MOCK_DB === 'true') {
-    exports.userDao = new _daos_1.UserDaoMock();
-}
-else {
-    exports.userDao = new _daos_1.UserDao();
-}
+exports.userDao = new _daos_1.UserDao();
 exports.getUsersPath = '/all';
 router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {

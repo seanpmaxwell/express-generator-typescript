@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 class UserDao {
     getAll() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return {};
+            return [];
         });
     }
     add(user) {

@@ -1,4 +1,4 @@
-import { IUserDao, UserDao, UserDaoMock } from '@daos';
+import { UserDao } from '@daos';
 import { logger } from '@shared';
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
@@ -7,12 +7,7 @@ import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 const router = Router();
 const path = '/users';
 
-export let userDao: IUserDao;
-if (process.env.USE_MOCK_DB === 'true') {
-    userDao = new UserDaoMock();
-} else {
-    userDao = new UserDao();
-}
+export const userDao = new UserDao();
 
 /******************************************************************************
  *                                Get All Users

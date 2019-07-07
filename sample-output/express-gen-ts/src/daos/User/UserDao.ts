@@ -14,7 +14,7 @@ export class UserDao implements IUserDao {
      */
     public async getAll(): Promise<IUser[]> {
         // TODO
-        return {} as any;
+        return [] as any;
     }
 
     /**

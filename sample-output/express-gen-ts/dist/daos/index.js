@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-tslib_1.__exportStar(require("./User/UserDaoMock"), exports);
-tslib_1.__exportStar(require("./User/UserDao"), exports);
+const usingMockDb = (process.env.USE_MOCK_DB || '').toLowerCase();
+let userDaoPath = './User/UserDao';
+if (usingMockDb === 'true') {
+    userDaoPath += '.mock';
+}
+exports.UserDao = require(userDaoPath).UserDao;
