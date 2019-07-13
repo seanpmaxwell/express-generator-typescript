@@ -25,8 +25,8 @@ jasmine.onComplete((passed: boolean) => {
 });
 
 // Run all or a single unit-test
-if (process.argv[3]) {
-    const testFile = process.argv[3];
+if (process.argv[2]) {
+    const testFile = process.argv[2];
     find.file(testFile + '.test.ts', './src/routes', (files) => {
         if (files.length === 1) {
             jasmine.execute([files[0]], testFile);
