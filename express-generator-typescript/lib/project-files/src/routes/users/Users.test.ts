@@ -31,7 +31,7 @@ describe('Users Routes', () => {
         done();
     });
 
-    describe(`"GET: ${getUsersFullPath}"`, () => {
+    describe(`"GET:${getUsersFullPath}"`, () => {
 
         it(`should return a JSON object with all the users and a status code of "${OK}" if the
             request was successful.`, (done) => {
@@ -74,7 +74,7 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"POST: ${addUsersFullPath}"`, () => {
+    describe(`"POST:${addUsersFullPath}"`, () => {
 
         const callApi = (reqBody: object) => {
             return agent.post(addUsersFullPath).type('form').send(reqBody);
@@ -125,7 +125,7 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"PUT: ${updateUserFullPath}"`, () => {
+    describe(`"PUT:${updateUserFullPath}"`, () => {
 
         const callApi = (reqBody: object) => {
             return agent.put(updateUserFullPath).type('form').send(reqBody);
@@ -176,7 +176,7 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"DELETE: ${deleteUserFullPath}"`, () => {
+    describe(`"DELETE:${deleteUserFullPath}"`, () => {
 
         const callApi = (id: number) => {
             return agent.delete(deleteUserFullPath.replace(':id', id.toString()));
