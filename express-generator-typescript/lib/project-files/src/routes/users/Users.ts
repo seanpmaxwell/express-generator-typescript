@@ -5,7 +5,7 @@ import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 
 // Init shared
 const router = Router();
-export const userDao = new UserDao();
+const userDao = new UserDao();
 
 /******************************************************************************
  *                      Get All Users - "GET /api/users/all"
