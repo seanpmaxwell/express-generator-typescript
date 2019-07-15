@@ -6,11 +6,11 @@ const _shared_1 = require("@shared");
 const express_1 = require("express");
 const http_status_codes_1 = require("http-status-codes");
 const router = express_1.Router();
-exports.userDao = new _daos_1.UserDao();
+const userDao = new _daos_1.UserDao();
 exports.getUsersPath = '/all';
 router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
-        const users = yield exports.userDao.getAll();
+        const users = yield userDao.getAll();
         return res.status(http_status_codes_1.OK).json({ users });
     }
     catch (err) {
@@ -30,7 +30,7 @@ router.post(exports.addUserPath, (req, res) => tslib_1.__awaiter(this, void 0, v
                 error: exports.userMissingErr,
             });
         }
-        yield exports.userDao.add(user);
+        yield userDao.add(user);
         return res.status(http_status_codes_1.CREATED).end();
     }
     catch (err) {
@@ -51,7 +51,7 @@ router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0,
             });
         }
         user.id = Number(user.id);
-        yield exports.userDao.update(user);
+        yield userDao.update(user);
         return res.status(http_status_codes_1.OK).end();
     }
     catch (err) {
@@ -64,7 +64,7 @@ router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0,
 exports.deleteUserPath = '/delete/:id';
 router.delete(exports.deleteUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
-        yield exports.userDao.delete(Number(req.params.id));
+        yield userDao.delete(Number(req.params.id));
         return res.status(http_status_codes_1.OK).end();
     }
     catch (err) {
