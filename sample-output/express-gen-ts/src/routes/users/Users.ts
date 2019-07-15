@@ -3,23 +3,16 @@ import { logger } from '@shared';
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 
-// Init router and path
+// Init shared
 const router = Router();
-const path = '/users';
-
 export const userDao = new UserDao();
 
 /******************************************************************************
- *                                Get All Users
+ *                      Get All Users - "GET /api/users/all"
  ******************************************************************************/
 
-// Constants
 export const getUsersPath = '/all';
 
-/**
- * Return user using name and email.
- * Full Path: "GET /api/users/all"
- */
 router.get(getUsersPath, async (req: Request, res: Response) => {
     try {
         const users = await userDao.getAll();
@@ -33,17 +26,12 @@ router.get(getUsersPath, async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
- *                                Add One
+ *                       Add One - "POST /api/users/add"
  ******************************************************************************/
 
-// Constants
 export const addUserPath = '/add';
 export const userMissingErr = 'User property was not present for adding user route.';
 
-/**
- * Add one user.
- * Full Path: "POST /api/users/add"
- */
 router.post(addUserPath, async (req: Request, res: Response) => {
     try {
         // tslint:disable-next-line:no-console
@@ -64,17 +52,12 @@ router.post(addUserPath, async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
- *                                      Update
+ *                       Update - "PUT /api/users/update"
  ******************************************************************************/
 
-// Constants
 export const updateUserPath = '/update';
 export const userUpdateMissingErr = 'User property was not present for updating user route.';
 
-/**
- * Update one user.
- * Full Path: "PUT /api/users/update"
- */
 router.put(updateUserPath, async (req: Request, res: Response) => {
     try {
         const { user } = req.body;
@@ -95,16 +78,11 @@ router.put(updateUserPath, async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
- *                                      Delete
+ *                    Delete - "DELETE /api/users/delete/:id"
  ******************************************************************************/
 
-// Constants
 export const deleteUserPath = '/delete/:id';
 
-/**
- * Add one user.
- * Full Path: "DELETE /api/users/delete/:id"
- */
 router.delete(deleteUserPath, async (req: Request, res: Response) => {
     try {
         await userDao.delete(Number(req.params.id));
@@ -121,4 +99,4 @@ router.delete(deleteUserPath, async (req: Request, res: Response) => {
  *                                     Export
  ******************************************************************************/
 
-export default { router, path };
+export default router;
