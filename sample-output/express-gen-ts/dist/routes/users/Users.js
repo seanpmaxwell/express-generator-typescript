@@ -7,7 +7,11 @@ const express_1 = require("express");
 const http_status_codes_1 = require("http-status-codes");
 const router = express_1.Router();
 const userDao = new _daos_1.UserDao();
+exports.paramMissingError = 'One or more of the required parameters was missing.';
 exports.getUsersPath = '/all';
+exports.addUserPath = '/add';
+exports.updateUserPath = '/update';
+exports.deleteUserPath = '/delete/:id';
 router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const users = yield userDao.getAll();
@@ -20,14 +24,12 @@ router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, v
         });
     }
 }));
-exports.addUserPath = '/add';
-exports.userMissingErr = 'User property was not present for adding user route.';
 router.post(exports.addUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const { user } = req.body;
         if (!user) {
             return res.status(http_status_codes_1.BAD_REQUEST).json({
-                error: exports.userMissingErr,
+                error: exports.paramMissingError,
             });
         }
         yield userDao.add(user);
@@ -40,14 +42,12 @@ router.post(exports.addUserPath, (req, res) => tslib_1.__awaiter(this, void 0, v
         });
     }
 }));
-exports.updateUserPath = '/update';
-exports.userUpdateMissingErr = 'User property was not present for updating user route.';
 router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const { user } = req.body;
         if (!user) {
             return res.status(http_status_codes_1.BAD_REQUEST).json({
-                error: exports.userUpdateMissingErr,
+                error: exports.paramMissingError,
             });
         }
         user.id = Number(user.id);
@@ -61,7 +61,6 @@ router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0,
         });
     }
 }));
-exports.deleteUserPath = '/delete/:id';
 router.delete(exports.deleteUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         yield userDao.delete(Number(req.params.id));
