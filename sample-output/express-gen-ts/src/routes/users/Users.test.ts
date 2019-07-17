@@ -12,8 +12,7 @@ import {
     addUserPath,
     updateUserPath,
     deleteUserPath,
-    userMissingErr,
-    userUpdateMissingErr,
+    paramMissingError,
 } from './Users';
 
 describe('Users Routes', () => {
@@ -97,14 +96,14 @@ describe('Users Routes', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${userMissingErr}" and a status
+        it(`should return a JSON object with an error message of "${paramMissingError}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
 
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(userMissingErr);
+                    expect(res.body.error).toBe(paramMissingError);
                     done();
                 });
         });
@@ -148,14 +147,14 @@ describe('Users Routes', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${userUpdateMissingErr}" and a
+        it(`should return a JSON object with an error message of "${paramMissingError}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
 
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(userUpdateMissingErr);
+                    expect(res.body.error).toBe(paramMissingError);
                     done();
                 });
         });
