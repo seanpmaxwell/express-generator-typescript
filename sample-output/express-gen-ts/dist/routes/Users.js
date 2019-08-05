@@ -5,14 +5,10 @@ const _daos_1 = require("@daos");
 const _shared_1 = require("@shared");
 const express_1 = require("express");
 const http_status_codes_1 = require("http-status-codes");
+const _shared_2 = require("@shared");
 const router = express_1.Router();
 const userDao = new _daos_1.UserDao();
-exports.paramMissingError = 'One or more of the required parameters was missing.';
-exports.getUsersPath = '/all';
-exports.addUserPath = '/add';
-exports.updateUserPath = '/update';
-exports.deleteUserPath = '/delete/:id';
-router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+router.get('/all', (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const users = yield userDao.getAll();
         return res.status(http_status_codes_1.OK).json({ users });
@@ -24,12 +20,12 @@ router.get(exports.getUsersPath, (req, res) => tslib_1.__awaiter(this, void 0, v
         });
     }
 }));
-router.post(exports.addUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+router.post('/add', (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const { user } = req.body;
         if (!user) {
             return res.status(http_status_codes_1.BAD_REQUEST).json({
-                error: exports.paramMissingError,
+                error: _shared_2.paramMissingError,
             });
         }
         yield userDao.add(user);
@@ -42,12 +38,12 @@ router.post(exports.addUserPath, (req, res) => tslib_1.__awaiter(this, void 0, v
         });
     }
 }));
-router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+router.put('/update', (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         const { user } = req.body;
         if (!user) {
             return res.status(http_status_codes_1.BAD_REQUEST).json({
-                error: exports.paramMissingError,
+                error: _shared_2.paramMissingError,
             });
         }
         user.id = Number(user.id);
@@ -61,7 +57,7 @@ router.put(exports.updateUserPath, (req, res) => tslib_1.__awaiter(this, void 0,
         });
     }
 }));
-router.delete(exports.deleteUserPath, (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+router.delete('/delete/:id', (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
         yield userDao.delete(Number(req.params.id));
         return res.status(http_status_codes_1.OK).end();

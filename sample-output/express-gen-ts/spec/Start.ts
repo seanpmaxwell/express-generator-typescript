@@ -8,9 +8,9 @@ const jasmine = new Jasmine(null);
 // Set location of test files
 jasmine.loadConfig({
     random: true,
-    spec_dir: 'src',
+    spec_dir: 'spec',
     spec_files: [
-        './routes/**/*.test.ts',
+        './**/*.spec.ts',
     ],
     stopSpecOnExpectationFailure: false,
 });
@@ -27,7 +27,7 @@ jasmine.onComplete((passed: boolean) => {
 // Run all or a single unit-test
 if (process.argv[3]) {
     const testFile = process.argv[3];
-    find.file(testFile + '.test.ts', './src/routes', (files) => {
+    find.file(testFile + '.spec.ts', './spec', (files) => {
         if (files.length === 1) {
             jasmine.execute([files[0]], testFile);
         } else {

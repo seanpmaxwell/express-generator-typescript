@@ -1,27 +1,19 @@
 import app from '@server';
 import supertest from 'supertest';
 
-import { IUser, User } from '@entities';
-import { UserDao } from '@daos';
-import { pErr } from '@shared';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
-
-import {
-    getUsersPath,
-    addUserPath,
-    updateUserPath,
-    deleteUserPath,
-    paramMissingError,
-} from './Users';
+import { IUser, User } from '@entities';
+import { UserDao } from '@daos';
+import { pErr, paramMissingError } from '@shared';
 
 describe('Users Routes', () => {
 
-    const usersFullPath = '/api/users';
-    const getUsersFullPath = usersFullPath + getUsersPath;
-    const addUsersFullPath = usersFullPath + addUserPath;
-    const updateUserFullPath = usersFullPath + updateUserPath;
-    const deleteUserFullPath = usersFullPath + deleteUserPath;
+    const usersPath = '/api/users';
+    const getUsersPath = `${usersPath}/all`;
+    const addUsersPath = `${usersPath}/add`;
+    const updateUserPath = `${usersPath}/update`;
+    const deleteUserPath = `${usersPath}/delete/:id`;
 
     let agent: SuperTest<Test>;
 
@@ -30,7 +22,7 @@ describe('Users Routes', () => {
         done();
     });
 
-    describe(`"GET:${getUsersFullPath}"`, () => {
+    describe(`"GET:${getUsersPath}"`, () => {
 
         it(`should return a JSON object with all the users and a status code of "${OK}" if the
             request was successful.`, (done) => {
@@ -43,7 +35,7 @@ describe('Users Routes', () => {
 
             spyOn(UserDao.prototype, 'getAll').and.returnValue(Promise.resolve(users));
 
-            agent.get(getUsersFullPath)
+            agent.get(getUsersPath)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
@@ -63,7 +55,7 @@ describe('Users Routes', () => {
             const errMsg = 'Could not fetch users.';
             spyOn(UserDao.prototype, 'getAll').and.throwError(errMsg);
 
-            agent.get(getUsersFullPath)
+            agent.get(getUsersPath)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
@@ -73,10 +65,10 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"POST:${addUsersFullPath}"`, () => {
+    describe(`"POST:${addUsersPath}"`, () => {
 
         const callApi = (reqBody: object) => {
-            return agent.post(addUsersFullPath).type('form').send(reqBody);
+            return agent.post(addUsersPath).type('form').send(reqBody);
         };
 
         const userData = {
@@ -87,7 +79,7 @@ describe('Users Routes', () => {
 
             spyOn(UserDao.prototype, 'add').and.returnValue(Promise.resolve());
 
-            agent.post(addUsersFullPath).type('form').send(userData) // pick up here
+            agent.post(addUsersPath).type('form').send(userData) // pick up here
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);
@@ -124,10 +116,10 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"PUT:${updateUserFullPath}"`, () => {
+    describe(`"PUT:${updateUserPath}"`, () => {
 
         const callApi = (reqBody: object) => {
-            return agent.put(updateUserFullPath).type('form').send(reqBody);
+            return agent.put(updateUserPath).type('form').send(reqBody);
         };
 
         const userData = {
@@ -175,10 +167,10 @@ describe('Users Routes', () => {
         });
     });
 
-    describe(`"DELETE:${deleteUserFullPath}"`, () => {
+    describe(`"DELETE:${deleteUserPath}"`, () => {
 
         const callApi = (id: number) => {
-            return agent.delete(deleteUserFullPath.replace(':id', id.toString()));
+            return agent.delete(deleteUserPath.replace(':id', id.toString()));
         };
 
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
