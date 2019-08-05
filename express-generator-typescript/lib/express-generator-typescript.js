@@ -10,10 +10,6 @@ const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
 
 
-
-module.exports = expressGenTs;
-
-
 async function expressGenTs(destination) {
     try {
         await copyProjectFiles(destination);
@@ -48,17 +44,16 @@ function updatePackageJson(destination) {
 
 
 function downloadNodeModules(destination) {
-
     const dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
         'module-alias cross-env';
-
     const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
         '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
         'jsonfile';
-
     const options = {cwd: destination};
-
     childProcess.execSync('npm i -s ' + dependencies, options);
     childProcess.execSync('npm i -D ' + devDependencies, options);
 }
+
+
+module.exports = expressGenTs;
