@@ -1,134 +1,24 @@
-/**
- * Get users
- */
+/******************************************************************************
+ *                          Fetch and display users
+ ******************************************************************************/
+
 displayUsers();
 
 
-/**
- * Add User
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('#add-user-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Setup data
-    let data = {
-        user: {
-            name: (document.getElementById('name-input').value),
-            email: (document.getElementById('email-input').value)
-        },
-    };
-
-	HttpPost('/api/users/add', data)
-        .then(() => {
-            displayUsers();
-        })
-
-}, false);
-
-
-/**
- * Display Edit mode
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.edit-user-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get display/edit divs
-	let userEle = event.target.parentNode.parentNode;
-    let normalView = userEle.getElementsByClassName('normal-view')[0];
-    let editView = userEle.getElementsByClassName('edit-view')[0];
-
-    normalView.style.display = 'none';
-    editView.style.display = 'block';
-
-}, false);
-
-
-/**
- * Display Normal mode (Cancel button)
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.cancel-edit-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get display/edit divs
-	let userEle = event.target.parentNode.parentNode;
-    let normalView = userEle.getElementsByClassName('normal-view')[0];
-    let editView = userEle.getElementsByClassName('edit-view')[0];
-
-    normalView.style.display = 'block';
-    editView.style.display = 'none';
-
-}, false);
-
-
-/**
- * Edit user
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.submit-edit-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get id
-    let userEle = event.target.parentNode.parentNode;
-    let nameInput = userEle.getElementsByClassName('name-edit-input')[0];
-    let emailInput = userEle.getElementsByClassName('email-edit-input')[0];
-
-    let id = event.target.getAttribute('data-user-id');
-
-    let data = {
-        user: {
-            name: nameInput.value,
-            email: emailInput.value,
-            id: id
-        }
-    };
-
-	HttpPut('/api/users/update', data)
-        .then(() => {
-            displayUsers();
-        })
-
-}, false);
-
-
-/**
- * Delete user
- */
-document.addEventListener('click', function (event) {
-
-	// If the clicked element doesn't have the right selector, bail
-	if (!event.target.matches('.delete-user-btn')) return;
-
-	// Don't follow the link
-	event.preventDefault();
-
-	// Get id
-    let id = event.target.getAttribute('data-user-id');
-
-	HttpDelete('/api/users/delete/' + id)
-        .then(() => {
-            displayUsers();
-        })
-
-}, false);
+function displayUsers() {
+    httpGet('/api/users/all')
+        .then(response => response.json())
+        .then((response) => {
+            var allUsers = response.users;
+            // Empty the anchor
+            let allUsersAnchor = document.getElementById('all-users-anchor');
+            allUsersAnchor.innerHTML = '';
+            // Append users to anchor
+            allUsers.forEach((user) => {
+                allUsersAnchor.innerHTML += getUserDisplayEle(user);
+            });
+        });
+};
 
 
 function getUserDisplayEle(user) {
@@ -162,55 +52,120 @@ function getUserDisplayEle(user) {
     </div>`;
 }
 
-function displayUsers() {
-    HttpGet('/api/users/all')
-        .then(response => response.json())
-        .then((response) => {
-            let allUsers = response.users;
 
-            // Empty the anchor
-            let allUsersAnchor = document.getElementById('all-users-anchor');
-            allUsersAnchor.innerHTML = '';
+/******************************************************************************
+ *                        Add, Edit, and Delete Users
+ ******************************************************************************/
 
-            // Append users to anchor
-            allUsers.forEach((user) => {
-                allUsersAnchor.innerHTML += getUserDisplayEle(user);
-            });
-        });
+document.addEventListener('click', function (event) {
+    event.preventDefault();
+    if (event.target.matches('#add-user-btn')) {
+        addUser();
+    } else if (event.target.matches('.edit-user-btn')) {
+        showEditView();
+    } else if (event.target.matches('.cancel-edit-btn')) {
+        cancelEdit();
+    } else if (event.target.matches('.submit-edit-btn')) {
+        submitEdit();
+    } else if (event.target.matches('.delete-user-btn')) {
+        deleteUser();
+    }
+}, false)
+
+
+function addUser() {
+    var nameInput = document.getElementById('name-input');
+    var emailInput = document.getElementById('email-input');
+    var data = {
+        user: {
+            name: nameInput.value,
+            email: emailInput.value
+        },
+    };
+    httpPost('/api/users/add', data)
+        .then(() => {
+            displayUsers();
+        })
 }
 
-function HttpGet(path) {
-    let options = getSharedOptions();
-    options.method = 'GET';
-    return fetch(path, options)
+
+function showEditView() {
+    var userEle = event.target.parentNode.parentNode;
+    var normalView = userEle.getElementsByClassName('normal-view')[0];
+    var editView = userEle.getElementsByClassName('edit-view')[0];
+    normalView.style.display = 'none';
+    editView.style.display = 'block';
 }
 
-function HttpPost(path, data) {
-    let options = getSharedOptions();
-    options.method = 'POST';
-    options.body = JSON.stringify(data);
-    return fetch(path, options)
+
+function cancelEdit() {
+    var userEle = event.target.parentNode.parentNode;
+    var normalView = userEle.getElementsByClassName('normal-view')[0];
+    var editView = userEle.getElementsByClassName('edit-view')[0];
+    normalView.style.display = 'block';
+    editView.style.display = 'none';
 }
 
-function HttpPut(path, data) {
-    let options = getSharedOptions();
-    options.method = 'PUT';
-    options.body = JSON.stringify(data);
-    return fetch(path, options)
+
+function submitEdit() {
+    var userEle = event.target.parentNode.parentNode;
+    var nameInput = userEle.getElementsByClassName('name-edit-input')[0];
+    var emailInput = userEle.getElementsByClassName('email-edit-input')[0];
+    var id = event.target.getAttribute('data-user-id');
+    var data = {
+        user: {
+            name: nameInput.value,
+            email: emailInput.value,
+            id: id
+        }
+    };
+	httpPut('/api/users/update', data)
+        .then(() => {
+            displayUsers();
+        })
 }
 
-function HttpDelete(path) {
-    let options = getSharedOptions();
-    options.method = 'DELETE';
-    return fetch(path, options)
+
+function deleteUser() {
+    var id = event.target.getAttribute('data-user-id');
+	httpDelete('/api/users/delete/' + id)
+        .then(() => {
+            displayUsers();
+        })
 }
 
-function getSharedOptions() {
-    return {
+
+function httpGet(path) {
+    return fetch(path, getOptions('GET'))
+}
+
+
+function httpPost(path, data) {
+    return fetch(path, getOptions('POST', data));
+}
+
+
+function httpPut(path, data) {
+    return fetch(path, getOptions('PUT', data));
+}
+
+
+function httpDelete(path) {
+    return fetch(path, getOptions('DELETE'));
+}
+
+
+function getOptions(verb, data) {
+    var options = {
         dataType: 'json',
+        method: verb,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
+    };
+    if (data) {
+        options.body = JSON.stringify(data);
     }
+    return options;
 }

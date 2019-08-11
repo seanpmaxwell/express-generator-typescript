@@ -29,7 +29,7 @@ describe('Users Routes', () => {
 
             const users = [
                 new User('Sean Maxwell', 'sean.maxwell@gmail.com'),
-                new User('John Smith', 'john.smith@yahoo.com'),
+                new User('John Smith', 'john.smith@gmail.com'),
                 new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
             ];
 
