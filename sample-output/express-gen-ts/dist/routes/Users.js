@@ -59,7 +59,8 @@ router.put('/update', (req, res) => tslib_1.__awaiter(this, void 0, void 0, func
 }));
 router.delete('/delete/:id', (req, res) => tslib_1.__awaiter(this, void 0, void 0, function* () {
     try {
-        yield userDao.delete(Number(req.params.id));
+        const { id } = req.params;
+        yield userDao.delete(Number(id));
         return res.status(http_status_codes_1.OK).end();
     }
     catch (err) {
