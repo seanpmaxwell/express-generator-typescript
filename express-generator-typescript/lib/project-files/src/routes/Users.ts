@@ -1,8 +1,10 @@
+
 import { UserDao } from '@daos';
 import { logger } from '@shared';
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router, Express } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { paramMissingError } from '@shared';
+import { ParamsDictionary } from 'express-serve-static-core';
 
 // Init shared
 const router = Router();
@@ -75,8 +77,7 @@ router.put('/update', async (req: Request, res: Response) => {
 
 router.delete('/delete/:id', async (req: Request, res: Response) => {
     try {
-        const idJSON = req.params;
-        const id = idJSON;
+        const { id } = req.params as ParamsDictionary;
         await userDao.delete(Number(id));
         return res.status(OK).end();
     } catch (err) {
