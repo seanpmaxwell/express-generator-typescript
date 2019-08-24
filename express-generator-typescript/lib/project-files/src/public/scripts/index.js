@@ -59,16 +59,17 @@ function getUserDisplayEle(user) {
 
 document.addEventListener('click', function (event) {
     event.preventDefault();
-    if (event.target.matches('#add-user-btn')) {
+    var ele = event.target;
+    if (ele.matches('#add-user-btn')) {
         addUser();
-    } else if (event.target.matches('.edit-user-btn')) {
-        showEditView();
-    } else if (event.target.matches('.cancel-edit-btn')) {
-        cancelEdit();
-    } else if (event.target.matches('.submit-edit-btn')) {
-        submitEdit();
-    } else if (event.target.matches('.delete-user-btn')) {
-        deleteUser();
+    } else if (ele.matches('.edit-user-btn')) {
+        showEditView(ele.parentNode.parentNode);
+    } else if (ele.matches('.cancel-edit-btn')) {
+        cancelEdit(ele.parentNode.parentNode);
+    } else if (ele.matches('.submit-edit-btn')) {
+        submitEdit(ele);
+    } else if (ele.matches('.delete-user-btn')) {
+        deleteUser(ele);
     }
 }, false)
 
@@ -89,8 +90,7 @@ function addUser() {
 }
 
 
-function showEditView() {
-    var userEle = event.target.parentNode.parentNode;
+function showEditView(userEle) {
     var normalView = userEle.getElementsByClassName('normal-view')[0];
     var editView = userEle.getElementsByClassName('edit-view')[0];
     normalView.style.display = 'none';
@@ -98,8 +98,7 @@ function showEditView() {
 }
 
 
-function cancelEdit() {
-    var userEle = event.target.parentNode.parentNode;
+function cancelEdit(userEle) {
     var normalView = userEle.getElementsByClassName('normal-view')[0];
     var editView = userEle.getElementsByClassName('edit-view')[0];
     normalView.style.display = 'block';
@@ -107,11 +106,11 @@ function cancelEdit() {
 }
 
 
-function submitEdit() {
-    var userEle = event.target.parentNode.parentNode;
+function submitEdit(ele) {
+    var userEle = ele.parentNode.parentNode;
     var nameInput = userEle.getElementsByClassName('name-edit-input')[0];
     var emailInput = userEle.getElementsByClassName('email-edit-input')[0];
-    var id = event.target.getAttribute('data-user-id');
+    var id = ele.getAttribute('data-user-id');
     var data = {
         user: {
             name: nameInput.value,
@@ -126,8 +125,8 @@ function submitEdit() {
 }
 
 
-function deleteUser() {
-    var id = event.target.getAttribute('data-user-id');
+function deleteUser(ele) {
+    var id = ele.getAttribute('data-user-id');
 	httpDelete('/api/users/delete/' + id)
         .then(() => {
             displayUsers();
@@ -169,3 +168,4 @@ function getOptions(verb, data) {
     }
     return options;
 }
+
