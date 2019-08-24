@@ -11,7 +11,7 @@ function displayUsers() {
         .then((response) => {
             var allUsers = response.users;
             // Empty the anchor
-            let allUsersAnchor = document.getElementById('all-users-anchor');
+            var allUsersAnchor = document.getElementById('all-users-anchor');
             allUsersAnchor.innerHTML = '';
             // Append users to anchor
             allUsers.forEach((user) => {
