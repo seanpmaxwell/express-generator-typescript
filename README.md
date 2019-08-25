@@ -43,7 +43,7 @@ with express.
 If you want a fully-secure application, you can pass the `--with-auth` option and you will have an
 application which requires you to logon before calling APIs on user objects. The app is 
 configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
-to store user-session data. If you're new to web-development and still learning about securing websites
+to store user-session data. If you're new to web-development and still learning about securing websites,
 I highly encourage to use this option.
 
 
