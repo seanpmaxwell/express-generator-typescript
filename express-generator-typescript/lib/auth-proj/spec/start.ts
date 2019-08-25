@@ -38,4 +38,3 @@ if (process.argv[2]) {
 } else {
     jasmine.execute();
 }
-

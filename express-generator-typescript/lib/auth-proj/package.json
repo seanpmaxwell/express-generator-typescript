@@ -1,0 +1,17 @@
+{
+  "name": "express-gen-ts",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "node ./util/build.js",
+    "lint": "tslint --project \"tsconfig.json\"",
+    "start": "cross-env ENV_FILE=production node -r ./env -r module-alias/register ./dist/start.js",
+    "start-dev": "nodemon --config \"./util/nodemon.json\"",
+    "test": "nodemon --config \"./util/nodemon.test.json\""
+  },
+  "_moduleAliases": {
+    "@daos": "dist/daos",
+    "@entities": "dist/entities",
+    "@shared": "dist/shared",
+    "@server": "dist/Server"
+  }
+}
