@@ -1,0 +1,24 @@
+body {
+    padding: 100px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body .login-block {
+    display: inline-block;
+    margin-right: 2em;
+    vertical-align: top;
+}
+
+body .login-block .login-header {
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+body .login-block .login-input {
+    margin-bottom: 1em;
+}
+
+body .login-block .default-login-user {
+    margin-top: 1em;
+    color: #909090;
+}
