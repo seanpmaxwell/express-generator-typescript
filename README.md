@@ -34,6 +34,19 @@ and configuring _tsconfig-paths_ and _module-alias_. Just make sure to update `p
 and `_moduleAliases` in _package.json_ if you want to add/edit the relative paths.
 
 
+## Sample-project
+
+When you run _express-generator-typescript_, it sets up a very simple application with routes for
+adding, updating, deleting, and fetching user objects. This is just to demonstrate how routing is done
+with express.
+
+If you want a fully-secure application, you can pass the `--with-auth` option and you will have an
+application which requires you to logon before calling APIs on user objects. The app is 
+configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
+to store user-session data. If you're new to web-development and still learning about securing websites
+I highly encourage to use this option.
+
+
 ## Installation
 
 ```sh
@@ -46,12 +59,14 @@ $ npm install -g express-generator-typescript
 ## Quick Start
 
 The quickest way to get started is use npx and pass in the name of the project you want to create.
-If you don't specify a project name, the default _express-gen-project_ will be used instead.
+If you don't specify a project name, the default _express-gen-ts_ will be used instead.
 
 Create the app:
 
 ```bash
-$ npx express-generator-typescript "project name"
+$ npx express-generator-typescript "project name (default is express-gen-ts)"
+OR
+$ npx express-generator-typescript --with-auth "project name (default is express-gen-ts)"
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
