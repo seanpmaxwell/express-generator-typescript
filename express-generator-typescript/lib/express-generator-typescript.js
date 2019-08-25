@@ -10,19 +10,21 @@ const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
 
 
-async function expressGenTs(destination) {
+async function expressGenTs(destination, withAuth) {
     try {
-        await copyProjectFiles(destination);
+        await copyProjectFiles(destination, withAuth);
         updatePackageJson(destination);
-        downloadNodeModules(destination);
+        const dep = getDepStrings(withAuth);
+        downloadNodeModules(destination, dep);
     } catch (err) {
         console.error(err);
     }
 }
 
 
-function copyProjectFiles(destination) {
-    const source = path.join(__dirname, './project-files');
+function copyProjectFiles(destination, withAuth) {
+    const prjFolder = (withAuth ? './auth-proj' : './project-files');
+    const source = path.join(__dirname, prjFolder);
     return new Promise((resolve, reject) => {
         ncp.limit = 16;
         ncp(source, destination, function (err) {
@@ -43,16 +45,26 @@ function updatePackageJson(destination) {
 }
 
 
-function downloadNodeModules(destination) {
-    const dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
-        'module-alias cross-env';
-    const devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
+function getDepStrings(withAuth) {
+    let dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
+        'module-alias cross-env ';
+    let devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
         '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
-        'jsonfile';
+        'jsonfile ';
+    if (withAuth) {
+        dependencies += 'bcrypt randomstring jsonwebtoken';
+        devDependencies += '@types/bcrypt @types/randomstring @types/jsonwebtoken ' +
+            'tslint-lines-between-class-members';
+    }
+    return {dependencies, devDependencies};
+}
+
+
+function downloadNodeModules(destination, dep) {
     const options = {cwd: destination};
-    childProcess.execSync('npm i -s ' + dependencies, options);
-    childProcess.execSync('npm i -D ' + devDependencies, options);
+    childProcess.execSync('npm i -s ' + dep.dependencies, options);
+    childProcess.execSync('npm i -D ' + dep.devDependencies, options);
 }
 
 
