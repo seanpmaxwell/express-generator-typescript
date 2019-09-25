@@ -37,9 +37,9 @@ export class JwtService {
 
 
     /**
-     * Decript JWT and extract client data.
+     * Decrypt JWT and extract client data.
      *
-     * @param req
+     * @param jwt
      */
     public decodeJwt(jwt: string): Promise<IClientData> {
         return new Promise((res, rej) => {
