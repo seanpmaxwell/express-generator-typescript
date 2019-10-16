@@ -13,6 +13,8 @@ const expressGenTs = require('../lib/express-generator-typescript');
 const destFolder = (process.argv[2] || 'express-gen-ts');
 const destination = path.join(process.cwd(), destFolder);
 
+console.log('Setting up new Express/TypeScript project...');
+
 expressGenTs(destination).then(() => {
-    console.log('Setting up new Express/TypeScript project complete')
+    console.log('Project setup complete!');
 });
