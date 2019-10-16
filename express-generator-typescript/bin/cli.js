@@ -16,5 +16,5 @@ const destination = path.join(process.cwd(), destFolder);
 console.log('Setting up new Express/TypeScript project...');
 
 expressGenTs(destination).then(() => {
-    console.log('Project setup complete!')
+    console.log('Project setup complete!');
 });
