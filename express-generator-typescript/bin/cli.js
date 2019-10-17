@@ -20,8 +20,10 @@ if (process.argv[2] === '--with-auth') {
 }
 
 
+console.log('Setting up new Express/TypeScript project...');
+
 expressGenTs(destination, withAuth).then(() => {
-    console.log('Setting up new Express/TypeScript project complete')
+    console.log('Project setup complete!');
 });
 
 
