@@ -49,7 +49,7 @@ function getDepStrings(withAuth) {
     let dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
         'module-alias cross-env';
     let devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
-        '@types/node @types/dotenv @types/express @types/jasmine @types/find @types/morgan ' +
+        '@types/node @types/express @types/jasmine @types/find @types/morgan ' +
         '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
         'jsonfile';
     if (withAuth) {
