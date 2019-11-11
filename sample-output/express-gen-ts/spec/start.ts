@@ -25,11 +25,12 @@ jasmine.onComplete((passed: boolean) => {
 });
 
 // Run all or a single unit-test
-if (process.argv[3]) {
-    const testFile = process.argv[3];
+if (process.argv[2]) {
+    const testFile = process.argv[2];
     find.file(testFile + '.spec.ts', './spec', (files) => {
         if (files.length === 1) {
-            jasmine.execute([files[0]], testFile);
+            jasmine.specFiles = [files[0]];
+            jasmine.execute();
         } else {
             logger.error('Test file not found!');
         }
@@ -37,3 +38,4 @@ if (process.argv[3]) {
 } else {
     jasmine.execute();
 }
+
