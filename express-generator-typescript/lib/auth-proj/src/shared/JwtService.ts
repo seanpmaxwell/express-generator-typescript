@@ -1,6 +1,5 @@
 import randomString from 'randomstring';
 import jsonwebtoken, { VerifyErrors } from 'jsonwebtoken';
-import { jwtCookieExp } from './cookies';
 
 
 interface IClientData {
@@ -16,9 +15,7 @@ export class JwtService {
 
     constructor() {
         this.secret = (process.env.JWT_SECRET || randomString.generate(100));
-        this.options = {
-            expiresIn: jwtCookieExp + ' days',
-        };
+        this.options = {expiresIn: process.env.COOKIE_JWT_EXP};
     }
 
 
