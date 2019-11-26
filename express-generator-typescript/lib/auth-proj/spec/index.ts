@@ -1,6 +1,25 @@
 import find from 'find';
 import Jasmine from 'jasmine';
+import dotenv from 'dotenv';
+import commandLineArgs from 'command-line-args';
 import { logger } from '@shared';
+
+// Setup command line options
+const options = commandLineArgs([
+    {
+        name: 'testFile',
+        alias: 'f',
+        type: String,
+    },
+]);
+
+// Set the env file
+const result2 = dotenv.config({
+    path: `./env/test.env`,
+});
+if (result2.error) {
+    throw result2.error;
+}
 
 // Init Jasmine
 const jasmine = new Jasmine(null);
@@ -25,8 +44,8 @@ jasmine.onComplete((passed: boolean) => {
 });
 
 // Run all or a single unit-test
-if (process.argv[2]) {
-    const testFile = process.argv[2];
+if (options.testFile) {
+    const testFile = options.testFile;
     find.file(testFile + '.spec.ts', './spec', (files) => {
         if (files.length === 1) {
             jasmine.specFiles = [files[0]];
@@ -38,4 +57,3 @@ if (process.argv[2]) {
 } else {
     jasmine.execute();
 }
-
