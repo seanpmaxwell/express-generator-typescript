@@ -72,7 +72,7 @@ $ npx express-generator-typescript --with-auth "project name (default is express
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
 ```bash
-$ cd "project name" && npm run start-dev
+$ cd "project name" && npm run start:dev
 ```
 
 
