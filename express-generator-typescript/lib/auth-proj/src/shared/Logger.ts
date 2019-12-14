@@ -10,7 +10,7 @@ import { createLogger, format, transports } from 'winston';
 const { File, Console } = transports;
 
 // Init Logger
-const wintstonLogger = createLogger({
+const winstonLogger = createLogger({
     level: 'info',
 });
 
@@ -34,8 +34,8 @@ if (process.env.NODE_ENV === 'production') {
         filename: './logs/combined.log',
         format: fileFormat,
     });
-    wintstonLogger.add(errTransport);
-    wintstonLogger.add(infoTransport);
+    winstonLogger.add(errTransport);
+    winstonLogger.add(infoTransport);
 
 } else {
 
@@ -54,8 +54,8 @@ if (process.env.NODE_ENV === 'production') {
             errorStackFormat(),
         ),
     });
-    wintstonLogger.add(consoleTransport);
+    winstonLogger.add(consoleTransport);
 }
 
 // Export logger
-export const logger = wintstonLogger;
+export const logger = winstonLogger;
