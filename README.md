@@ -87,6 +87,17 @@ $ cd "project name" && npm run start:dev
 - Run production build with a different env file `npm start -- --env="name of env file" (default is production)`.
 
 
+## Note for windows users
+
+If you use the `--with-auth` option and are on Windows, the `bcrypt` module tends to be fussy. To
+use this module on Windows you need to make sure you have the node Windows build tools installed.
+I don't want to post instructions because they might change frequently. I would search the Microsoft
+docs on how to setup Node for Windows. To be able to debug in VSCODE on windows I also had to install
+the `node-gyp` module globally as well.
+
+Happy web-deving :)
+
+
 
 ## License
 
