@@ -2,10 +2,10 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import logger from 'morgan';
 import path from 'path';
-
 import { Request, Response } from 'express';
-import { cookieProps } from '@shared/constants';
+
 import BaseRouter from './routes';
+import { cookieProps } from '@shared/constants';
 
 
 // Init express

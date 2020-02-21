@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import { SuperTest, Test } from 'supertest';
-import { UserDao } from '@daos';
-import { User, UserRoles } from '@entities';
+
+import { User, UserRoles } from '@entities/User';
+import UserDao from '@daos/User/UserDao.mock';
 import { pwdSaltRounds } from '@shared';
 
 
