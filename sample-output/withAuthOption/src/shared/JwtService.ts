@@ -2,6 +2,7 @@ import randomString from 'randomstring';
 import jsonwebtoken, { VerifyErrors } from 'jsonwebtoken';
 import { cookieProps } from '@shared/constants';
 
+
 interface IClientData {
     id: number;
     role: number;
