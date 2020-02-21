@@ -1,11 +1,12 @@
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { ParamsDictionary } from 'express-serve-static-core';
+
+import UserDao from '@daos/User/UserDao.mock';
+import logger from '@shared/Logger';
 import { paramMissingError } from '@shared/constants';
 import { adminMW } from './middleware';
 import { UserRoles } from '@entities/User';
-import UserDao from '@daos/User/UserDao.mock';
-import logger from '@shared/Logger';
 
 
 // Init shared
