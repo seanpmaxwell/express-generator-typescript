@@ -7,7 +7,7 @@ import {
     paramMissingError,
     loginFailedErr,
     logger,
-    jwtCookieProps,
+    cookieProps,
     JwtService,
 } from '@shared';
 
@@ -46,9 +46,10 @@ router.post('/login', async (req: Request, res: Response) => {
         }
         // Setup Admin Cookie
         const jwt = await jwtService.getJwt({
+            id: user.id,
             role: user.role,
         });
-        const { key, options } = jwtCookieProps;
+        const { key, options } = cookieProps;
         res.cookie(key, jwt, options);
         // Return
         return res.status(OK).end();
@@ -67,7 +68,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 router.get('/logout', async (req: Request, res: Response) => {
     try {
-        const { key, options } = jwtCookieProps;
+        const { key, options } = cookieProps;
         res.clearCookie(key, options);
         return res.status(OK).end();
     } catch (err) {
