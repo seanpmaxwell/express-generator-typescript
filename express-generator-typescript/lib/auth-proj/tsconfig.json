@@ -13,14 +13,14 @@
     "target": "es6",
     "moduleResolution": "node",
     "paths": {
-      "@daos": [
-        "src/daos"
+      "@daos/*": [
+        "src/daos/*"
       ],
-      "@entities": [
-        "src/entities"
+      "@entities/*": [
+        "src/entities/*"
       ],
-      "@shared": [
-        "src/shared"
+      "@shared/*": [
+        "src/shared/*"
       ],
       "@server": [
         "src/Server"
