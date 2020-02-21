@@ -3,7 +3,7 @@ import { SuperTest, Test } from 'supertest';
 
 import { User, UserRoles } from '@entities/User';
 import UserDao from '@daos/User/UserDao.mock';
-import { pwdSaltRounds } from '@shared';
+import { pwdSaltRounds } from '@shared/constants';
 
 
 const creds = {
