@@ -1,14 +1,15 @@
-
-import { UserDao } from '@daos';
-import { logger } from '@shared';
-import { Request, Response, Router, Express } from 'express';
+import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
-import { paramMissingError } from '@shared';
 import { ParamsDictionary } from 'express-serve-static-core';
+
+import UserDao from '@daos/User/UserDao.mock';
+import logger from '@shared/Logger';
+import { paramMissingError } from '@shared/constants';
 
 // Init shared
 const router = Router();
 const userDao = new UserDao();
+
 
 /******************************************************************************
  *                      Get All Users - "GET /api/users/all"
@@ -25,6 +26,7 @@ router.get('/all', async (req: Request, res: Response) => {
         });
     }
 });
+
 
 /******************************************************************************
  *                       Add One - "POST /api/users/add"
@@ -47,6 +49,7 @@ router.post('/add', async (req: Request, res: Response) => {
         });
     }
 });
+
 
 /******************************************************************************
  *                       Update - "PUT /api/users/update"
@@ -71,6 +74,7 @@ router.put('/update', async (req: Request, res: Response) => {
     }
 });
 
+
 /******************************************************************************
  *                    Delete - "DELETE /api/users/delete/:id"
  ******************************************************************************/
@@ -87,6 +91,7 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
         });
     }
 });
+
 
 /******************************************************************************
  *                                     Export

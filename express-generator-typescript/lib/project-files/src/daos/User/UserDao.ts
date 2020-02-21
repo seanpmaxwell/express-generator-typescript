@@ -1,13 +1,25 @@
-import { IUser } from '@entities';
+import { IUser } from '@entities/User';
+
 
 export interface IUserDao {
+    getOne: (email: string) => Promise<IUser | null>;
     getAll: () => Promise<IUser[]>;
     add: (user: IUser) => Promise<void>;
     update: (user: IUser) => Promise<void>;
     delete: (id: number) => Promise<void>;
 }
 
-export class UserDao implements IUserDao {
+class UserDao implements IUserDao {
+
+
+    /**
+     * @param email
+     */
+    public async getOne(email: string): Promise<IUser | null> {
+        // TODO
+        return [] as any;
+    }
+
 
     /**
      *
@@ -16,6 +28,7 @@ export class UserDao implements IUserDao {
         // TODO
         return [] as any;
     }
+
 
     /**
      *
@@ -26,6 +39,7 @@ export class UserDao implements IUserDao {
         return {} as any;
     }
 
+
     /**
      *
      * @param user
@@ -34,6 +48,7 @@ export class UserDao implements IUserDao {
         // TODO
         return {} as any;
     }
+
 
     /**
      *
@@ -44,3 +59,5 @@ export class UserDao implements IUserDao {
         return {} as any;
     }
 }
+
+export default UserDao;
