@@ -1,0 +1,48 @@
+{
+  "name": "express-gen-ts",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "node ./util/build.js",
+    "lint": "tslint --project \"tsconfig.json\"",
+    "start": "node -r module-alias/register ./dist",
+    "start:dev": "nodemon --config nodemon.json",
+    "test": "nodemon --config nodemon.test.json"
+  },
+  "_moduleAliases": {
+    "@daos": "dist/daos",
+    "@entities": "dist/entities",
+    "@shared": "dist/shared",
+    "@server": "dist/Server"
+  },
+  "dependencies": {
+    "command-line-args": "^5.1.1",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
+    "module-alias": "^2.2.2",
+    "morgan": "^1.9.1",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/command-line-args": "^5.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.2",
+    "@types/find": "^0.2.1",
+    "@types/jasmine": "^3.5.6",
+    "@types/jsonfile": "^5.0.0",
+    "@types/morgan": "^1.7.37",
+    "@types/node": "^13.7.4",
+    "@types/supertest": "^2.0.8",
+    "find": "^0.3.0",
+    "fs-extra": "^8.1.0",
+    "jasmine": "^3.5.0",
+    "jsonfile": "^5.0.0",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2",
+    "ts-node": "^8.6.2",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.2"
+  }
+}
