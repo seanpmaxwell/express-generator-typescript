@@ -1,4 +1,4 @@
-import { IUser } from '@entities';
+import { IUser } from '@entities/User';
 
 
 export interface IUserDao {
@@ -9,7 +9,7 @@ export interface IUserDao {
     delete: (id: number) => Promise<void>;
 }
 
-export class UserDao implements IUserDao {
+class UserDao implements IUserDao {
 
 
     /**
@@ -59,3 +59,5 @@ export class UserDao implements IUserDao {
         return {} as any;
     }
 }
+
+export default UserDao;

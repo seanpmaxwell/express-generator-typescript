@@ -1,15 +1,11 @@
 import bcrypt from 'bcrypt';
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
-import { UserDao } from '@daos';
 
-import {
-    paramMissingError,
-    loginFailedErr,
-    logger,
-    cookieProps,
-    JwtService,
-} from '@shared';
+import UserDao from '@daos/User/UserDao.mock';
+import logger from '@shared/Logger';
+import { JwtService } from '@shared/JwtService';
+import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
 
 
 const router = Router();
