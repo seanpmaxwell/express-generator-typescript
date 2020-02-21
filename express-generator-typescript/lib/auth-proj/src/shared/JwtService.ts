@@ -3,6 +3,7 @@ import jsonwebtoken, { VerifyErrors } from 'jsonwebtoken';
 
 
 interface IClientData {
+    id: number;
     role: number;
 }
 

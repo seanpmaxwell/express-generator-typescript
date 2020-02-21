@@ -1,4 +1,4 @@
 export * from './Logger';
-export * from './Misc';
+export * from './functions';
 export * from './JwtService';
-export * from './cookies';
+export * from './constants';

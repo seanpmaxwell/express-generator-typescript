@@ -5,7 +5,7 @@ import path from 'path';
 import BaseRouter from './routes';
 
 import { Request, Response } from 'express';
-import { jwtCookieProps } from '@shared';
+import { cookieProps } from '@shared';
 
 
 // Init express
@@ -33,7 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/users', (req: Request, res: Response) => {
-    const jwt = req.signedCookies[jwtCookieProps.key];
+    const jwt = req.signedCookies[cookieProps.key];
     if (!jwt) {
         res.redirect('/');
     } else {

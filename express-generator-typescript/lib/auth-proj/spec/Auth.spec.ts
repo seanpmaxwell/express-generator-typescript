@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import { BAD_REQUEST, CREATED, OK, UNAUTHORIZED } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
 import { IUser, User, UserRoles } from '@entities';
-import { pErr, pwdSaltRounds, jwtCookieProps, loginFailedErr } from '@shared';
+import { pErr, pwdSaltRounds, cookieProps, loginFailedErr } from '@shared';
 import { UserDao } from '@daos';
 
 
@@ -47,7 +47,7 @@ describe('UserRouter', () => {
                 .end((err: Error, res: any) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
-                    expect(res.headers['set-cookie'][0]).toContain(jwtCookieProps.key);
+                    expect(res.headers['set-cookie'][0]).toContain(cookieProps.key);
                     done();
                 });
         });
