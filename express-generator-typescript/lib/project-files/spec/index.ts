@@ -1,9 +1,8 @@
-import './LoadEnv';
 import find from 'find';
 import Jasmine from 'jasmine';
+import dotenv from 'dotenv';
 import commandLineArgs from 'command-line-args';
 import logger from '@shared/Logger';
-
 
 // Setup command line options
 const options = commandLineArgs([
@@ -14,6 +13,13 @@ const options = commandLineArgs([
     },
 ]);
 
+// Set the env file
+const result2 = dotenv.config({
+    path: `./env/test.env`,
+});
+if (result2.error) {
+    throw result2.error;
+}
 
 // Init Jasmine
 const jasmine = new Jasmine(null);
