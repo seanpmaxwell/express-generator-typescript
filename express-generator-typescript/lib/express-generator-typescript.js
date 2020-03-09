@@ -47,11 +47,11 @@ function updatePackageJson(destination) {
 
 function getDepStrings(withAuth) {
     let dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
-        'module-alias command-line-args';
+        'module-alias command-line-args express-async-errors helmet';
     let devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
         '@types/node @types/express @types/jasmine @types/find @types/morgan ' +
         '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
-        'jsonfile @types/command-line-args';
+        'jsonfile @types/command-line-args @types/helmet';
     if (withAuth) {
         dependencies += ' bcrypt randomstring jsonwebtoken';
         devDependencies += ' @types/bcrypt @types/randomstring @types/jsonwebtoken ' +

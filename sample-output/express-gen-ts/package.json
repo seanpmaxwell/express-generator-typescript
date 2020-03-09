@@ -19,6 +19,8 @@
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^3.21.3",
     "http-status-codes": "^1.4.0",
     "module-alias": "^2.2.2",
     "morgan": "^1.9.1",
@@ -27,22 +29,23 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.2",
+    "@types/express": "^4.17.3",
     "@types/find": "^0.2.1",
-    "@types/jasmine": "^3.5.6",
+    "@types/helmet": "0.0.45",
+    "@types/jasmine": "^3.5.8",
     "@types/jsonfile": "^5.0.0",
-    "@types/morgan": "^1.7.37",
-    "@types/node": "^13.7.4",
+    "@types/morgan": "^1.9.0",
+    "@types/node": "^13.9.0",
     "@types/supertest": "^2.0.8",
     "find": "^0.3.0",
     "fs-extra": "^8.1.0",
     "jasmine": "^3.5.0",
-    "jsonfile": "^5.0.0",
+    "jsonfile": "^6.0.1",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.0.0",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.3"
   }
 }

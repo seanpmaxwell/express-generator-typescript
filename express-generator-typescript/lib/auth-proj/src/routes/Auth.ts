@@ -3,7 +3,6 @@ import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
 
 import UserDao from '@daos/User/UserDao.mock';
-import logger from '@shared/Logger';
 import { JwtService } from '@shared/JwtService';
 import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
 
@@ -18,43 +17,36 @@ const jwtService = new JwtService();
  ******************************************************************************/
 
 router.post('/login', async (req: Request, res: Response) => {
-    try {
-        // Check email and password present
-        const { email, password } = req.body;
-        if (!(email && password)) {
-            return res.status(BAD_REQUEST).json({
-                error: paramMissingError,
-            });
-        }
-        // Fetch user
-        const user = await userDao.getOne(email);
-        if (!user) {
-            return res.status(UNAUTHORIZED).json({
-                error: loginFailedErr,
-            });
-        }
-        // Check password
-        const pwdPassed = await bcrypt.compare(password, user.pwdHash);
-        if (!pwdPassed) {
-            return res.status(UNAUTHORIZED).json({
-                error: loginFailedErr,
-            });
-        }
-        // Setup Admin Cookie
-        const jwt = await jwtService.getJwt({
-            id: user.id,
-            role: user.role,
-        });
-        const { key, options } = cookieProps;
-        res.cookie(key, jwt, options);
-        // Return
-        return res.status(OK).end();
-    } catch (err) {
-        logger.error(err.message, err);
+    // Check email and password present
+    const { email, password } = req.body;
+    if (!(email && password)) {
         return res.status(BAD_REQUEST).json({
-            error: err.message,
+            error: paramMissingError,
         });
     }
+    // Fetch user
+    const user = await userDao.getOne(email);
+    if (!user) {
+        return res.status(UNAUTHORIZED).json({
+            error: loginFailedErr,
+        });
+    }
+    // Check password
+    const pwdPassed = await bcrypt.compare(password, user.pwdHash);
+    if (!pwdPassed) {
+        return res.status(UNAUTHORIZED).json({
+            error: loginFailedErr,
+        });
+    }
+    // Setup Admin Cookie
+    const jwt = await jwtService.getJwt({
+        id: user.id,
+        role: user.role,
+    });
+    const { key, options } = cookieProps;
+    res.cookie(key, jwt, options);
+    // Return
+    return res.status(OK).end();
 });
 
 
@@ -63,16 +55,9 @@ router.post('/login', async (req: Request, res: Response) => {
  ******************************************************************************/
 
 router.get('/logout', async (req: Request, res: Response) => {
-    try {
-        const { key, options } = cookieProps;
-        res.clearCookie(key, options);
-        return res.status(OK).end();
-    } catch (err) {
-        logger.error(err.message, err);
-        return res.status(BAD_REQUEST).json({
-            error: err.message,
-        });
-    }
+    const { key, options } = cookieProps;
+    res.clearCookie(key, options);
+    return res.status(OK).end();
 });
 
 
