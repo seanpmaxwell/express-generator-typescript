@@ -2,7 +2,7 @@
   "name": "express-gen-ts",
   "version": "0.0.0",
   "scripts": {
-    "build": "node ./util/build.js",
+    "build": "node build.js",
     "lint": "tslint --project \"tsconfig.json\"",
     "start": "node -r module-alias/register ./dist",
     "start:dev": "nodemon --config nodemon.json",
