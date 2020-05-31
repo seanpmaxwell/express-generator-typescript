@@ -4,9 +4,15 @@
   "scripts": {
     "build": "node build.js",
     "lint": "tslint --project \"tsconfig.json\"",
-    "start": "node -r module-alias/register ./dist",
-    "start:dev": "nodemon --config nodemon.json",
-    "test": "nodemon --config nodemon.test.json"
+    "start": "node -r module-alias/register ./dist --env=production",
+    "start:dev": "nodemon",
+    "test": "nodemon --config ./spec/nodemon.json"
+  },
+  "nodemonConfig": {
+    "watch": ["src"],
+    "ext": "ts, html",
+    "ignore": ["src/public"],
+    "exec": "ts-node -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",

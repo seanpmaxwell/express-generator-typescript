@@ -4,9 +4,19 @@
   "scripts": {
     "build": "node build.js",
     "lint": "tslint --project \"tsconfig.json\"",
-    "start": "node -r module-alias/register ./dist",
-    "start:dev": "nodemon --config nodemon.json",
-    "test": "nodemon --config nodemon.test.json"
+    "start": "node -r module-alias/register ./dist --env=production",
+    "start:dev": "nodemon",
+    "test": "nodemon --config ./spec/nodemon.json"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts, html",
+    "ignore": [
+      "src/public"
+    ],
+    "exec": "ts-node -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
@@ -35,7 +45,7 @@
     "@types/jasmine": "^3.5.10",
     "@types/jsonfile": "^6.0.0",
     "@types/morgan": "^1.9.0",
-    "@types/node": "^14.0.5",
+    "@types/node": "^14.0.6",
     "@types/supertest": "^2.0.9",
     "find": "^0.3.0",
     "fs-extra": "^9.0.0",
@@ -43,7 +53,7 @@
     "jsonfile": "^6.0.1",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2",
-    "ts-node": "^8.10.1",
+    "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.1.2",
     "typescript": "^3.9.3"
