@@ -2,5 +2,5 @@
   "watch": ["spec"],
   "ext": "spec.ts",
   "ignore": ["spec/support"],
-  "exec": "ts-node -r tsconfig-paths/register ./spec"
+  "exec": "node --inspect -r ts-node/register -r tsconfig-paths/register ./spec --env=test "
 }
