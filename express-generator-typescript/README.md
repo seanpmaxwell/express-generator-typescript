@@ -87,6 +87,13 @@ $ cd "project name" && npm run start:dev
 - Run production build with a different env file `npm start -- --env="name of env file" (default is production)`.
 
 
+## Debugging
+During development, _express-generator-typescript_ uses `nodemon` to restart the server when changes
+are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
+This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
+unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
+
+
 ## Note for windows users
 
 If you use the `--with-auth` option and are on Windows, the `bcrypt` module tends to be fussy. To

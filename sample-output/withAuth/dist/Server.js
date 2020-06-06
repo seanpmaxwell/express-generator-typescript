@@ -14,7 +14,7 @@ const constants_1 = require("@shared/constants");
 const app = express_1.default();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use(cookie_parser_1.default(process.env.COOKIE_SECRET));
+app.use(cookie_parser_1.default(constants_1.cookieProps.secret));
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan_1.default('dev'));
 }
