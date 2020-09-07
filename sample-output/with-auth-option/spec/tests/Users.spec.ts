@@ -5,7 +5,7 @@ import { Response, SuperTest, Test } from 'supertest';
 import app from '@server';
 import UserDao from '@daos/User/UserDao.mock';
 import { IUser, User } from '@entities/User';
-import { login } from './support/LoginAgent';
+import { login } from '../support/LoginAgent';
 import { pErr } from '@shared/functions';
 import { paramMissingError } from '@shared/constants';
 
