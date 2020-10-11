@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import bcrypt from 'bcrypt';
-import { BAD_REQUEST, OK, UNAUTHORIZED } from 'http-status-codes';
+import StatusCodes from 'http-status-codes';
 import { SuperTest, Test } from 'supertest';
 
 import app from '@server';
@@ -15,6 +15,7 @@ describe('UserRouter', () => {
     const authPath = '/api/auth';
     const loginPath = `${authPath}/login`;
     const logoutPath = `${authPath}/logout`;
+    const { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;
 
     let agent: SuperTest<Test>;
 

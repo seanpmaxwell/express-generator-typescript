@@ -1,5 +1,5 @@
+import StatusCodes from 'http-status-codes';
 import { Request, Response, Router } from 'express';
-import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { ParamsDictionary } from 'express-serve-static-core';
 
 import UserDao from '@daos/User/UserDao.mock';
@@ -7,10 +7,10 @@ import { paramMissingError } from '@shared/constants';
 import { adminMW } from './middleware';
 import { UserRoles } from '@entities/User';
 
-
-// Init shared
 const router = Router().use(adminMW);
 const userDao = new UserDao();
+const { BAD_REQUEST, CREATED, OK } = StatusCodes;
+
 
 
 /******************************************************************************
@@ -21,6 +21,7 @@ router.get('/all', async (req: Request, res: Response) => {
     const users = await userDao.getAll();
     return res.status(OK).json({users});
 });
+
 
 
 /******************************************************************************
@@ -42,6 +43,7 @@ router.post('/add', async (req: Request, res: Response) => {
 });
 
 
+
 /******************************************************************************
  *                       Update - "PUT /api/users/update"
  ******************************************************************************/
@@ -61,6 +63,7 @@ router.put('/update', async (req: Request, res: Response) => {
 });
 
 
+
 /******************************************************************************
  *                    Delete - "DELETE /api/users/delete/:id"
  ******************************************************************************/
@@ -70,6 +73,7 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
     await userDao.delete(Number(id));
     return res.status(OK).end();
 });
+
 
 
 /******************************************************************************

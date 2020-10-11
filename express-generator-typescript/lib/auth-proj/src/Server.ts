@@ -2,18 +2,17 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
+import StatusCodes from 'http-status-codes';
+import express, { Request, Response } from 'express';
 
-import express, { Request, Response, NextFunction } from 'express';
-import { BAD_REQUEST } from 'http-status-codes';
 import 'express-async-errors';
 
 import BaseRouter from './routes';
 import logger from '@shared/Logger';
 import { cookieProps } from '@shared/constants';
 
-
-// Init express
 const app = express();
+const { BAD_REQUEST } = StatusCodes;
 
 
 
@@ -39,8 +38,8 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', BaseRouter);
 
 // Print API errors
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    logger.error(err.message, err);
+app.use((err: Error, req: Request, res: Response) => {
+    logger.err(err, true);
     return res.status(BAD_REQUEST).json({
         error: err.message,
     });
@@ -71,5 +70,9 @@ app.get('/users', (req: Request, res: Response) => {
 });
 
 
-// Export express instance
+
+/************************************************************************************
+ *                              Export Server
+ ***********************************************************************************/
+
 export default app;

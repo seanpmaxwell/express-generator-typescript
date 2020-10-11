@@ -7,26 +7,33 @@
  */
 
 const path = require('path');
-const expressGenTs = require('./express-generator-typescript');
+const expressGenTs = require('../lib/express-generator-typescript');
 
 
-let destination;
-let withAuth = false;
-if (process.argv[2] === '--with-auth') {
-    withAuth = true;
-    destination = getDest(process.argv[3]);
-} else {
-    destination = getDest(process.argv[2]);
-}
+(() => {
+    // Get the name of the new project
+    let destination;
+    let withAuth = false;
+    if (process.argv[2] === '--with-auth') {
+        withAuth = true;
+        destination = getDest(process.argv[3]);
+    } else {
+        destination = getDest(process.argv[2]);
+    }
+    // Creating new project started
+    console.log('Setting up new Express/TypeScript project...');
+    // Creating new project finished
+    expressGenTs(destination, withAuth).then(() => {
+        console.log('Project setup complete!');
+    });
+})();
 
 
-console.log('Setting up new Express/TypeScript project...');
-
-expressGenTs(destination, withAuth).then(() => {
-    console.log('Project setup complete!');
-});
-
-
+/**
+ * Get the folder name of the new project
+ * 
+ * @param destFolder 
+ */
 function getDest(destFolder) {
     destFolder = (destFolder || 'express-gen-ts');
     return path.join(process.cwd(), destFolder);
