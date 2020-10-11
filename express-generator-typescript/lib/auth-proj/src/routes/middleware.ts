@@ -1,5 +1,5 @@
+import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
-import { UNAUTHORIZED } from 'http-status-codes';
 
 import { UserRoles } from '@entities/User';
 import { cookieProps } from '@shared/constants';
@@ -8,6 +8,7 @@ import { JwtService } from '@shared/JwtService';
 
 
 const jwtService = new JwtService();
+const { UNAUTHORIZED } = StatusCodes;
 
 
 // Middleware to verify if user is an admin

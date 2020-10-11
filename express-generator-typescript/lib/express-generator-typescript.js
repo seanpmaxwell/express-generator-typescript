@@ -10,6 +10,13 @@ const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
 
 
+
+/**
+ * Entry point
+ * 
+ * @param destination 
+ * @param withAuth 
+ */
 async function expressGenTs(destination, withAuth) {
     try {
         await copyProjectFiles(destination, withAuth);
@@ -22,6 +29,12 @@ async function expressGenTs(destination, withAuth) {
 }
 
 
+/**
+ * Copy project files
+ * 
+ * @param destination 
+ * @param withAuth 
+ */
 function copyProjectFiles(destination, withAuth) {
     const prjFolder = (withAuth ? './auth-proj' : './project-files');
     const source = path.join(__dirname, prjFolder);
@@ -37,6 +50,11 @@ function copyProjectFiles(destination, withAuth) {
 }
 
 
+/**
+ * Set project name in package.json
+ * 
+ * @param destination 
+ */
 function updatePackageJson(destination) {
     let file = editJsonFile(destination + '/package.json', {
         autosave: true
@@ -45,22 +63,33 @@ function updatePackageJson(destination) {
 }
 
 
+/**
+ * Setup dependency strings. This way gets you the latest version of everything.
+ * 
+ * @param withAuth 
+ */
 function getDepStrings(withAuth) {
-    let dependencies = 'express dotenv http-status-codes morgan cookie-parser winston ' +
-        'module-alias command-line-args express-async-errors helmet jsonfile tslib';
-    let devDependencies = 'ts-node tslint typescript nodemon find jasmine supertest ' +
+    let dependencies = 'express dotenv http-status-codes morgan cookie-parser jet-logger ' +
+        'module-alias command-line-args express-async-errors helmet jsonfile';
+    let devDependencies = 'ts-node typescript nodemon find jasmine supertest ' +
         '@types/node @types/express @types/jasmine @types/find @types/morgan ' +
         '@types/cookie-parser @types/supertest fs-extra tsconfig-paths @types/jsonfile ' +
-        '@types/command-line-args @types/helmet';
+        '@types/command-line-args @typescript-eslint/eslint-plugin @typescript-eslint/parser ' +
+        'eslint @types/fs-extra';
     if (withAuth) {
         dependencies += ' bcrypt randomstring jsonwebtoken';
-        devDependencies += ' @types/bcrypt @types/randomstring @types/jsonwebtoken ' +
-            'tslint-lines-between-class-members';
+        devDependencies += ' @types/bcrypt @types/randomstring @types/jsonwebtoken';
     }
     return {dependencies, devDependencies};
 }
 
 
+/**
+ * Download the dependencies.
+ * 
+ * @param destination 
+ * @param dep 
+ */
 function downloadNodeModules(destination, dep) {
     const options = {cwd: destination};
     childProcess.execSync('npm i -s ' + dep.dependencies, options);
@@ -68,4 +97,5 @@ function downloadNodeModules(destination, dep) {
 }
 
 
+// Export entry point
 module.exports = expressGenTs;

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import commandLineArgs from 'command-line-args';
 import logger from '@shared/Logger';
 
+
 // Setup command line options
 const options = commandLineArgs([
     {
@@ -40,19 +41,19 @@ jasmine.onComplete((passed: boolean) => {
     if (passed) {
         logger.info('All tests have passed :)');
     } else {
-        logger.error('At least one test has failed :(');
+        logger.err('At least one test has failed :(');
     }
 });
 
 // Run all or a single unit-test
 if (options.testFile) {
-    const testFile = options.testFile;
+    const testFile = options.testFile as string;
     find.file(testFile + '.spec.ts', './spec', (files) => {
         if (files.length === 1) {
             jasmine.specFiles = [files[0]];
             jasmine.execute();
         } else {
-            logger.error('Test file not found!');
+            logger.err('Test file not found!');
         }
     });
 } else {
