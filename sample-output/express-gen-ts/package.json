@@ -38,6 +38,9 @@
       "project": "./tsconfig.json"
     },
     "rules": {
+      "max-len": [
+        "error", { "code": 100 }
+      ],
       "no-console": 1,
       "no-extra-boolean-cast": 0,
       "@typescript-eslint/restrict-plus-operands": 0,
