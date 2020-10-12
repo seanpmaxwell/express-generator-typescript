@@ -1,5 +1,5 @@
 {
-  "name": "horse",
+  "name": "horse2",
   "version": "0.0.0",
   "scripts": {
     "build": "ts-node build.ts && tsc --build tsconfig.prod.json",
@@ -43,7 +43,9 @@
       "@typescript-eslint/restrict-plus-operands": 0,
       "@typescript-eslint/explicit-module-boundary-types": 0,
       "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/no-floating-promises": 0
+      "@typescript-eslint/no-floating-promises": 0,
+      "@typescript-eslint/no-unsafe-member-access": 0,
+      "@typescript-eslint/no-unsafe-assignment": 0
     }
   },
   "eslintIgnore": [
@@ -51,6 +53,7 @@
     "build.ts"
   ],
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "command-line-args": "^5.1.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -60,10 +63,13 @@
     "http-status-codes": "^2.1.4",
     "jet-logger": "^1.0.2",
     "jsonfile": "^6.0.1",
+    "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/command-line-args": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.8",
@@ -71,8 +77,10 @@
     "@types/fs-extra": "^9.0.2",
     "@types/jasmine": "^3.5.14",
     "@types/jsonfile": "^6.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.11.8",
+    "@types/randomstring": "^1.1.6",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
