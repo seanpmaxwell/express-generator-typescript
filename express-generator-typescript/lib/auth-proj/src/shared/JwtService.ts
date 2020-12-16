@@ -35,7 +35,7 @@ export class JwtService {
     public getJwt(data: IClientData): Promise<string> {
         return new Promise((resolve, reject) => {
             jsonwebtoken.sign(data, this.secret, this.options, (err, token) => {
-                err ? reject(err) : resolve(token);
+                err ? reject(err) : resolve(token || '');
             });
         });
     }
