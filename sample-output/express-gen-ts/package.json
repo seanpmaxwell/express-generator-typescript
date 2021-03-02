@@ -2,7 +2,7 @@
   "name": "express-gen-ts",
   "version": "0.0.0",
   "scripts": {
-    "build": "ts-node build.ts",
+    "build": "./node_modules/.bin/ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start": "node -r module-alias/register ./dist --env=production",
     "start:dev": "nodemon",
@@ -16,7 +16,7 @@
     "ignore": [
       "src/public"
     ],
-    "exec": "ts-node -r tsconfig-paths/register ./src"
+    "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
@@ -64,7 +64,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "helmet": "^4.2.0",
+    "helmet": "^4.4.1",
     "http-status-codes": "^2.1.4",
     "jet-logger": "^1.0.4",
     "jsonfile": "^6.1.0",
@@ -74,24 +74,24 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.9",
+    "@types/express": "^4.17.11",
     "@types/find": "^0.2.1",
-    "@types/fs-extra": "^9.0.5",
-    "@types/jasmine": "^3.6.2",
+    "@types/fs-extra": "^9.0.8",
+    "@types/jasmine": "^3.6.4",
     "@types/jsonfile": "^6.0.0",
     "@types/morgan": "^1.9.2",
-    "@types/node": "^14.14.14",
+    "@types/node": "^14.14.31",
     "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "^4.10.0",
-    "@typescript-eslint/parser": "^4.10.0",
-    "eslint": "^7.15.0",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.21.0",
     "find": "^0.3.0",
-    "fs-extra": "^9.0.1",
-    "jasmine": "^3.6.3",
-    "nodemon": "^2.0.6",
-    "supertest": "^6.0.1",
+    "fs-extra": "^9.1.0",
+    "jasmine": "^3.6.4",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.1.3"
+    "typescript": "^4.2.2"
   }
 }
