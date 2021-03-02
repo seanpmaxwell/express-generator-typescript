@@ -2,7 +2,7 @@
   "name": "express-gen-ts",
   "version": "0.0.0",
   "scripts": {
-    "build": "ts-node build.ts",
+    "build": "./node_modules/.bin/ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start": "node -r module-alias/register ./dist --env=production",
     "start:dev": "nodemon",
@@ -12,7 +12,7 @@
     "watch": ["src"],
     "ext": "ts, html",
     "ignore": ["src/public"],
-    "exec": "ts-node -r tsconfig-paths/register ./src"
+    "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@daos": "dist/daos",
