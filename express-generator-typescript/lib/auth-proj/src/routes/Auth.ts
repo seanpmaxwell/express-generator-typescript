@@ -4,20 +4,22 @@ import StatusCodes from 'http-status-codes';
 
 import UserDao from '@daos/User/UserDao.mock';
 import { JwtService } from '@shared/JwtService';
-import { paramMissingError, loginFailedErr, cookieProps, IRequest } from '@shared/constants';
+import { paramMissingError, loginFailedErr, cookieProps } from '@shared/constants';
 
-const router = Router();
 const userDao = new UserDao();
 const jwtService = new JwtService();
 const { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;
 
 
 
-/******************************************************************************
- *                      Login User - "POST /api/auth/login"
- ******************************************************************************/
-
-router.post('/login', async (req: IRequest, res: Response) => {
+/**
+ * Login in a user.
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+export async function login(req: Request, res: Response) {
     // Check email and password present
     const { email, password } = req.body;
     if (!(email && password)) {
@@ -48,24 +50,19 @@ router.post('/login', async (req: IRequest, res: Response) => {
     res.cookie(key, jwt, options);
     // Return
     return res.status(OK).end();
-});
+}
 
 
-
-/******************************************************************************
- *                      Logout - "GET /api/auth/logout"
- ******************************************************************************/
-
-router.get('/logout', (req: Request, res: Response) => {
+/**
+ * Logout the user.
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+export async function logout(req: Request, res: Response) {
     const { key, options } = cookieProps;
     res.clearCookie(key, options);
     return res.status(OK).end();
-});
+}
 
-
-
-/******************************************************************************
- *                                 Export Router
- ******************************************************************************/
-
-export default router;

@@ -1,11 +1,16 @@
 import { Router } from 'express';
-import UserRouter from './Users';
+import { getAllUsers, addOneUser, updateOneUser, deleteOneUser } from './Users';
 
-// Init router and path
-const router = Router();
 
-// Add sub-routes
-router.use('/users', UserRouter);
+// User-route
+const userRouter = Router();
+userRouter.get('/all', getAllUsers);
+userRouter.post('/add', addOneUser);
+userRouter.put('/update', updateOneUser);
+userRouter.delete('/delete/:id', deleteOneUser);
+
 
 // Export the base-router
-export default router;
+const baseRouter = Router();
+baseRouter.use('/users', userRouter);
+export default baseRouter;

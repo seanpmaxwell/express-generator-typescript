@@ -1,7 +1,3 @@
-import { Request } from 'express';
-import { IUser } from '@entities/User';
-
-
 
 // Strings
 export const paramMissingError = 'One or more of the required parameters was missing.';
@@ -23,12 +19,3 @@ export const cookieProps = Object.freeze({
         secure: (process.env.SECURE_COOKIE === 'true'),
     },
 });
-
-// IRequest object for express routes
-export interface IRequest extends Request {
-    body: {
-        user: IUser;
-        email: string;
-        password: string;
-    }
-} 

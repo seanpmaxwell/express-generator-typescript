@@ -5,7 +5,7 @@ import jsonwebtoken, { VerifyErrors } from 'jsonwebtoken';
 import { cookieProps } from '@shared/constants';
 
 
-interface IClientData {
+export interface IClientData {
     id: number;
     role: number;
 }
