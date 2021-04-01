@@ -1,13 +1,24 @@
 import { Router } from 'express';
-import UserRouter from './Users';
-import AuthRouter from './Auth';
+import { adminMW } from './middleware';
+import { login, logout } from './Auth';
+import { getAllUsers, addOneUser, updateOneUser, deleteOneUser } from './Users';
 
-// Init router and path
-const router = Router();
 
-// Add sub-routes
-router.use('/users', UserRouter);
-router.use('/auth', AuthRouter);
+// Auth router
+const authRouter = Router();
+authRouter.post('/login', login);
+authRouter.get('/logout', logout);
+
+
+// User-router
+const userRouter = Router();
+userRouter.get('/all', getAllUsers);
+userRouter.post('/add', addOneUser);
+userRouter.put('/update', updateOneUser);
+userRouter.delete('/delete/:id', deleteOneUser);
 
 // Export the base-router
-export default router;
+const baseRouter = Router();
+baseRouter.use('/auth', authRouter);
+baseRouter.use('/users', adminMW, userRouter);
+export default baseRouter;
