@@ -14,13 +14,14 @@ const ncp = require("ncp").ncp;
  *
  * @param destination
  * @param withAuth
+ * @param useYarn
  */
-async function expressGenTs(destination, withAuth) {
+async function expressGenTs(destination, withAuth, useYarn) {
   try {
     await copyProjectFiles(destination, withAuth);
     updatePackageJson(destination);
     const dep = getDepStrings(withAuth);
-    downloadNodeModules(destination, dep);
+    downloadNodeModules(destination, dep, useYarn);
   } catch (err) {
     console.error(err);
   }
@@ -85,11 +86,18 @@ function getDepStrings(withAuth) {
  *
  * @param destination
  * @param dep
+ * @param useYarn
  */
-function downloadNodeModules(destination, dep) {
+function downloadNodeModules(destination, dep, useYarn) {
   const options = { cwd: destination };
-  childProcess.execSync("npm i -s " + dep.dependencies, options);
-  childProcess.execSync("npm i -D " + dep.devDependencies, options);
+
+  if (useYarn === true) {
+    childProcess.execSync("yarn add " + dep.dependencies, options);
+    childProcess.execSync("npm add --dev" + dep.devDependencies, options);
+  } else {
+    childProcess.execSync("npm i -s " + dep.dependencies, options);
+    childProcess.execSync("npm i -D " + dep.devDependencies, options);
+  }
 }
 
 // Export entry point
