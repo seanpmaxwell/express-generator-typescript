@@ -13,16 +13,31 @@ const expressGenTs = require("../lib/express-generator-typescript");
   // Get the name of the new project
   let destination;
   let withAuth = false;
+  let useYarn = false;
+
   if (process.argv[2] === "--with-auth") {
     withAuth = true;
-    destination = getDest(process.argv[3]);
+
+    useYarn = process.argv[3] === "--use-yarn" ? true : false;
+
+    // case the user is using the use-yarn option the destination will be the 4 index
+    let destIndexProcess = useYarn === true ? 4 : 3;
+
+    destination = getDest(process.argv[destIndexProcess]);
   } else {
-    destination = getDest(process.argv[2]);
+    useYarn = process.argv[2] === "--use-yarn" ? true : false;
+
+    // case the user is using the use-yarn option the destination will be the 4 index
+    let destIndexProcess = useYarn === true ? 3 : 2;
+
+    destination = getDest(process.argv[destIndexProcess]);
   }
+
   // Creating new project started
   console.log("Setting up new Express/TypeScript project...");
+
   // Creating new project finished
-  expressGenTs(destination, withAuth).then(() => {
+  expressGenTs(destination, withAuth, useYarn).then(() => {
     console.log("Project setup complete!");
   });
 })();
