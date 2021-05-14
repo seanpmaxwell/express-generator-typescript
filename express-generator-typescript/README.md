@@ -97,7 +97,7 @@ This is located under `nodemonConfig:` in `package.json` for the server and `./s
 unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
 
 
-## Not for VS-Code users
+## Note for VS-Code users
 
 A lot of users have asked about _launch.json_ configurations for running this in VS-Code, so
 here's a snippet of the launch.json configuration you need to bypass nodemon and run directly with
