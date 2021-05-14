@@ -41,7 +41,7 @@ adding, updating, deleting, and fetching user objects. This is just to demonstra
 with express.
 
 If you want a fully-secure application, you can pass the `--with-auth` option and you will have an
-application which requires you to logon before calling APIs on user objects. The app is 
+application which requires you to login before calling APIs on user objects. The app is 
 configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
 to store user-session data. If you're new to web-development and still learning about securing websites,
 I highly encourage to use this option.
@@ -59,14 +59,15 @@ $ npm install -g express-generator-typescript
 ## Quick Start
 
 The quickest way to get started is use npx and pass in the name of the project you want to create.
-If you don't specify a project name, the default _express-gen-ts_ will be used instead.
+If you don't specify a project name, the default _express-gen-ts_ will be used instead. If you
+want to use `yarn` instead of `npm`, pass the option `--use-yarn`.
 
 Create the app:
 
 ```bash
 $ npx express-generator-typescript "project name (default is express-gen-ts)"
-OR
-$ npx express-generator-typescript --with-auth "project name (default is express-gen-ts)"
+with all options
+$ npx express-generator-typescript --with-auth --use-yarn "project name (default is express-gen-ts)"
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
@@ -79,8 +80,9 @@ $ cd "project name" && npm run start:dev
 ## Available commands for the server.
 
 - Run the server in development mode: `npm run start:dev`.
-- Run all unit-tests: `npm test`.
+- Run all unit-tests with hot-reloading: `npm test`.
 - Run a single unit-test: `npm test -- --testFile="name of test file" (i.e. --testFile=Users)`.
+- Run all unit-tests without hot-reloading: `npm run test:no-reloading`
 - Check for linting errors: `npm run lint`.
 - Build the project for production: `npm run build`.
 - Run the production build: `npm start`.
@@ -88,10 +90,39 @@ $ cd "project name" && npm run start:dev
 
 
 ## Debugging
+
 During development, _express-generator-typescript_ uses `nodemon` to restart the server when changes
 are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
 This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
 unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
+
+
+## Not for VS-Code users
+
+A lot of users have asked about _launch.json_ configurations for running this in VS-Code, so
+here's a snippet of the launch.json configuration you need to bypass nodemon and run directly with
+VS-Code. 
+
+```JSON
+  {
+        "type": "pwa-node",
+        "request": "launch",
+        "name": "Debug Dev Env",
+        "runtimeArgs": [
+            "-r",
+            "ts-node/register",
+            "-r",
+            "tsconfig-paths/register",
+        ],
+        "args": [
+            "${workspaceFolder:express-gen-ts}/src/index.ts"
+        ],
+        "resolveSourceMapLocations": [
+            "${workspaceFolder}/**",
+            "!**/node_modules/**"
+        ],
+   }
+```
 
 
 ## Note for windows users
