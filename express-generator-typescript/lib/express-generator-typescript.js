@@ -15,14 +15,15 @@ const ncp = require('ncp').ncp;
  * Entry point
  * 
  * @param destination 
- * @param withAuth 
+ * @param withAuth
+ * @param useYarn
  */
-async function expressGenTs(destination, withAuth) {
+async function expressGenTs(destination, withAuth, useYarn) {
     try {
         await copyProjectFiles(destination, withAuth);
         updatePackageJson(destination);
         const dep = getDepStrings(withAuth);
-        downloadNodeModules(destination, dep);
+        downloadNodeModules(destination, dep, useYarn);
     } catch (err) {
         console.error(err);
     }
@@ -90,10 +91,19 @@ function getDepStrings(withAuth) {
  * @param destination 
  * @param dep 
  */
-function downloadNodeModules(destination, dep) {
+function downloadNodeModules(destination, dep, useYarn) {
     const options = {cwd: destination};
-    childProcess.execSync('npm i -s ' + dep.dependencies, options);
-    childProcess.execSync('npm i -D ' + dep.devDependencies, options);
+    let downloadLibCmd;
+    let downloadDepCmd;
+    if (useYarn) {
+        downloadLibCmd = 'yarn add ' + dep.dependencies;
+        downloadDepCmd = 'yarn add ' + dep.devDependencies + ' -D';
+    } else {
+        downloadLibCmd = 'npm i -s ' + dep.dependencies;
+        downloadDepCmd = 'npm i -D ' + dep.devDependencies;
+    }
+    childProcess.execSync(downloadLibCmd, options);
+    childProcess.execSync(downloadDepCmd, options);
 }
 
 
