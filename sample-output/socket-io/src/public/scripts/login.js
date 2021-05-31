@@ -13,4 +13,4 @@ document.addEventListener('click', function (event) {
                 window.location.href = '/users';
             })
     }
-}, false)
+}, false);

@@ -71,8 +71,6 @@ document.addEventListener('click', function (event) {
         submitEdit(ele);
     } else if (ele.matches('.delete-user-btn')) {
         deleteUser(ele);
-    } else if (ele.matches('#logout-btn')) {
-        logoutUser();
     }
 }, false);
 
@@ -133,19 +131,5 @@ function deleteUser(ele) {
 	Http.Delete('/api/users/delete/' + id)
         .then(() => {
             displayUsers();
-        });
-}
-
-
-
-
-/******************************************************************************
- *                        Add, Edit, and Delete Users
- ******************************************************************************/
-
-function logoutUser() {
-    Http.Get('/api/auth/logout')
-        .then(() => {
-            window.location.href = '/';
         });
 }
