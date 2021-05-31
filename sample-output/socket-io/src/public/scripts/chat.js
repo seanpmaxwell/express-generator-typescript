@@ -51,12 +51,11 @@ function setupSendMsgListener(socketId) {
             })
             .then(response => response.json())
             .then((resp) => {
-                
                 addMessage({
                     senderName: resp.senderName,
                     timestamp: Date.now(),
                     content: message,
-                })
+                });
             });
         }
     });
