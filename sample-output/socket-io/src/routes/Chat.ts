@@ -54,5 +54,7 @@ export async function emitMessage(req: Request, res: Response) {
         senderName: sessionUser.name,
     })
     // Return
-    return res.status(OK).end();
+    return res.status(OK).json({
+        senderName: sessionUser.name,
+    });
 }

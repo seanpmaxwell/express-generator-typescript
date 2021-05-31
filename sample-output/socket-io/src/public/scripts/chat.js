@@ -39,15 +39,24 @@ function setupSendMsgListener(socketId) {
     document.addEventListener('click', function (event) {
         event.preventDefault();
         var ele = event.target;
+        // Detect btn click
         if (ele.matches('#send-msg-btn')) {
             const inputEle = document.getElementById('send-msg-input');
             const message = inputEle.value;
+            inputEle.value = '';
+            // Call API
             Http.Post('/api/chat/emit-message', {
                 socketId,
                 message,
             })
-            .then(() => {
-                inputEle.value = '';
+            .then(response => response.json())
+            .then((resp) => {
+                
+                addMessage({
+                    senderName: resp.senderName,
+                    timestamp: Date.now(),
+                    content: message,
+                })
             });
         }
     });
@@ -61,8 +70,7 @@ function setupSendMsgListener(socketId) {
  */
 function receiveMessage(socket) {
     socket.on('emit-msg', (msg) => {
-        const chatWindow = document.getElementById('chat-window');
-        chatWindow.innerHTML += getMsgHtmlEle(msg);
+        addMessage(msg);
     });
 }
 
@@ -73,8 +81,9 @@ function receiveMessage(socket) {
  * @param {*} msg 
  * @returns 
  */
-function getMsgHtmlEle(msg) {
-    return `
+function addMessage(msg) {
+    const chatWindow = document.getElementById('chat-window');
+    const msgEle = `
         <div class="chat-msg">
             <div>
                 <span class="msg-name">
@@ -89,4 +98,5 @@ function getMsgHtmlEle(msg) {
             </div>
         </div>
     `;
+    chatWindow.innerHTML += msgEle;
 }

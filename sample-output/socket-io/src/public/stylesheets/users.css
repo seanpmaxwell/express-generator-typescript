@@ -23,12 +23,6 @@ body .add-user-col #add-user-btn {
     margin-bottom: 10px;
 }
 
-body .add-user-col #logout-btn {
-    margin-top: 25px;
-    margin-bottom: 10px;
-    font-size: 15px;
-}
-
 
 /* Users Display Column */
 
