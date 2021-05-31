@@ -1,0 +1,13 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body .main-header {
+    margin-bottom: 50px;
+}
+
+body .main-header .header-button {
+    font-size: 18px;
+    margin-right: 20px;
+}
