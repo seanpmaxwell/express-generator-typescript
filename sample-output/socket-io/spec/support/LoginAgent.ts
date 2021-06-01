@@ -6,6 +6,9 @@ import UserDao from '@daos/User/UserDao.mock';
 import { pwdSaltRounds } from '@shared/constants';
 
 
+
+export const USER_NAME = 'john smith';
+
 const creds = {
     email: 'jsmith@gmail.com',
     password: 'Password@1',
@@ -15,7 +18,7 @@ export const login = (beforeAgent: SuperTest<Test>, done: (arg: string) => void)
     // Setup dummy data
     const role = UserRoles.Admin;
     const pwdHash = bcrypt.hashSync(creds.password, pwdSaltRounds);
-    const loginUser = new User('john smith', creds.email, role, pwdHash);
+    const loginUser = new User(USER_NAME, creds.email, role, pwdHash);
     spyOn(UserDao.prototype, 'getOne').and.returnValue(Promise.resolve(loginUser));
     // Call Login API
     beforeAgent

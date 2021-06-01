@@ -1,11 +1,10 @@
-import SocketIO, { Socket } from 'socket.io';
+import SocketIO from 'socket.io';
 import StatusCodes from 'http-status-codes';
 import { Request, Response } from 'express';
 
-const { BAD_REQUEST, CREATED, OK } = StatusCodes;
-
-
+const { BAD_REQUEST, OK } = StatusCodes;
 const SOCKET_ROOM_NAME = 'jet-logger-chat-room';
+
 
 
 /**
