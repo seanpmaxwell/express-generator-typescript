@@ -23,7 +23,7 @@
  */
 function connectToRm(socketId) {
     console.log('Connecting to socket room');
-    Http.Get('/api/chat/connet-socket-room/' + socketId)
+    Http.Get('/api/chat/connect-socket-room/' + socketId)
         .then(() => {
             console.log('Connected to socket room');
         });

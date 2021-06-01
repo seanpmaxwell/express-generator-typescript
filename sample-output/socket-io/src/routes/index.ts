@@ -19,7 +19,7 @@ userRouter.delete('/delete/:id', deleteOneUser);
 
 // Chat router
 const chatRouter = Router();
-chatRouter.get('/connet-socket-room/:socketId', connectSocketRm);
+chatRouter.get('/connect-socket-room/:socketId', connectSocketRm);
 chatRouter.post('/emit-message', emitMessage);
 
 // Base router (serves all others)

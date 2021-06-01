@@ -35,7 +35,7 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"GET:${getUsersPath}"`, () => {
+    describe(`"GET - ${getUsersPath}"`, () => {
 
         const callApi = () => {
             return agent.get(getUsersPath).set('Cookie', jwtCookie);
@@ -85,7 +85,7 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"POST:${addUsersPath}"`, () => {
+    describe(`"POST - ${addUsersPath}"`, () => {
 
         const callApi = (reqBody: IReqBody) => {
             return agent.post(addUsersPath).set('Cookie', jwtCookie).type('form').send(reqBody);
@@ -137,7 +137,7 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"PUT:${updateUserPath}"`, () => {
+    describe(`"PUT - ${updateUserPath}"`, () => {
 
         const callApi = (reqBody: IReqBody) => {
             return agent.put(updateUserPath).set('Cookie', jwtCookie).type('form').send(reqBody);
@@ -189,7 +189,7 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"DELETE:${deleteUserPath}"`, () => {
+    describe(`"DELETE - ${deleteUserPath}"`, () => {
 
         const callApi = (id: number) => {
             const path = deleteUserPath.replace(':id', id.toString());

@@ -11,6 +11,7 @@ import { pErr } from '@shared/functions';
 import { IReqBody, IResponse } from '../support/types';
 
 
+
 describe('UserRouter', () => {
 
     const authPath = '/api/auth';
@@ -27,14 +28,14 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"POST:${loginPath}"`, () => {
+    describe(`"POST - ${loginPath}"`, () => {
 
         const callApi = (reqBody: IReqBody) => {
             return agent.post(loginPath).type('form').send(reqBody);
         };
 
 
-        it(`should return a response with a status of ${OK} and a cookie with a jwt if the login
+        it(`should return a response with a status of "${OK}" and a cookie with a jwt if the login
             was successful.`, (done) => {
             // Setup Dummy Data
             const creds = {
@@ -56,7 +57,7 @@ describe('UserRouter', () => {
         });
 
 
-        it(`should return a response with a status of ${UNAUTHORIZED} and a json with the error
+        it(`should return a response with a status of "${UNAUTHORIZED}" and a json with the error
             "${loginFailedErr}" if the email was not found.`, (done) => {
             // Setup Dummy Data
             const creds = {
@@ -75,7 +76,7 @@ describe('UserRouter', () => {
         });
 
 
-        it(`should return a response with a status of ${UNAUTHORIZED} and a json with the error
+        it(`should return a response with a status of "${UNAUTHORIZED}" and a json with the error
             "${loginFailedErr}" if the password failed.`, (done) => {
             // Setup Dummy Data
             const creds = {
@@ -97,7 +98,7 @@ describe('UserRouter', () => {
         });
 
 
-        it(`should return a response with a status of ${BAD_REQUEST} and a json with an error
+        it(`should return a response with a status of "${BAD_REQUEST}" and a json with an error
             for all other bad responses.`, (done) => {
             // Setup Dummy Data
             const creds = {
@@ -117,10 +118,9 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"GET:${logoutPath}"`, () => {
+    describe(`"GET - ${logoutPath}"`, () => {
 
-
-        it(`should return a response with a status of ${OK}.`, (done) => {
+        it(`should return a response with a status of "${OK}".`, (done) => {
             agent.get(logoutPath)
                 .end((err: Error, res: IResponse) => {
                     pErr(err);
