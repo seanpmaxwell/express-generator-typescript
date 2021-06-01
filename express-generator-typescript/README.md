@@ -46,6 +46,15 @@ configured with production quality client-side security and uses signed-cookies 
 to store user-session data. If you're new to web-development and still learning about securing websites,
 I highly encourage to use this option.
 
+To have a chat app within your application, use the `--socket-io` option. This option will include 
+everything from the `--with-auth` option, plus will create a mini-chat app which displays the 
+sender name for the message of whoever the logged in user is. Without a login user we can't display 
+a sender name, that's why the `--socket-io` option must used in conjunction with `--with-auth`. 
+To create a socket-io sample app, you can pass `--socket-io` or `--with-auth --socket-io`; it won't
+make a difference.
+
+<img alt='chat-screenshot' src='https://github.com/seanpmaxwell/express-generator-typescript/raw/master/chat-screenshot.png' border='0'>
+
 
 ## Installation
 
@@ -67,7 +76,7 @@ Create the app:
 ```bash
 $ npx express-generator-typescript "project name (default is express-gen-ts)"
 with all options
-$ npx express-generator-typescript --with-auth --use-yarn "project name (default is express-gen-ts)"
+$ npx express-generator-typescript --with-auth --socket-io --use-yarn "project name (default is express-gen-ts)"
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
