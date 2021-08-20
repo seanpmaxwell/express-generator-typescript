@@ -2,9 +2,9 @@
  * Remove old files, copy front-end ones.
  */
 
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
 import Logger from 'jet-logger';
-import childProcess from 'child_process';
+import * as childProcess from 'child_process';
 
 // Setup logger
 const logger = new Logger();
