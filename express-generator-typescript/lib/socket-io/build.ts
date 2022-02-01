@@ -3,13 +3,8 @@
  */
 
 import fs from 'fs-extra';
-import Logger from 'jet-logger';
+import logger from 'jet-logger';
 import childProcess from 'child_process';
-
-// Setup logger
-const logger = new Logger();
-logger.timestamp = false;
-
 
 
 

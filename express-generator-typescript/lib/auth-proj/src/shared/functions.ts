@@ -1,4 +1,4 @@
-import logger from './Logger';
+import logger from 'jet-logger';
 
 
 export const pErr = (err: Error) => {

@@ -50,7 +50,7 @@ export class JwtService {
      */
     public decodeJwt(jwt: string): Promise<IClientData> {
         return new Promise((res, rej) => {
-            jsonwebtoken.verify(jwt, this.secret, (err: VerifyErrors | null, decoded?: object) => {
+            jsonwebtoken.verify(jwt, this.secret, (err, decoded) => {
                 return err ? rej(this.VALIDATION_ERROR) : res(decoded as IClientData);
             });
         });

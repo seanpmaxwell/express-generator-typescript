@@ -79,6 +79,7 @@
         "src/Server"
       ]
     },
+    "useUnknownInCatchVariables": false
   },
   "include": [
     "src/**/*.ts",

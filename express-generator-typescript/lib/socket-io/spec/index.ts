@@ -2,7 +2,7 @@ import './loadEnv';
 import find from 'find';
 import Jasmine from 'jasmine';
 import commandLineArgs from 'command-line-args';
-import logger from '@shared/Logger';
+import logger from 'jet-logger';
 
 
 
@@ -17,7 +17,8 @@ const options = commandLineArgs([
 
 
 // Init Jasmine
-const jasmine = new Jasmine(null);
+const jasmine = new Jasmine();
+jasmine.exitOnCompletion = false;
 
 // Set location of test files
 jasmine.loadConfig({
@@ -29,17 +30,8 @@ jasmine.loadConfig({
     stopSpecOnExpectationFailure: false,
 });
 
-// On complete callback function
-jasmine.onComplete((passed: boolean) => {
-    if (passed) {
-        logger.info('All tests have passed :)');
-    } else {
-        logger.err('At least one test has failed :(');
-    }
-    jasmine.exitCodeCompletion(passed);
-});
-
 // Run all or a single unit-test
+let execResp: Promise<jasmine.JasmineDoneInfo> | undefined;
 if (options.testFile) {
     const testFile = options.testFile as string;
     find.file(testFile + '.spec.ts', './spec', (files: string[]) => {
@@ -51,5 +43,17 @@ if (options.testFile) {
         }
     });
 } else {
-    jasmine.execute();
+    execResp = jasmine.execute();
 }
+
+// Finish
+(async () => {
+    if (!!execResp) {
+        const info = await execResp;
+        if (info.overallStatus === 'passed') {
+            logger.info('All tests have passed :)');
+        } else {
+            logger.err('At least one test has failed :(');
+        }
+    }
+})();
