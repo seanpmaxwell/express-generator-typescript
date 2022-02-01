@@ -87,7 +87,7 @@ function getDepStrings(withAuth, useSocketIo) {
         devDependencies += ' @types/bcrypt @types/randomstring @types/jsonwebtoken';
     }
     if (useSocketIo) {
-        dependencies += ' socket.io';
+        dependencies += ' socket.io socket.io-client';
     }
     return {dependencies, devDependencies};
 }

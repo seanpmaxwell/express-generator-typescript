@@ -1,4 +1,4 @@
-import logger from './Logger';
+import logger from 'jet-logger';
 
 
 // Print an error if the error message in truthy
