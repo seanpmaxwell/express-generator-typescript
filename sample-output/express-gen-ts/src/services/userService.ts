@@ -1,4 +1,4 @@
-import userDao from '@daos/user/userDao';
+import userDao from '@daos/userDao';
 import { IUser } from '@models/user';
 
 
