@@ -20,6 +20,7 @@
     "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
+    "@services": "dist/services",
     "@daos": "dist/daos",
     "@entities": "dist/entities",
     "@shared": "dist/shared",
