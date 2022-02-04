@@ -7,9 +7,9 @@ import express, { NextFunction, Request, Response } from 'express';
 
 import 'express-async-errors';
 
-import BaseRouter from './routes';
+import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { cookieProps } from '@shared/constants';
+import { cookieProps } from '@routes/auth';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
@@ -38,8 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', BaseRouter);
 
 // Print API errors
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _: Request, res: Response, __: NextFunction) => {
     logger.err(err, true);
     return res.status(BAD_REQUEST).json({
         error: err.message,
@@ -52,15 +51,20 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
  *                              Serve front-end content
  ***********************************************************************************/
 
+// Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
+
+// Set static directory (js and css).
 const staticDir = path.join(__dirname, 'public');
 app.use(express.static(staticDir));
 
-app.get('/', (req: Request, res: Response) => {
+// Nav to login pg by default
+app.get('/', (_: Request, res: Response) => {
     res.sendFile('login.html', {root: viewsDir});
 });
 
+// Redirect to login if not logged in.
 app.get('/users', (req: Request, res: Response) => {
     const jwt = req.signedCookies[cookieProps.key];
     if (!jwt) {
