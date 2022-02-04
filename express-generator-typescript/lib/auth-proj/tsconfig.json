@@ -69,14 +69,23 @@
       "@daos/*": [
         "src/daos/*"
       ],
-      "@entities/*": [
-        "src/entities/*"
+      "@models/*": [
+        "src/models/*"
       ],
       "@shared/*": [
         "src/shared/*"
       ],
       "@server": [
-        "src/Server"
+        "src/server"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
+      ],
+      "@util/*": [
+        "src/util/*"
       ]
     },
     "useUnknownInCatchVariables": false
