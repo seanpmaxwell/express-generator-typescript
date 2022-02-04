@@ -1,6 +1,6 @@
 import { IUser } from 'src/models/user';
 import { getRandomInt } from '@shared/functions';
-import orm from '../mockOrm';
+import orm from './mockOrm';
 
 
 
