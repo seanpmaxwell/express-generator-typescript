@@ -80,6 +80,9 @@
       ],
       "@services/*": [
         "src/services/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
       ]
     },
     "useUnknownInCatchVariables": false

@@ -64,6 +64,7 @@ async function deleteOne(id: number): Promise<{error?: string}> {
 
 // Export default
 export default {
+    errors,
     getAll,
     addOne,
     updateOne,
