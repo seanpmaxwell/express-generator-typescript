@@ -115,8 +115,8 @@ function submitEdit(ele) {
         user: {
             name: nameInput.value,
             email: emailInput.value,
-            id: id
-        }
+            id: Number(id),
+        },
     };
 	httpPut('/api/users/update', data)
         .then(() => {

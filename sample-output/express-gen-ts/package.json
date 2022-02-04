@@ -63,12 +63,12 @@
   "dependencies": {
     "command-line-args": "^5.2.1",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^15.0.0",
+    "dotenv": "^15.0.1",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "helmet": "^5.0.2",
     "http-status-codes": "^2.2.0",
-    "jet-logger": "^1.1.4",
+    "jet-logger": "^1.1.5",
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0"
