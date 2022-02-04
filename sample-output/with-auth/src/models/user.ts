@@ -16,15 +16,24 @@ export interface IUser {
 /**
  * Get a new User object.
  * 
+ * @param name 
+ * @param email 
+ * @param role 
+ * @param pwdHash 
  * @returns 
  */
-function getNew(name: string, email: string): IUser {
+function getNew(
+    name: string,
+    email: string,
+    role?: UserRoles,
+    pwdHash?: string,
+): IUser {
     return {
         id: -1,
         email,
         name,
-        role: UserRoles.Standard,
-        pwdHash: '',
+        role: role ?? UserRoles.Standard,
+        pwdHash: pwdHash ?? '',
     };
 }
 

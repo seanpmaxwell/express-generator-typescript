@@ -60,5 +60,6 @@ function getUnauthErr() {
 
 // Export default
 export default {
+    errors,
     login,
-}
+} as const;
