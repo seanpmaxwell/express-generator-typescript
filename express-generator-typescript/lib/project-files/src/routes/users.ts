@@ -11,10 +11,10 @@ const router = Router();
 const { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
 // Paths
-const p = {
+export const p = {
     get: '/all',
     add: '/add',
-    put: '/update',
+    update: '/update',
     delete: '/delete/:id',
 } as const;
 
@@ -49,7 +49,7 @@ router.post(p.add, async (req: Request, res: Response) => {
 /**
  * Update one user.
  */
-router.put(p.put, async (req: Request, res: Response) => {
+router.put(p.update, async (req: Request, res: Response) => {
     const { user } = req.body;
     // Check param
     if (!user) {
