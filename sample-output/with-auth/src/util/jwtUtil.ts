@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 import randomString from 'randomstring';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 

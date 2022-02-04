@@ -10,10 +10,10 @@ const router = Router();
 const { BAD_REQUEST, OK } = StatusCodes;
 
 // Paths
-const p = {
+export const p = {
     login: '/login',
     logout: '/logout',
-};
+} as const;
 
 // Cookie Properties
 export const cookieProps = Object.freeze({

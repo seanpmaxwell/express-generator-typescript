@@ -21,6 +21,7 @@ const jwtNotPresentErr = 'JWT not present in signed cookie.';
  */
 export async function adminMw(req: Request, res: Response, next: NextFunction) {
     try {
+        console.log('dog')
         // Get json-web-token
         const jwt = req.signedCookies[cookieProps.key];
         if (!jwt) {
@@ -28,6 +29,8 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
         }
         // Make sure user role is an admin
         const clientData = await jwtUtil.decode(jwt);
+        console.log('cat')
+        console.log(clientData)
         if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
             res.locals.sessionUser = clientData;
             next();
