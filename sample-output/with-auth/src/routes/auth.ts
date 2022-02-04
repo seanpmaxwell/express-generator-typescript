@@ -16,7 +16,7 @@ const p = {
 };
 
 // Cookie Properties
-const cookieProps = Object.freeze({
+export const cookieProps = Object.freeze({
     key: 'ExpressGeneratorTs',
     secret: process.env.COOKIE_SECRET,
     options: {
