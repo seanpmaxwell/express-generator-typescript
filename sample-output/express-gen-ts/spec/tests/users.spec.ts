@@ -3,10 +3,10 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test } from 'supertest';
 
 import app from '@server';
-import UserDao from '@daos/User/UserDao.mock';
-import User, { IUser } from '@entities/User';
+// import UserDao from '@daos/user/UserDao.mock';
+import User, { IUser } from '@models/user';
 import { pErr } from '@shared/functions';
-import { paramMissingError } from '@shared/constants';
+import { errors } from '@shared/constants';
 import { IReqBody, IResponse } from '../support/types';
 
 
