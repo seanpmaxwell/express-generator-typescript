@@ -31,7 +31,6 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
         .type('form')
         .send(creds)
         .end((err: Error, res: any) => {
-            console.log('cheeta')
             console.log(err)
             if (err) {
                 throw err;
