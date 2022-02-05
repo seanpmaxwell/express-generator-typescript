@@ -1,22 +1,23 @@
 import supertest from 'supertest';
 import StatusCodes from 'http-status-codes';
 import SocketIoClient, { Socket as ClientSocket } from 'socket.io-client';
-import { SuperTest, Test } from 'supertest';
+import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import { IReqBody, IResponse } from 'spec/support/types';
 import { pErr } from '@shared/functions';
-import { login, USER_NAME } from '../support/LoginAgent';
+import { p as chatPaths } from '@routes/chat';
+import loginAgent from '../support/loginAgent';
 
 const { BAD_REQUEST, OK } = StatusCodes;
+type TReqBody = string | object | undefined;
 
 
 
 describe('ChatRouter', () => {
 
     const chatPath = '/api/chat';
-    const connectSocketRmPath = `${chatPath}/connect-socket-room/:socketId`;
-    const emitMessagePath = `${chatPath}/emit-message`;
+    const connectSocketRmPath = `${chatPath}${chatPaths.connect}`;
+    const emitMessagePath = `${chatPath}${chatPaths.emit}`;
     let agent: SuperTest<Test>;
     let socket: ClientSocket;
     let jwtCookie = '';
@@ -24,7 +25,7 @@ describe('ChatRouter', () => {
 
     beforeAll((done) => {
         agent = supertest.agent(app);
-        login(agent, (cookie: string) => {
+        loginAgent.login(agent, (cookie: string) => {
             const url = agent.get('/').url;
             jwtCookie = cookie;
             socket = SocketIoClient(url, {
@@ -53,7 +54,7 @@ describe('ChatRouter', () => {
             to the socket room`, (done) => {
             // Call api
             callApi(socket.id)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
                     done();
@@ -64,7 +65,7 @@ describe('ChatRouter', () => {
             connect to the socket room`, (done) => {
             // Call api
             callApi('some-bad-socket-id')
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
                     done();
@@ -75,7 +76,7 @@ describe('ChatRouter', () => {
 
     describe(`"POST - ${emitMessagePath}"`, () => {
 
-        const callApi = (reqBody: IReqBody) => {
+        const callApi = (reqBody: TReqBody) => {
             return agent.post(emitMessagePath).set('Cookie', jwtCookie).type('form').send(reqBody);
         };
 
@@ -86,10 +87,10 @@ describe('ChatRouter', () => {
                 socketId: socket.id,
                 message: 'How are you today?',
             })
-            .end((err: Error, res: IResponse) => {
+            .end((err: Error, res: Response) => {
                 pErr(err);
                 expect(res.status).toBe(OK);
-                expect(res.body.senderName).toBe(USER_NAME);
+                expect(res.body.senderName).toBe(loginAgent.creds.name);
                 done();
             });
         });
@@ -101,7 +102,7 @@ describe('ChatRouter', () => {
                 socketId: 'Some bad socket id',
                 message: 'How are you today?',
             })
-            .end((err: Error, res: IResponse) => {
+            .end((err: Error, res: Response) => {
                 pErr(err);
                 expect(res.status).toBe(BAD_REQUEST);
                 expect(res.body.senderName).toBeFalsy();

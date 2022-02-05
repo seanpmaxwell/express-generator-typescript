@@ -1,17 +1,17 @@
 import cookieParser from 'cookie-parser';
-import http from 'http';
-import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
-import { Server as SocketIo } from 'socket.io';
+import http from 'http';
+import helmet from 'helmet';
 import StatusCodes from 'http-status-codes';
+import { Server as SocketIo } from 'socket.io';
 import express, { NextFunction, Request, Response } from 'express';
 
 import 'express-async-errors';
 
-import BaseRouter from './routes';
+import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { cookieProps } from '@shared/constants';
+import { cookieProps } from '@routes/auth';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;

@@ -116,7 +116,7 @@ function submitEdit(ele) {
         user: {
             name: nameInput.value,
             email: emailInput.value,
-            id: id
+            id: Number(id)
         }
     };
 	Http.Put('/api/users/update', data)
