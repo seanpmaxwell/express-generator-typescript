@@ -1,5 +1,5 @@
 {
-  "name": "express-gen-ts",
+  "name": "chat-app",
   "version": "0.0.0",
   "scripts": {
     "build": "./node_modules/.bin/ts-node build.ts",
@@ -7,7 +7,7 @@
     "start": "node -r module-alias/register ./dist --env=production",
     "start:dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./spec"
   },
   "nodemonConfig": {
     "watch": [
@@ -17,7 +17,7 @@
     "ignore": [
       "src/public"
     ],
-    "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
+    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@services": "dist/services",
@@ -25,7 +25,8 @@
     "@entities": "dist/entities",
     "@shared": "dist/shared",
     "@server": "dist/server",
-    "@routes": "dist/routes"
+    "@routes": "dist/routes",
+    "@util": "dist/util"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -62,7 +63,46 @@
     "build.ts"
   ],
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "command-line-args": "^5.2.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^5.0.2",
+    "http-status-codes": "^2.2.0",
+    "jet-logger": "^1.1.5",
+    "jsonfile": "^6.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "morgan": "^1.10.0",
+    "randomstring": "^1.2.2",
+    "socket.io": "^4.4.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/command-line-args": "^5.2.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.13",
+    "@types/find": "^0.2.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jasmine": "^3.10.3",
+    "@types/jsonfile": "^6.0.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.15",
+    "@types/randomstring": "^1.1.8",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "eslint": "^8.8.0",
+    "find": "^0.3.0",
+    "fs-extra": "^10.0.0",
+    "jasmine": "^4.0.2",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0",
+    "typescript": "^4.5.5"
   }
 }

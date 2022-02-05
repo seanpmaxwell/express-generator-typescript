@@ -1,0 +1,38 @@
+{
+    "users": [
+        {
+            "name": "Gordan Freeman",
+            "email": "sean.maxwell@gmail.com",
+            "pwdHash": "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy",
+            "role": 0,
+            "id": 906524522143
+        },
+        {
+            "name": "Aaaaa aaaa",
+            "email": "aaaa@gmail.com",
+            "pwdHash": "$2b$12$1mE2OI9hMS/rgH9Mi0s85OM2V5gzm7aF3gJIWH1y0S1MqVBueyjsy",
+            "role": 0,
+            "id": 906524522143
+        },
+        {
+            "name": "asdfasdfadsf",
+            "email": "sadfasdf",
+            "id": 319667476404
+        },
+        {
+            "name": "eeeeee",
+            "email": "eeeeeeee",
+            "id": 654396130856
+        },
+        {
+            "name": "asdf",
+            "email": "ccccccc",
+            "id": 134807566562
+        },
+        {
+            "name": "asdf",
+            "email": "asdf",
+            "id": 496001336575
+        }
+    ]
+}
