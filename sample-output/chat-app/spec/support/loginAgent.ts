@@ -10,6 +10,7 @@ export const pwdSaltRounds = 12;
 const creds = {
     email: 'jsmith@gmail.com',
     password: 'Password@1',
+    name: 'john smith',
 } as const;
 
 
@@ -42,5 +43,6 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
 
 // Export default
 export default {
+    creds,
     login,
 } as const;

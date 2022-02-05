@@ -100,6 +100,7 @@
     "fs-extra": "^10.0.0",
     "jasmine": "^4.0.2",
     "nodemon": "^2.0.15",
+    "socket.io-client": "^4.4.1",
     "supertest": "^6.2.2",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",

@@ -1,41 +1,46 @@
 import supertest from 'supertest';
 import StatusCodes from 'http-status-codes';
-import { SuperTest, Test } from 'supertest';
+import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import UserDao from '@daos/User/UserDao.mock';
-import { IUser, User } from '@entities/User';
-import { login } from '../support/LoginAgent';
+import userDao from '@daos/userDao';
+import User, { IUser } from '@models/user';
 import { pErr } from '@shared/functions';
-import { paramMissingError } from '@shared/constants';
-import { IReqBody, IResponse } from '../support/types';
+import { errors } from '@shared/constants';
+import { p as userPaths } from '@routes/users';
+import userService from '@services/userService';
+import loginAgent from '../support/loginAgent';
+
+type TReqBody = string | object | undefined;
 
 
-
-describe('UserRouter', () => {
-
-    const { BAD_REQUEST, CREATED, OK } = StatusCodes;
+describe('UserRoutes', () => {
 
     const usersPath = '/api/users';
-    const getUsersPath = `${usersPath}/all`;
-    const addUsersPath = `${usersPath}/add`;
-    const updateUserPath = `${usersPath}/update`;
-    const deleteUserPath = `${usersPath}/delete/:id`;
+    const getUsersPath = `${usersPath}${userPaths.get}`;
+    const addUsersPath = `${usersPath}${userPaths.add}`;
+    const updateUserPath = `${usersPath}${userPaths.update}`;
+    const deleteUserPath = `${usersPath}${userPaths.delete}`;
+
+    const { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
     let agent: SuperTest<Test>;
     let jwtCookie: string;
 
-
     beforeAll((done) => {
         agent = supertest.agent(app);
-        login(agent, (cookie: string) => {
+        loginAgent.login(agent, (cookie: string) => {
             jwtCookie = cookie;
             done();
         });
     });
 
 
-    describe(`"GET - ${getUsersPath}"`, () => {
+    /***********************************************************************************
+     *                                    Test Get
+     **********************************************************************************/
+
+     describe(`"GET:${getUsersPath}"`, () => {
 
         const callApi = () => {
             return agent.get(getUsersPath).set('Cookie', jwtCookie);
@@ -46,20 +51,20 @@ describe('UserRouter', () => {
             request was successful.`, (done) => {
             // Setup Dummy Data
             const users = [
-                new User('Sean Maxwell', 'sean.maxwell@gmail.com'),
-                new User('John Smith', 'john.smith@gmail.com'),
-                new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
+                User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
+                User.new('John Smith', 'john.smith@gmail.com'),
+                User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
             ];
-            spyOn(UserDao.prototype, 'getAll').and.returnValue(Promise.resolve(users));
+            spyOn(userDao, 'getAll').and.returnValue(Promise.resolve(users));
             // Call API
             callApi()
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
                     // Caste instance-objects to 'User' objects
                     const respUsers = res.body.users;
-                    const retUsers: User[] = respUsers.map((user: IUser) => {
-                        return new User(user);
+                    const retUsers: IUser[] = respUsers.map((user: IUser) => {
+                        return User.copy(user);
                     });
                     expect(retUsers).toEqual(users);
                     expect(res.body.error).toBeUndefined();
@@ -72,10 +77,10 @@ describe('UserRouter', () => {
             "${BAD_REQUEST}" if the request was unsuccessful.`, (done) => {
             // Setup Dummy Data
             const errMsg = 'Could not fetch users.';
-            spyOn(UserDao.prototype, 'getAll').and.throwError(errMsg);
+            spyOn(userDao, 'getAll').and.throwError(errMsg);
             // Call API
             callApi()
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
                     expect(res.body.error).toBe(errMsg);
@@ -85,21 +90,21 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"POST - ${addUsersPath}"`, () => {
+    describe(`"POST:${addUsersPath}"`, () => {
 
-        const callApi = (reqBody: IReqBody) => {
+        const callApi = (reqBody: TReqBody) => {
             return agent.post(addUsersPath).set('Cookie', jwtCookie).type('form').send(reqBody);
         };
 
         const userData = {
-            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
+            user: User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
         };
 
 
         it(`should return a status code of "${CREATED}" if the request was successful.`, (done) => {
-            spyOn(UserDao.prototype, 'add').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'add').and.returnValue(Promise.resolve());
             callApi(userData)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(CREATED);
                     expect(res.body.error).toBeUndefined();
@@ -108,13 +113,13 @@ describe('UserRouter', () => {
         });
 
 
-        it(`should return a JSON object with an error message of "${paramMissingError}" and a status
+        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             callApi({})
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(paramMissingError);
+                    expect(res.body.error).toBe(errors.paramMissing);
                     done();
                 });
         });
@@ -122,12 +127,12 @@ describe('UserRouter', () => {
 
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
-            // Setup Dummy IResponse
+            // Setup Dummy Response
             const errMsg = 'Could not add user.';
-            spyOn(UserDao.prototype, 'add').and.throwError(errMsg);
+            spyOn(userDao, 'add').and.throwError(errMsg);
             // Call API
             callApi(userData)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
                     expect(res.body.error).toBe(errMsg);
@@ -137,21 +142,20 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"PUT - ${updateUserPath}"`, () => {
+    describe(`"PUT:${updateUserPath}"`, () => {
 
-        const callApi = (reqBody: IReqBody) => {
+        const callApi = (reqBody: TReqBody) => {
             return agent.put(updateUserPath).set('Cookie', jwtCookie).type('form').send(reqBody);
         };
-
         const userData = {
-            user: new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
+            user: User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
         };
 
-
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
-            spyOn(UserDao.prototype, 'update').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'update').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
             callApi(userData)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
                     expect(res.body.error).toBeUndefined();
@@ -159,14 +163,25 @@ describe('UserRouter', () => {
                 });
         });
 
-
-        it(`should return a JSON object with an error message of "${paramMissingError}" and a
+        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             callApi({})
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(paramMissingError);
+                    expect(res.body.error).toBe(errors.paramMissing);
+                    done();
+                });
+        });
+
+        it(`should return a JSON object with the error message of ${userService.errors.userNotFound} 
+            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+            // Call api
+            callApi(userData)
+                .end((err: Error, res: Response) => {
+                    pErr(err);
+                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.body.error).toBe(userService.errors.userNotFound);
                     done();
                 });
         });
@@ -174,12 +189,13 @@ describe('UserRouter', () => {
 
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
+            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
             // Setup Dummy Data
             const updateErrMsg = 'Could not update user.';
-            spyOn(UserDao.prototype, 'update').and.throwError(updateErrMsg);
+            spyOn(userDao, 'update').and.throwError(updateErrMsg);
             // Call API
             callApi(userData)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
                     expect(res.body.error).toBe(updateErrMsg);
@@ -189,18 +205,18 @@ describe('UserRouter', () => {
     });
 
 
-    describe(`"DELETE - ${deleteUserPath}"`, () => {
+    describe(`"DELETE:${deleteUserPath}"`, () => {
 
         const callApi = (id: number) => {
             const path = deleteUserPath.replace(':id', id.toString());
             return agent.delete(path).set('Cookie', jwtCookie);
         };
 
-
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
-            spyOn(UserDao.prototype, 'delete').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'delete').and.returnValue(Promise.resolve());
+            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
             callApi(5)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(OK);
                     expect(res.body.error).toBeUndefined();
@@ -208,15 +224,27 @@ describe('UserRouter', () => {
                 });
         });
 
+        it(`should return a JSON object with the error message of ${userService.errors.userNotFound} 
+            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+            // Call api
+            callApi(-1)
+                .end((err: Error, res: Response) => {
+                    pErr(err);
+                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.body.error).toBe(userService.errors.userNotFound);
+                    done();
+                });
+        });
 
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
-            // Setup Dummy IResponse
+            // Setup Dummy Response
+            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
             const deleteErrMsg = 'Could not delete user.';
-            spyOn(UserDao.prototype, 'delete').and.throwError(deleteErrMsg);
+            spyOn(userDao, 'delete').and.throwError(deleteErrMsg);
             // Call API
             callApi(1)
-                .end((err: Error, res: IResponse) => {
+                .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
                     expect(res.body.error).toBe(deleteErrMsg);
