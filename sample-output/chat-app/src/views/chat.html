@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Users</title>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/index.css" />
+        <link rel="stylesheet" type="text/css" href="/stylesheets/chat.css" />
+        <script
+            src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+            integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" 
+            crossorigin="anonymous"
+        ></script>
+        <script 
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+            integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="scripts/http.js"></script>
+    </head>
+    <body>
+
+        <!-- Header -->
+        <div class="main-header">
+            <button class="header-button nav-users-btn">
+                Users
+            </button>
+            <button class="header-button nav-chat-btn">
+                Chat
+            </button>
+            <button class="header-button logout-btn">
+                Logout
+            </button>
+        </div>
+
+        <!-- Chat Window -->
+        <div id="window-wrapper">
+            Chat Window
+            <div id="chat-window"></div>
+
+            <div id="send-msg-wrapper">
+                <input id="send-msg-input"/>
+                <button id="send-msg-btn">
+                    Send
+                </button>
+            </div>
+        </div>
+    </body>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/chat.js"></script>
+</html>
