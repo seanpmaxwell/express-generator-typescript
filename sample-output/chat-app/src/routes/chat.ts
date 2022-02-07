@@ -26,17 +26,13 @@ router.get(p.connect, (req: Request, res: Response) => {
     const { socketId } = req.params;
     // Check params
     if (!socketId) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        })
+        return getErrResp(res, errors.paramMissing);
     }
     // Get room
     const io: SocketIO.Server = req.app.get('socketio');
     const socket = io.sockets.sockets.get(socketId);
     if (!socket) {
-        return res.status(BAD_REQUEST).json({
-            error: roomNotFound,
-        })
+        return getErrResp(res, roomNotFound);
     }
     // Connect
     chatService.connectSocketToRm(socket);
@@ -53,17 +49,12 @@ router.post(p.emit, (req: Request, res: Response) => {
     const { message, socketId } = req.body;
     // Check params
     if (!socketId || !message) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        })
+        return getErrResp(res, errors.paramMissing);
     }
     // Get room
-    const io: SocketIO.Server = req.app.get('socketio');
-    const socket = io.sockets.sockets.get(socketId);
+    let socket = getSocket(req, socketId);
     if (!socket) {
-        return res.status(BAD_REQUEST).json({
-            error: roomNotFound,
-        })
+        return getErrResp(res, roomNotFound);
     }
     // Connect
     const { error } = chatService.emitMessage(socket, message, sessionUser.name);
@@ -75,6 +66,23 @@ router.post(p.emit, (req: Request, res: Response) => {
         senderName: sessionUser.name,
     });
 });
+
+
+function getSocket(req: Request, socketId: string): SocketIO.Socket | undefined {
+    const io: SocketIO.Server = req.app.get('socketio');
+    return io.sockets.sockets.get(socketId);
+}
+
+
+function getErrResp(
+    res: Response,
+    message: string,
+    status?: number,
+): Response {
+    return res.status(status ?? BAD_REQUEST).json({
+        error: message,
+    });
+}
 
 
 // Export router

@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express';
 
 import { errors } from '@shared/constants';
 import userService from '@services/userService';
+import { ParamMissingError } from '@shared/errors';
 
 
 
@@ -36,9 +37,7 @@ router.post(p.add, async (req: Request, res: Response) => {
     const { user } = req.body;
     // Check param
     if (!user) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        });
+        throw new ParamMissingError();
     }
     // Fetch data
     await userService.addOne(user);
@@ -53,9 +52,7 @@ router.put(p.update, async (req: Request, res: Response) => {
     const { user } = req.body;
     // Check param
     if (!user) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        });
+        throw new ParamMissingError();
     }
     // Fetch data
     const { error } = await userService.updateOne(user);
@@ -73,9 +70,7 @@ router.delete(p.delete, async (req: Request, res: Response) => {
     const { id } = req.params;
     // Check param
     if (!id) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        });
+        throw new ParamMissingError();
     }
     // Fetch data
     const { error } = await userService.delete(Number(id));
