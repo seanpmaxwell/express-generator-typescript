@@ -2,8 +2,8 @@ import SocketIO from 'socket.io';
 import StatusCodes from 'http-status-codes';
 import { Router, Request, Response } from 'express';
 
-import chatService from '@services/chatService';
-import { errors } from '@shared/constants';
+import chatService from '@services/chat-service';
+import { ParamMissingError } from '@shared/errors';
 
 
 // Chat router
@@ -26,9 +26,7 @@ router.get(p.connect, (req: Request, res: Response) => {
     const { socketId } = req.params;
     // Check params
     if (!socketId) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        })
+        throw new ParamMissingError();
     }
     // Get room
     const io: SocketIO.Server = req.app.get('socketio');
@@ -53,9 +51,7 @@ router.post(p.emit, (req: Request, res: Response) => {
     const { message, socketId } = req.body;
     // Check params
     if (!socketId || !message) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        })
+        throw new ParamMissingError();
     }
     // Get room
     const io: SocketIO.Server = req.app.get('socketio');

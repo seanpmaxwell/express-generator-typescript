@@ -1,6 +1,6 @@
 
 import authService from '@services/auth-service';
-import { errors } from '@shared/constants';
+import { ParamMissingError } from '@shared/errors';
 import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
@@ -37,9 +37,7 @@ router.post(p.login, async (req: Request, res: Response) => {
     // Check email and password present
     const { email, password } = req.body;
     if (!(email && password)) {
-        return res.status(BAD_REQUEST).json({
-            error: errors.paramMissing,
-        });
+        throw new ParamMissingError();
     }
     // Get jwt
     const resp = await authService.login(email, password);

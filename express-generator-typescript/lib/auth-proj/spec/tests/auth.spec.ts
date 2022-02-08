@@ -17,8 +17,8 @@ type TReqBody = string | object | undefined;
 describe('auth-router', () => {
 
     const authPath = '/api/auth';
-    const loginPath = `${authPath}/${paths.login}`;
-    const logoutPath = `${authPath}/${paths.logout}`;
+    const loginPath = `${authPath}${paths.login}`;
+    const logoutPath = `${authPath}${paths.logout}`;
     const { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;
 
     let agent: SuperTest<Test>;

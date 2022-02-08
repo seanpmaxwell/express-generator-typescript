@@ -16,10 +16,10 @@ type TReqBody = string | object | undefined;
 describe('user-router', () => {
 
     const usersPath = '/api/users';
-    const getUsersPath = `${usersPath}/${userPaths.get}`;
-    const addUsersPath = `${usersPath}/${userPaths.add}`;
-    const updateUserPath = `${usersPath}/${userPaths.update}`;
-    const deleteUserPath = `${usersPath}/${userPaths.delete}`;
+    const getUsersPath = `${usersPath}${userPaths.get}`;
+    const addUsersPath = `${usersPath}${userPaths.add}`;
+    const updateUserPath = `${usersPath}${userPaths.update}`;
+    const deleteUserPath = `${usersPath}${userPaths.delete}`;
 
     const { BAD_REQUEST, CREATED, OK } = StatusCodes;
     let agent: SuperTest<Test>;

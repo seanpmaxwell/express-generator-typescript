@@ -1,11 +1,6 @@
-import userDao from '@daos/userDao';
-import { IUser } from '@models/user';
-
-
-// Constants
-const errors = {
-    userNotFound: 'A user with the given id does not exists in the database.',
-} as const;
+import userDao from '@daos/user-dao';
+import { IUser } from '@models/user-model';
+import { UserNotFoundError } from '@shared/errors';
 
 
 
@@ -36,13 +31,12 @@ function addOne(user: IUser): Promise<void> {
  * @param user 
  * @returns 
  */
-async function updateOne(user: IUser): Promise<{error?: string}> {
+async function updateOne(user: IUser): Promise<void> {
     const persists = await userDao.persists(user.id);
     if (!persists) {
-        return {error: errors.userNotFound};
+        throw new UserNotFoundError();
     }
-    await userDao.update(user);
-    return {};
+    return userDao.update(user);
 }
 
 
@@ -52,19 +46,17 @@ async function updateOne(user: IUser): Promise<{error?: string}> {
  * @param id 
  * @returns 
  */
-async function deleteOne(id: number): Promise<{error?: string}> {
+async function deleteOne(id: number): Promise<void> {
     const persists = await userDao.persists(id);
     if (!persists) {
-        return {error: errors.userNotFound};
+        throw new UserNotFoundError();
     }
-    await userDao.delete(id);
-    return {};
+    return userDao.delete(id);
 }
 
 
 // Export default
 export default {
-    errors,
     getAll,
     addOne,
     updateOne,

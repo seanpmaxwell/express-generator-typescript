@@ -1,7 +1,7 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, Router } from 'express';
 
-import userService from '@services/userService';
+import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
 
 
@@ -54,10 +54,7 @@ router.put(p.update, async (req: Request, res: Response) => {
         throw new ParamMissingError();
     }
     // Fetch data
-    const { error } = await userService.updateOne(user);
-    if (!!error) {
-        return res.status(BAD_REQUEST).json({error});
-    }
+    await userService.updateOne(user);
     return res.status(OK).end();
 });
 
@@ -72,10 +69,7 @@ router.delete(p.delete, async (req: Request, res: Response) => {
         throw new ParamMissingError();
     }
     // Fetch data
-    const { error } = await userService.delete(Number(id));
-    if (!!error) {
-        return res.status(BAD_REQUEST).json({error});
-    }
+    await userService.delete(Number(id));
     return res.status(OK).end();
 });
 
