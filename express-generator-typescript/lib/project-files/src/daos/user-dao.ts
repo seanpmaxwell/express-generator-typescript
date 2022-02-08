@@ -76,7 +76,6 @@ async function update(user: IUser): Promise<void> {
             return orm.saveDb(db);
         }
     }
-    throw new Error('User not found');
 }
 
 
@@ -94,7 +93,6 @@ async function deleteOne(id: number): Promise<void> {
             return orm.saveDb(db);
         }
     }
-    throw new Error('User not found');
 }
 
 
