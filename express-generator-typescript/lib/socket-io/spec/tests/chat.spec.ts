@@ -7,6 +7,7 @@ import app from '@server';
 import { pErr } from '@shared/functions';
 import { p as chatPaths } from '@routes/chat-router';
 import loginAgent from '../support/login-agent';
+import { RoomNotFoundError } from '@shared/errors';
 
 const { BAD_REQUEST, OK } = StatusCodes;
 type TReqBody = string | object | undefined;
@@ -61,13 +62,14 @@ describe('chat-router', () => {
                 });
         });
 
-        it(`should return a response with a status of "${BAD_REQUEST}" if the user did not
-            connect to the socket room`, (done) => {
+        it(`should return a response with a status of "${RoomNotFoundError.HttpStatus}" if the
+            user did not connect to the socket room`, (done) => {
             // Call api
             callApi('some-bad-socket-id')
                 .end((err: Error, res: Response) => {
                     pErr(err);
-                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.status).toBe(RoomNotFoundError.HttpStatus);
+                    expect(res.body.error).toBe(RoomNotFoundError.Msg);
                     done();
                 });
         });
@@ -104,8 +106,8 @@ describe('chat-router', () => {
             })
             .end((err: Error, res: Response) => {
                 pErr(err);
-                expect(res.status).toBe(BAD_REQUEST);
-                expect(res.body.senderName).toBeFalsy();
+                expect(res.status).toBe(RoomNotFoundError.HttpStatus);
+                expect(res.body.error).toBe(RoomNotFoundError.Msg);
                 done();
             });
         });
