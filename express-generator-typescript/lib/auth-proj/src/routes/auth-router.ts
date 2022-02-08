@@ -1,5 +1,5 @@
 
-import authService from '@services/authService';
+import authService from '@services/auth-service';
 import { errors } from '@shared/constants';
 import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';

@@ -9,7 +9,7 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { cookieProps } from '@routes/auth';
+import { cookieProps } from '@routes/auth-router';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;

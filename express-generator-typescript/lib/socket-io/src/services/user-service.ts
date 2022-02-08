@@ -1,5 +1,5 @@
-import userDao from '@daos/userDao';
-import { IUser } from '@models/user';
+import userDao from '@daos/user-dao';
+import { IUser } from '@models/user-model';
 
 
 // Constants

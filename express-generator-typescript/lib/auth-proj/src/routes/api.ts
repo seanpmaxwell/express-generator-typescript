@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { adminMw } from './middleware';
-import authRouter from './auth';
-import userRouter from './users';
+import authRouter from './auth-router';
+import userRouter from './user-router';
 
 
 // Init
