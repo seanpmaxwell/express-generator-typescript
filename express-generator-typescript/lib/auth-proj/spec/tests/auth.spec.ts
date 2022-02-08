@@ -3,18 +3,18 @@ import StatusCodes from 'http-status-codes';
 import supertest, { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import userDao from '@daos/userDao';
-import User, { UserRoles } from '@models/user';
-import { cookieProps, p as paths } from '@routes/auth';
+import userDao from '@daos/user-dao';
+import User, { UserRoles } from '@models/user-model';
+import { cookieProps, p as paths } from '@routes/auth-router';
 import { pErr } from '@shared/functions';
-import authService from '@services/authService';
-import { pwdSaltRounds } from 'spec/support/loginAgent';
+import authService from '@services/auth-service';
+import { pwdSaltRounds } from 'spec/support/login-agent';
 
 
 type TReqBody = string | object | undefined;
 
 
-describe('AuthRouter', () => {
+describe('auth-router', () => {
 
     const authPath = '/api/auth';
     const loginPath = `${authPath}/${paths.login}`;

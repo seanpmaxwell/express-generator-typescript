@@ -1,13 +1,23 @@
 import logger from 'jet-logger';
 
 
-export const pErr = (err: Error) => {
-    if (err) {
+/**
+ * Print an error object if it's truthy. Useful for testing.
+ * 
+ * @param err 
+ */
+export function pErr(err?: Error): void {
+    if (!!err) {
         logger.err(err);
     }
 };
 
 
-export const getRandomInt = () => {
+/**
+ * Get a random number between 1 and 1,000,000,000,000
+ * 
+ * @returns 
+ */
+export function getRandomInt(): number {
     return Math.floor(Math.random() * 1_000_000_000_000);
 };

@@ -12,6 +12,7 @@ import 'express-async-errors';
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
 import { cookieProps } from '@routes/auth-router';
+import { CustomError } from '@shared/errors';
 
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
@@ -40,10 +41,9 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', BaseRouter);
 
 // Print API errors
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: CustomError, _: Request, res: Response, __: NextFunction) => {
     logger.err(err, true);
-    return res.status(BAD_REQUEST).json({
+    return res.status(err.HttpStatus).json({
         error: err.message,
     });
 });
