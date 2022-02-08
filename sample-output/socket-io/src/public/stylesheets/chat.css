@@ -1,0 +1,43 @@
+
+body #window-wrapper  {
+    height: 350px;
+    width: 500px;
+}
+
+body #window-wrapper #chat-window {
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 4px;
+    overflow-y: scroll;
+    padding: 10px 10px 0px 10px
+}
+
+body #window-wrapper #chat-window .chat-msg {
+    padding-bottom: 5px;
+}
+
+body #window-wrapper #chat-window .chat-msg .msg-name {
+    font-weight: bold;
+}
+
+body #window-wrapper #chat-window .chat-msg .msg-timestamp {
+    font-weight: bold;
+    color: grey;
+}
+
+body #window-wrapper #send-msg-wrapper {
+    padding-top: 20px;
+    display: flex;
+}
+
+body #window-wrapper #send-msg-wrapper input {
+    width: 75%;
+    flex-grow: 1;
+    padding: 4px;
+}
+
+body #window-wrapper #send-msg-wrapper #send-msg-btn {
+    margin-left: 10px;
+    font-size: 16px;
+}
