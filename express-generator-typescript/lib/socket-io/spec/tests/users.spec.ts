@@ -174,12 +174,13 @@ describe('user-router', () => {
         });
 
         it(`should return a JSON object with the error message of ${UserNotFoundError.Msg} 
-            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+            and a status code of "${UserNotFoundError.HttpStatus}" if the id was not 
+            found.`, (done) => {
             // Call api
             callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
-                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.status).toBe(UserNotFoundError.HttpStatus);
                     expect(res.body.error).toBe(UserNotFoundError.Msg);
                     done();
                 });
@@ -224,12 +225,13 @@ describe('user-router', () => {
         });
 
         it(`should return a JSON object with the error message of ${UserNotFoundError.Msg} 
-            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+            and a status code of "${UserNotFoundError.HttpStatus}" if the id was not 
+            found.`, (done) => {
             // Call api
             callApi(-1)
                 .end((err: Error, res: Response) => {
                     pErr(err);
-                    expect(res.status).toBe(BAD_REQUEST);
+                    expect(res.status).toBe(UserNotFoundError.HttpStatus);
                     expect(res.body.error).toBe(UserNotFoundError.Msg);
                     done();
                 });

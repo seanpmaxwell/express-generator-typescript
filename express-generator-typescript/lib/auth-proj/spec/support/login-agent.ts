@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { SuperTest, Test } from 'supertest';
 
-import User, { UserRoles } from '@models/user';
-import userDao from '@daos/userDao';
+import User, { UserRoles } from '@models/user-model';
+import userDao from '@daos/user-dao';
 
 
 export const pwdSaltRounds = 12;
@@ -31,7 +31,6 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
         .type('form')
         .send(creds)
         .end((err: Error, res: any) => {
-            console.log(err)
             if (err) {
                 throw err;
             }

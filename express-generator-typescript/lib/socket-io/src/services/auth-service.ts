@@ -27,6 +27,8 @@ async function login(email: string, password: string): Promise<string> {
     // Setup Admin Cookie
     return jwtUtil.sign({
         id: user.id,
+        email: user.name,
+        name: user.name,
         role: user.role,
     });
 }
