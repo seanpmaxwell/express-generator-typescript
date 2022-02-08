@@ -1,39 +1,28 @@
 import bcrypt from 'bcrypt';
 
-import userDao from '@daos/userDao';
-import jwtUtil from '@util/jwtUtil';
-import { StatusCodes } from 'http-status-codes';
+import userDao from '@daos/user-dao';
+import jwtUtil from '@util/jwt-util';
+import { UnauthorizedError } from '@shared/errors';
 
-
-// Constants
-const { UNAUTHORIZED } = StatusCodes;
-
-// Errors
-const errors = {
-    loginFailed: 'Login failed',
-}
-
-
-// Types
-type TLoginErr = ReturnType<typeof getUnauthErr>;
 
 
 /**
+ * Login()
  * 
  * @param email 
  * @param password 
  * @returns 
  */
-async function login(email: string, password: string): Promise<string | TLoginErr> {
+async function login(email: string, password: string): Promise<string> {
     // Fetch user
     const user = await userDao.getOne(email);
     if (!user) {
-        return getUnauthErr();
+        throw new UnauthorizedError();
     }
     // Check password
     const pwdPassed = await bcrypt.compare(password, user.pwdHash);
     if (!pwdPassed) {
-        return getUnauthErr();
+        throw new UnauthorizedError();
     }
     // Setup Admin Cookie
     return jwtUtil.sign({
@@ -43,23 +32,7 @@ async function login(email: string, password: string): Promise<string | TLoginEr
 }
 
 
-/**
- * Get unauth error.
- * 
- * @returns 
- */
-function getUnauthErr() {
-    return {
-        error: {
-            status: UNAUTHORIZED,
-            msg: errors.loginFailed,
-        }
-    }
-}
-
-
 // Export default
 export default {
-    errors,
     login,
 } as const;

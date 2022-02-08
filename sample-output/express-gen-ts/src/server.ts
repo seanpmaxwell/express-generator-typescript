@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === 'production') {
 // Add api router
 app.use('/api', apiRouter);
 
-// Print API errors
+// Error handling
 app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) => {
     logger.err(err, true);
     const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
