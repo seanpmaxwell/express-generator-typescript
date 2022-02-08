@@ -7,7 +7,7 @@ import StatusCodes from 'http-status-codes';
 
 // Constants
 const router = Router();
-const { BAD_REQUEST, OK } = StatusCodes;
+const { OK } = StatusCodes;
 
 // Paths
 export const p = {
@@ -40,15 +40,10 @@ router.post(p.login, async (req: Request, res: Response) => {
         throw new ParamMissingError();
     }
     // Get jwt
-    const resp = await authService.login(email, password);
-    if (typeof resp === 'object' && resp.error) {
-        return res.status(resp.error.status).json({
-            error: resp.error.msg,
-        });
-    }
+    const jwt = await authService.login(email, password);
     // Add jwt to cookie
     const { key, options } = cookieProps;
-    res.cookie(key, resp, options);
+    res.cookie(key, jwt, options);
     // Return
     return res.status(OK).end();
 });

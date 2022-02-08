@@ -8,7 +8,7 @@ import { ParamMissingError } from '@shared/errors';
 
 // Constants
 const router = Router();
-const { BAD_REQUEST, CREATED, OK } = StatusCodes;
+const { CREATED, OK } = StatusCodes;
 
 // Paths
 export const p = {
@@ -54,10 +54,7 @@ router.put(p.update, async (req: Request, res: Response) => {
         throw new ParamMissingError();
     }
     // Fetch data
-    const { error } = await userService.updateOne(user);
-    if (!!error) {
-        return res.status(BAD_REQUEST).json({error});
-    }
+    await userService.updateOne(user);
     return res.status(OK).end();
 });
 
@@ -72,10 +69,7 @@ router.delete(p.delete, async (req: Request, res: Response) => {
         throw new ParamMissingError();
     }
     // Fetch data
-    const { error } = await userService.delete(Number(id));
-    if (!!error) {
-        return res.status(BAD_REQUEST).json({error});
-    }
+    await userService.delete(Number(id));
     return res.status(OK).end();
 });
 

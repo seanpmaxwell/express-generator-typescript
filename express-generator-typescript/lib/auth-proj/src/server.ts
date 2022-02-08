@@ -13,7 +13,6 @@ import { cookieProps } from '@routes/auth-router';
 import { CustomError } from '@shared/errors';
 
 const app = express();
-const { BAD_REQUEST } = StatusCodes;
 
 
 
@@ -38,10 +37,11 @@ if (process.env.NODE_ENV === 'production') {
 // Add APIs
 app.use('/api', BaseRouter);
 
-// Print API errors
-app.use((err: CustomError, _: Request, res: Response, __: NextFunction) => {
+// Error handling
+app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) => {
     logger.err(err, true);
-    return res.status(err.HttpStatus).json({
+    const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
+    return res.status(status).json({
         error: err.message,
     });
 });
