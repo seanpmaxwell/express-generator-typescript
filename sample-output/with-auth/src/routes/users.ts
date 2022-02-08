@@ -1,7 +1,6 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, Router } from 'express';
 
-import { errors } from '@shared/constants';
 import userService from '@services/userService';
 import { ParamMissingError } from '@shared/errors';
 

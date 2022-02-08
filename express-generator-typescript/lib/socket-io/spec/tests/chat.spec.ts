@@ -5,15 +5,15 @@ import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
 import { pErr } from '@shared/functions';
-import { p as chatPaths } from '@routes/chat';
-import loginAgent from '../support/loginAgent';
+import { p as chatPaths } from '@routes/chat-router';
+import loginAgent from '../support/login-agent';
 
 const { BAD_REQUEST, OK } = StatusCodes;
 type TReqBody = string | object | undefined;
 
 
 
-describe('ChatRouter', () => {
+describe('chat-router', () => {
 
     const chatPath = '/api/chat';
     const connectSocketRmPath = `${chatPath}${chatPaths.connect}`;

@@ -3,18 +3,18 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import userDao from '@daos/userDao';
-import User, { IUser } from '@models/user';
+import userDao from '@daos/user-dao';
+import User, { IUser } from '@models/user-model';
 import { pErr } from '@shared/functions';
-import { errors } from '@shared/constants';
-import { p as userPaths } from '@routes/users';
-import userService from '@services/userService';
-import loginAgent from '../support/loginAgent';
+import { p as userPaths } from '@routes/user-router';
+import userService from '@services/user-service';
+import loginAgent from '../support/login-agent';
+import { ParamMissingError } from '@shared/errors';
 
 type TReqBody = string | object | undefined;
 
 
-describe('UserRoutes', () => {
+describe('user-routes', () => {
 
     const usersPath = '/api/users';
     const getUsersPath = `${usersPath}${userPaths.get}`;
@@ -113,13 +113,13 @@ describe('UserRoutes', () => {
         });
 
 
-        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a status
+        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(errors.paramMissing);
+                    expect(res.body.error).toBe(ParamMissingError.Err);
                     done();
                 });
         });
@@ -163,13 +163,13 @@ describe('UserRoutes', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a
+        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(errors.paramMissing);
+                    expect(res.body.error).toBe(ParamMissingError.Err);
                     done();
                 });
         });
