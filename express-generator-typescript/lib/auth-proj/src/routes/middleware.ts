@@ -1,9 +1,9 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 
-import { UserRoles } from '@models/user';
+import { UserRoles } from '@models/user-model';
 import { cookieProps } from '@routes/auth';
-import jwtUtil from '@util/jwtUtil';
+import jwtUtil from '@util/jwt-util';
 
 
 // Constants
