@@ -14,32 +14,42 @@ export abstract class CustomError extends Error {
 
 export class ParamMissingError extends CustomError {
 
-    public static readonly Err = 'One or more of the required parameters was missing.';
+    public static readonly Msg = 'One or more of the required parameters was missing.';
     public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
 
     constructor() {
-        super(ParamMissingError.Err, ParamMissingError.HttpStatus);
+        super(ParamMissingError.Msg, ParamMissingError.HttpStatus);
     }
 }
 
 
 export class UserNotFoundError extends CustomError {
 
-    public static readonly Err = 'A user with the given id does not exists in the database.';
+    public static readonly Msg = 'A user with the given id does not exists in the database.';
     public static readonly HttpStatus = HttpStatusCodes.NOT_FOUND;
 
     constructor() {
-        super(UserNotFoundError.Err, UserNotFoundError.HttpStatus);
+        super(UserNotFoundError.Msg, UserNotFoundError.HttpStatus);
     }
 }
 
 
 export class UnauthorizedError extends CustomError {
 
-    public static readonly Err = 'Login failed';
+    public static readonly Msg = 'Login failed';
     public static readonly HttpStatus = HttpStatusCodes.UNAUTHORIZED;
 
     constructor() {
-        super(UserNotFoundError.Err, UserNotFoundError.HttpStatus);
+        super(UnauthorizedError.Msg, UnauthorizedError.HttpStatus);
+    }
+}
+
+export class RoomNotFoundError extends CustomError {
+
+    public static readonly Msg = 'socket room not found on socket server.';
+    public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
+
+    constructor() {
+        super(RoomNotFoundError.Msg, RoomNotFoundError.HttpStatus);
     }
 }

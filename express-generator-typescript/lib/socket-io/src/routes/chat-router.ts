@@ -3,13 +3,12 @@ import StatusCodes from 'http-status-codes';
 import { Router, Request, Response } from 'express';
 
 import chatService from '@services/chat-service';
-import { ParamMissingError } from '@shared/errors';
+import { ParamMissingError, RoomNotFoundError } from '@shared/errors';
 
 
 // Chat router
 const router = Router();
 const { BAD_REQUEST, OK } = StatusCodes;
-const roomNotFound = 'socket room not found on socket server.'
 
 // Paths
 export const p = {
@@ -32,9 +31,7 @@ router.get(p.connect, (req: Request, res: Response) => {
     const io: SocketIO.Server = req.app.get('socketio');
     const socket = io.sockets.sockets.get(socketId);
     if (!socket) {
-        return res.status(BAD_REQUEST).json({
-            error: roomNotFound,
-        })
+        throw new RoomNotFoundError();
     }
     // Connect
     chatService.connectSocketToRm(socket);
@@ -57,9 +54,7 @@ router.post(p.emit, (req: Request, res: Response) => {
     const io: SocketIO.Server = req.app.get('socketio');
     const socket = io.sockets.sockets.get(socketId);
     if (!socket) {
-        return res.status(BAD_REQUEST).json({
-            error: roomNotFound,
-        })
+        throw new RoomNotFoundError();
     }
     // Connect
     const { error } = chatService.emitMessage(socket, message, sessionUser.name);

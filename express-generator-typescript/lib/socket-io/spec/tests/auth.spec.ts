@@ -7,8 +7,8 @@ import userDao from '@daos/user-dao';
 import User, { UserRoles } from '@models/user-model';
 import { cookieProps, p as paths } from '@routes/auth-router';
 import { pErr } from '@shared/functions';
-import authService from '@services/auth-service';
 import { pwdSaltRounds } from 'spec/support/login-agent';
+import { UnauthorizedError } from '@shared/errors';
 
 
 type TReqBody = string | object | undefined;
@@ -59,7 +59,7 @@ describe('auth-router', () => {
 
 
         it(`should return a response with a status of ${UNAUTHORIZED} and a json with the error
-            "${authService.errors.loginFailed}" if the email was not found.`, (done) => {
+            "${UnauthorizedError.Msg}" if the email was not found.`, (done) => {
             // Setup Dummy Data
             const creds = {
                 email: 'jsmith@gmail.com',
@@ -71,14 +71,14 @@ describe('auth-router', () => {
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(UNAUTHORIZED);
-                    expect(res.body.error).toBe(authService.errors.loginFailed);
+                    expect(res.body.error).toBe(UnauthorizedError.Msg);
                     done();
                 });
         });
 
 
         it(`should return a response with a status of ${UNAUTHORIZED} and a json with the error
-            "${authService.errors.loginFailed}" if the password failed.`, (done) => {
+            "${UnauthorizedError.Msg}" if the password failed.`, (done) => {
             // Setup Dummy Data
             const creds = {
                 email: 'jsmith@gmail.com',
@@ -93,7 +93,7 @@ describe('auth-router', () => {
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(UNAUTHORIZED);
-                    expect(res.body.error).toBe(authService.errors.loginFailed);
+                    expect(res.body.error).toBe(UnauthorizedError.Msg);
                     done();
                 });
         });

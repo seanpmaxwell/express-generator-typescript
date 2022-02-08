@@ -104,14 +104,14 @@ describe('user-router', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a status
+        it(`should return a JSON object with an error message of "${ParamMissingError.Msg}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             // Call API
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(ParamMissingError.Err);
+                    expect(res.body.error).toBe(ParamMissingError.Msg);
                     done();
                 });
         });
@@ -160,26 +160,26 @@ describe('user-router', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a
+        it(`should return a JSON object with an error message of "${ParamMissingError.Msg}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             // Call api
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(ParamMissingError.Err);
+                    expect(res.body.error).toBe(ParamMissingError.Msg);
                     done();
                 });
         });
 
-        it(`should return a JSON object with the error message of ${UserNotFoundError.Err} 
+        it(`should return a JSON object with the error message of ${UserNotFoundError.Msg} 
             and a status code of "${StatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
             // Call api
             callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(UserNotFoundError.HttpStatus);
-                    expect(res.body.error).toBe(UserNotFoundError.Err);
+                    expect(res.body.error).toBe(UserNotFoundError.Msg);
                     done();
                 });
         });
@@ -226,14 +226,14 @@ describe('user-router', () => {
                 });
         });
 
-        it(`should return a JSON object with the error message of ${UserNotFoundError.Err} 
+        it(`should return a JSON object with the error message of ${UserNotFoundError.Msg} 
             and a status code of "${StatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
             // Call api
             callApi(-1)
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(StatusCodes.NOT_FOUND);
-                    expect(res.body.error).toBe(UserNotFoundError.Err);
+                    expect(res.body.error).toBe(UserNotFoundError.Msg);
                     done();
                 });
         });
