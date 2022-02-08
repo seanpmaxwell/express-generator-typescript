@@ -3,23 +3,22 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import userDao from '@daos/userDao';
-import User, { IUser } from '@models/user';
+import userDao from '@daos/user-dao';
+import User, { IUser } from '@models/user-model';
 import { pErr } from '@shared/functions';
-import { errors } from '@shared/constants';
-import { p as userPaths } from '@routes/users';
-import userService from '@services/userService';
+import { p as userPaths } from '@routes/user-router';
+import { ParamMissingError, UserNotFoundError } from '@shared/errors';
 
 type TReqBody = string | object | undefined;
 
 
-describe('Users Routes', () => {
+describe('user-router', () => {
 
     const usersPath = '/api/users';
-    const getUsersPath = `${usersPath}/${userPaths.get}`;
-    const addUsersPath = `${usersPath}/${userPaths.add}`;
-    const updateUserPath = `${usersPath}/${userPaths.update}`;
-    const deleteUserPath = `${usersPath}/${userPaths.delete}`;
+    const getUsersPath = `${usersPath}${userPaths.get}`;
+    const addUsersPath = `${usersPath}${userPaths.add}`;
+    const updateUserPath = `${usersPath}${userPaths.update}`;
+    const deleteUserPath = `${usersPath}${userPaths.delete}`;
 
     const { BAD_REQUEST, CREATED, OK } = StatusCodes;
     let agent: SuperTest<Test>;
@@ -70,6 +69,7 @@ describe('Users Routes', () => {
             agent.get(getUsersPath)
                 .end((err: Error, res: Response) => {
                     pErr(err);
+                    console.log(res.body)
                     expect(res.status).toBe(BAD_REQUEST);
                     expect(res.body.error).toBe(errMsg);
                     done();
@@ -104,14 +104,14 @@ describe('Users Routes', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a status
+        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             // Call API
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(errors.paramMissing);
+                    expect(res.body.error).toBe(ParamMissingError.Err);
                     done();
                 });
         });
@@ -160,26 +160,26 @@ describe('Users Routes', () => {
                 });
         });
 
-        it(`should return a JSON object with an error message of "${errors.paramMissing}" and a
+        it(`should return a JSON object with an error message of "${ParamMissingError.Err}" and a
             status code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             // Call api
             callApi({})
                 .end((err: Error, res: Response) => {
                     pErr(err);
                     expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(errors.paramMissing);
+                    expect(res.body.error).toBe(ParamMissingError.Err);
                     done();
                 });
         });
 
-        it(`should return a JSON object with the error message of ${userService.errors.userNotFound} 
-            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+        it(`should return a JSON object with the error message of ${UserNotFoundError.Err} 
+            and a status code of "${StatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
             // Call api
             callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
-                    expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(userService.errors.userNotFound);
+                    expect(res.status).toBe(UserNotFoundError.HttpStatus);
+                    expect(res.body.error).toBe(UserNotFoundError.Err);
                     done();
                 });
         });
@@ -226,14 +226,14 @@ describe('Users Routes', () => {
                 });
         });
 
-        it(`should return a JSON object with the error message of ${userService.errors.userNotFound} 
-            and a status code of "${BAD_REQUEST}" if the id was not found.`, (done) => {
+        it(`should return a JSON object with the error message of ${UserNotFoundError.Err} 
+            and a status code of "${StatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
             // Call api
             callApi(-1)
                 .end((err: Error, res: Response) => {
                     pErr(err);
-                    expect(res.status).toBe(BAD_REQUEST);
-                    expect(res.body.error).toBe(userService.errors.userNotFound);
+                    expect(res.status).toBe(StatusCodes.NOT_FOUND);
+                    expect(res.body.error).toBe(UserNotFoundError.Err);
                     done();
                 });
         });

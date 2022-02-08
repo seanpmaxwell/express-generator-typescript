@@ -4,16 +4,16 @@ import path from 'path';
 import helmet from 'helmet';
 
 import express, { NextFunction, Request, Response } from 'express';
-import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
 import apiRouter from './routes/api';
 import logger from 'jet-logger';
+import { CustomError } from '@shared/errors';
+import { StatusCodes } from 'http-status-codes';
 
 
 // Constants
 const app = express();
-const { BAD_REQUEST } = StatusCodes;
 
 
 /***********************************************************************************
@@ -43,10 +43,11 @@ if (process.env.NODE_ENV === 'production') {
 // Add api router
 app.use('/api', apiRouter);
 
-// Setup Error handling
-app.use((err: Error, _: Request, res: Response, __: NextFunction) => {
+// Print API errors
+app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) => {
     logger.err(err, true);
-    return res.status(BAD_REQUEST).json({
+    const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
+    return res.status(status).json({
         error: err.message,
     });
 });

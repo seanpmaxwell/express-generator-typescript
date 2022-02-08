@@ -3,7 +3,7 @@ import HttpStatusCodes from 'http-status-codes';
 
 export class CustomError extends Error {
 
-    public readonly HttpStatus;
+    public readonly HttpStatus: number;
 
     constructor(msg: string, httpStatus?: number) {
         super(msg);
