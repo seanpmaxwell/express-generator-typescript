@@ -21,7 +21,7 @@
   },
   "_moduleAliases": {
     "@services": "dist/services",
-    "@daos": "dist/daos",
+    "@repos": "dist/repos",
     "@entities": "dist/entities",
     "@shared": "dist/shared",
     "@server": "dist/server",

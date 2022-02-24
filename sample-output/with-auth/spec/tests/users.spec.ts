@@ -3,7 +3,7 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import userDao from '@daos/user-dao';
+import userRepo from '@repos/user-repo';
 import User, { IUser } from '@models/user-model';
 import { pErr } from '@shared/functions';
 import { p as userPaths } from '@routes/user-router';
@@ -54,7 +54,7 @@ describe('user-router', () => {
                 User.new('John Smith', 'john.smith@gmail.com'),
                 User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
             ];
-            spyOn(userDao, 'getAll').and.returnValue(Promise.resolve(users));
+            spyOn(userRepo, 'getAll').and.returnValue(Promise.resolve(users));
             // Call API
             callApi()
                 .end((err: Error, res: Response) => {
@@ -76,7 +76,7 @@ describe('user-router', () => {
             "${BAD_REQUEST}" if the request was unsuccessful.`, (done) => {
             // Setup Dummy Data
             const errMsg = 'Could not fetch users.';
-            spyOn(userDao, 'getAll').and.throwError(errMsg);
+            spyOn(userRepo, 'getAll').and.throwError(errMsg);
             // Call API
             callApi()
                 .end((err: Error, res: Response) => {
@@ -101,7 +101,7 @@ describe('user-router', () => {
 
 
         it(`should return a status code of "${CREATED}" if the request was successful.`, (done) => {
-            spyOn(userDao, 'add').and.returnValue(Promise.resolve());
+            spyOn(userRepo, 'add').and.returnValue(Promise.resolve());
             callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
@@ -128,7 +128,7 @@ describe('user-router', () => {
             if the request was unsuccessful.`, (done) => {
             // Setup Dummy Response
             const errMsg = 'Could not add user.';
-            spyOn(userDao, 'add').and.throwError(errMsg);
+            spyOn(userRepo, 'add').and.throwError(errMsg);
             // Call API
             callApi(userData)
                 .end((err: Error, res: Response) => {
@@ -151,8 +151,8 @@ describe('user-router', () => {
         };
 
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
-            spyOn(userDao, 'update').and.returnValue(Promise.resolve());
-            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
+            spyOn(userRepo, 'update').and.returnValue(Promise.resolve());
+            spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
             callApi(userData)
                 .end((err: Error, res: Response) => {
                     pErr(err);
@@ -189,10 +189,10 @@ describe('user-router', () => {
 
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
-            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
+            spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
             // Setup Dummy Data
             const updateErrMsg = 'Could not update user.';
-            spyOn(userDao, 'update').and.throwError(updateErrMsg);
+            spyOn(userRepo, 'update').and.throwError(updateErrMsg);
             // Call API
             callApi(userData)
                 .end((err: Error, res: Response) => {
@@ -213,8 +213,8 @@ describe('user-router', () => {
         };
 
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
-            spyOn(userDao, 'delete').and.returnValue(Promise.resolve());
-            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
+            spyOn(userRepo, 'delete').and.returnValue(Promise.resolve());
+            spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
             callApi(5)
                 .end((err: Error, res: Response) => {
                     pErr(err);
@@ -240,9 +240,9 @@ describe('user-router', () => {
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
             // Setup Dummy Response
-            spyOn(userDao, 'persists').and.returnValue(Promise.resolve(true));
+            spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
             const deleteErrMsg = 'Could not delete user.';
-            spyOn(userDao, 'delete').and.throwError(deleteErrMsg);
+            spyOn(userRepo, 'delete').and.throwError(deleteErrMsg);
             // Call API
             callApi(1)
                 .end((err: Error, res: Response) => {

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { SuperTest, Test } from 'supertest';
 
 import User, { UserRoles } from '@models/user-model';
-import userDao from '@daos/user-dao';
+import userRepo from '@repos/user-repo';
 
 
 export const pwdSaltRounds = 12;
@@ -24,7 +24,7 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
     const role = UserRoles.Admin;
     const pwdHash = bcrypt.hashSync(creds.password, pwdSaltRounds);
     const loginUser = User.new('john smith', creds.email, role, pwdHash);
-    spyOn(userDao, 'getOne').and.returnValue(Promise.resolve(loginUser));
+    spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
     // Call Login API
     beforeAgent
         .post('/api/auth/login')

@@ -1,7 +1,7 @@
 import jsonfile from 'jsonfile';
 
 
-const dbFilePath = 'src/daos/database.json';
+const dbFilePath = 'src/repos/database.json';
 
 
 /**

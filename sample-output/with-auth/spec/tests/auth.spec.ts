@@ -3,7 +3,7 @@ import StatusCodes from 'http-status-codes';
 import supertest, { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
-import userDao from '@daos/user-dao';
+import userRepo from '@repos/user-repo';
 import User, { UserRoles } from '@models/user-model';
 import { cookieProps, p as paths } from '@routes/auth-router';
 import { pErr } from '@shared/functions';
@@ -46,7 +46,7 @@ describe('auth-router', () => {
             const role = UserRoles.Standard;
             const pwdHash = hashPwd(creds.password);
             const loginUser = User.new('john smith', creds.email, role, pwdHash);
-            spyOn(userDao, 'getOne').and.returnValue(Promise.resolve(loginUser));
+            spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
             // Call API
             callApi(creds)
                 .end((err: Error, res: Response) => {
@@ -65,7 +65,7 @@ describe('auth-router', () => {
                 email: 'jsmith@gmail.com',
                 password: 'Password@1',
             };
-            spyOn(userDao, 'getOne').and.returnValue(Promise.resolve(null));
+            spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(null));
             // Call API
             callApi(creds)
                 .end((err: Error, res: Response) => {
@@ -87,7 +87,7 @@ describe('auth-router', () => {
             const role = UserRoles.Standard;
             const pwdHash = hashPwd('Password@1');
             const loginUser = User.new('john smith', creds.email, role, pwdHash);
-            spyOn(userDao, 'getOne').and.returnValue(Promise.resolve(loginUser));
+            spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
             // Call API
             callApi(creds)
                 .end((err: Error, res: Response) => {
@@ -106,7 +106,7 @@ describe('auth-router', () => {
                 email: 'jsmith@gmail.com',
                 password: 'someBadPassword',
             };
-            spyOn(userDao, 'getOne').and.throwError('Database query failed.');
+            spyOn(userRepo, 'getOne').and.throwError('Database query failed.');
             // Call API
             callApi(creds)
                 .end((err: Error, res: Response) => {

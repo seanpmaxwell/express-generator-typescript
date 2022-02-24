@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import userDao from '@daos/user-dao';
+import userRepo from '@repos/user-repo';
 import jwtUtil from '@util/jwt-util';
 import { UnauthorizedError } from '@shared/errors';
 
@@ -15,7 +15,7 @@ import { UnauthorizedError } from '@shared/errors';
  */
 async function login(email: string, password: string): Promise<string> {
     // Fetch user
-    const user = await userDao.getOne(email);
+    const user = await userRepo.getOne(email);
     if (!user) {
         throw new UnauthorizedError();
     }

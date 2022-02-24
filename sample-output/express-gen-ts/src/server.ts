@@ -57,7 +57,7 @@ app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) 
  *                                  Front-end content
  **********************************************************************************/
 
-// Set viesw dir
+// Set views dir
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 
