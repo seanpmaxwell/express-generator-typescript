@@ -1,4 +1,4 @@
-import userDao from '@daos/user-dao';
+import userRepo from '@repos/user-repo';
 import { IUser } from '@models/user-model';
 import { UserNotFoundError } from '@shared/errors';
 
@@ -10,7 +10,7 @@ import { UserNotFoundError } from '@shared/errors';
  * @returns 
  */
 function getAll(): Promise<IUser[]> {
-    return userDao.getAll();
+    return userRepo.getAll();
 }
 
 
@@ -21,7 +21,7 @@ function getAll(): Promise<IUser[]> {
  * @returns 
  */
 function addOne(user: IUser): Promise<void> {
-    return userDao.add(user);
+    return userRepo.add(user);
 }
 
 
@@ -32,11 +32,11 @@ function addOne(user: IUser): Promise<void> {
  * @returns 
  */
 async function updateOne(user: IUser): Promise<void> {
-    const persists = await userDao.persists(user.id);
+    const persists = await userRepo.persists(user.id);
     if (!persists) {
         throw new UserNotFoundError();
     }
-    return userDao.update(user);
+    return userRepo.update(user);
 }
 
 
@@ -47,11 +47,11 @@ async function updateOne(user: IUser): Promise<void> {
  * @returns 
  */
 async function deleteOne(id: number): Promise<void> {
-    const persists = await userDao.persists(id);
+    const persists = await userRepo.persists(id);
     if (!persists) {
         throw new UserNotFoundError();
     }
-    return userDao.delete(id);
+    return userRepo.delete(id);
 }
 
 
