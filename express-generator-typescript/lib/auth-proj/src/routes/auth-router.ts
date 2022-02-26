@@ -48,7 +48,6 @@ router.post(p.login, async (req: Request, res: Response) => {
     return res.status(OK).end();
 });
 
-
 /**
  * Logout the user.
  */

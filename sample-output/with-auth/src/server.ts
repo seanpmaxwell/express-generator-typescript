@@ -34,6 +34,9 @@ if (process.env.NODE_ENV === 'production') {
     app.use(helmet());
 }
 
+
+// #### Add API Routes ##### //
+
 // Add APIs
 app.use('/api', BaseRouter);
 
