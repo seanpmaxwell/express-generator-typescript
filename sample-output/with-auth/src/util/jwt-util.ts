@@ -11,16 +11,12 @@ const errors = {
 const secret = (process.env.JWT_SECRET || randomString.generate(100)),
     options = {expiresIn: process.env.COOKIE_EXP};
 
-
 // Types
 type TDecoded = string | JwtPayload | undefined;
 
 
-
 /**
  * Encrypt data and return jwt.
- *
- * @param data
  */
 function sign(data: JwtPayload): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -30,11 +26,8 @@ function sign(data: JwtPayload): Promise<string> {
     });
 }
 
-
 /**
  * Decrypt JWT and extract client data.
- *
- * @param jwt
  */
 function decode(jwt: string): Promise<TDecoded> {
     return new Promise((res, rej) => {
@@ -43,7 +36,6 @@ function decode(jwt: string): Promise<TDecoded> {
         });
     });
 }
-
 
 
 // Export default

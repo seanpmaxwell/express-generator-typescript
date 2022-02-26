@@ -5,13 +5,8 @@ import jwtUtil from '@util/jwt-util';
 import { UnauthorizedError } from '@shared/errors';
 
 
-
 /**
  * Login()
- * 
- * @param email 
- * @param password 
- * @returns 
  */
 async function login(email: string, password: string): Promise<string> {
     // Fetch user
