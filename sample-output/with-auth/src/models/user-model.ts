@@ -12,15 +12,8 @@ export interface IUser {
     role: UserRoles;
 }
 
-
 /**
  * Get a new User object.
- * 
- * @param name 
- * @param email 
- * @param role 
- * @param pwdHash 
- * @returns 
  */
 function getNew(
     name: string,
@@ -37,12 +30,8 @@ function getNew(
     };
 }
 
-
 /**
  * Copy a user object.
- * 
- * @param user 
- * @returns 
  */
 function copy(user: IUser): IUser {
     return {
@@ -53,7 +42,6 @@ function copy(user: IUser): IUser {
         pwdHash: user.pwdHash,
     }
 }
-
 
 // Export default
 export default {

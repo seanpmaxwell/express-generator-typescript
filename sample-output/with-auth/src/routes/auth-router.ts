@@ -29,7 +29,6 @@ export const cookieProps = Object.freeze({
     },
 });
 
-
 /**
  * Login a user.
  */
@@ -48,7 +47,6 @@ router.post(p.login, async (req: Request, res: Response) => {
     return res.status(OK).end();
 });
 
-
 /**
  * Logout the user.
  */
@@ -57,7 +55,6 @@ router.get(p.logout, (_: Request, res: Response) => {
     res.clearCookie(key, options);
     return res.status(OK).end();
 });
-
 
 // Export router
 export default router;

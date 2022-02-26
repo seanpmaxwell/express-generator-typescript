@@ -13,11 +13,6 @@ const jwtNotPresentErr = 'JWT not present in signed cookie.';
 
 /**
  * Middleware to verify if user is an admin.
- * 
- * @param req 
- * @param res 
- * @param next 
- * @returns 
  */
 export async function adminMw(req: Request, res: Response, next: NextFunction) {
     try {

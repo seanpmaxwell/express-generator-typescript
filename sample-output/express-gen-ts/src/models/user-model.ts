@@ -9,8 +9,6 @@ export interface IUser {
 
 /**
  * Get a new User object.
- * 
- * @returns 
  */
 function getNew(name: string, email: string): IUser {
     return {
@@ -20,12 +18,8 @@ function getNew(name: string, email: string): IUser {
     };
 }
 
-
 /**
  * Copy a user object.
- * 
- * @param user 
- * @returns 
  */
 function copy(user: IUser): IUser {
     return {
