@@ -16,7 +16,7 @@ import { CustomError } from '@shared/errors';
 const app = express();
 
 
-// #### Set basic express settings ##### //
+// **** Set basic express settings ****# //
 
 // Common middlewares
 app.use(express.json());
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-// #### Add API Routes ##### //
+// **** Add API Routes ****# //
 
 // Add api router
 app.use('/api', apiRouter);
@@ -49,7 +49,7 @@ app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) 
 });
 
 
-// #### Serve front-end content #### //
+// **** Serve front-end content **** //
 
 // Set views dir
 const viewsDir = path.join(__dirname, 'views');
