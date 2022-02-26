@@ -11,7 +11,6 @@ export abstract class CustomError extends Error {
     }
 }
 
-
 export class ParamMissingError extends CustomError {
 
     public static readonly Msg = 'One or more of the required parameters was missing.';
@@ -22,7 +21,6 @@ export class ParamMissingError extends CustomError {
     }
 }
 
-
 export class UserNotFoundError extends CustomError {
 
     public static readonly Msg = 'A user with the given id does not exists in the database.';
@@ -32,7 +30,6 @@ export class UserNotFoundError extends CustomError {
         super(UserNotFoundError.Msg, UserNotFoundError.HttpStatus);
     }
 }
-
 
 export class UnauthorizedError extends CustomError {
 
