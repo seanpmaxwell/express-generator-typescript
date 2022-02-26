@@ -12,13 +12,12 @@ import logger from 'jet-logger';
 import { cookieProps } from '@routes/auth-router';
 import { CustomError } from '@shared/errors';
 
+
+// Constants
 const app = express();
 
 
-
-/************************************************************************************
- *                              Set basic express settings
- ***********************************************************************************/
+// **** Set basic express settings **** //
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -34,6 +33,9 @@ if (process.env.NODE_ENV === 'production') {
     app.use(helmet());
 }
 
+
+// **** Add API routes **** //
+
 // Add APIs
 app.use('/api', BaseRouter);
 
@@ -47,10 +49,7 @@ app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) 
 });
 
 
-
-/************************************************************************************
- *                              Serve front-end content
- ***********************************************************************************/
+// **** Serve front-end content **** //
 
 // Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');
@@ -76,9 +75,5 @@ app.get('/users', (req: Request, res: Response) => {
 });
 
 
-
-/************************************************************************************
- *                              Export Server
- ***********************************************************************************/
-
+// Export default
 export default app;

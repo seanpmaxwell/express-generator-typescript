@@ -35,16 +35,13 @@ describe('user-router', () => {
     });
 
 
-    /***********************************************************************************
-     *                                    Test Get
-     **********************************************************************************/
+    // **** Test Get **** //
 
      describe(`"GET:${getUsersPath}"`, () => {
 
         const callApi = () => {
             return agent.get(getUsersPath).set('Cookie', jwtCookie);
         };
-
 
         it(`should return a JSON object with all the users and a status code of "${OK}" if the
             request was successful.`, (done) => {
@@ -71,7 +68,6 @@ describe('user-router', () => {
                 });
         });
 
-
         it(`should return a JSON object containing an error message and a status code of
             "${BAD_REQUEST}" if the request was unsuccessful.`, (done) => {
             // Setup Dummy Data
@@ -89,16 +85,17 @@ describe('user-router', () => {
     });
 
 
-    describe(`"POST:${addUsersPath}"`, () => {
+    // **** Test POST **** //
 
+    describe(`"POST:${addUsersPath}"`, () => {
+        //
         const callApi = (reqBody: TReqBody) => {
             return agent.post(addUsersPath).set('Cookie', jwtCookie).type('form').send(reqBody);
         };
-
+        //
         const userData = {
             user: User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
         };
-
 
         it(`should return a status code of "${CREATED}" if the request was successful.`, (done) => {
             spyOn(userRepo, 'add').and.returnValue(Promise.resolve());
@@ -111,7 +108,6 @@ describe('user-router', () => {
                 });
         });
 
-
         it(`should return a JSON object with an error message of "${ParamMissingError.Msg}" and a status
             code of "${BAD_REQUEST}" if the user param was missing.`, (done) => {
             callApi({})
@@ -122,7 +118,6 @@ describe('user-router', () => {
                     done();
                 });
         });
-
 
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
@@ -140,6 +135,8 @@ describe('user-router', () => {
         });
     });
 
+
+    // **** Test PUT **** //
 
     describe(`"PUT:${updateUserPath}"`, () => {
 
@@ -186,7 +183,6 @@ describe('user-router', () => {
                 });
         });
 
-
         it(`should return a JSON object with an error message and a status code of "${BAD_REQUEST}"
             if the request was unsuccessful.`, (done) => {
             spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
@@ -204,6 +200,8 @@ describe('user-router', () => {
         });
     });
 
+
+    // **** Test Delete **** //
 
     describe(`"DELETE:${deleteUserPath}"`, () => {
 
