@@ -5,9 +5,11 @@ import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
 
 
+// **** Types/Constants **** //
+
 // Constants
-const router = Router();
-const { CREATED, OK } = StatusCodes;
+const router = Router(),
+    { CREATED, OK } = StatusCodes;
 
 // Paths
 export const p = {
@@ -17,6 +19,8 @@ export const p = {
     delete: '/delete/:id',
 } as const;
 
+
+// **** Functions **** //
 
 /**
  * Get all users.
