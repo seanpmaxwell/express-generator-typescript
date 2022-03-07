@@ -1,26 +1,32 @@
 import randomString from 'randomstring';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
+import envVars from '../shared/env-vars';
 
+
+// **** Types/Constants **** //
 
 // Errors
 const errors = {
     validation: 'JSON-web-token validation failed.',
 } as const;
 
-// Constants
-const secret = (process.env.JWT_SECRET || randomString.generate(100)),
-    options = {expiresIn: process.env.COOKIE_EXP};
+// Options
+const options = {
+    expiresIn: envVars.jwt.exp,
+};
 
 // Types
 type TDecoded = string | JwtPayload | undefined;
 
+
+// **** Functions **** //
 
 /**
  * Encrypt data and return jwt.
  */
 function sign(data: JwtPayload): Promise<string> {
     return new Promise((resolve, reject) => {
-        jsonwebtoken.sign(data, secret, options, (err, token) => {
+        jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
             err ? reject(err) : resolve(token || '');
         });
     });
@@ -31,7 +37,7 @@ function sign(data: JwtPayload): Promise<string> {
  */
 function decode(jwt: string): Promise<TDecoded> {
     return new Promise((res, rej) => {
-        jsonwebtoken.verify(jwt, secret, (err, decoded) => {
+        jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
             return err ? rej(errors.validation) : res(decoded);
         });
     });
@@ -42,4 +48,4 @@ function decode(jwt: string): Promise<TDecoded> {
 export default {
     sign,
     decode,
-}
+};

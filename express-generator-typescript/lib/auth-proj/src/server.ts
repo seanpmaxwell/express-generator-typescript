@@ -9,8 +9,8 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { cookieProps } from '@routes/auth-router';
 import { CustomError } from '@shared/errors';
+import envVars from './shared/env-vars';
 
 
 // Constants
@@ -21,15 +21,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser(cookieProps.secret));
+app.use(cookieParser(envVars.cookieProps.secret));
 
 // Show routes called in console during development
-if (process.env.NODE_ENV === 'development') {
+if (envVars.nodeEnv === 'development') {
     app.use(morgan('dev'));
 }
 
 // Security
-if (process.env.NODE_ENV === 'production') {
+if (envVars.nodeEnv === 'production') {
     app.use(helmet());
 }
 
@@ -66,7 +66,7 @@ app.get('/', (_: Request, res: Response) => {
 
 // Redirect to login if not logged in.
 app.get('/users', (req: Request, res: Response) => {
-    const jwt = req.signedCookies[cookieProps.key];
+    const jwt = req.signedCookies[envVars.cookieProps.key];
     if (!jwt) {
         res.redirect('/');
     } else {
