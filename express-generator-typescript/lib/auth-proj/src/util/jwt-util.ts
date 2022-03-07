@@ -1,4 +1,3 @@
-import randomString from 'randomstring';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import envVars from '../shared/env-vars';
 
