@@ -6,7 +6,7 @@ import { ParamMissingError } from '@shared/errors';
 import envVars from 'src/pre-start/env/env-vars';
 
 
-// **** Types/Constants **** //
+// **** Constants **** //
 
 // Misc
 const router = Router(),
