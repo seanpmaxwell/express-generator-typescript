@@ -2,7 +2,7 @@ import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import envVars from '../shared/env-vars';
 
 
-// **** Types/Constants **** //
+// **** Constants **** //
 
 // Errors
 const errors = {
@@ -14,7 +14,9 @@ const options = {
     expiresIn: envVars.jwt.exp,
 };
 
-// Types
+
+// **** Types **** //
+
 type TDecoded = string | JwtPayload | undefined;
 
 

@@ -5,9 +5,9 @@ import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
 
 
-// **** Types/Constants **** //
+// **** Constants **** //
 
-// Constants
+// Misc
 const router = Router(),
     { CREATED, OK } = StatusCodes;
 
