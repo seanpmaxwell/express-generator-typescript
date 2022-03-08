@@ -1,7 +1,7 @@
 import jsonfile from 'jsonfile';
 
 
-// **** Constants **** //
+// **** Vars/Constants **** //
 
 const dbFilePath = 'src/repos/database.json';
 
