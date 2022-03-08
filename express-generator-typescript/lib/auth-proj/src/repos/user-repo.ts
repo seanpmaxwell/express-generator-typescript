@@ -3,6 +3,8 @@ import { getRandomInt } from '@shared/functions';
 import orm from './mock-orm';
 
 
+// **** Functions **** //
+
 /**
  * Get one user.
  */

@@ -2,14 +2,18 @@ import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 
 import { UserRoles } from '@models/user-model';
-import { cookieProps } from '@routes/auth-router';
+import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
 
 
-// Constants
-const { UNAUTHORIZED } = StatusCodes;
-const jwtNotPresentErr = 'JWT not present in signed cookie.';
+// **** Constants **** //
 
+// Misc
+const { UNAUTHORIZED } = StatusCodes,
+    jwtNotPresentErr = 'JWT not present in signed cookie.';
+
+
+// **** Functions **** //
 
 /**
  * Middleware to verify if user is an admin.
@@ -17,7 +21,7 @@ const jwtNotPresentErr = 'JWT not present in signed cookie.';
 export async function adminMw(req: Request, res: Response, next: NextFunction) {
     try {
         // Get json-web-token
-        const jwt = req.signedCookies[cookieProps.key];
+        const jwt = req.signedCookies[envVars.cookieProps.key];
         if (!jwt) {
             throw Error(jwtNotPresentErr);
         }
