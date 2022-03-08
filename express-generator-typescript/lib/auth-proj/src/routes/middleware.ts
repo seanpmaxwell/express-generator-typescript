@@ -6,7 +6,7 @@ import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
 
 
-// **** Constants **** //
+// **** Vars/Constants **** //
 
 // Misc
 const { UNAUTHORIZED } = StatusCodes,

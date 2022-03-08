@@ -2,7 +2,7 @@ import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import envVars from '../shared/env-vars';
 
 
-// **** Constants **** //
+// **** Vars/Constants **** //
 
 // Errors
 const errors = {
