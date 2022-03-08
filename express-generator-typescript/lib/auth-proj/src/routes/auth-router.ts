@@ -3,7 +3,7 @@ import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
 import { ParamMissingError } from '@shared/errors';
-import envVars from 'src/pre-start/env/env-vars';
+import envVars from 'src/shared/env-vars';
 
 
 // **** Constants **** //

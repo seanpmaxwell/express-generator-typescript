@@ -1,3 +1,4 @@
+// **** Types **** //
 
 export enum UserRoles {
     Standard,
@@ -12,6 +13,8 @@ export interface IUser {
     role: UserRoles;
 }
 
+
+// **** Functions **** //
 
 /**
  * Get a new User object.

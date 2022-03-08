@@ -1,9 +1,12 @@
 import jsonfile from 'jsonfile';
 
 
-// Constants
+// **** Constants **** //
+
 const dbFilePath = 'src/repos/database.json';
 
+
+// **** Functions **** //
 
 /**
  * Fetch the json from the file.
