@@ -2,12 +2,12 @@
   "name": "with-auth",
   "version": "0.0.0",
   "scripts": {
-    "build": "ts-node build.ts",
+    "build": "npx ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start": "node -r module-alias/register ./dist --env=production",
     "start:dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "ts-node --files -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec"
   },
   "nodemonConfig": {
     "watch": [
@@ -17,7 +17,7 @@
     "ignore": [
       "src/public"
     ],
-    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
+    "exec": "npx ts-node --files -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@services": "dist/services",
