@@ -12,7 +12,8 @@ import logger from 'jet-logger';
 import { CustomError } from '@shared/errors';
 
 
-// Constants
+// **** Variables **** //
+
 const app = express();
 
 
@@ -25,12 +26,12 @@ app.use(cookieParser());
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // Security (helmet recommended in express docs)
 if (process.env.NODE_ENV === 'production') {
-    app.use(helmet());
+  app.use(helmet());
 }
 
 
@@ -41,11 +42,11 @@ app.use('/api', apiRouter);
 
 // Error handling
 app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) => {
-    logger.err(err, true);
-    const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
-    return res.status(status).json({
-        error: err.message,
-    });
+  logger.err(err, true);
+  const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
+  return res.status(status).json({
+    error: err.message,
+  });
 });
 
 
@@ -61,9 +62,10 @@ app.use(express.static(staticDir));
 
 // Serve index.html file
 app.get('*', (_: Request, res: Response) => {
-    res.sendFile('index.html', {root: viewsDir});
+  res.sendFile('index.html', {root: viewsDir});
 });
 
 
-// Export here and start in a diff file (for testing).
+// **** Export default **** //
+
 export default app;
