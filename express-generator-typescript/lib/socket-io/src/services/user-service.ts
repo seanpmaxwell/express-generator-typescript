@@ -3,62 +3,50 @@ import { IUser } from '@models/user-model';
 import { UserNotFoundError } from '@shared/errors';
 
 
+// **** Functions **** //
 
 /**
  * Get all users.
- * 
- * @returns 
  */
 function getAll(): Promise<IUser[]> {
-    return userRepo.getAll();
+  return userRepo.getAll();
 }
 
-
 /**
- * Add one user.
- * 
- * @param user 
- * @returns 
+ * Add one user
  */
 function addOne(user: IUser): Promise<void> {
-    return userRepo.add(user);
+  return userRepo.add(user);
 }
-
 
 /**
- * Update one user.
- * 
- * @param user 
- * @returns 
+ * Update one user
  */
 async function updateOne(user: IUser): Promise<void> {
-    const persists = await userRepo.persists(user.id);
-    if (!persists) {
-        throw new UserNotFoundError();
-    }
-    return userRepo.update(user);
+  const persists = await userRepo.persists(user.id);
+  if (!persists) {
+    throw new UserNotFoundError();
+  }
+  return userRepo.update(user);
 }
-
 
 /**
  * Delete a user by their id.
- * 
- * @param id 
- * @returns 
  */
-async function deleteOne(id: number): Promise<void> {
-    const persists = await userRepo.persists(id);
-    if (!persists) {
-        throw new UserNotFoundError();
-    }
-    return userRepo.delete(id);
+async function _delete(id: number): Promise<void> {
+  const persists = await userRepo.persists(id);
+  if (!persists) {
+    throw new UserNotFoundError();
+  }
+  return userRepo.delete(id);
 }
 
 
-// Export default
+// **** Export default **** //
+
 export default {
-    getAll,
-    addOne,
-    updateOne,
-    delete: deleteOne,
+  getAll,
+  addOne,
+  updateOne,
+  delete: _delete,
 } as const;

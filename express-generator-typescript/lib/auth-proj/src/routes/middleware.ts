@@ -6,11 +6,10 @@ import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
 
 
-// **** Vars/Constants **** //
+// **** Variables **** //
 
-// Misc
-const { UNAUTHORIZED } = StatusCodes,
-    jwtNotPresentErr = 'JWT not present in signed cookie.';
+const { UNAUTHORIZED } = StatusCodes;
+const jwtNotPresentErr = 'JWT not present in signed cookie.';
 
 
 // **** Functions **** //
@@ -19,23 +18,23 @@ const { UNAUTHORIZED } = StatusCodes,
  * Middleware to verify if user is an admin.
  */
 export async function adminMw(req: Request, res: Response, next: NextFunction) {
-    try {
-        // Get json-web-token
-        const jwt = req.signedCookies[envVars.cookieProps.key];
-        if (!jwt) {
-            throw Error(jwtNotPresentErr);
-        }
-        // Make sure user role is an admin
-        const clientData = await jwtUtil.decode(jwt);
-        if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
-            res.locals.sessionUser = clientData;
-            next();
-        } else {
-            throw Error(jwtNotPresentErr);
-        }
-    } catch (err) {
-        return res.status(UNAUTHORIZED).json({
-            error: err.message,
-        });
+  try {
+    // Get json-web-token
+    const jwt = req.signedCookies[envVars.cookieProps.key];
+    if (!jwt) {
+      throw Error(jwtNotPresentErr);
     }
+    // Make sure user role is an admin
+    const clientData = await jwtUtil.decode(jwt);
+    if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
+      res.locals.sessionUser = clientData;
+      next();
+    } else {
+      throw Error(jwtNotPresentErr);
+    }
+  } catch (err) {
+    return res.status(UNAUTHORIZED).json({
+      error: err.message,
+    });
+  }
 };

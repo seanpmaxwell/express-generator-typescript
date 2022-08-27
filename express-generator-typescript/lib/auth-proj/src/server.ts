@@ -10,10 +10,11 @@ import 'express-async-errors';
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
 import { CustomError } from '@shared/errors';
-import envVars from './shared/env-vars';
+import envVars from '@shared/env-vars';
 
 
-// Constants
+// **** Init express **** //
+
 const app = express();
 
 
@@ -25,12 +26,12 @@ app.use(cookieParser(envVars.cookieProps.secret));
 
 // Show routes called in console during development
 if (envVars.nodeEnv === 'development') {
-    app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // Security
 if (envVars.nodeEnv === 'production') {
-    app.use(helmet());
+  app.use(helmet());
 }
 
 
@@ -41,11 +42,11 @@ app.use('/api', BaseRouter);
 
 // Error handling
 app.use((err: Error | CustomError, _: Request, res: Response, __: NextFunction) => {
-    logger.err(err, true);
-    const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
-    return res.status(status).json({
-        error: err.message,
-    });
+  logger.err(err, true);
+  const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
+  return res.status(status).json({
+    error: err.message,
+  });
 });
 
 
@@ -61,19 +62,20 @@ app.use(express.static(staticDir));
 
 // Nav to login pg by default
 app.get('/', (_: Request, res: Response) => {
-    res.sendFile('login.html', {root: viewsDir});
+  res.sendFile('login.html', {root: viewsDir});
 });
 
 // Redirect to login if not logged in.
 app.get('/users', (req: Request, res: Response) => {
-    const jwt = req.signedCookies[envVars.cookieProps.key];
-    if (!jwt) {
-        res.redirect('/');
-    } else {
-        res.sendFile('users.html', {root: viewsDir});
-    }
+  const jwt = req.signedCookies[envVars.cookieProps.key];
+  if (!jwt) {
+    res.redirect('/');
+  } else {
+    res.sendFile('users.html', {root: viewsDir});
+  }
 });
 
 
-// Export default
+// **** Export default **** //
+
 export default app;

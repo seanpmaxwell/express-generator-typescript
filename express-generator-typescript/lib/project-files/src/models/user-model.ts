@@ -1,43 +1,41 @@
+// **** Types **** //
 
 // User schema
 export interface IUser {
-    id: number;
-    name: string;
-    email: string;
+  id: number;
+  name: string;
+  email: string;
 }
 
+
+// **** Functions **** //
 
 /**
  * Get a new User object.
- * 
- * @returns 
  */
-function getNew(name: string, email: string): IUser {
-    return {
-        id: -1,
-        email,
-        name,
-    };
+function _new(name: string, email: string): IUser {
+  return {
+    id: -1,
+    email,
+    name,
+  };
 }
-
 
 /**
  * Copy a user object.
- * 
- * @param user 
- * @returns 
  */
 function copy(user: IUser): IUser {
-    return {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-    }
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+  };
 }
 
 
-// Export default
+// **** Export default **** //
+
 export default {
-    new: getNew,
-    copy,
-}
+  new: _new,
+  copy,
+};

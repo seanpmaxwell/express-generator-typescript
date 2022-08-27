@@ -5,36 +5,34 @@ import jwtUtil from '@util/jwt-util';
 import { UnauthorizedError } from '@shared/errors';
 
 
+// **** Functions **** //
 
 /**
- * Login()
- * 
- * @param email 
- * @param password 
- * @returns 
+ * Login
  */
 async function login(email: string, password: string): Promise<string> {
-    // Fetch user
-    const user = await userRepo.getOne(email);
-    if (!user) {
-        throw new UnauthorizedError();
-    }
-    // Check password
-    const pwdPassed = await bcrypt.compare(password, user.pwdHash);
-    if (!pwdPassed) {
-        throw new UnauthorizedError();
-    }
-    // Setup Admin Cookie
-    return jwtUtil.sign({
-        id: user.id,
-        email: user.name,
-        name: user.name,
-        role: user.role,
-    });
+  // Fetch user
+  const user = await userRepo.getOne(email);
+  if (!user) {
+    throw new UnauthorizedError();
+  }
+  // Check password
+  const pwdPassed = await bcrypt.compare(password, user.pwdHash);
+  if (!pwdPassed) {
+    throw new UnauthorizedError();
+  }
+  // Setup Admin Cookie
+  return jwtUtil.sign({
+    id: user.id,
+    email: user.name,
+    name: user.name,
+    role: user.role,
+  });
 }
 
 
-// Export default
+// **** Export default **** //
+
 export default {
-    login,
+  login,
 } as const;
