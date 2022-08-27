@@ -1,7 +1,7 @@
 // ***** Fetch and display users **** //
 
 // Fetch all users
-Http.Get('/api/users/all')
+Http.get('/api/users/all')
   .then(resp => resp.json())
   .then((resp) => {
     var allUsers = resp.users;
