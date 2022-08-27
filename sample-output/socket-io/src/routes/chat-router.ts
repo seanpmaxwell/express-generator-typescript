@@ -60,6 +60,7 @@ router.post(p.emit, (req: Request, res: Response) => {
   }
   // Connect
   chatService.emitMessage(socket, message, sessionUser.name);
+  console.log(sessionUser)
   // Return
   return res.status(OK).json({
     senderName: sessionUser.name,
