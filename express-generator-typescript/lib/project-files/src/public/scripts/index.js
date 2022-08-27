@@ -1,18 +1,28 @@
+// ***** Start **** //
+
+displayUsers();
+
+
 // **** Fetch and display users **** //
 
-// Call api
-httpGet('/api/users/all')
-  .then(response => response.json())
-  .then((response) => {
-    var allUsers = response.users;
-    // Empty the anchor
-    var allUsersAnchor = document.getElementById('all-users-anchor');
-    allUsersAnchor.innerHTML = '';
-    // Append users to anchor
-    allUsers.forEach((user) => {
-      allUsersAnchor.innerHTML += getUserDisplayEle(user);
+/**
+ * Call api
+ */
+function displayUsers() {
+  Http
+    .get('/api/users/all')
+    .then(resp => resp.json())
+    .then((resp) => {
+      var allUsers = resp.users;
+      // Empty the anchor
+      var allUsersAnchor = document.getElementById('all-users-anchor');
+      allUsersAnchor.innerHTML = '';
+      // Append users to anchor
+      allUsers.forEach((user) => {
+        allUsersAnchor.innerHTML += getUserDisplayEle(user);
+      });
     });
-  });
+}
 
 /**
  * Get the user display element

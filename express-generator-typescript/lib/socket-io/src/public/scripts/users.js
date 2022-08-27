@@ -1,19 +1,28 @@
+// ***** Start **** //
+
+displayUsers();
+
+
 // **** Fetch and display users **** //
 
-// Call api
-Http
-  .get('/api/users/all')
-  .then(resp => resp.json())
-  .then((resp) => {
-    var allUsers = resp.users;
-    // Empty the anchor
-    var allUsersAnchor = document.getElementById('all-users-anchor');
-    allUsersAnchor.innerHTML = '';
-    // Append users to anchor
-    allUsers.forEach((user) => {
-      allUsersAnchor.innerHTML += getUserDisplayEle(user);
+/**
+ * Call api
+ */
+function displayUsers() {
+  Http
+    .get('/api/users/all')
+    .then(resp => resp.json())
+    .then((resp) => {
+      var allUsers = resp.users;
+      // Empty the anchor
+      var allUsersAnchor = document.getElementById('all-users-anchor');
+      allUsersAnchor.innerHTML = '';
+      // Append users to anchor
+      allUsers.forEach((user) => {
+        allUsersAnchor.innerHTML += getUserDisplayEle(user);
+      });
     });
-  });
+}
 
 /**
  * Get user display element.
@@ -125,9 +134,7 @@ function submitEdit(ele) {
   };
 	Http
     .put('/api/users/update', data)
-    .then(() => {
-        displayUsers();
-    });
+    .then(() => displayUsers());
 }
 
 /**
