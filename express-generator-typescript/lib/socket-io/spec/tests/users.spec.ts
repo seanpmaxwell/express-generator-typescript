@@ -94,7 +94,7 @@ describe('user-router', () => {
 
     // Get all users
     it(msgs.getUsersSuccess, (done) => {
-      const ret = Promise.resolve(dummyGetAllUsers);
+      const ret = Promise.resolve([...dummyGetAllUsers]);
       spyOn(userRepo, 'getAll').and.returnValue(ret);
       // Call API
       callApi().end((err: Error, res: Response) => {
