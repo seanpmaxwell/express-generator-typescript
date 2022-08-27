@@ -1,32 +1,31 @@
 import jsonfile from 'jsonfile';
 
 
+// **** Variables **** //
+
 const dbFilePath = 'src/repos/database.json';
 
 
+// **** Functions **** //
+
 /**
  * Fetch the json from the file.
- * 
- * @returns 
  */
 function openDb(): Promise<Record<string, any>> {
-    return jsonfile.readFile(dbFilePath);
+  return jsonfile.readFile(dbFilePath);
 }
-
 
 /**
  * Update the file.
- * 
- * @param db 
- * @returns 
  */
 function saveDb(db: Record<string, any>): Promise<void> {
-    return jsonfile.writeFile(dbFilePath, db);
+  return jsonfile.writeFile(dbFilePath, db);
 }
 
 
-// Export default
+// **** Export default **** //
+
 export default {
-    openDb,
-    saveDb,
+  openDb,
+  saveDb,
 } as const;

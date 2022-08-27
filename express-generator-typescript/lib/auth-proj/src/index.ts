@@ -6,9 +6,9 @@ import server from './server';
 
 // Constants
 const serverStartMsg = 'Express server started on port: ',
-        port = (envVars.port || 3000);
+  port = (envVars.port || 3000);
 
 // Start server
 server.listen(port, () => {
-    logger.info(serverStartMsg + port);
+  logger.info(serverStartMsg + port);
 });
