@@ -10,7 +10,7 @@ import 'express-async-errors';
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
 import { CustomError } from '@shared/errors';
-import envVars from './shared/env-vars';
+import envVars from '@shared/env-vars';
 
 
 // **** Init express **** //

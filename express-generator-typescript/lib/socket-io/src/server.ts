@@ -11,7 +11,7 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { cookieProps } from '@routes/auth-router';
+import envVars from '@shared/env-vars';
 import { CustomError } from '@shared/errors';
 
 
@@ -24,15 +24,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser(cookieProps.secret));
+app.use(cookieParser(envVars.cookieProps.secret));
 
 // Show routes called in console during development
-if (process.env.NODE_ENV === 'development') {
+if (envVars.nodeEnv === 'development') {
   app.use(morgan('dev'));
 }
 
 // Security
-if (process.env.NODE_ENV === 'production') {
+if (envVars.nodeEnv === 'production') {
   app.use(helmet());
 }
 
@@ -63,7 +63,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // Users page
 app.get('/users', (req: Request, res: Response) => {
-  const jwt = req.signedCookies[cookieProps.key];
+  const jwt = req.signedCookies[envVars.cookieProps.key];
   if (!jwt) {
     return res.redirect('/');
   } else {
@@ -73,7 +73,7 @@ app.get('/users', (req: Request, res: Response) => {
 
 // Chat page
 app.get('/chat', (req: Request, res: Response) => {
-  const jwt = req.signedCookies[cookieProps.key];
+  const jwt = req.signedCookies[envVars.cookieProps.key];
   if (!jwt) {
     return res.redirect('/');
   } else {

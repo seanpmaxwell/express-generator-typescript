@@ -4,8 +4,9 @@ import supertest, { SuperTest, Test, Response } from 'supertest';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
+import envVars from '@shared/env-vars';
 import User, { UserRoles } from '@models/user-model';
-import { cookieProps, p as paths } from '@routes/auth-router';
+import { p as paths } from '@routes/auth-router';
 import { pErr } from '@shared/functions';
 import { pwdSaltRounds } from 'spec/support/login-agent';
 import { UnauthorizedError } from '@shared/errors';
@@ -73,7 +74,7 @@ describe('auth-router', () => {
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(OK);
-          expect(res.headers['set-cookie'][0]).toContain(cookieProps.key);
+          expect(res.headers['set-cookie'][0]).toContain(envVars.cookieProps.key);
           done();
         });
     });
