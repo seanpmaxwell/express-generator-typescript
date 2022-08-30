@@ -19,7 +19,7 @@ export const p = {
 } as const;
 
 
-// **** Functions **** //
+// **** Routes **** //
 
 /**
  * Connect to socket room.

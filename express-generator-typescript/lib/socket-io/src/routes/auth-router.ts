@@ -32,7 +32,7 @@ export const cookieProps = Object.freeze({
 });
 
 
-// **** Functions **** //
+// **** Routes **** //
 
 /**
  * Login a user.

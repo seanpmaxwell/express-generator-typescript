@@ -88,7 +88,7 @@ $ cd "project name" && npm run start:dev
 
 ## Available commands for the server.
 
-- Run the server in development mode: `npm run start:dev`.
+- Run the server in development mode: `npm run dev`.
 - Run all unit-tests with hot-reloading: `npm test`.
 - Run a single unit-test: `npm test -- --testFile="name of test file" (i.e. --testFile=Users)`.
 - Run all unit-tests without hot-reloading: `npm run test:no-reloading`

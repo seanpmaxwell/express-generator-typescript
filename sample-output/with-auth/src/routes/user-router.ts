@@ -20,7 +20,7 @@ export const p = {
 } as const;
 
 
-// **** Functions **** //
+// **** Routes **** //
 
 /**
  * Get all users.
