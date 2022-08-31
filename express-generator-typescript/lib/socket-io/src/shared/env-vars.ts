@@ -1,9 +1,9 @@
 export default {
-  nodeEnv: process.env.NODE_ENV ?? '',
-  port: process.env.PORT ?? 0,
+  nodeEnv: (process.env.NODE_ENV ?? ''),
+  port: (process.env.PORT ?? 0),
   cookieProps: {
     key: 'ExpressGeneratorTs',
-    secret: process.env.COOKIE_SECRET ?? '',
+    secret: (process.env.COOKIE_SECRET ?? ''),
     options: {
       httpOnly: true,
       signed: true,
@@ -14,7 +14,7 @@ export default {
     },
   },
   jwt: {
-    secret: process.env.JWT_SECRET ??  '',
-    exp: process.env.COOKIE_EXP ?? '', // exp at the same time as the cookie
+    secret: (process.env.JWT_SECRET ??  ''),
+    exp: (process.env.COOKIE_EXP ?? ''), // exp at the same time as the cookie
   },
-};
+} as const;

@@ -10,7 +10,6 @@ const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
 
 
-
 /**
  * Entry point
  */
@@ -102,5 +101,6 @@ function downloadNodeModules(destination, depStrings, useYarn) {
 }
 
 
-// Export entry point
+// **** Export entry point **** //
+
 module.exports = expressGenTs;

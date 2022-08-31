@@ -2,13 +2,14 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
+import logger from 'jet-logger';
 
 import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
-import apiRouter from './routes/api';
-import logger from 'jet-logger';
+import apiRouter from '@routes/api';
+import envVars from '@shared/env-vars';
 import { CustomError } from '@shared/errors';
 
 
@@ -25,12 +26,12 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // Show routes called in console during development
-if (process.env.NODE_ENV === 'development') {
+if (envVars.nodeEnv === 'development') {
   app.use(morgan('dev'));
 }
 
 // Security (helmet recommended in express docs)
-if (process.env.NODE_ENV === 'production') {
+if (envVars.nodeEnv === 'production') {
   app.use(helmet());
 }
 
