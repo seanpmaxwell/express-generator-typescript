@@ -18,8 +18,9 @@ const jwtNotPresentErr = 'JWT not present in signed cookie.';
  * Middleware to verify if user is an admin.
  */
 export async function adminMw(req: Request, res: Response, next: NextFunction) {
+  // Try
   try {
-    // Get json-web-token
+    // Extract the token
     const jwt = req.signedCookies[envVars.cookieProps.key];
     if (!jwt) {
       throw Error(jwtNotPresentErr);
@@ -32,9 +33,14 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
     } else {
       throw Error(jwtNotPresentErr);
     }
-  } catch (err) {
-    return res.status(UNAUTHORIZED).json({
-      error: err.message,
-    });
+  // Catch
+  } catch (err: unknown) {
+    let error;
+    if (typeof err === 'string') {
+      error = err;
+    } else if (err instanceof Error) {
+      error = err.message;
+    }
+    return res.status(UNAUTHORIZED).json({ error });
   }
-};
+}

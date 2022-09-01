@@ -27,7 +27,7 @@ export const p = {
 router.post(p.login, async (req: Request, res: Response) => {
   // Check email and password present
   const { email, password } = req.body;
-  if (!(email && password)) {
+  if (!email || !password) {
     throw new ParamMissingError();
   }
   // Get jwt
