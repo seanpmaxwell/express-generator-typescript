@@ -1,9 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import jsonfile from 'jsonfile';
+import { IUser } from '@models/user-model';
 
 
-// **** Vars/Constants **** //
+// **** Variables **** //
 
 const dbFilePath = 'src/repos/database.json';
+
+
+// **** Types **** //
+
+interface IDb {
+  users: IUser[];
+}
 
 
 // **** Functions **** //
@@ -11,14 +21,14 @@ const dbFilePath = 'src/repos/database.json';
 /**
  * Fetch the json from the file.
  */
-function openDb(): Promise<Record<string, any>> {
+function openDb(): Promise<IDb> {
   return jsonfile.readFile(dbFilePath);
 }
 
 /**
  * Update the file.
  */
-function saveDb(db: Record<string, any>): Promise<void> {
+function saveDb(db: IDb): Promise<void> {
   return jsonfile.writeFile(dbFilePath, db);
 }
 
