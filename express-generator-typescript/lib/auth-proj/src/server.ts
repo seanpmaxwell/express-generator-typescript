@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
 import StatusCodes from 'http-status-codes';
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 
 import 'express-async-errors';
 
@@ -41,7 +41,8 @@ if (envVars.nodeEnv === 'production') {
 app.use('/api', BaseRouter);
 
 // Error handling
-app.use((err: Error | CustomError, _: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction) => {
   logger.err(err, true);
   const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
   return res.status(status).json({

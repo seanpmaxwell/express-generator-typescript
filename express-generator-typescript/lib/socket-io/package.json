@@ -1,5 +1,5 @@
 {
-  "name": "chat-app",
+  "name": "socket-io",
   "version": "0.0.0",
   "scripts": {
     "build": "npx ts-node build.ts",
