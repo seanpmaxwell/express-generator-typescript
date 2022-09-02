@@ -8,6 +8,7 @@ const path = require('path');
 const editJsonFile = require('edit-json-file');
 const childProcess = require('child_process');
 const ncp = require('ncp').ncp;
+const fs = require('fs');
 
 
 /**
@@ -17,6 +18,7 @@ async function expressGenTs(destination, withAuth, useYarn, useSocketIo) {
   try {
     await copyProjectFiles(destination, withAuth, useSocketIo);
     updatePackageJson(destination);
+    await renameGitingoreFile(destination);
     const depStrings = getDepStrings(withAuth, useSocketIo);
     downloadNodeModules(destination, depStrings, useYarn);
   } catch (err) {
@@ -55,6 +57,17 @@ function updatePackageJson(destination) {
     autosave: true
   });
   file.set('name', path.basename(destination));
+}
+
+/**
+ * Because npm does not allow .gitignore to be published.
+ */
+function renameGitingoreFile(destination) {
+  return new Promise((res, rej) => {
+    fs.rename(destination + '/gitignore', destination + '/.gitignore', (err) => {
+      return (!!err ? rej(err) : res());
+    });
+  });
 }
 
 /**

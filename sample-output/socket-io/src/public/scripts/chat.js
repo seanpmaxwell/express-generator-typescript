@@ -2,7 +2,7 @@
 (() => {
   // Setup socket-io main connection
   console.log('Connecting to socket-io');
-  const socket = io('http://localhost:4000');
+  const socket = io('http://localhost:3000');
   socket.on('connect', () => {
     socketIo = socket;
     console.log('Socket-io connected');
