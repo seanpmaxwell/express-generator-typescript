@@ -1,22 +1,23 @@
-import { IUser } from "@models/user-model";
+import { IUser } from '@models/user-model';
+import { ISessionUser } from '@routes/middleware';
 
 
 declare module 'express' {
+
   export interface Request  {
     signedCookies: Record<string, string>,
     body: {
       user?: IUser
       email?: string;
       password?: string;
+      message?: string;
+      socketId?: string;
+    };
+  }
+
+  export interface Response {
+    locals: {
+      sessionUser: ISessionUser;
     };
   }
 }
-
-// Put this back in the future for middleware stuff
-// declare global {
-//   namespace Express {
-//     export interface Response {
-//         sessionUser: IClientData;
-//     }
-//   }
-// }

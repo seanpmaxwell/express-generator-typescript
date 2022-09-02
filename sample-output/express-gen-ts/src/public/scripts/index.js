@@ -9,8 +9,7 @@ displayUsers();
  * Call api
  */
 function displayUsers() {
-  Http
-    .get('/api/users/all')
+  httpGet('/api/users/all')
     .then(resp => resp.json())
     .then((resp) => {
       var allUsers = resp.users;

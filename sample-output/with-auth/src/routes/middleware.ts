@@ -1,7 +1,8 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 
-import { UserRoles } from '@models/user-model';
+import { IUser, UserRoles } from '@models/user-model';
 import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
 
@@ -10,6 +11,16 @@ import jwtUtil from '@util/jwt-util';
 
 const { UNAUTHORIZED } = StatusCodes;
 const jwtNotPresentErr = 'JWT not present in signed cookie.';
+
+
+// **** Types **** //
+
+export interface ISessionUser extends JwtPayload {
+  id: number;
+  email: string;
+  name: string;
+  role: IUser['role'];
+}
 
 
 // **** Functions **** //
@@ -28,7 +39,7 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
     // Make sure user role is an admin
     const clientData = await jwtUtil.decode(jwt);
     if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
-      res.locals.sessionUser = clientData;
+      res.locals.sessionUser = clientData as ISessionUser;
       next();
     } else {
       throw Error(jwtNotPresentErr);
@@ -44,3 +55,4 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
     return res.status(UNAUTHORIZED).json({ error });
   }
 }
+

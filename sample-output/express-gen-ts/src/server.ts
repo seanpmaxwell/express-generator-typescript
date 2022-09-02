@@ -4,7 +4,7 @@ import path from 'path';
 import helmet from 'helmet';
 import logger from 'jet-logger';
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
@@ -42,7 +42,8 @@ if (envVars.nodeEnv === 'production') {
 app.use('/api', apiRouter);
 
 // Error handling
-app.use((err: Error | CustomError, _: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction) => {
   logger.err(err, true);
   const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
   return res.status(status).json({

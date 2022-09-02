@@ -43,7 +43,7 @@ app.use('/api', apiRouter);
 
 // Error handling
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error | CustomError, _: Request, res: Response, _: NextFunction) => {
+app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction) => {
   logger.err(err, true);
   const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
   return res.status(status).json({

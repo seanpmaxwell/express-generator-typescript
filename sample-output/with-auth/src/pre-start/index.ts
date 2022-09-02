@@ -20,7 +20,7 @@ const options = commandLineArgs([
 
 // Set the env file
 const result2 = dotenv.config({
-  path: path.join(__dirname, `env/${options.env}.env`),
+  path: path.join(__dirname, `env/${String(options.env)}.env`),
 });
 
 if (result2.error) {
