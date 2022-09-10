@@ -4,6 +4,15 @@ import StatusCodes from 'http-status-codes';
 import authService from '@services/auth-service';
 import { ParamMissingError } from '@shared/errors';
 import envVars from 'src/shared/env-vars';
+import { IReq } from 'src/types/express';
+
+
+// **** Types **** //
+
+interface ILogin {
+  email: string;
+  password: string;
+}
 
 
 // **** Variables **** //
@@ -24,7 +33,7 @@ export const p = {
 /**
  * Login a user.
  */
-router.post(p.login, async (req: Request, res: Response) => {
+router.post(p.login, async (req: IReq<ILogin>, res: Response) => {
   // Check email and password present
   const { email, password } = req.body;
   if (!email || !password) {

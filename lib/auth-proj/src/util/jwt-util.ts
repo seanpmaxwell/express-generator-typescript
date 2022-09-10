@@ -1,23 +1,17 @@
+import randomString from 'randomstring';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
-import envVars from '../shared/env-vars';
 
 
 // **** Variables **** //
 
 // Errors
 const errors = {
-  validation: 'JSON-web-token validation failed.',
+    validation: 'JSON-web-token validation failed.',
 } as const;
 
-// Options
-const options = {
-  expiresIn: envVars.jwt.exp,
-};
-
-
-// **** Types **** //
-
-type TDecoded = string | JwtPayload | undefined;
+// Misc
+const secret = (process.env.JWT_SECRET || randomString.generate(100));
+const options = {expiresIn: process.env.COOKIE_EXP};
 
 
 // **** Functions **** //
@@ -27,8 +21,8 @@ type TDecoded = string | JwtPayload | undefined;
  */
 function sign(data: JwtPayload): Promise<string> {
   return new Promise((resolve, reject) => {
-    jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
-      err ? reject(err) : resolve(token || '');
+    jsonwebtoken.sign(data, secret, options, (err, token) => {
+      return err ? reject(err) : resolve(token || '');
     });
   });
 }
@@ -36,10 +30,10 @@ function sign(data: JwtPayload): Promise<string> {
 /**
  * Decrypt JWT and extract client data.
  */
-function decode(jwt: string): Promise<TDecoded> {
+function decode<T>(jwt: string): Promise<T> {
   return new Promise((res, rej) => {
-    jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
-      return err ? rej(errors.validation) : res(decoded);
+    jsonwebtoken.verify(jwt, secret, (err, decoded) => {
+      return err ? rej(errors.validation) : res(decoded as T);
     });
   });
 }

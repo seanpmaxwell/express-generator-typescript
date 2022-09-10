@@ -1,12 +1,12 @@
-import { IUser } from "@models/user-model";
+import * as e from 'express';
+import { Query } from 'express-serve-static-core';
 
 
-declare module 'express' {
-  export interface Request  {
-    body: {
-      user?: IUser
-      email?: string;
-    };
-  }
+export interface IReq<T> extends e.Request {
+  body: T;
 }
 
+export interface IReqQuery<T extends Query, U = void> extends e.Request {
+  query: T;
+  body?: U;
+}

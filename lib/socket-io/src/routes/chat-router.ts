@@ -3,6 +3,7 @@ import StatusCodes from 'http-status-codes';
 import { Router, Request, Response } from 'express';
 
 import { ParamMissingError, RoomNotFoundError } from '@shared/errors';
+import { IReq } from 'src/types/express';
 
 
 // **** Variables **** //
@@ -18,6 +19,14 @@ export const p = {
 } as const;
 
 export const socketRoomName = 'jet-logger-chat-room';
+
+
+// **** Types **** //
+
+interface IPostMsg {
+  message: string; 
+  socketId: string;
+}
 
 
 // **** Routes **** //
@@ -45,7 +54,7 @@ router.get(p.connect, async (req: Request, res: Response) => {
 /**
  * Send a chat message.
  */
-router.post(p.emit, (req: Request, res: Response) => {
+router.post(p.emit, (req: IReq<IPostMsg>, res: Response) => {
   const { sessionUser } = res.locals;
   const { message, socketId } = req.body;
   // Check params

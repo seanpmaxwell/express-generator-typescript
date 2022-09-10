@@ -3,6 +3,8 @@ import { Request, Response, Router } from 'express';
 
 import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
+import { IReq } from 'src/types/express';
+import { IUser } from '@models/user-model';
 
 
 // **** Variables **** //
@@ -33,7 +35,7 @@ router.get(p.get, async (_: Request, res: Response) => {
 /**
  * Add one user.
  */
-router.post(p.add, async (req: Request, res: Response) => {
+router.post(p.add, async (req: IReq<{user: IUser}>, res: Response) => {
   const { user } = req.body;
   // Check param
   if (!user) {
@@ -47,7 +49,7 @@ router.post(p.add, async (req: Request, res: Response) => {
 /**
  * Update one user.
  */
-router.put(p.update, async (req: Request, res: Response) => {
+router.put(p.update, async (req: IReq<{user: IUser}>, res: Response) => {
   const { user } = req.body;
   // Check param
   if (!user) {

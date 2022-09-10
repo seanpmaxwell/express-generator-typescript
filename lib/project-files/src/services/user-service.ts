@@ -23,7 +23,7 @@ function addOne(user: IUser): Promise<void> {
  * Update one user
  */
 async function updateOne(user: IUser): Promise<void> {
-  const persists = await userRepo.persists(user.id);
+  const persists = await userRepo.persists(user.id ?? -1);
   if (!persists) {
     throw new UserNotFoundError();
   }

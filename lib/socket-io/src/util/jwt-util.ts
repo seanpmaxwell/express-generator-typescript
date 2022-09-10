@@ -14,11 +14,6 @@ const secret = (process.env.JWT_SECRET || randomString.generate(100));
 const options = {expiresIn: process.env.COOKIE_EXP};
 
 
-// **** Types ****  //
-
-type TDecoded = string | JwtPayload | undefined;
-
-
 // **** Functions **** //
 
 /**
@@ -27,7 +22,7 @@ type TDecoded = string | JwtPayload | undefined;
 function sign(data: JwtPayload): Promise<string> {
   return new Promise((resolve, reject) => {
     jsonwebtoken.sign(data, secret, options, (err, token) => {
-      err ? reject(err) : resolve(token || '');
+      return err ? reject(err) : resolve(token || '');
     });
   });
 }
@@ -35,10 +30,10 @@ function sign(data: JwtPayload): Promise<string> {
 /**
  * Decrypt JWT and extract client data.
  */
-function decode(jwt: string): Promise<TDecoded> {
+function decode<T>(jwt: string): Promise<T> {
   return new Promise((res, rej) => {
     jsonwebtoken.verify(jwt, secret, (err, decoded) => {
-      return err ? rej(errors.validation) : res(decoded);
+      return err ? rej(errors.validation) : res(decoded as T);
     });
   });
 }
