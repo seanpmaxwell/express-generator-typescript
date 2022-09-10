@@ -17,9 +17,10 @@ interface ILoginReq {
 
 // **** Variables **** //
 
-// Misc
-const router = Router(),
-  { OK } = StatusCodes;
+const router = Router();
+
+// Status codes
+const { OK } = StatusCodes;
 
 // Paths
 export const p = {

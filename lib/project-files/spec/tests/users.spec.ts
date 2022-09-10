@@ -90,7 +90,7 @@ describe('user-router', () => {
 
     const callApi = () => 
       agent.get(getUsersPath)
-      .set('Cookie', jwtCookie);
+        .set('Cookie', jwtCookie);
 
     // Get all users
     it(msgs.getUsersSuccess, (done) => {

@@ -79,10 +79,10 @@ async function _delete(id: number): Promise<void> {
 // **** Export default **** //
 
 export default {
-    getOne,
-    persists,
-    getAll,
-    add,
-    update,
-    delete: _delete,
+  getOne,
+  persists,
+  getAll,
+  add,
+  update,
+  delete: _delete,
 } as const;

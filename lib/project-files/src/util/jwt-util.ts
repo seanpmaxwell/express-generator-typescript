@@ -6,7 +6,7 @@ import envVars from '../shared/env-vars';
 
 // Errors
 const errors = {
-    validation: 'JSON-web-token validation failed.',
+  validation: 'JSON-web-token validation failed.',
 } as const;
 
 // Options

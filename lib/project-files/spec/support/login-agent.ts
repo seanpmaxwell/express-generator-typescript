@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { SuperTest, Test } from 'supertest';
+import { SuperTest, Test, Response } from 'supertest';
 
 import User, { UserRoles } from '@models/user-model';
 import userRepo from '@repos/user-repo';
@@ -19,9 +19,6 @@ const creds = {
 
 /**
  * Login a user.
- * 
- * @param beforeAgent 
- * @param done 
  */
 function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   // Setup dummy data
@@ -34,17 +31,18 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
     .post('/api/auth/login')
     .type('form')
     .send(creds)
-    .end((err: Error, res: any) => {
+    .end((err: Error, res: Response) => {
       if (err) {
         throw err;
       }
-      done(res.headers['set-cookie']);
+      const cookie = res.headers['set-cookie'][0];
+      return done(cookie);
     });
-};
+}
 
 
 // **** Export default **** //
 
 export default {
-    login,
+  login,
 } as const;
