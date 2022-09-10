@@ -13,7 +13,6 @@ Creates a new express application similar to the _express-generator_ module. Exc
 application is configured to use TypeScript instead of plain JavaScript. 
 
 
-
 ## Why express-generator-typescript?
 
 NodeJS is great for the rapid development of web-projects, but is often neglected because of the lack of
@@ -97,7 +96,7 @@ In previous version of __express-generator-typescript__ you could disregard auth
 command line options. But maintaining two separate project folders which contained and didn't contain 
 authentication started to get messy.
 
-- Remove following modules from `package.json`:
+- Remove the following modules from `package.json`:
   - `jsonwebtoken`
   - `@types/jsonwebtoken`
   - `bcrypt`
@@ -155,7 +154,6 @@ because they might change frequently. I would search the Microsoft docs on how t
 To be able to debug in VSCODE on windows I also had to install the `node-gyp` module globally as well.
 
 Happy web deving :)
-
 
 
 ## License
