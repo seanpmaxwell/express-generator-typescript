@@ -4,7 +4,7 @@ import { Request, Response, Router } from 'express';
 import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
 import { IUser } from '@models/user-model';
-import { IReq } from 'src/types/express';
+import { IReq } from '@shared/types';
 
 
 // **** Variables **** //

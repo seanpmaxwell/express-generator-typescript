@@ -4,7 +4,7 @@ import StatusCodes from 'http-status-codes';
 import authService from '@services/auth-service';
 import { ParamMissingError } from '@shared/errors';
 import envVars from 'src/shared/env-vars';
-import { IReq } from 'src/types/express';
+import { IReq } from '@shared/types';
 
 
 // **** Types **** //

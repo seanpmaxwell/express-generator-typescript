@@ -1,4 +1,4 @@
-import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
+import jsonwebtoken from 'jsonwebtoken';
 import envVars from '../shared/env-vars';
 
 
@@ -20,7 +20,7 @@ const options = {
 /**
  * Encrypt data and return jwt.
  */
-function sign(data: JwtPayload): Promise<string> {
+function sign(data: string | object | Buffer): Promise<string> {
   return new Promise((resolve, reject) => {
     jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
       return err ? reject(err) : resolve(token || '');

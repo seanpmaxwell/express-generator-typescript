@@ -8,7 +8,7 @@ import { UnauthorizedError } from '@shared/errors';
 // **** Functions **** //
 
 /**
- * Login()
+ * Login a user.
  */
 async function login(email: string, password: string): Promise<string> {
   // Fetch user

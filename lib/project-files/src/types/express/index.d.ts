@@ -1,6 +1,4 @@
 import 'express';
-import * as e from 'express';
-import { Query } from 'express-serve-static-core';
 
 import { ISessionUser } from '@routes/middleware';
 
@@ -19,16 +17,4 @@ declare module 'express' {
       sessionUser: ISessionUser;
     };
   }
-}
-
-
-// **** Generics for Request Object **** //
-
-export interface IReq<T> extends e.Request {
-  body: T;
-}
-
-export interface IReqQuery<T extends Query, U = void> extends e.Request {
-  query: T;
-  body?: U;
 }
