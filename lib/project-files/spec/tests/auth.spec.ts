@@ -31,7 +31,13 @@ const msgs = {
   fallbackErr: `should return a response with a status of ${BAD_REQUEST} and a json with an error
     for all other bad responses.`,
   goodLogout: `should return a response with a status of ${OK}.`,
-}
+} as const;
+
+// Login credentials
+const loginCreds = {
+  email: 'jsmith@gmail.com',
+  password: 'Password@1',
+} as const; 
 
 
 // **** Types **** //
@@ -60,35 +66,25 @@ describe('auth-router', () => {
 
     // Good login
     it(msgs.goodLogin, (done) => {
-      // Setup Dummy Data
-      const creds = {
-        email: 'jsmith@gmail.com',
-        password: 'Password@1',
-      };
       const role = UserRoles.Standard;
-      const pwdHash = hashPwd(creds.password);
-      const loginUser = User.new('john smith', creds.email, role, pwdHash);
+      const pwdHash = hashPwd(loginCreds.password);
+      const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
       // Call API
-      callApi(creds)
+      callApi(loginCreds)
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(OK);
-          expect(res.headers['set-cookie'][0]).toContain(envVars.cookieProps.key);
+          const cookie = res.headers['set-cookie'][0];
+          expect(cookie).toContain(envVars.cookieProps.key);
           done();
         });
     });
 
     // Email not found error
     it(msgs.emailNotFound, (done) => {
-      // Setup Dummy Data
-      const creds = {
-        email: 'jsmith@gmail.com',
-        password: 'Password@1',
-      };
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(null));
-      // Call API
-      callApi(creds)
+      callApi(loginCreds)
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(UNAUTHORIZED);
@@ -99,17 +95,12 @@ describe('auth-router', () => {
 
     // Password failed
     it(msgs.pwdFailed, (done) => {
-      // Setup Dummy Data
-      const creds = {
-        email: 'jsmith@gmail.com',
-        password: 'someBadPassword',
-      };
       const role = UserRoles.Standard;
-      const pwdHash = hashPwd('Password@1');
-      const loginUser = User.new('john smith', creds.email, role, pwdHash);
+      const pwdHash = hashPwd('bad password');
+      const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
       // Call API
-      callApi(creds)
+      callApi(loginCreds)
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(UNAUTHORIZED);
@@ -120,14 +111,8 @@ describe('auth-router', () => {
 
     // Fallback error
     it(msgs.fallbackErr, (done) => {
-      // Setup Dummy Data
-      const creds = {
-        email: 'jsmith@gmail.com',
-        password: 'someBadPassword',
-      };
       spyOn(userRepo, 'getOne').and.throwError('Database query failed.');
-      // Call API
-      callApi(creds)
+      callApi(loginCreds)
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(BAD_REQUEST);
@@ -140,6 +125,7 @@ describe('auth-router', () => {
   // Test logout
   describe(`"GET:${logoutPath}"`, () => {
 
+    // Successful logout
     it(msgs.goodLogout, (done) => {
       agent.get(logoutPath)
         .end((err: Error, res: Response) => {

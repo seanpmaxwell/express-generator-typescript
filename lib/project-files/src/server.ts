@@ -2,44 +2,43 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
-import logger from 'jet-logger';
-
-import express, { Request, Response, NextFunction } from 'express';
 import StatusCodes from 'http-status-codes';
+import express, { Request, Response, NextFunction } from 'express';
+
 import 'express-async-errors';
 
-import apiRouter from '@routes/api';
-import envVars from '@shared/env-vars';
+import BaseRouter from './routes/api';
+import logger from 'jet-logger';
 import { CustomError } from '@shared/errors';
+import envVars from '@shared/env-vars';
 
 
-// **** Variables **** //
+// **** Init express **** //
 
 const app = express();
 
 
-// **** Set basic express settings ****# //
+// **** Set basic express settings **** //
 
-// Common middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(cookieParser(envVars.cookieProps.secret));
 
 // Show routes called in console during development
 if (envVars.nodeEnv === 'development') {
   app.use(morgan('dev'));
 }
 
-// Security (helmet recommended in express docs)
+// Security
 if (envVars.nodeEnv === 'production') {
   app.use(helmet());
 }
 
 
-// **** Add API Routes ****# //
+// **** Add API routes **** //
 
-// Add api router
-app.use('/api', apiRouter);
+// Add APIs
+app.use('/api', BaseRouter);
 
 // Error handling
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,17 +53,27 @@ app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction)
 
 // **** Serve front-end content **** //
 
-// Set views dir
+// Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 
-// Set static dir
+// Set static directory (js and css).
 const staticDir = path.join(__dirname, 'public');
 app.use(express.static(staticDir));
 
-// Serve index.html file
-app.get('*', (_: Request, res: Response) => {
-  res.sendFile('index.html', {root: viewsDir});
+// Nav to login pg by default
+app.get('/', (_: Request, res: Response) => {
+  res.sendFile('login.html', {root: viewsDir});
+});
+
+// Redirect to login if not logged in.
+app.get('/users', (req: Request, res: Response) => {
+  const jwt = req.signedCookies[envVars.cookieProps.key];
+  if (!jwt) {
+    res.redirect('/');
+  } else {
+    res.sendFile('users.html', {root: viewsDir});
+  }
 });
 
 

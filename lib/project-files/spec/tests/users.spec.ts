@@ -7,6 +7,7 @@ import userRepo from '@repos/user-repo';
 import User, { IUser } from '@models/user-model';
 import { pErr } from '@shared/functions';
 import { p as userPaths } from '@routes/user-router';
+import loginAgent from '../support/login-agent';
 import { ParamMissingError, UserNotFoundError } from '@shared/errors';
 
 
@@ -72,33 +73,40 @@ type TReqBody = string | object | undefined;
 describe('user-router', () => {
 
   let agent: SuperTest<Test>;
+  let jwtCookie: string;
 
 
   // Run before all tests
   beforeAll((done) => {
     agent = supertest.agent(app);
-    done();
+    loginAgent.login(agent, (cookie: string) => {
+      jwtCookie = cookie;
+      done();
+    });
   });
 
-  // Test get users 
+  // Test get users
   describe(`"GET:${getUsersPath}"`, () => {
+
+    const callApi = () => 
+      agent.get(getUsersPath)
+      .set('Cookie', jwtCookie);
 
     // Get all users
     it(msgs.getUsersSuccess, (done) => {
       const ret = Promise.resolve([...dummyGetAllUsers]);
       spyOn(userRepo, 'getAll').and.returnValue(ret);
       // Call API
-      agent.get(getUsersPath)
-        .end((err: Error, res: Response) => {
-          pErr(err);
-          expect(res.status).toBe(OK);
-          // Caste instance-objects to 'User' objects
-          const respUsers = res.body.users;
-          const retUsers: IUser[] = respUsers.map((user: IUser) => User.copy(user));
-          expect(retUsers).toEqual(dummyGetAllUsers);
-          expect(res.body.error).toBeUndefined();
-          done();
-        });
+      callApi().end((err: Error, res: Response) => {
+        pErr(err);
+        expect(res.status).toBe(OK);
+        // Caste instance-objects to 'User' objects
+        const respUsers = res.body.users;
+        const retUsers = respUsers.map((user: IUser) => User.copy(user));
+        expect(retUsers).toEqual(dummyGetAllUsers);
+        expect(res.body.error).toBeUndefined();
+        done();
+      });
     });
 
     // Get all users bad
@@ -106,7 +114,7 @@ describe('user-router', () => {
       const errMsg = 'Could not fetch users.';
       spyOn(userRepo, 'getAll').and.throwError(errMsg);
       // Call API
-      agent.get(getUsersPath)
+      callApi()
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(BAD_REQUEST);
@@ -119,9 +127,10 @@ describe('user-router', () => {
   // Test add user
   describe(`"POST:${addUsersPath}"`, () => {
 
+    // Consts
     const callApi = (reqBody: TReqBody) => {
-      return agent
-        .post(addUsersPath)
+      return agent.post(addUsersPath)
+        .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
     };
 
@@ -166,11 +175,10 @@ describe('user-router', () => {
   // Test update users
   describe(`"PUT:${updateUserPath}"`, () => {
 
-    const callApi = (reqBody: TReqBody) => {
-      return agent.put(updateUserPath)
-        .type('form')
-        .send(reqBody);
-    };
+    const callApi = (reqBody: TReqBody) => 
+      agent.put(updateUserPath)
+        .set('Cookie', jwtCookie)
+        .type('form').send(reqBody);
 
     // Test updating a user success
     it(msgs.updateSuccess, (done) => {
@@ -229,7 +237,8 @@ describe('user-router', () => {
 
     const callApi = (id: number) => {
       const path = deleteUserPath.replace(':id', id.toString());
-      return agent.delete(path);
+      return agent.delete(path)
+        .set('Cookie', jwtCookie);
     };
 
     // Delete user successful

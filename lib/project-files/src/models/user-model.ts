@@ -1,10 +1,16 @@
 // **** Types **** //
 
-// User schema
+export enum UserRoles {
+  Standard,
+  Admin,
+}
+
 export interface IUser {
-  id?: number;
+  id: number;
   name: string;
   email: string;
+  pwdHash: string;
+  role: UserRoles;
 }
 
 
@@ -13,11 +19,18 @@ export interface IUser {
 /**
  * Get a new User object.
  */
-function _new(name: string, email: string): IUser {
+function _new(
+  name: string,
+  email: string,
+  role?: UserRoles,
+  pwdHash?: string,
+): IUser {
   return {
     id: -1,
     email,
     name,
+    role: (role ?? UserRoles.Standard),
+    pwdHash: (pwdHash ?? ''),
   };
 }
 
@@ -29,6 +42,8 @@ function copy(user: IUser): IUser {
     id: user.id,
     email: user.email,
     name: user.name,
+    role: user.role,
+    pwdHash: user.pwdHash,
   };
 }
 

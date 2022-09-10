@@ -1,5 +1,5 @@
-import randomString from 'randomstring';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
+import envVars from '../shared/env-vars';
 
 
 // **** Variables **** //
@@ -9,9 +9,10 @@ const errors = {
     validation: 'JSON-web-token validation failed.',
 } as const;
 
-// Misc
-const secret = (process.env.JWT_SECRET || randomString.generate(100));
-const options = {expiresIn: process.env.COOKIE_EXP};
+// Options
+const options = {
+  expiresIn: envVars.jwt.exp,
+};
 
 
 // **** Functions **** //
@@ -21,7 +22,7 @@ const options = {expiresIn: process.env.COOKIE_EXP};
  */
 function sign(data: JwtPayload): Promise<string> {
   return new Promise((resolve, reject) => {
-    jsonwebtoken.sign(data, secret, options, (err, token) => {
+    jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
       return err ? reject(err) : resolve(token || '');
     });
   });
@@ -32,7 +33,7 @@ function sign(data: JwtPayload): Promise<string> {
  */
 function decode<T>(jwt: string): Promise<T> {
   return new Promise((res, rej) => {
-    jsonwebtoken.verify(jwt, secret, (err, decoded) => {
+    jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
       return err ? rej(errors.validation) : res(decoded as T);
     });
   });

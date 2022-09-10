@@ -2,22 +2,9 @@ import { Request, Response, Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
-import envVars from '@shared/env-vars';
 import { ParamMissingError } from '@shared/errors';
+import envVars from 'src/shared/env-vars';
 import { IReq } from 'src/types/express';
-
-
-// **** Variables **** //
-
-// Misc
-const router = Router();
-const { OK } = StatusCodes;
-
-// Paths
-export const p = {
-  login: '/login',
-  logout: '/logout',
-} as const;
 
 
 // **** Types **** //
@@ -28,20 +15,31 @@ interface ILoginReq {
 }
 
 
+// **** Variables **** //
+
+// Misc
+const router = Router(),
+  { OK } = StatusCodes;
+
+// Paths
+export const p = {
+  login: '/login',
+  logout: '/logout',
+} as const;
+
+
 // **** Routes **** //
 
 /**
  * Login a user.
  */
 router.post(p.login, async (req: IReq<ILoginReq>, res: Response) => {
-  // Check email and password present
   const { email, password } = req.body;
-  if (!(email && password)) {
+  if (!email || !password) {
     throw new ParamMissingError();
   }
-  // Get jwt
-  const jwt = await authService.login(email, password);
   // Add jwt to cookie
+  const jwt = await authService.login(email, password);
   const { key, options } = envVars.cookieProps;
   res.cookie(key, jwt, options);
   // Return

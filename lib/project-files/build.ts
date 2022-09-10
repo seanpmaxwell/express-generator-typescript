@@ -36,7 +36,7 @@ function remove(loc: string): Promise<void> {
 }
 
 /**
- * Copy file
+ * Copy file.
  */
 function copy(src: string, dest: string): Promise<void> {
   return new Promise((res, rej) => {
@@ -47,7 +47,7 @@ function copy(src: string, dest: string): Promise<void> {
 }
 
 /**
- * Execute system command
+ * Do command line command.
  */
 function exec(cmd: string, loc: string): Promise<void> {
   return new Promise((res, rej) => {

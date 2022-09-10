@@ -32,3 +32,14 @@ export class UserNotFoundError extends CustomError {
     super(UserNotFoundError.Msg, UserNotFoundError.HttpStatus);
   }
 }
+
+
+export class UnauthorizedError extends CustomError {
+
+  public static readonly Msg = 'Login failed';
+  public static readonly HttpStatus = HttpStatusCodes.UNAUTHORIZED;
+
+  constructor() {
+    super(UnauthorizedError.Msg, UnauthorizedError.HttpStatus);
+  }
+}

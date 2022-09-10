@@ -6,7 +6,7 @@ import orm from './mock-orm';
 // **** Functions **** //
 
 /**
- * Get one user
+ * Get one user.
  */
 async function getOne(email: string): Promise<IUser | null> {
   const db = await orm.openDb();
@@ -79,10 +79,10 @@ async function _delete(id: number): Promise<void> {
 // **** Export default **** //
 
 export default {
-  getOne,
-  persists,
-  getAll,
-  add,
-  update,
-  delete: _delete,
+    getOne,
+    persists,
+    getAll,
+    add,
+    update,
+    delete: _delete,
 } as const;

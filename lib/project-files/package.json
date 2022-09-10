@@ -1,13 +1,14 @@
 {
-  "name": "express-gen-ts",
+  "name": "express-typescript-example",
   "version": "0.0.0",
   "scripts": {
     "build": "npx ts-node build.ts",
-    "lint": "eslint . --ext .ts",
+    "lint": "npx eslint --ext .ts src/",
+    "lint:tests": "npx eslint --ext .ts spec/",
     "start": "node -r module-alias/register ./dist --env=production",
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "npx ts-node -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec"
   },
   "nodemonConfig": {
     "watch": [
@@ -17,7 +18,7 @@
     "ignore": [
       "src/public"
     ],
-    "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
+    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
     "@services": "dist/services",
@@ -25,9 +26,14 @@
     "@entities": "dist/entities",
     "@shared": "dist/shared",
     "@server": "dist/server",
-    "@routes": "dist/routes"
+    "@routes": "dist/routes",
+    "@util": "dist/util"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "command-line-args": "^5.2.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
@@ -37,10 +43,12 @@
     "http-status-codes": "^2.2.0",
     "jet-logger": "^1.2.3",
     "jsonfile": "^6.1.0",
+    "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/command-line-args": "^5.2.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",
@@ -48,12 +56,14 @@
     "@types/fs-extra": "^9.0.13",
     "@types/jasmine": "^4.3.0",
     "@types/jsonfile": "^6.1.0",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.14",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "^8.23.0",
+    "eslint-plugin-node": "^11.1.0",
     "find": "^0.3.0",
     "fs-extra": "^10.1.0",
     "jasmine": "^4.3.0",

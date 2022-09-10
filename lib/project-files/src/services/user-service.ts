@@ -6,24 +6,24 @@ import { UserNotFoundError } from '@shared/errors';
 // **** Functions **** //
 
 /**
- * Get all users
+ * Get all users.
  */
 function getAll(): Promise<IUser[]> {
   return userRepo.getAll();
 }
 
 /**
- * Add one user
+ * Add one user.
  */
 function addOne(user: IUser): Promise<void> {
   return userRepo.add(user);
 }
 
 /**
- * Update one user
+ * Update one user.
  */
 async function updateOne(user: IUser): Promise<void> {
-  const persists = await userRepo.persists(user.id ?? -1);
+  const persists = await userRepo.persists(user.id);
   if (!persists) {
     throw new UserNotFoundError();
   }
@@ -31,7 +31,7 @@ async function updateOne(user: IUser): Promise<void> {
 }
 
 /**
- * Delete a user by their id
+ * Delete a user by their id.
  */
 async function _delete(id: number): Promise<void> {
   const persists = await userRepo.persists(id);
@@ -45,8 +45,8 @@ async function _delete(id: number): Promise<void> {
 // **** Export default **** //
 
 export default {
-    getAll,
-    addOne,
-    updateOne,
-    delete: _delete,
+  getAll,
+  addOne,
+  updateOne,
+  delete: _delete,
 } as const;

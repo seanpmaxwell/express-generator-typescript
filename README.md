@@ -36,24 +36,11 @@ and `_moduleAliases` in _package.json_ if you want to add/edit the relative path
 
 ## Sample-project
 
-When you run _express-generator-typescript_, it sets up a very simple application with routes for
+When you run _express-generator-typescript_, it sets up a simple application with routes for
 adding, updating, deleting, and fetching user objects. This is just to demonstrate how routing is done
-with express.
-
-If you want a fully-secure application, you can pass the `--with-auth` option and you will have an
-application which requires you to login before calling APIs on user objects. The app is 
+with express. You will have to login before calling APIs on user objects. The app is 
 configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
-to store user-session data. If you're new to web-development and still learning about securing websites,
-I highly encourage to use this option.
-
-To have a chat app within your application, use the `--socket-io` option. This option will include 
-everything from the `--with-auth` option, plus will create a mini-chat app which displays the 
-sender name for the message of whoever the logged in user is. Without a login user we can't display 
-a sender name, that's why the `--socket-io` option must used in conjunction with `--with-auth`. 
-To create a socket-io sample app, you can pass `--socket-io` or `--with-auth --socket-io`; it won't
-make a difference.
-
-<img alt='chat-screenshot' src='https://github.com/seanpmaxwell/express-generator-typescript/raw/master/chat-screenshot.png' border='0'>
+to store user-session data. 
 
 
 ## Installation
@@ -75,14 +62,12 @@ Create the app:
 
 ```bash
 $ npx express-generator-typescript "project name (default is express-gen-ts)"
-with all options
-$ npx express-generator-typescript --with-auth --socket-io --use-yarn "project name (default is express-gen-ts)"
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
 ```bash
-$ cd "project name" && npm run start:dev
+$ cd "project name" && npm run dev
 ```
 
 
@@ -104,6 +89,34 @@ During development, _express-generator-typescript_ uses `nodemon` to restart the
 are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
 This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
 unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
+
+
+## If you don't want authentication:
+
+In previous version of __express-generator-typescript__ you could disregard authentication through the 
+command line options. But maintaining two separate project folders which contained and didn't contain 
+authentication started to get messy.
+
+- Remove following modules from `package.json`:
+  - `jsonwebtoken`
+  - `@types/jsonwebtoken`
+  - `bcrypt`
+  - `@types/bcrypt`
+  
+- Delete the files:
+  - `src/routes/middleware.ts`
+  - `src/routes/auth-router.ts`
+  - `spec/tests/auth.spec.ts`
+  - `spec/support/login-agent.ts`
+  - `public/scripts/login.js`
+  - `public/stylesheets/login.css`
+  - `public/views/login.html`
+
+- Update the files:
+  - In `src/routes/api`, delete the line: `apiRouter.use('/auth', authRouter);` and
+    remove the `adminMw,` from line 12. Remove the `adminMw` and `authRouter` imports as well.
+  - In `spec/tests/users.spec.ts`, remove all lines containing `loginAgent` and `setCookie`
+  - In `public/views/users.html` remove the `Logout` button.
 
 
 ## Note for VS-Code users
@@ -136,13 +149,12 @@ VS-Code.
 
 ## Note for windows users
 
-If you use the `--with-auth` option and are on Windows, the `bcrypt` module tends to be fussy. To
-use this module on Windows you need to make sure you have the node Windows build tools installed.
-I don't want to post instructions because they might change frequently. I would search the Microsoft
-docs on how to setup Node for Windows. To be able to debug in VSCODE on windows I also had to install
-the `node-gyp` module globally as well.
+If you are on Windows, the `bcrypt` module tends to be fussy. To use this module on Windows you 
+need to make sure you have the node Windows build tools installed. I don't want to post instructions 
+because they might change frequently. I would search the Microsoft docs on how to setup Node for Windows. 
+To be able to debug in VSCODE on windows I also had to install the `node-gyp` module globally as well.
 
-Happy web-deving :)
+Happy web deving :)
 
 
 
