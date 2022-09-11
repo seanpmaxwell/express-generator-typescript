@@ -1,4 +1,4 @@
-import jsonwebtoken from 'jsonwebtoken';
+import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import envVars from '../shared/env-vars';
 
 
@@ -21,9 +21,9 @@ const options = {
  * Encrypt data and return jwt.
  */
 function sign(data: string | object | Buffer): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((res, rej) => {
     jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
-      return err ? reject(err) : resolve(token || '');
+      return err ? rej(err) : res(token || '');
     });
   });
 }
@@ -31,7 +31,7 @@ function sign(data: string | object | Buffer): Promise<string> {
 /**
  * Decrypt JWT and extract client data.
  */
-function decode<T>(jwt: string): Promise<T> {
+async function decode<T extends JwtPayload>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
     jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
       return err ? rej(errors.validation) : res(decoded as T);

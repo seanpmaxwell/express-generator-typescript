@@ -1,10 +1,10 @@
 import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 
 import { IUser, UserRoles } from '@models/user-model';
 import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
-import { JwtPayload } from 'jsonwebtoken';
 
 
 // **** Variables **** //
@@ -38,7 +38,7 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
     }
     // Make sure user role is an admin
     const clientData = await jwtUtil.decode<ISessionUser>(jwt);
-    if (clientData.role === UserRoles.Admin) {
+    if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
       res.locals.sessionUser = clientData;
       next();
     } else {
