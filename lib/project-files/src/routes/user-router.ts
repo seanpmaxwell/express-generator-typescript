@@ -1,10 +1,10 @@
 import StatusCodes from 'http-status-codes';
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 
 import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
 import { IUser } from '@models/user-model';
-import { IReq } from '@shared/types';
+import { IReq, IRes } from '@shared/types';
 
 
 // **** Variables **** //
@@ -27,7 +27,7 @@ export const p = {
 /**
  * Get all users.
  */
-router.get(p.get, async (_: Request, res: Response) => {
+router.get(p.get, async (_: IReq, res: IRes) => {
   const users = await userService.getAll();
   return res.status(OK).json({ users });
 });
@@ -35,7 +35,7 @@ router.get(p.get, async (_: Request, res: Response) => {
 /**
  * Add one user.
  */
-router.post(p.add, async (req: IReq<{user: IUser}>, res: Response) => {
+router.post(p.add, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
   if (!user) {
     throw new ParamMissingError();
@@ -47,7 +47,7 @@ router.post(p.add, async (req: IReq<{user: IUser}>, res: Response) => {
 /**
  * Update one user.
  */
-router.put(p.update, async (req: IReq<{user: IUser}>, res: Response) => {
+router.put(p.update, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
   if (!user) {
     throw new ParamMissingError();
@@ -59,7 +59,7 @@ router.put(p.update, async (req: IReq<{user: IUser}>, res: Response) => {
 /**
  * Delete one user.
  */
-router.delete(p.delete, async (req: Request, res: Response) => {
+router.delete(p.delete, async (req: IReq, res: IRes) => {
   const { id } = req.params;
   if (!id) {
     throw new ParamMissingError();

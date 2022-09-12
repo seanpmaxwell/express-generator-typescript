@@ -1,10 +1,10 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
 import { ParamMissingError } from '@shared/errors';
 import envVars from 'src/shared/env-vars';
-import { IReq } from '@shared/types';
+import { IReq, IRes } from '@shared/types';
 
 
 // **** Types **** //
@@ -34,7 +34,7 @@ export const p = {
 /**
  * Login a user.
  */
-router.post(p.login, async (req: IReq<ILoginReq>, res: Response) => {
+router.post(p.login, async (req: IReq<ILoginReq>, res: IRes) => {
   const { email, password } = req.body;
   if (!email || !password) {
     throw new ParamMissingError();
@@ -50,7 +50,7 @@ router.post(p.login, async (req: IReq<ILoginReq>, res: Response) => {
 /**
  * Logout the user.
  */
-router.get(p.logout, (_: Request, res: Response) => {
+router.get(p.logout, (_: IReq, res: IRes) => {
   const { key, options } = envVars.cookieProps;
   res.clearCookie(key, options);
   return res.status(OK).end();
