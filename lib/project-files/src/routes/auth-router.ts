@@ -2,9 +2,9 @@ import { Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
-import { ParamMissingError } from '@shared/errors';
 import envVars from 'src/shared/env-vars';
 import { IReq, IRes } from '@shared/types';
+import { validate } from '@shared/functions';
 
 
 // **** Types **** //
@@ -36,9 +36,7 @@ export const p = {
  */
 router.post(p.login, async (req: IReq<ILoginReq>, res: IRes) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw new ParamMissingError();
-  }
+  validate(email, password);
   // Add jwt to cookie
   const jwt = await authService.login(email, password);
   const { key, options } = envVars.cookieProps;

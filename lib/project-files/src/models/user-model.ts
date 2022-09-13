@@ -9,8 +9,8 @@ export interface IUser {
   id: number;
   name: string;
   email: string;
-  pwdHash: string;
-  role: UserRoles;
+  pwdHash?: string;
+  role?: UserRoles;
 }
 
 
@@ -47,10 +47,24 @@ function copy(user: IUser): IUser {
   };
 }
 
+/**
+ * See if an object is an instance of User.
+ */
+function instanceOfUser(arg: object): boolean {
+  // pick up here tomorrow test that this works
+  return (
+    'id' in arg &&
+    'email' in arg &&
+    'name' in arg &&
+    'role' in arg
+  );
+}
+
 
 // **** Export default **** //
 
 export default {
   new: _new,
   copy,
+  instanceOfUser,
 };

@@ -3,8 +3,9 @@ import { Router } from 'express';
 
 import userService from '@services/user-service';
 import { ParamMissingError } from '@shared/errors';
-import { IUser } from '@models/user-model';
+import User, { IUser } from '@models/user-model';
 import { IReq, IRes } from '@shared/types';
+import { validate } from '@shared/functions';
 
 
 // **** Variables **** //
@@ -37,9 +38,8 @@ router.get(p.get, async (_: IReq, res: IRes) => {
  */
 router.post(p.add, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
-  if (!user) {
-    throw new ParamMissingError();
-  }
+  validate([user, User.instanceOfUser]);
+  // Add user
   await userService.addOne(user);
   return res.status(CREATED).end();
 });
@@ -49,9 +49,8 @@ router.post(p.add, async (req: IReq<{user: IUser}>, res: IRes) => {
  */
 router.put(p.update, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
-  if (!user) {
-    throw new ParamMissingError();
-  }
+  validate([user, User.instanceOfUser]);
+  // Edit user
   await userService.updateOne(user);
   return res.status(OK).end();
 });
@@ -60,11 +59,10 @@ router.put(p.update, async (req: IReq<{user: IUser}>, res: IRes) => {
  * Delete one user.
  */
 router.delete(p.delete, async (req: IReq, res: IRes) => {
-  const { id } = req.params;
-  if (!id) {
-    throw new ParamMissingError();
-  }
-  await userService.delete(Number(id));
+  const id = Number(req.params.id);
+  validate([id, 'number']);
+  // Delete user
+  await userService.delete(id);
   return res.status(OK).end();
 });
 
