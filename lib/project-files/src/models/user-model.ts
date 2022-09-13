@@ -1,9 +1,12 @@
-// **** Types **** //
+// **** Variables **** //
 
 export enum UserRoles {
   Standard,
   Admin,
 }
+
+
+// **** Types **** //
 
 export interface IUser {
   id: number;
