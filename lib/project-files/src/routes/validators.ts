@@ -8,15 +8,18 @@ import { ParamInvalidError } from '@shared/errors';
 // **** Types **** //
 
 type TParam = string | number | boolean | null | object;
-type TParamFull = TParam | ((arg: TParam) => boolean);
+type TValidatorFn =  ((arg: TParam) => boolean);
+type TParamFull = TParam | TValidatorFn;
 
 
 // **** Functions **** //
 
 /**
- * Make sure parameter of the specified type. If the type if not provided then string is
- * used as the default type to check. Instead of a type you can also pass a validator function 
- * which must return 'true' or 'false'.
+ * Make sure parameter is of the specified type. If the type is not provided then 'string' is
+ * used as the default type. Instead of a type you can also pass a validator function 
+ * which must return 'true' or 'false'. Return false if invalid.
+ * 
+ * Example argument: [id, 'number], id is the incoming variable, 'number' is the type.
  * 
  * Example 1: validate(email, [user, 'object'], [isAdmin, 'boolean'])
  * Example 2: validate(password) // will check that password is a string
