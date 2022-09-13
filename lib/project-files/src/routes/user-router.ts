@@ -2,10 +2,9 @@ import StatusCodes from 'http-status-codes';
 import { Router } from 'express';
 
 import userService from '@services/user-service';
-import { ParamMissingError } from '@shared/errors';
 import User, { IUser } from '@models/user-model';
 import { IReq, IRes } from '@shared/types';
-import { validate } from '@shared/functions';
+import validate from './validator';
 
 
 // **** Variables **** //
@@ -38,7 +37,7 @@ router.get(p.get, async (_: IReq, res: IRes) => {
  */
 router.post(p.add, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
-  validate([user, User.instanceOfUser]);
+  validate([user, User.instanceOf]);
   // Add user
   await userService.addOne(user);
   return res.status(CREATED).end();
@@ -49,7 +48,7 @@ router.post(p.add, async (req: IReq<{user: IUser}>, res: IRes) => {
  */
 router.put(p.update, async (req: IReq<{user: IUser}>, res: IRes) => {
   const { user } = req.body;
-  validate([user, User.instanceOfUser]);
+  validate([user, User.instanceOf]);
   // Edit user
   await userService.updateOne(user);
   return res.status(OK).end();
