@@ -19,7 +19,7 @@ type TParamFull = TParam | TValidatorFn;
  * used as the default type. Instead of a type you can also pass a validator function 
  * which must return 'true' or 'false'. Return false if invalid.
  * 
- * Example argument: [id, 'number], id is the incoming variable, 'number' is the type.
+ * Example argument: [id, 'number'], id is the incoming variable, 'number' is the type.
  * 
  * Example 1: validate(email, [user, 'object'], [isAdmin, 'boolean'])
  * Example 2: validate(password) // will check that password is a string
