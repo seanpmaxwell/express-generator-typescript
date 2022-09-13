@@ -4,7 +4,7 @@ import { Router } from 'express';
 import userService from '@services/user-service';
 import User, { IUser } from '@models/user-model';
 import { IReq, IRes } from '@shared/types';
-import validate from './validator';
+import validate from './validators';
 
 
 // **** Variables **** //

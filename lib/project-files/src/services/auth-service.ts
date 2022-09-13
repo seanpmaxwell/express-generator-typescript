@@ -17,7 +17,8 @@ async function login(email: string, password: string): Promise<string> {
     throw new UnauthorizedError();
   }
   // Check password
-  const pwdPassed = await bcrypt.compare(password, user.pwdHash);
+  const hash = (user.pwdHash ?? '');
+  const pwdPassed = await bcrypt.compare(password, hash);
   if (!pwdPassed) {
     throw new UnauthorizedError();
   }

@@ -1,3 +1,7 @@
+/**
+ * Put other validator functions here too that may be passed to the validate() function
+ */
+
 import { ParamInvalidError } from '@shared/errors';
 
 
@@ -29,7 +33,7 @@ function validate(...params: Array<TParam | TParamFull[]>): void {
         if (!fn(param[0])) {
           throw new Error(`Validator function ${fn.name} failed.`);
         }
-      // If type if a number, need to do isNaN, cause type NaN is a 'number'. 
+      // If type is a number, need to do isNaN, cause type NaN is a 'number'. 
       // This could be an issue if you do Number(undefined)
       } else if (param[1] === 'number') {
         if (isNaN(param[0] as number)) {

@@ -4,7 +4,7 @@ import StatusCodes from 'http-status-codes';
 import authService from '@services/auth-service';
 import envVars from 'src/shared/env-vars';
 import { IReq, IRes } from '@shared/types';
-import validate from './validator';
+import validate from './validators';
 
 
 // **** Types **** //

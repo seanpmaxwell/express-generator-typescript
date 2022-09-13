@@ -51,8 +51,8 @@ function copy(user: IUser): IUser {
  * See if an object is an instance of User.
  */
 function instanceOf(arg: object): boolean {
-  // pick up here tomorrow test that this works
   return (
+    typeof arg === 'object' &&
     'id' in arg &&
     'email' in arg &&
     'name' in arg &&
