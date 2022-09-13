@@ -14,7 +14,7 @@ import { ParamMissingError, UserNotFoundError } from '@shared/errors';
 // **** Variables **** //
 
 // Misc
-const usersPath = '/api/users',
+const usersPath = ('/api' + userPaths.basePath),
   getUsersPath = `${usersPath}${userPaths.get}`,
   addUsersPath = `${usersPath}${userPaths.add}`,
   updateUserPath = `${usersPath}${userPaths.update}`,

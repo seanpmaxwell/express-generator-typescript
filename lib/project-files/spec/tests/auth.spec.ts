@@ -15,7 +15,7 @@ import { UnauthorizedError } from '@shared/errors';
 // **** Variables **** //
 
 // Misc
-const authPath = '/api/auth',
+const authPath = ('/api' + paths.basePath),
   loginPath = `${authPath}${paths.login}`,
   logoutPath = `${authPath}${paths.logout}`,
   { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;

@@ -15,6 +15,7 @@ const router = Router(),
 
 // Paths
 export const p = {
+  basePath: '/users',
   get: '/all',
   add: '/add',
   update: '/update',

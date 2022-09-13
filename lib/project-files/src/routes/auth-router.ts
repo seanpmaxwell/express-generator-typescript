@@ -24,6 +24,7 @@ const { OK } = StatusCodes;
 
 // Paths
 export const p = {
+  basePath: '/auth',
   login: '/login',
   logout: '/logout',
 } as const;
