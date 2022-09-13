@@ -2,7 +2,7 @@
  * Put other validator functions here too that may be passed to the validate() function
  */
 
-import { ParamInvalidError } from '@shared/errors';
+import { ParamInvalidError, ValidatorFnError } from '@shared/errors';
 
 
 // **** Types **** //
@@ -34,7 +34,7 @@ function validate(...params: Array<TParam | TParamFull[]>): void {
       if (typeof param[1] === 'function') {
         const fn = param[1];
         if (!fn(param[0])) {
-          throw new Error(`Validator function ${fn.name} failed.`);
+          throw new ValidatorFnError(fn.name);
         }
       // If type is a number, need to do isNaN, cause type NaN is a 'number'. 
       // This could be an issue if you do Number(undefined)

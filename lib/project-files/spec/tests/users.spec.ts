@@ -8,7 +8,7 @@ import User, { IUser } from '@models/user-model';
 import { pErr } from '@shared/functions';
 import { p as userPaths } from '@routes/user-router';
 import loginAgent from '../support/login-agent';
-import { ParamMissingError, UserNotFoundError } from '@shared/errors';
+import { ParamMissingError, UserNotFoundError, ValidatorFnError } from '@shared/errors';
 
 
 // **** Variables **** //
@@ -152,7 +152,7 @@ describe('user-router', () => {
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ParamMissingError.Msg);
+          expect(res.body.error).toBe(ValidatorFnError.Msg + 'instanceOf');
           done();
         });
     });
@@ -200,7 +200,7 @@ describe('user-router', () => {
         .end((err: Error, res: Response) => {
           pErr(err);
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ParamMissingError.Msg);
+          expect(res.body.error).toBe(ValidatorFnError.Msg + 'instanceOf');
           done();
         });
     });

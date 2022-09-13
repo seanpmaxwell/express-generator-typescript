@@ -27,7 +27,17 @@ export class ParamInvalidError extends CustomError {
   public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
 
   constructor() {
-    super(ParamMissingError.Msg, ParamMissingError.HttpStatus);
+    super(ParamInvalidError.Msg, ParamMissingError.HttpStatus);
+  }
+}
+
+export class ValidatorFnError extends CustomError {
+
+  public static readonly Msg = 'Validator function failed. function name: ';
+  public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
+
+  constructor(fnName: string) {
+    super(ValidatorFnError.Msg + fnName, ParamMissingError.HttpStatus);
   }
 }
 
