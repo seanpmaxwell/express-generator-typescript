@@ -45,4 +45,4 @@ async function decode<T extends JwtPayload>(jwt: string): Promise<string | undef
 export default {
   sign,
   decode,
-};
+} as const;

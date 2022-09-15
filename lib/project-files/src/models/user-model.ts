@@ -70,4 +70,4 @@ export default {
   new: _new,
   copy,
   instanceOf,
-};
+} as const;
