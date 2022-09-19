@@ -19,6 +19,7 @@
         "code": 100
       }
     ],
+    "comma-dangle": ["warn", "always-multiline"],
     "no-console": 1,
     "no-extra-boolean-cast": 0,
     "semi": 1,
