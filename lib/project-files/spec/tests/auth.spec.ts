@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import StatusCodes from 'http-status-codes';
 import supertest, { SuperTest, Test, Response } from 'supertest';
+import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
 import envVars from '@shared/env-vars';
 import User, { UserRoles } from '@models/user-model';
 import { p as paths } from '@routes/auth-router';
-import { pErr } from '@shared/functions';
 import { pwdSaltRounds } from 'spec/support/login-agent';
 import { UnauthorizedError } from '@shared/errors';
 
@@ -37,7 +37,7 @@ const msgs = {
 const loginCreds = {
   email: 'jsmith@gmail.com',
   password: 'Password@1',
-} as const; 
+} as const;
 
 
 // **** Types **** //
@@ -73,7 +73,7 @@ describe('auth-router', () => {
       // Call API
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(OK);
           const cookie = res.headers['set-cookie'][0];
           expect(cookie).toContain(envVars.cookieProps.key);
@@ -86,7 +86,7 @@ describe('auth-router', () => {
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(null));
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(UNAUTHORIZED);
           expect(res.body.error).toBe(UnauthorizedError.Msg);
           done();
@@ -102,7 +102,7 @@ describe('auth-router', () => {
       // Call API
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(UNAUTHORIZED);
           expect(res.body.error).toBe(UnauthorizedError.Msg);
           done();
@@ -114,7 +114,7 @@ describe('auth-router', () => {
       spyOn(userRepo, 'getOne').and.throwError('Database query failed.');
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBeTruthy();
           done();
@@ -129,7 +129,7 @@ describe('auth-router', () => {
     it(msgs.goodLogout, (done) => {
       agent.get(logoutPath)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(OK);
           done();
         });

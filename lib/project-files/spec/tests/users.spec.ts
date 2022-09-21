@@ -1,11 +1,12 @@
 import supertest from 'supertest';
 import StatusCodes from 'http-status-codes';
 import { SuperTest, Test, Response } from 'supertest';
+import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
 import User, { IUser } from '@models/user-model';
-import { pErr } from '@shared/functions';
+
 import { p as userPaths } from '@routes/user-router';
 import loginAgent from '../support/login-agent';
 import { ParamMissingError, UserNotFoundError, ValidatorFnError } from '@shared/errors';
@@ -98,7 +99,7 @@ describe('user-router', () => {
       spyOn(userRepo, 'getAll').and.returnValue(ret);
       // Call API
       callApi().end((err: Error, res: Response) => {
-        pErr(err);
+        !!err && logger.err(err);
         expect(res.status).toBe(OK);
         // Caste instance-objects to 'User' objects
         const respUsers = res.body.users;
@@ -116,7 +117,7 @@ describe('user-router', () => {
       // Call API
       callApi()
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(errMsg);
           done();
@@ -139,7 +140,7 @@ describe('user-router', () => {
       spyOn(userRepo, 'add').and.returnValue(Promise.resolve());
       callApi(dummyUserData)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(CREATED);
           expect(res.body.error).toBeUndefined();
           done();
@@ -150,7 +151,7 @@ describe('user-router', () => {
     it(msgs.addUserFailedMissingParam, (done) => {
       callApi({})
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(ValidatorFnError.Msg + 'instanceOf');
           done();
@@ -164,7 +165,7 @@ describe('user-router', () => {
       // Call API
       callApi(dummyUserData)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(errMsg);
           done();
@@ -187,7 +188,7 @@ describe('user-router', () => {
       // Call api
       callApi(dummyUserData)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(OK);
           expect(res.body.error).toBeUndefined();
           done();
@@ -198,7 +199,7 @@ describe('user-router', () => {
     it(msgs.updateParamMissing, (done) => {
       callApi({})
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(ValidatorFnError.Msg + 'instanceOf');
           done();
@@ -209,7 +210,7 @@ describe('user-router', () => {
     it(msgs.updateUserNotFound, (done) => {
       callApi(dummyUserData)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(UserNotFoundError.HttpStatus);
           expect(res.body.error).toBe(UserNotFoundError.Msg);
           done();
@@ -224,7 +225,7 @@ describe('user-router', () => {
       // Call API
       callApi(dummyUserData)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(updateErrMsg);
           done();
@@ -248,7 +249,7 @@ describe('user-router', () => {
       // Call api
       callApi(5)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(OK);
           expect(res.body.error).toBeUndefined();
           done();
@@ -259,7 +260,7 @@ describe('user-router', () => {
     it(msgs.deleteUserNotFound, (done) => {
       callApi(-1)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(UserNotFoundError.HttpStatus);
           expect(res.body.error).toBe(UserNotFoundError.Msg);
           done();
@@ -274,7 +275,7 @@ describe('user-router', () => {
       // Call API
       callApi(1)
         .end((err: Error, res: Response) => {
-          pErr(err);
+          !!err && logger.err(err);
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(deleteErrMsg);
           done();
