@@ -22,14 +22,15 @@ const authPath = ('/api' + paths.basePath),
 
 // Test message
 const msgs = {
-  goodLogin: `should return a response with a status of ${OK} and a cookie with a jwt if the login
-    was successful.`,
-  emailNotFound: `should return a response with a status of ${UNAUTHORIZED} and a json with the 
-    "error ${UnauthorizedError.Msg}" if the email was not found.`,
-  pwdFailed: `should return a response with a status of ${UNAUTHORIZED} and a json with the error
-    "${UnauthorizedError.Msg}" if the password failed.`,
-  fallbackErr: `should return a response with a status of ${BAD_REQUEST} and a json with an error
-    for all other bad responses.`,
+  goodLogin: `should return a response with a status of ${OK} and a cookie 
+    with a jwt if the login was successful.`,
+  emailNotFound: `should return a response with a status of ${UNAUTHORIZED} 
+    and a json with the "error ${UnauthorizedError.Msg}" if the email was 
+    not found.`,
+  pwdFailed: `should return a response with a status of ${UNAUTHORIZED} and a 
+    json with the error "${UnauthorizedError.Msg}" if the password failed.`,
+  fallbackErr: `should return a response with a status of ${BAD_REQUEST} and 
+    a json with an error for all other bad responses.`,
   goodLogout: `should return a response with a status of ${OK}.`,
 } as const;
 
