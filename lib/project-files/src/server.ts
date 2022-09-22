@@ -40,11 +40,22 @@ if (envVars.nodeEnv === 'production') {
 // Add APIs
 app.use('/api', BaseRouter);
 
-// Error handling
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction) => {
+// Setup error handler
+app.use((
+  err: Error | CustomError,
+  _: Request,
+  res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  __: NextFunction,
+) => {
   logger.err(err, true);
-  const status = (err instanceof CustomError ? err.HttpStatus : StatusCodes.BAD_REQUEST);
+  // Status
+  const status = (
+    err instanceof CustomError 
+      ? err.HttpStatus 
+      : StatusCodes.BAD_REQUEST
+  );
+  // Return
   return res.status(status).json({
     error: err.message,
   });

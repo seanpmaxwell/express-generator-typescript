@@ -14,9 +14,9 @@
   },
   "rules": {
     "max-len": [
-      "error",
+      "warn",
       {
-        "code": 100
+        "code": 80
       }
     ],
     "comma-dangle": ["warn", "always-multiline"],

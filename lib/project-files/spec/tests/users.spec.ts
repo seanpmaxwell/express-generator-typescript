@@ -8,8 +8,12 @@ import userRepo from '@repos/user-repo';
 import User, { IUser } from '@models/user-model';
 
 import { p as userPaths } from '@routes/user-router';
+import {
+  ParamMissingError,
+  UserNotFoundError,
+  ValidatorFnError,
+} from '@shared/errors';
 import loginAgent from '../support/login-agent';
-import { ParamMissingError, UserNotFoundError, ValidatorFnError } from '@shared/errors';
 
 
 // **** Variables **** //
@@ -36,31 +40,34 @@ const dummyUserData = {
 
 // Test messages
 const msgs = {
-  getUsersSuccess: `should return a JSON object with all the users and a status code of 
-    "${OK}" if the request was successful.`,
-  getUsersBad: `should return a JSON object containing an error message and a status code of
-    "${BAD_REQUEST}" if the request was unsuccessful.`,
-  addUserSuccess: `should return a status code of "${CREATED}" if the request was successful.`,
-  addUserFailedMissingParam: `should return a JSON object with an error message of 
-    "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" if the user param was 
-    missing.`,
-  addUserFallbackErr: `should return a JSON object with an error message and a status code 
-    of "${BAD_REQUEST}" if the request was unsuccessful.`,
-  updateSuccess: `should return a status code of "${OK}" if the request was successful.`,
+  getUsersSuccess: `should return a JSON object with all the users and a 
+    status code of "${OK}" if the request was successful.`,
+  getUsersBad: `should return a JSON object containing an error message and a 
+    status code of "${BAD_REQUEST}" if the request was unsuccessful.`,
+  addUserSuccess: `should return a status code of "${CREATED}" if the request 
+    was successful.`,
+  addUserFailedMissingParam: `should return a JSON object with an error 
+    message of "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" 
+    if the user param was missing.`,
+  addUserFallbackErr: `should return a JSON object with an error message and a 
+    status code of "${BAD_REQUEST}" if the request was unsuccessful.`,
+  updateSuccess: `should return a status code of "${OK}" if the request was 
+    successful.`,
   updateParamMissing: `should return a JSON object with an error message of 
-    "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" if the user param was 
-    missing.`,
+    "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" if the 
+    user param was missing.`,
   updateUserNotFound: `should return a JSON object with the error message of 
-    ${UserNotFoundError.Msg} and a status code of "${UserNotFoundError.HttpStatus}" if the id 
-    was not found.`,
-  updateFallbackErr: `should return a JSON object with an error message and a status code of 
-    "${BAD_REQUEST}" if the request was unsuccessful.`,
-  deleteSuccessful: `should return a status code of "${OK}" if the request was successful.`,
+    ${UserNotFoundError.Msg} and a status code of 
+    "${UserNotFoundError.HttpStatus}" if the id was not found.`,
+  updateFallbackErr: `should return a JSON object with an error message and a 
+    status code of "${BAD_REQUEST}" if the request was unsuccessful.`,
+  deleteSuccessful: `should return a status code of "${OK}" if the request was 
+    successful.`,
   deleteUserNotFound: `should return a JSON object with the error message of 
-    ${UserNotFoundError.Msg} and a status code of "${UserNotFoundError.HttpStatus}" if the id was 
-    not found.`,
-  deleteFallbackErr: `should return a JSON object with an error message and a status code of 
-    "${BAD_REQUEST}" if the request was unsuccessful.`,
+    ${UserNotFoundError.Msg} and a status code of 
+    "${UserNotFoundError.HttpStatus}" if the id was not found.`,
+  deleteFallbackErr: `should return a JSON object with an error message and a 
+    status code of "${BAD_REQUEST}" if the request was unsuccessful.`,
 };
 
 
