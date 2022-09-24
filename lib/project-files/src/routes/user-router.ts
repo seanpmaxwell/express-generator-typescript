@@ -28,7 +28,6 @@ export const p = {
 // Validators (place shared or really long ones here)
 const validateUser = vld(['user', User.instanceOf]);
 
-
 // Add routes to express
 const router = Router();
 router.get(p.get, getAll);

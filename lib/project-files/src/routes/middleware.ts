@@ -68,8 +68,6 @@ export async function adminMw(
   }
 }
 
-
-
 /**
  * vld stands for 'validate'. This function returns a middleware-function
  * that validates the parameters provided. Each argument can be a string or 
