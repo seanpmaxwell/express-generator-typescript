@@ -10,7 +10,7 @@ import { UnauthorizedError } from '@shared/errors';
 /**
  * Login a user.
  */
-async function login(email: string, password: string): Promise<string> {
+async function getJwt(email: string, password: string): Promise<string> {
   // Fetch user
   const user = await userRepo.getOne(email);
   if (!user) {
@@ -35,5 +35,5 @@ async function login(email: string, password: string): Promise<string> {
 // **** Export default **** //
 
 export default {
-  login,
+  getJwt,
 } as const;

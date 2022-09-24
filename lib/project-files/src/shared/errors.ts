@@ -11,17 +11,6 @@ export abstract class CustomError extends Error {
   }
 }
 
-export class ParamMissingError extends CustomError {
-
-  public static readonly Msg = 'One or more of the required parameters ' + 
-    'was missing.';
-  public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
-
-  constructor() {
-    super(ParamMissingError.Msg, ParamMissingError.HttpStatus);
-  }
-}
-
 export class ParamInvalidError extends CustomError {
 
   public static readonly Msg = 'One or more of the required was missing ' + 
@@ -29,7 +18,7 @@ export class ParamInvalidError extends CustomError {
   public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
 
   constructor() {
-    super(ParamInvalidError.Msg, ParamMissingError.HttpStatus);
+    super(ParamInvalidError.Msg, ParamInvalidError.HttpStatus);
   }
 }
 
@@ -39,7 +28,7 @@ export class ValidatorFnError extends CustomError {
   public static readonly HttpStatus = HttpStatusCodes.BAD_REQUEST;
 
   constructor(fnName: string) {
-    super(ValidatorFnError.Msg + fnName, ParamMissingError.HttpStatus);
+    super(ValidatorFnError.Msg + fnName, ValidatorFnError.HttpStatus);
   }
 }
 

@@ -1,3 +1,6 @@
+import { TAll } from '@shared/types';
+
+
 // **** Variables **** //
 
 export enum UserRoles {
@@ -53,8 +56,9 @@ function copy(user: IUser): IUser {
 /**
  * See if an object is an instance of User.
  */
-function instanceOf(arg: object): boolean {
+function instanceOf(arg: TAll): boolean {
   return (
+    !!arg &&
     typeof arg === 'object' &&
     'id' in arg &&
     'email' in arg &&

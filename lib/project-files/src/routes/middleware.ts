@@ -1,10 +1,12 @@
 import StatusCodes from 'http-status-codes';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import { IUser, UserRoles } from '@models/user-model';
 import envVars from 'src/shared/env-vars';
 import jwtUtil from '@util/jwt-util';
+import { IUser, UserRoles } from '@models/user-model';
+import { ParamInvalidError, ValidatorFnError } from '@shared/errors';
+import { TAll } from '@shared/types';
 
 
 // **** Variables **** //
@@ -14,6 +16,13 @@ const jwtNotPresentErr = 'JWT not present in signed cookie.';
 
 
 // **** Types **** //
+
+type TValidatorFn =  ((arg: TAll) => boolean);
+type TParamArr = {
+  0: string,
+  1?: string | TValidatorFn,
+  2?: 'body' | 'query' | 'params',
+}
 
 export interface ISessionUser extends JwtPayload {
   id: number;
@@ -28,7 +37,11 @@ export interface ISessionUser extends JwtPayload {
 /**
  * Middleware to verify if user logged in.
  */
-export async function adminMw(req: Request, res: Response, next: NextFunction) {
+export async function adminMw(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     // Extract the token
     const cookieName = envVars.cookieProps.key,
@@ -55,3 +68,95 @@ export async function adminMw(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+
+
+/**
+ * vld stands for 'validate'. This function returns a middleware-function
+ * that validates the parameters provided. Each argument can be a string or 
+ * array. If an array the format is:
+ * 
+ * ['paramName', '(optional) type or validator function (default is string)', 
+ * '(optional) property on "req" to extract the value from (default is body')]
+ * 
+ * If a string, vld makes sure the param is of type string on req.body. For
+ * the array, vld makes sure parameter is of the specified type or that the
+ * parameter satifies the validator function. The validator function must 
+ * return 'true' or 'false'.
+ * 
+ * **NOTE**: For numbers, strings which evalute to (!isNaN('string') => true)
+ * are valid for req.query and req.params. But on req.body a number should be
+ * 'typeof toCheck === "number"'
+ * 
+ * Sample argument: ['id', 'number'], id is the incoming variable, 'number' 
+ * is the type, and body is where to extract 'id' from.
+ * 
+ * Example 1: vld('email', ['user', 'object'], ['id', 'number', 'params']) |
+ *  will check that 'email' is a string in req.body, that user is of type 
+ *  object in req.body, and that 'id' is a boolean in req.params.
+ * Example 2: vld('password') | will check that 'password' is a string on
+ *  req.body.
+ * Example 3: vld(['isAdmin', 'boolean']) | will check that 'isAdmin' is a 
+ *  boolean on req.body
+ * Example 4: vld(['user', isInstanceOfUser]) | will check that 'user' 
+ *  satifies the 'isInstanceOfUser()' function.
+ * Example 5: val(['email']), will check that 'email' is a string in req.body,
+ */
+export function vld(...params: Array<string | TParamArr>): RequestHandler {
+  return (req: Request, _: Response, next: NextFunction) => {
+    for (const param of params) {
+      // Check params
+      if (typeof param !== 'string' && !(param instanceof Array)) {
+        throw Error('vld() arg must be a string or array');
+      }
+      // If param is a string, make sure param is of type string on req.body
+      if (typeof param === 'string') {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (typeof req.body[param] !== 'string') {
+          throw new ParamInvalidError();
+        }
+        continue;
+      }
+      // Get the value to validate from the express Request object.
+      const paramName = param[0];
+      const reqObjProp = (param.length >= 3 ? param[2] : 'body');
+      // Validate request object property
+      if (
+        reqObjProp !== 'body' &&
+        reqObjProp !== 'params' &&
+        reqObjProp !== 'query'
+      ) {
+        throw Error('param[1] must be "body", "query", or "params"');
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const toValidate = req[reqObjProp][paramName] as TAll;
+      // If type is not present, check it's a string by default
+      if (param.length === 1) {
+        if (typeof toValidate !== 'string') {
+          throw new ParamInvalidError();
+        }
+      // If a validator function is given, validate it with that
+      } else if (typeof param[1] === 'function') {
+        const fn = param[1];
+        if (!fn(toValidate)) {
+          throw new ValidatorFnError(fn.name);
+        }
+      // If type is a number, need to do isNaN() to account for 
+      // number-strings (i.e. '1243') in req.query or req.params. But in
+      // req.body, numbers should be 'typeof toCheck === "number"'
+      } else if (param[1] === 'number') {
+        if (reqObjProp === 'query' || reqObjProp === 'params') {
+          if (isNaN(toValidate as number)) {
+            throw new ParamInvalidError();
+          }
+        } else if (typeof toValidate !== 'number') {
+          throw new ParamInvalidError();
+        }
+      // Check the param is the provided type
+      } else if (typeof toValidate !== param[1]) {
+        throw new ParamInvalidError();
+      }
+    }
+    // Call next() if no errors thrown
+    next();
+  };
+}

@@ -4,6 +4,11 @@ import { Query } from 'express-serve-static-core';
 import { ISessionUser } from '@routes/middleware';
 
 
+// **** Misc **** //
+
+export type TAll = string | number | boolean | null | object;
+
+
 // **** Express **** //
 
 export interface IReq<T = void> extends e.Request {

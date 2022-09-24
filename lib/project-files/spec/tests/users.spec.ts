@@ -9,7 +9,8 @@ import User, { IUser } from '@models/user-model';
 
 import { p as userPaths } from '@routes/user-router';
 import {
-  ParamMissingError,
+  ParamInvalidError,
+  // ParamMissingError,
   UserNotFoundError,
   ValidatorFnError,
 } from '@shared/errors';
@@ -47,15 +48,15 @@ const msgs = {
   addUserSuccess: `should return a status code of "${CREATED}" if the request 
     was successful.`,
   addUserFailedMissingParam: `should return a JSON object with an error 
-    message of "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" 
-    if the user param was missing.`,
+    message of "${ValidatorFnError.Msg + 'instanceOf'}" and a status code 
+    of "${BAD_REQUEST}" if the user param was missing.`,
   addUserFallbackErr: `should return a JSON object with an error message and a 
     status code of "${BAD_REQUEST}" if the request was unsuccessful.`,
   updateSuccess: `should return a status code of "${OK}" if the request was 
     successful.`,
   updateParamMissing: `should return a JSON object with an error message of 
-    "${ParamMissingError.Msg}" and a status code of "${BAD_REQUEST}" if the 
-    user param was missing.`,
+    "${ValidatorFnError.Msg + 'instanceOf'}" and a status code of 
+    "${BAD_REQUEST}" if the user param was missing.`,
   updateUserNotFound: `should return a JSON object with the error message of 
     ${UserNotFoundError.Msg} and a status code of 
     "${UserNotFoundError.HttpStatus}" if the id was not found.`,
@@ -270,6 +271,17 @@ describe('user-router', () => {
           !!err && logger.err(err);
           expect(res.status).toBe(UserNotFoundError.HttpStatus);
           expect(res.body.error).toBe(UserNotFoundError.Msg);
+          done();
+        });
+    });
+
+    // Delete, not a valid number error
+    it(msgs.deleteUserNotFound, (done) => {
+      callApi('horse' as unknown as number)
+        .end((err: Error, res: Response) => {
+          !!err && logger.err(err);
+          expect(res.status).toBe(ParamInvalidError.HttpStatus);
+          expect(res.body.error).toBe(ParamInvalidError.Msg);
           done();
         });
     });
