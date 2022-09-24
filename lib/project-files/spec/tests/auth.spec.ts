@@ -7,7 +7,7 @@ import app from '@server';
 import userRepo from '@repos/user-repo';
 import envVars from '@shared/env-vars';
 import User, { UserRoles } from '@models/user-model';
-import { p as paths } from '@routes/auth-router';
+import authRoutes from '@routes/auth-routes';
 import { pwdSaltRounds } from 'spec/support/login-agent';
 import { UnauthorizedError } from '@shared/errors';
 
@@ -15,7 +15,8 @@ import { UnauthorizedError } from '@shared/errors';
 // **** Variables **** //
 
 // Misc
-const authPath = ('/api' + paths.basePath),
+const { paths } = authRoutes,
+  authPath = ('/api' + paths.basePath),
   loginPath = `${authPath}${paths.login}`,
   logoutPath = `${authPath}${paths.logout}`,
   { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;

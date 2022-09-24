@@ -6,11 +6,10 @@ import logger from 'jet-logger';
 import app from '@server';
 import userRepo from '@repos/user-repo';
 import User, { IUser } from '@models/user-model';
+import userRoutes from '@routes/user-routes';
 
-import { p as userPaths } from '@routes/user-router';
 import {
   ParamInvalidError,
-  // ParamMissingError,
   UserNotFoundError,
   ValidatorFnError,
 } from '@shared/errors';
@@ -20,11 +19,12 @@ import loginAgent from '../support/login-agent';
 // **** Variables **** //
 
 // Misc
-const usersPath = ('/api' + userPaths.basePath),
-  getUsersPath = `${usersPath}${userPaths.get}`,
-  addUsersPath = `${usersPath}${userPaths.add}`,
-  updateUserPath = `${usersPath}${userPaths.update}`,
-  deleteUserPath = `${usersPath}${userPaths.delete}`,
+const { paths } = userRoutes,
+  usersPath = ('/api' + paths.basePath),
+  getUsersPath = `${usersPath}${paths.get}`,
+  addUsersPath = `${usersPath}${paths.add}`,
+  updateUserPath = `${usersPath}${paths.update}`,
+  deleteUserPath = `${usersPath}${paths.delete}`,
   { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
 // Dummy users for GET req

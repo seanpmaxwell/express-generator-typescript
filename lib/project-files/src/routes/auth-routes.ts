@@ -1,10 +1,8 @@
-import { Router } from 'express';
 import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
 import envVars from 'src/shared/env-vars';
 import { IReq, IRes } from '@shared/types';
-import { vld } from './middleware';
 
 
 // **** Types **** //
@@ -21,18 +19,11 @@ interface ILoginReq {
 const { OK } = StatusCodes;
 
 // Paths
-export const p = {
+const paths = {
   basePath: '/auth',
   login: '/login',
   logout: '/logout',
 } as const;
-
-
-// **** Setup Router **** //
-
-const router = Router();
-router.post(p.login, vld('email', 'password'), login);
-router.get(p.logout, logout);
 
 
 // **** Functions **** //
@@ -60,6 +51,10 @@ function logout(_: IReq, res: IRes) {
 }
 
 
-// **** Export router **** //
+// **** Export default **** //
 
-export default router;
+export default {
+  paths,
+  login,
+  logout,
+} as const;

@@ -69,10 +69,10 @@ export async function adminMw(
 }
 
 /**
- * vld stands for 'validate'. This function returns a middleware-function
- * that validates the parameters provided. Each argument can be a string or 
- * array. If an array the format is:
+ * This function returns a middleware-function that validates the parameters 
+ * provided. Each argument can be a string or array.
  * 
+ * If the argument is an array the format is:
  * ['paramName', '(optional) type or validator function (default is string)', 
  * '(optional) property on "req" to extract the value from (default is body')]
  * 
@@ -84,6 +84,9 @@ export async function adminMw(
  * **NOTE**: For numbers, strings which evalute to (!isNaN('string') => true)
  * are valid for req.query and req.params. But on req.body a number should be
  * 'typeof toCheck === "number"'
+ * 
+ * **NOTE**: For booleans, on req.body must be true or false, on req.query or
+ * req.params must be 'true' or 'false'.
  * 
  * Sample argument: ['id', 'number'], id is the incoming variable, 'number' 
  * is the type, and body is where to extract 'id' from.
@@ -99,7 +102,7 @@ export async function adminMw(
  *  satifies the 'isInstanceOfUser()' function.
  * Example 5: val(['email']), will check that 'email' is a string in req.body,
  */
-export function vld(...params: Array<string | TParamArr>): RequestHandler {
+export function validate(...params: Array<string | TParamArr>): RequestHandler {
   return (req: Request, _: Response, next: NextFunction) => {
     for (const param of params) {
       // Check params
@@ -138,15 +141,22 @@ export function vld(...params: Array<string | TParamArr>): RequestHandler {
         if (!fn(toValidate)) {
           throw new ValidatorFnError(fn.name);
         }
-      // If type is a number, need to do isNaN() to account for 
-      // number-strings (i.e. '1243') in req.query or req.params. But in
-      // req.body, numbers should be 'typeof toCheck === "number"'
+      // If type is a number, see note above.
       } else if (param[1] === 'number') {
         if (reqObjProp === 'query' || reqObjProp === 'params') {
           if (isNaN(toValidate as number)) {
             throw new ParamInvalidError();
           }
-        } else if (typeof toValidate !== 'number') {
+        } else if (reqObjProp === 'body' && typeof toValidate !== 'number') {
+          throw new ParamInvalidError();
+        }
+      // If type is a boolean, see note above.
+      } else if (param[1] === 'boolean') {
+        if (reqObjProp === 'query' || reqObjProp === 'params') {
+          if (!isBool(toValidate as boolean)) {
+            throw new ParamInvalidError();
+          }
+        } else if (reqObjProp === 'body' && typeof toValidate !== 'boolean') {
           throw new ParamInvalidError();
         }
       // Check the param is the provided type
@@ -157,4 +167,18 @@ export function vld(...params: Array<string | TParamArr>): RequestHandler {
     // Call next() if no errors thrown
     next();
   };
+}
+
+/**
+ * Checks if arg is a boolean, or a string that is 'true', or 'false'.
+ */
+function isBool(arg: string | boolean): boolean {
+  if (typeof arg === 'boolean') {
+    return true;
+  } else if (typeof arg === 'string') {
+    arg = arg.toLowerCase();
+    return (arg === 'true' || arg === 'false');
+  } else {
+    return false;
+  }
 }

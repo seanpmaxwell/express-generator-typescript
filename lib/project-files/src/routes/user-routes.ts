@@ -1,11 +1,8 @@
 import StatusCodes from 'http-status-codes';
-import { Router } from 'express';
 
 import userService from '@services/user-service';
-import User, { IUser } from '@models/user-model';
+import { IUser } from '@models/user-model';
 import { IReq, IRes } from '@shared/types';
-import { vld } from './middleware';
-
 
 
 // **** Variables **** //
@@ -14,26 +11,13 @@ import { vld } from './middleware';
 const { CREATED, OK } = StatusCodes;
 
 // Paths
-export const p = {
+const paths = {
   basePath: '/users',
   get: '/all',
   add: '/add',
   update: '/update',
   delete: '/delete/:id',
 } as const;
-
-
-// **** Setup Router **** //
-
-// Validators (place shared or really long ones here)
-const validateUser = vld(['user', User.instanceOf]);
-
-// Add routes to express
-const router = Router();
-router.get(p.get, getAll);
-router.post(p.add, validateUser, add);
-router.put(p.update, validateUser, update);
-router.delete(p.delete, vld(['id', 'number', 'params']), _delete);
 
 
 // **** Functions **** //
@@ -76,4 +60,10 @@ async function _delete(req: IReq, res: IRes) {
 
 // **** Export default **** //
 
-export default router;
+export default {
+  paths,
+  getAll,
+  add,
+  update,
+  delete: _delete,
+} as const;
