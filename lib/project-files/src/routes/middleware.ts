@@ -91,23 +91,24 @@ export async function adminMw(
  * Sample argument: ['id', 'number'], id is the incoming variable, 'number' 
  * is the type, and body is where to extract 'id' from.
  * 
- * Example 1: vld('email', ['user', 'object'], ['id', 'number', 'params']) |
+ * Example 1: validate('email', ['user', 'object'], ['id', 'number', 'params'])
  *  will check that 'email' is a string in req.body, that user is of type 
  *  object in req.body, and that 'id' is a boolean in req.params.
- * Example 2: vld('password') | will check that 'password' is a string on
+ * Example 2: validate('password') will check that 'password' is a string on
  *  req.body.
- * Example 3: vld(['isAdmin', 'boolean']) | will check that 'isAdmin' is a 
+ * Example 3: validate(['isAdmin', 'boolean']) will check that 'isAdmin' is a 
  *  boolean on req.body
- * Example 4: vld(['user', isInstanceOfUser]) | will check that 'user' 
+ * Example 4: validate(['user', isInstanceOfUser]) will check that 'user' 
  *  satifies the 'isInstanceOfUser()' function.
- * Example 5: val(['email']), will check that 'email' is a string in req.body,
+ * Example 5: validate(['email']) will check that 'email' is a string in 
+ *  req.body,
  */
 export function validate(...params: Array<string | TParamArr>): RequestHandler {
   return (req: Request, _: Response, next: NextFunction) => {
     for (const param of params) {
       // Check params
       if (typeof param !== 'string' && !(param instanceof Array)) {
-        throw Error('vld() arg must be a string or array');
+        throw Error('"validate()" arg must be a string or array');
       }
       // If param is a string, make sure param is of type string on req.body
       if (typeof param === 'string') {
@@ -140,6 +141,8 @@ export function validate(...params: Array<string | TParamArr>): RequestHandler {
         const fn = param[1];
         if (!fn(toValidate)) {
           throw new ValidatorFnError(fn.name);
+        } else {
+          continue;
         }
       // If type is a number, see note above.
       } else if (param[1] === 'number') {

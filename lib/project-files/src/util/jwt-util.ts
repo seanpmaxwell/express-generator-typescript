@@ -31,7 +31,7 @@ function sign(data: string | object | Buffer): Promise<string> {
 /**
  * Decrypt JWT and extract client data.
  */
-async function decode<T>(jwt: string): Promise<string | undefined | T> {
+function decode<T>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
     jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
       return err ? rej(errors.validation) : res(decoded as T);
