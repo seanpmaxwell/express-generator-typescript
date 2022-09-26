@@ -35,7 +35,7 @@ export interface ISessionUser extends JwtPayload {
 // **** Functions **** //
 
 /**
- * Middleware to verify if user logged in.
+ * Middleware to verify user logged in and is an an admin.
  */
 export async function adminMw(
   req: Request,

@@ -9,7 +9,8 @@ import dotenv from 'dotenv';
 import commandLineArgs from 'command-line-args';
 
 
-// Setup command line options
+// **** Setup command line options **** //
+
 const options = commandLineArgs([
   {
     name: 'env',
@@ -19,9 +20,11 @@ const options = commandLineArgs([
   },
 ]);
 
-// Set the env file
+
+// **** Set the env file **** //
+
 const result2 = dotenv.config({
-  path: path.join(__dirname, `env/${String(options.env)}.env`),
+  path: path.join(__dirname, `../env/${String(options.env)}.env`),
 });
 
 if (result2.error) {
