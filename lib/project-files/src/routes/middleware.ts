@@ -2,7 +2,7 @@ import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import envVars from 'src/shared/env-vars';
+import envVars from '@shared/env-vars';
 import jwtUtil from '@util/jwt-util';
 import { IUser, UserRoles } from '@models/user-model';
 import { ParamInvalidError, ValidatorFnError } from '@shared/errors';

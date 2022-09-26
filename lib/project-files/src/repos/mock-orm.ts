@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import jsonfile from 'jsonfile';
+
 import { IUser } from '@models/user-model';
 
 
 // **** Variables **** //
 
-const dbFilePath = 'src/repos/database.json';
+const dbFileName = 'database.json';
 
 
 // **** Types **** //
@@ -22,14 +23,14 @@ interface IDb {
  * Fetch the json from the file.
  */
 function openDb(): Promise<IDb> {
-  return jsonfile.readFile(dbFilePath);
+  return jsonfile.readFile(__dirname + '/' + dbFileName);
 }
 
 /**
  * Update the file.
  */
 function saveDb(db: IDb): Promise<void> {
-  return jsonfile.writeFile(dbFilePath, db);
+  return jsonfile.writeFile((__dirname + '/' + dbFileName), db);
 }
 
 
