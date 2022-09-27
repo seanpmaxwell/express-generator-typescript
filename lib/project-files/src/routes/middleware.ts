@@ -127,7 +127,7 @@ export function validate(...params: Array<string | TParamArr>): RequestHandler {
         reqObjProp !== 'params' &&
         reqObjProp !== 'query'
       ) {
-        throw Error('param[1] must be "body", "query", or "params"');
+        throw Error('param[2] must be "body", "query", or "params"');
       }
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const toValidate = req[reqObjProp][paramName] as TAll;
