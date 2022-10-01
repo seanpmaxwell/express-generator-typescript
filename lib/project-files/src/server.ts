@@ -9,8 +9,10 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import { CustomError } from '@shared/errors';
 import envVars from '@shared/env-vars';
+import { CustomError } from '@shared/errors';
+
+import { NodeEnvs } from '@shared/enums';
 
 
 // **** Init express **** //
@@ -25,12 +27,12 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser(envVars.cookieProps.secret));
 
 // Show routes called in console during development
-if (envVars.nodeEnv === 'development') {
+if (envVars.nodeEnv === NodeEnvs.Dev) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (envVars.nodeEnv === 'production') {
+if (envVars.nodeEnv === NodeEnvs.Production) {
   app.use(helmet());
 }
 

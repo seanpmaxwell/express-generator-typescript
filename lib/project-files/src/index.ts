@@ -5,10 +5,7 @@ import envVars from '@shared/env-vars';
 import server from './server';
 
 
-// Constants
-const serverStartMsg = 'Express server started on port: ';
+// **** Start server **** //
 
-// Start server
-server.listen(envVars.port, () => {
-  logger.info(serverStartMsg + envVars.port.toString());
-});
+const msg = ('Express server started on port: ' + envVars.port.toString());
+server.listen(envVars.port, () => logger.info(msg));

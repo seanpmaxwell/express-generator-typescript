@@ -8,6 +8,9 @@ import path from 'path';
 import dotenv from 'dotenv';
 import commandLineArgs from 'command-line-args';
 
+// **NOTE** Do not import any local paths here, or any libraries dependent
+// on environment variables.
+
 
 // **** Setup command line options **** //
 
