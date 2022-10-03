@@ -1,4 +1,4 @@
-import './loadEnv';
+import './load-env';
 import find from 'find';
 import Jasmine from 'jasmine';
 import commandLineArgs from 'command-line-args';

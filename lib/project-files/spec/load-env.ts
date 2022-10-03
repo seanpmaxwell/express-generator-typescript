@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
 
 
+// **** Load test env file **** //
+
 const result2 = dotenv.config({
-  path: `./src/pre-start/env/test.env`,
+  path: `./env/test.env`,
 });
 
 if (result2.error) {

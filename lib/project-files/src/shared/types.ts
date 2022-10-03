@@ -1,7 +1,7 @@
 import * as e from 'express';
 import { Query } from 'express-serve-static-core';
 
-import { ISessionUser } from '@routes/middleware';
+import { ISessionUser } from '@routes/middlware/adminMw';
 
 
 // **** Misc **** //

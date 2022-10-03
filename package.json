@@ -1,6 +1,6 @@
 {
   "name": "express-generator-typescript",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
     "express-generator-typescript": "node bin/cli.js",
