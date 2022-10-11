@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { SuperTest, Test, Response } from 'supertest';
 
-import User, { UserRoles } from '@models/user-model';
+import User, { UserRoles } from '@models/User';
 import userRepo from '@repos/user-repo';
 
 

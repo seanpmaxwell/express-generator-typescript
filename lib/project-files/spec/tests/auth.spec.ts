@@ -6,7 +6,7 @@ import logger from 'jet-logger';
 import app from '@server';
 import userRepo from '@repos/user-repo';
 import envVars from '@shared/env-vars';
-import User, { UserRoles } from '@models/user-model';
+import User, { UserRoles } from '@models/User';
 import authRoutes from '@routes/auth-routes';
 import { pwdSaltRounds } from 'spec/support/login-agent';
 import { UnauthorizedError } from '@shared/errors';

@@ -5,7 +5,7 @@ import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
-import User, { IUser } from '@models/user-model';
+import User, { IUser } from '@models/User';
 import userRoutes from '@routes/user-routes';
 
 import {

@@ -2,7 +2,7 @@
 
 import jsonfile from 'jsonfile';
 
-import { IUser } from '@models/user-model';
+import { IUser } from '@models/User';
 
 
 // **** Variables **** //

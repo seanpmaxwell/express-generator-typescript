@@ -1,4 +1,4 @@
-import { IUser } from '@models/user-model';
+import { IUser } from '@models/User';
 import sharedFns from '@shared/functions';
 import orm from './mock-orm';
 

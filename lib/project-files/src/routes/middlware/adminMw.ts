@@ -8,7 +8,7 @@ import { JwtPayload } from 'jsonwebtoken';
 
 import envVars from '@shared/env-vars';
 import jwtUtil from '@util/jwt-util';
-import { IUser, UserRoles } from '@models/user-model';
+import { IUser, UserRoles } from '@models/User';
 
 
 // **** Variables **** //

@@ -1,5 +1,5 @@
 import userRepo from '@repos/user-repo';
-import { IUser } from '@models/user-model';
+import { IUser } from '@models/User';
 import { UserNotFoundError } from '@shared/errors';
 
 
