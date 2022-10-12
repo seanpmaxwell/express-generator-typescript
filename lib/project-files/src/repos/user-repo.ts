@@ -1,5 +1,5 @@
 import { IUser } from '@models/User';
-import sharedFns from '@shared/functions';
+import { getRandomInt } from '@shared/functions';
 import orm from './mock-orm';
 
 
@@ -44,7 +44,7 @@ async function getAll(): Promise<IUser[]> {
  */
 async function add(user: IUser): Promise<void> {
   const db = await orm.openDb();
-  user.id = sharedFns.getRandomInt();
+  user.id = getRandomInt();
   db.users.push(user);
   return orm.saveDb(db);
 }

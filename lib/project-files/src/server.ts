@@ -9,7 +9,7 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import envVars from '@shared/env-vars';
+import EnvVars from '@shared/EnvVars';
 import { CustomError } from '@shared/errors';
 
 import { NodeEnvs } from '@shared/enums';
@@ -24,15 +24,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser(envVars.cookieProps.secret));
+app.use(cookieParser(EnvVars.cookieProps.secret));
 
 // Show routes called in console during development
-if (envVars.nodeEnv === NodeEnvs.Dev) {
+if (EnvVars.nodeEnv === NodeEnvs.Dev) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (envVars.nodeEnv === NodeEnvs.Production) {
+if (EnvVars.nodeEnv === NodeEnvs.Production) {
   app.use(helmet());
 }
 
@@ -81,7 +81,7 @@ app.get('/', (_: Request, res: Response) => {
 
 // Redirect to login if not logged in.
 app.get('/users', (req: Request, res: Response) => {
-  const jwt = req.signedCookies[envVars.cookieProps.key];
+  const jwt = req.signedCookies[EnvVars.cookieProps.key];
   if (!jwt) {
     res.redirect('/');
   } else {

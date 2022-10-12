@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
-import envVars from '../shared/env-vars';
+import EnvVars from '../shared/EnvVars';
 
 
 // **** Variables **** //
@@ -11,7 +11,7 @@ const errors = {
 
 // Options
 const options = {
-  expiresIn: envVars.jwt.exp,
+  expiresIn: EnvVars.jwt.exp,
 };
 
 
@@ -22,7 +22,7 @@ const options = {
  */
 function sign(data: string | object | Buffer): Promise<string> {
   return new Promise((res, rej) => {
-    jsonwebtoken.sign(data, envVars.jwt.secret, options, (err, token) => {
+    jsonwebtoken.sign(data, EnvVars.jwt.secret, options, (err, token) => {
       return err ? rej(err) : res(token || '');
     });
   });
@@ -33,7 +33,7 @@ function sign(data: string | object | Buffer): Promise<string> {
  */
 function decode<T>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
-    jsonwebtoken.verify(jwt, envVars.jwt.secret, (err, decoded) => {
+    jsonwebtoken.verify(jwt, EnvVars.jwt.secret, (err, decoded) => {
       return err ? rej(errors.validation) : res(decoded as T);
     });
   });

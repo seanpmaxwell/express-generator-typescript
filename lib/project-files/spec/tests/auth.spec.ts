@@ -5,7 +5,7 @@ import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
-import envVars from '@shared/env-vars';
+import EnvVars from '@shared/EnvVars';
 import User, { UserRoles } from '@models/User';
 import authRoutes from '@routes/auth-routes';
 import { pwdSaltRounds } from 'spec/support/login-agent';
@@ -78,7 +78,7 @@ describe('auth-router', () => {
           !!err && logger.err(err);
           expect(res.status).toBe(OK);
           const cookie = res.headers['set-cookie'][0];
-          expect(cookie).toContain(envVars.cookieProps.key);
+          expect(cookie).toContain(EnvVars.cookieProps.key);
           done();
         });
     });

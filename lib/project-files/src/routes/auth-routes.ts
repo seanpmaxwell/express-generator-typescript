@@ -1,7 +1,7 @@
 import StatusCodes from 'http-status-codes';
 
 import authService from '@services/auth-service';
-import envVars from '@shared/env-vars';
+import EnvVars from '@shared/EnvVars';
 import { IReq, IRes } from '@shared/types';
 
 
@@ -35,7 +35,7 @@ async function login(req: IReq<ILoginReq>, res: IRes) {
   const { email, password } = req.body;
   // Add jwt to cookie
   const jwt = await authService.getJwt(email, password);
-  const { key, options } = envVars.cookieProps;
+  const { key, options } = EnvVars.cookieProps;
   res.cookie(key, jwt, options);
   // Return
   return res.status(OK).end();
@@ -45,7 +45,7 @@ async function login(req: IReq<ILoginReq>, res: IRes) {
  * Logout the user.
  */
 function logout(_: IReq, res: IRes) {
-  const { key, options } = envVars.cookieProps;
+  const { key, options } = EnvVars.cookieProps;
   res.clearCookie(key, options);
   return res.status(OK).end();
 }

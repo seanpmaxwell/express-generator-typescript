@@ -6,7 +6,7 @@ import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import envVars from '@shared/env-vars';
+import EnvVars from '@shared/EnvVars';
 import jwtUtil from '@util/jwt-util';
 import { IUser, UserRoles } from '@models/User';
 
@@ -39,7 +39,7 @@ async function adminMw(
 ) {
   try {
     // Extract the token
-    const cookieName = envVars.cookieProps.key,
+    const cookieName = EnvVars.cookieProps.key,
       jwt = req.signedCookies[cookieName];
     if (!jwt) {
       throw Error(jwtNotPresentErr);

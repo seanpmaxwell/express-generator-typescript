@@ -1,11 +1,11 @@
 import './pre-start'; // Must be the first import
 import logger from 'jet-logger';
 
-import envVars from '@shared/env-vars';
+import EnvVars from '@shared/EnvVars';
 import server from './server';
 
 
 // **** Start server **** //
 
-const msg = ('Express server started on port: ' + envVars.port.toString());
-server.listen(envVars.port, () => logger.info(msg));
+const msg = ('Express server started on port: ' + EnvVars.port.toString());
+server.listen(EnvVars.port, () => logger.info(msg));
