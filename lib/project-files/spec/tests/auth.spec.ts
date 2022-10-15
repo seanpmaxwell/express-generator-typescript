@@ -5,11 +5,11 @@ import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
-import EnvVars from '@shared/EnvVars';
+import EnvVars from 'src/configurations/EnvVars';
 import User, { UserRoles } from '@models/User';
 import authRoutes from '@routes/auth-routes';
 import { pwdSaltRounds } from 'spec/support/login-agent';
-import { UnauthorizedError } from '@shared/errors';
+import { UnauthorizedError } from 'src/declarations/errors';
 
 
 // **** Variables **** //

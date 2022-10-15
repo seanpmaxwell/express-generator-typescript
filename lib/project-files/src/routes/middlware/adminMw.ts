@@ -6,7 +6,7 @@ import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import EnvVars from '@shared/EnvVars';
+import EnvVars from 'src/configurations/EnvVars';
 import jwtUtil from '@util/jwt-util';
 import { IUser, UserRoles } from '@models/User';
 

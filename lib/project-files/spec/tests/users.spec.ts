@@ -12,7 +12,7 @@ import {
   ParamInvalidError,
   UserNotFoundError,
   ValidatorFnError,
-} from '@shared/errors';
+} from 'src/declarations/errors';
 import loginAgent from '../support/login-agent';
 
 

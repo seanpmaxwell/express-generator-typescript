@@ -73,7 +73,7 @@
         "src/models/*"
       ],
       "@shared/*": [
-        "src/shared/*"
+        "src/declarations/*"
       ],
       "@server": [
         "src/server"

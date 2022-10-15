@@ -9,10 +9,10 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import EnvVars from '@shared/EnvVars';
-import { CustomError } from '@shared/errors';
+import EnvVars from 'src/configurations/EnvVars';
+import { CustomError } from 'src/declarations/errors';
 
-import { NodeEnvs } from '@shared/enums';
+import { NodeEnvs } from 'src/declarations/enums';
 
 
 // **** Init express **** //

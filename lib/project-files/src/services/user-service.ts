@@ -1,6 +1,6 @@
 import userRepo from '@repos/user-repo';
 import { IUser } from '@models/User';
-import { UserNotFoundError } from '@shared/errors';
+import { UserNotFoundError } from 'src/declarations/errors';
 
 
 // **** Functions **** //

@@ -2,7 +2,7 @@ import StatusCodes from 'http-status-codes';
 
 import userService from '@services/user-service';
 import { IUser } from '@models/User';
-import { IReq, IRes } from '@shared/types';
+import { IReq, IRes } from 'src/declarations/types';
 
 
 // **** Variables **** //
