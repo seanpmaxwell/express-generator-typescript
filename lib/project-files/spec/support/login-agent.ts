@@ -1,13 +1,11 @@
-import bcrypt from 'bcrypt';
 import { SuperTest, Test, Response } from 'supertest';
 
 import User, { UserRoles } from '@models/User';
 import userRepo from '@repos/user-repo';
+import pwdUtil from '@util/pwd-util';
 
 
 // **** Variables **** //
-
-export const pwdSaltRounds = 12;
 
 const creds = {
   email: 'jsmith@gmail.com',
@@ -23,7 +21,7 @@ const creds = {
 function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   // Setup dummy data
   const role = UserRoles.Admin;
-  const pwdHash = bcrypt.hashSync(creds.password, pwdSaltRounds);
+  const pwdHash = pwdUtil.hashSync(creds.password);
   const loginUser = User.new('john smith', creds.email, role, pwdHash);
   spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
   // Call Login API

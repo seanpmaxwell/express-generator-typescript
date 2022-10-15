@@ -1,8 +1,17 @@
-import bcrypt from 'bcrypt';
-
 import userRepo from '@repos/user-repo';
 import jwtUtil from '@util/jwt-util';
-import { UnauthorizedError } from '@declarations/errors';
+import pwdUtil from '@util/pwd-util';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import { IServiceErr } from '@declarations/interfaces';
+
+
+// **** Variables **** //
+
+// Errors
+export const errors = {
+  unauth: 'Unauthorized',
+  emailNotFound: (email: string) => `User with email "${email}" not found`,
+} as const;
 
 
 // **** Functions **** //
@@ -10,17 +19,26 @@ import { UnauthorizedError } from '@declarations/errors';
 /**
  * Login a user.
  */
-async function getJwt(email: string, password: string): Promise<string> {
+async function getJwt(
+  email: string,
+  password: string,
+): Promise<IServiceErr | string> {
   // Fetch user
   const user = await userRepo.getOne(email);
   if (!user) {
-    throw new UnauthorizedError();
+    return {
+      status: HttpStatusCodes.UNAUTHORIZED,
+      msg: errors.emailNotFound(email),
+    };
   }
   // Check password
   const hash = (user.pwdHash ?? '');
-  const pwdPassed = await bcrypt.compare(password, hash);
+  const pwdPassed = await pwdUtil.compare(password, hash);
   if (!pwdPassed) {
-    throw new UnauthorizedError();
+    return {
+      status: HttpStatusCodes.UNAUTHORIZED,
+      msg: errors.unauth,
+    };
   }
   // Setup Admin Cookie
   return jwtUtil.sign({

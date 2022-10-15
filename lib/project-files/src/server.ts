@@ -10,7 +10,6 @@ import BaseRouter from './routes/api';
 import logger from 'jet-logger';
 import EnvVars from '@configurations/EnvVars';
 import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import { CustomError } from '@declarations/errors';
 import { NodeEnvs } from '@declarations/enums';
 
 
@@ -43,23 +42,15 @@ app.use('/api', BaseRouter);
 
 // Setup error handler
 app.use((
-  err: Error | CustomError,
+  err: Error,
   _: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  __: NextFunction,
+  next: NextFunction,
 ) => {
   logger.err(err, true);
-  // Status
-  const status = (
-    err instanceof CustomError 
-      ? err.HttpStatus 
-      : HttpStatusCodes.BAD_REQUEST
-  );
-  // Return
-  return res.status(status).json({
-    error: err.message,
-  });
+  const status = HttpStatusCodes.BAD_REQUEST;
+  return res.status(status).json({ error: err.message });
 });
 
 

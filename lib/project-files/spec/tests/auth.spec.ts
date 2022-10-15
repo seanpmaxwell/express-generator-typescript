@@ -1,15 +1,14 @@
-import bcrypt from 'bcrypt';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
 import supertest, { SuperTest, Test, Response } from 'supertest';
 import logger from 'jet-logger';
 
 import app from '@server';
-import userRepo from '@repos/user-repo';
-import EnvVars from '@configurations/EnvVars';
-import User, { UserRoles } from '@models/User';
 import authRoutes from '@routes/auth-routes';
-import { pwdSaltRounds } from 'spec/support/login-agent';
-import { UnauthorizedError } from '@declarations/errors';
+import userRepo from '@repos/user-repo';
+import pwdUtil from '@util/pwd-util';
+import EnvVars from '@configurations/EnvVars';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import User, { UserRoles } from '@models/User';
+import { errors as authServiceErrs } from '@services/auth-service';
 
 
 // **** Variables **** //
@@ -18,21 +17,24 @@ import { UnauthorizedError } from '@declarations/errors';
 const { paths } = authRoutes,
   authPath = ('/api' + paths.basePath),
   loginPath = `${authPath}${paths.login}`,
-  logoutPath = `${authPath}${paths.logout}`,
-  { BAD_REQUEST, OK, UNAUTHORIZED } = StatusCodes;
+  logoutPath = `${authPath}${paths.logout}`;
 
 // Test message
 const msgs = {
-  goodLogin: `should return a response with a status of ${OK} and a cookie 
-    with a jwt if the login was successful.`,
-  emailNotFound: `should return a response with a status of ${UNAUTHORIZED} 
-    and a json with the "error ${UnauthorizedError.Msg}" if the email was 
-    not found.`,
-  pwdFailed: `should return a response with a status of ${UNAUTHORIZED} and a 
-    json with the error "${UnauthorizedError.Msg}" if the password failed.`,
-  fallbackErr: `should return a response with a status of ${BAD_REQUEST} and 
-    a json with an error for all other bad responses.`,
-  goodLogout: `should return a response with a status of ${OK}.`,
+  goodLogin: 'should return a response with a status of "' + 
+    String(HttpStatusCodes.OK) + '" and a cookie with a jwt if the login ' + 
+    'was successful.',
+  emailNotFound: 'should return a response with a status of "' + 
+    String(HttpStatusCodes.UNAUTHORIZED) + '" and a json with an error ' + 
+    'message if the email was not found.',
+  pwdFailed: 'should return a response with a status of "' + 
+    String(HttpStatusCodes.UNAUTHORIZED) + '" and a json with the error "' + 
+    authServiceErrs.unauth + '" if the password failed.',
+  fallbackErr: 'should return a response with a status of "' + 
+    String(HttpStatusCodes.BAD_REQUEST) + '" and a json with an error for ' + 
+    'all other bad responses.',
+  goodLogout: 'should return a response with a status of ' + 
+    String(HttpStatusCodes.OK),
 } as const;
 
 // Login credentials
@@ -69,14 +71,14 @@ describe('auth-router', () => {
     // Good login
     it(msgs.goodLogin, (done) => {
       const role = UserRoles.Standard;
-      const pwdHash = hashPwd(loginCreds.password);
+      const pwdHash = pwdUtil.hashSync(loginCreds.password);
       const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
       // Call API
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
-          expect(res.status).toBe(OK);
+          expect(res.status).toBe(HttpStatusCodes.OK);
           const cookie = res.headers['set-cookie'][0];
           expect(cookie).toContain(EnvVars.cookieProps.key);
           done();
@@ -89,8 +91,9 @@ describe('auth-router', () => {
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
-          expect(res.status).toBe(UNAUTHORIZED);
-          expect(res.body.error).toBe(UnauthorizedError.Msg);
+          expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+          const errMsg = authServiceErrs.emailNotFound(loginCreds.email);
+          expect(res.body.error).toBe(errMsg);
           done();
         });
     });
@@ -98,15 +101,15 @@ describe('auth-router', () => {
     // Password failed
     it(msgs.pwdFailed, (done) => {
       const role = UserRoles.Standard;
-      const pwdHash = hashPwd('bad password');
+      const pwdHash = pwdUtil.hashSync('bad password');
       const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
       spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
       // Call API
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
-          expect(res.status).toBe(UNAUTHORIZED);
-          expect(res.body.error).toBe(UnauthorizedError.Msg);
+          expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+          expect(res.body.error).toBe(authServiceErrs.unauth);
           done();
         });
     });
@@ -117,7 +120,7 @@ describe('auth-router', () => {
       callApi(loginCreds)
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
-          expect(res.status).toBe(BAD_REQUEST);
+          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
           expect(res.body.error).toBeTruthy();
           done();
         });
@@ -132,16 +135,9 @@ describe('auth-router', () => {
       agent.get(logoutPath)
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
-          expect(res.status).toBe(OK);
+          expect(res.status).toBe(HttpStatusCodes.OK);
           done();
         });
     });
   });
 });
-
-
-// **** Helper functions **** //
-
-function hashPwd(pwd: string) {
-  return bcrypt.hashSync(pwd, pwdSaltRounds);
-}

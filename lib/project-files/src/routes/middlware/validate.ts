@@ -36,13 +36,19 @@
 
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
-import { ParamInvalidError, ValidatorFnError } from '@declarations/errors';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
 import { TAll } from '@declarations/types';
+
+
+// **** Variables **** //
+
+export const paramInvalidErr = 'One or more of the required was missing ' + 
+  'or invalid.';
 
 
 // **** Types **** //
 
-type TLoopFn = (req: Request) => void;
+type TLoopFn = (req: Request) => boolean;
 type TValidatorFn =  ((arg: TAll) => boolean);
 type TReqObjProps = 'body' | 'query' | 'params';
 
@@ -69,7 +75,7 @@ function validate(...params: Array<string | TParamArr>): RequestHandler {
   const loopFns: TLoopFn[] = [];
   for (const param of params) {
     const { paramName, type, reqObjProp } = getParamFields(param);
-    let loopFn: TLoopFn = () => { return; };
+    let loopFn: TLoopFn = () => false;
     if (type === 'string') {
       loopFn = checkStr(reqObjProp, paramName);
     } else if (type === 'number') {
@@ -85,11 +91,15 @@ function validate(...params: Array<string | TParamArr>): RequestHandler {
     loopFns.push(loopFn);
   }
   // Return middlware function
-  return (req: Request, _: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     for (const loopFn of loopFns) {
-      loopFn(req);
+      if (!loopFn(req)) {
+        return res
+          .status(HttpStatusCodes.BAD_REQUEST)
+          .json({ error: paramInvalidErr });
+      }
     }
-    next();
+    return next();
   };
 }
 
@@ -139,9 +149,7 @@ function getParamFields(param: string | TParamArr): IParamFields {
  */
 function checkStr(reqObjProp: TReqObjProps, paramName: string): TLoopFn {
   return getLoopFn(reqObjProp, paramName, (toCheck) => {
-    if (typeof toCheck !== 'string') {
-      throw new ParamInvalidError();
-    }
+    return (typeof toCheck === 'string');
   });
 }
 
@@ -151,11 +159,11 @@ function checkStr(reqObjProp: TReqObjProps, paramName: string): TLoopFn {
 function checkNum(reqObjProp: TReqObjProps, paramName: string): TLoopFn {
   return getLoopFn(reqObjProp, paramName, (toCheck) => {
     if (reqObjProp === 'query' || reqObjProp === 'params') {
-      if (isNaN(toCheck as number)) {
-        throw new ParamInvalidError();
-      }
+      return !isNaN(toCheck as number);
     } else if (reqObjProp === 'body' && typeof toCheck !== 'number') {
-      throw new ParamInvalidError();
+      return false;
+    } else {
+      return true;
     }
   });
 }
@@ -166,11 +174,11 @@ function checkNum(reqObjProp: TReqObjProps, paramName: string): TLoopFn {
 function checkBool(reqObjProp: TReqObjProps, paramName: string): TLoopFn {
   return getLoopFn(reqObjProp, paramName, (toCheck) => {
     if (reqObjProp === 'query' || reqObjProp === 'params') {
-      if (!isBool(toCheck as boolean)) {
-        throw new ParamInvalidError();
-      }
+      return isBool(toCheck as boolean);
     } else if (reqObjProp === 'body' && typeof toCheck !== 'boolean') {
-      throw new ParamInvalidError();
+      return false;
+    } else {
+      return true;
     }
   });
 }
@@ -198,9 +206,7 @@ function checkValidatorFn(
   validatorFn: TValidatorFn,
 ) {
   return getLoopFn(reqObjProp, paramName, (toCheck) => {
-    if (!validatorFn(toCheck)) {
-      throw new ValidatorFnError(validatorFn.name);
-    }
+    return validatorFn(toCheck);
   });
 }
 
@@ -213,9 +219,7 @@ function checkDefault(
   type: string,
 ): TLoopFn {
   return getLoopFn(reqObjProp, paramName, (toCheck) => {
-    if (typeof toCheck !== type) {
-      throw new ParamInvalidError();
-    }
+    return (toCheck === type);
   });
 }
 
@@ -225,7 +229,7 @@ function checkDefault(
 function getLoopFn(
   reqObjProp: TReqObjProps,
   paramName: string,
-  cb: (toCheck: TAll) => void,
+  cb: (toCheck: TAll) => boolean,
 ): TLoopFn {
   return (req: Request) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

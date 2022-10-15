@@ -13,7 +13,9 @@ import { IUser, UserRoles } from '@models/User';
 
 // **** Variables **** //
 
-const jwtNotPresentErr = 'JWT not present in signed cookie.';
+const jwtNotPresentErr = 'JWT not present in signed cookie.',
+  userUnauthErr = 'User not authorized to perform this action';
+
 
 
 // **** Types **** //
@@ -36,33 +38,27 @@ async function adminMw(
   res: Response,
   next: NextFunction,
 ) {
-  try {
-    // Extract the token
-    const cookieName = EnvVars.cookieProps.key,
-      jwt = req.signedCookies[cookieName];
-    if (!jwt) {
-      throw Error(jwtNotPresentErr);
-    }
-    // Make sure user role is an admin
-    const clientData = await jwtUtil.decode<ISessionUser>(jwt);
-    if (
-      typeof clientData === 'object' &&
-      clientData.role === UserRoles.Admin
-    ) {
-      res.locals.sessionUser = clientData;
-      next();
-    } else {
-      throw Error(jwtNotPresentErr);
-    }
-  // Catch errors
-  } catch (err: unknown) {
-    let error;
-    if (typeof err === 'string') {
-      error = err;
-    } else if (err instanceof Error) {
-      error = err.message;
-    }
-    return res.status(HttpStatusCodes.UNAUTHORIZED).json({ error });
+  // Extract the token
+  const cookieName = EnvVars.cookieProps.key,
+    jwt = req.signedCookies[cookieName];
+  if (!jwt) {
+    return res
+      .status(HttpStatusCodes.UNAUTHORIZED)
+      .json({ error: jwtNotPresentErr });
+  }
+  // Make sure user role is an admin
+  const clientData = await jwtUtil.decode<ISessionUser>(jwt);
+  if (
+    typeof clientData === 'object' &&
+    clientData.role === UserRoles.Admin
+  ) {
+    res.locals.sessionUser = clientData;
+    return next();
+  // Return an unauth error if user is not an admin
+  } else {
+    return res
+      .status(HttpStatusCodes.UNAUTHORIZED)
+      .json({ error: userUnauthErr });
   }
 }
 
