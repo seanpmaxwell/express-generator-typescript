@@ -1,7 +1,7 @@
 import './pre-start'; // Must be the first import
 import logger from 'jet-logger';
 
-import EnvVars from 'src/configurations/EnvVars';
+import EnvVars from '@configurations/EnvVars';
 import server from './server';
 
 

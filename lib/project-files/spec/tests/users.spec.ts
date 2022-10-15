@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import StatusCodes from 'http-status-codes';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
 import { SuperTest, Test, Response } from 'supertest';
 import logger from 'jet-logger';
 
@@ -12,7 +12,7 @@ import {
   ParamInvalidError,
   UserNotFoundError,
   ValidatorFnError,
-} from 'src/declarations/errors';
+} from '@declarations/errors';
 import loginAgent from '../support/login-agent';
 
 

@@ -1,15 +1,15 @@
 import bcrypt from 'bcrypt';
-import StatusCodes from 'http-status-codes';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
 import supertest, { SuperTest, Test, Response } from 'supertest';
 import logger from 'jet-logger';
 
 import app from '@server';
 import userRepo from '@repos/user-repo';
-import EnvVars from 'src/configurations/EnvVars';
+import EnvVars from '@configurations/EnvVars';
 import User, { UserRoles } from '@models/User';
 import authRoutes from '@routes/auth-routes';
 import { pwdSaltRounds } from 'spec/support/login-agent';
-import { UnauthorizedError } from 'src/declarations/errors';
+import { UnauthorizedError } from '@declarations/errors';
 
 
 // **** Variables **** //

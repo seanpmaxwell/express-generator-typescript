@@ -36,8 +36,8 @@
 
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
-import { ParamInvalidError, ValidatorFnError } from 'src/declarations/errors';
-import { TAll } from 'src/declarations/types';
+import { ParamInvalidError, ValidatorFnError } from '@declarations/errors';
+import { TAll } from '@declarations/types';
 
 
 // **** Types **** //

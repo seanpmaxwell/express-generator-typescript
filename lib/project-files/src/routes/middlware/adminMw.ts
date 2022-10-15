@@ -2,18 +2,17 @@
  * Middleware to verify user logged in and is an an admin.
  */
 
-import StatusCodes from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import EnvVars from 'src/configurations/EnvVars';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import EnvVars from '@configurations/EnvVars';
 import jwtUtil from '@util/jwt-util';
 import { IUser, UserRoles } from '@models/User';
 
 
 // **** Variables **** //
 
-const { UNAUTHORIZED } = StatusCodes;
 const jwtNotPresentErr = 'JWT not present in signed cookie.';
 
 
@@ -46,12 +45,16 @@ async function adminMw(
     }
     // Make sure user role is an admin
     const clientData = await jwtUtil.decode<ISessionUser>(jwt);
-    if (typeof clientData === 'object' && clientData.role === UserRoles.Admin) {
+    if (
+      typeof clientData === 'object' &&
+      clientData.role === UserRoles.Admin
+    ) {
       res.locals.sessionUser = clientData;
       next();
     } else {
       throw Error(jwtNotPresentErr);
     }
+  // Catch errors
   } catch (err: unknown) {
     let error;
     if (typeof err === 'string') {
@@ -59,7 +62,7 @@ async function adminMw(
     } else if (err instanceof Error) {
       error = err.message;
     }
-    return res.status(UNAUTHORIZED).json({ error });
+    return res.status(HttpStatusCodes.UNAUTHORIZED).json({ error });
   }
 }
 

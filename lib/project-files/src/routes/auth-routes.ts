@@ -1,8 +1,8 @@
-import StatusCodes from 'http-status-codes';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
 
 import authService from '@services/auth-service';
-import EnvVars from 'src/configurations/EnvVars';
-import { IReq, IRes } from 'src/declarations/types';
+import EnvVars from '@configurations/EnvVars';
+import { IReq, IRes } from '@declarations/types';
 
 
 // **** Types **** //
@@ -14,9 +14,6 @@ interface ILoginReq {
 
 
 // **** Variables **** //
-
-// Status codes
-const { OK } = StatusCodes;
 
 // Paths
 const paths = {
@@ -38,7 +35,7 @@ async function login(req: IReq<ILoginReq>, res: IRes) {
   const { key, options } = EnvVars.cookieProps;
   res.cookie(key, jwt, options);
   // Return
-  return res.status(OK).end();
+  return res.status(HttpStatusCodes.OK).end();
 }
 
 /**
@@ -47,7 +44,7 @@ async function login(req: IReq<ILoginReq>, res: IRes) {
 function logout(_: IReq, res: IRes) {
   const { key, options } = EnvVars.cookieProps;
   res.clearCookie(key, options);
-  return res.status(OK).end();
+  return res.status(HttpStatusCodes.OK).end();
 }
 
 

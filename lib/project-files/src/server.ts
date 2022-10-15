@@ -2,17 +2,16 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
-import StatusCodes from 'http-status-codes';
 import express, { Request, Response, NextFunction } from 'express';
 
 import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import EnvVars from 'src/configurations/EnvVars';
-import { CustomError } from 'src/declarations/errors';
-
-import { NodeEnvs } from 'src/declarations/enums';
+import EnvVars from '@configurations/EnvVars';
+import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import { CustomError } from '@declarations/errors';
+import { NodeEnvs } from '@declarations/enums';
 
 
 // **** Init express **** //
@@ -55,7 +54,7 @@ app.use((
   const status = (
     err instanceof CustomError 
       ? err.HttpStatus 
-      : StatusCodes.BAD_REQUEST
+      : HttpStatusCodes.BAD_REQUEST
   );
   // Return
   return res.status(status).json({

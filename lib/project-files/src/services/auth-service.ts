@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 
 import userRepo from '@repos/user-repo';
 import jwtUtil from '@util/jwt-util';
-import { UnauthorizedError } from 'src/declarations/errors';
+import { UnauthorizedError } from '@declarations/errors';
 
 
 // **** Functions **** //
