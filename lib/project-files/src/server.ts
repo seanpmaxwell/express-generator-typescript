@@ -11,6 +11,7 @@ import logger from 'jet-logger';
 import EnvVars from '@configurations/EnvVars';
 import HttpStatusCodes from '@configurations/HttpStatusCodes';
 import { NodeEnvs } from '@declarations/enums';
+import { RouteError } from '@declarations/classes';
 
 
 // **** Init express **** //
@@ -49,7 +50,10 @@ app.use((
   next: NextFunction,
 ) => {
   logger.err(err, true);
-  const status = HttpStatusCodes.BAD_REQUEST;
+  let status = HttpStatusCodes.BAD_REQUEST;
+  if (err instanceof RouteError) {
+    status = err.status;
+  }
   return res.status(status).json({ error: err.message });
 });
 

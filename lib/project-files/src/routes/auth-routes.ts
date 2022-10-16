@@ -30,15 +30,11 @@ const paths = {
  */
 async function login(req: IReq<ILoginReq>, res: IRes) {
   const { email, password } = req.body;
-  // Get jwt
-  const resp = await authService.getJwt(email, password);
-  // Check for errors
-  if (typeof resp === 'object') {
-    return res.status(resp.status).json({ error: resp.msg });
-  }
-  // Add jwt to the response cookie
+  // Add jwt to cookie
+  const jwt = await authService.getJwt(email, password);
   const { key, options } = EnvVars.cookieProps;
-  res.cookie(key, resp, options);
+  res.cookie(key, jwt, options);
+  // Return
   return res.status(HttpStatusCodes.OK).end();
 }
 

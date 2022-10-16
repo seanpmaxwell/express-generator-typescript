@@ -21,20 +21,19 @@ const { paths } = authRoutes,
 
 // Test message
 const msgs = {
-  goodLogin: 'should return a response with a status of "' + 
-    String(HttpStatusCodes.OK) + '" and a cookie with a jwt if the login ' + 
-    'was successful.',
-  emailNotFound: 'should return a response with a status of "' + 
-    String(HttpStatusCodes.UNAUTHORIZED) + '" and a json with an error ' + 
-    'message if the email was not found.',
-  pwdFailed: 'should return a response with a status of "' + 
-    String(HttpStatusCodes.UNAUTHORIZED) + '" and a json with the error "' + 
-    authServiceErrs.unauth + '" if the password failed.',
-  fallbackErr: 'should return a response with a status of "' + 
-    String(HttpStatusCodes.BAD_REQUEST) + '" and a json with an error for ' + 
-    'all other bad responses.',
-  goodLogout: 'should return a response with a status of ' + 
-    String(HttpStatusCodes.OK),
+  goodLogin: 'should return a response with a status of ' + 
+    `"${HttpStatusCodes.OK}" and a cookie with a jwt if the login was ` + 
+    'successful.',
+  emailNotFound: 'should return a response with a status of ' + 
+    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with an error message if ` + 
+    'the email was not found.',
+  pwdFailed: 'should return a response with a status of ' + 
+    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with the error ` + 
+    `"${authServiceErrs.unauth}" if the password failed.`,
+  fallbackErr: 'should return a response with a status of ' + 
+    `"${HttpStatusCodes.BAD_REQUEST}" and a json with an error for all ` + 
+    'other bad responses.',
+  goodLogout: `should return a response with a status of ${HttpStatusCodes.OK}`,
 } as const;
 
 // Login credentials

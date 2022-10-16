@@ -2,7 +2,7 @@ import userRepo from '@repos/user-repo';
 import jwtUtil from '@util/jwt-util';
 import pwdUtil from '@util/pwd-util';
 import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import { IServiceErr } from '@declarations/interfaces';
+import { RouteError } from '@declarations/classes';
 
 
 // **** Variables **** //
@@ -19,26 +19,23 @@ export const errors = {
 /**
  * Login a user.
  */
-async function getJwt(
-  email: string,
-  password: string,
-): Promise<IServiceErr | string> {
+async function getJwt(email: string, password: string): Promise<string> {
   // Fetch user
   const user = await userRepo.getOne(email);
   if (!user) {
-    return {
-      status: HttpStatusCodes.UNAUTHORIZED,
-      msg: errors.emailNotFound(email),
-    };
+    throw new RouteError(
+      HttpStatusCodes.UNAUTHORIZED,
+      errors.emailNotFound(email),
+    );
   }
   // Check password
   const hash = (user.pwdHash ?? '');
   const pwdPassed = await pwdUtil.compare(password, hash);
   if (!pwdPassed) {
-    return {
-      status: HttpStatusCodes.UNAUTHORIZED,
-      msg: errors.unauth,
-    };
+    throw new RouteError(
+      HttpStatusCodes.UNAUTHORIZED, 
+      errors.unauth,
+    );
   }
   // Setup Admin Cookie
   return jwtUtil.sign({

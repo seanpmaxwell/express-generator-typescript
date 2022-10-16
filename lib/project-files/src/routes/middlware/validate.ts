@@ -42,8 +42,8 @@ import { TAll } from '@declarations/types';
 
 // **** Variables **** //
 
-export const paramInvalidErr = 'One or more of the required was missing ' + 
-  'or invalid.';
+export const paramInvalidErr = 'One or more of the required params was ' + 
+  'missing or invalid.';
 
 
 // **** Types **** //
