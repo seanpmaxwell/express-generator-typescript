@@ -5,14 +5,6 @@ import EnvVars from '@src/configurations/EnvVars';
 import { IReq, IRes } from './shared/types';
 
 
-// **** Types **** //
-
-interface ILoginReq {
-  email: string;
-  password: string;
-}
-
-
 // **** Variables **** //
 
 // Paths
@@ -21,6 +13,14 @@ const paths = {
   login: '/login',
   logout: '/logout',
 } as const;
+
+
+// **** Types **** //
+
+interface ILoginReq {
+  email: string;
+  password: string;
+}
 
 
 // **** Functions **** //
