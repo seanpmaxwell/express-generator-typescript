@@ -21,14 +21,7 @@
     "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
   },
   "_moduleAliases": {
-    "@services": "dist/services",
-    "@repos": "dist/repos",
-    "@models": "dist/models",
-    "@configurations": "dist/configurations",
-    "@declarations": "dist/declarations",
-    "@server": "dist/server",
-    "@routes": "dist/routes",
-    "@util": "dist/util"
+    "@src": "dist/src"
   },
   "engines": {
     "node": ">=8.10.0"

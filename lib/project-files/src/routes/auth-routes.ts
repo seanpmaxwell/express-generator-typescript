@@ -1,8 +1,8 @@
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 
-import authService from '@services/auth-service';
-import EnvVars from '@configurations/EnvVars';
-import { IReq, IRes } from '@declarations/types';
+import authService from '@src/services/auth-service';
+import EnvVars from '@src/configurations/EnvVars';
+import { IReq, IRes } from './shared/types';
 
 
 // **** Types **** //

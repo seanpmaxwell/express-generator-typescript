@@ -1,14 +1,14 @@
 import supertest, { SuperTest, Test, Response } from 'supertest';
 import logger from 'jet-logger';
 
-import app from '@server';
-import authRoutes from '@routes/auth-routes';
-import userRepo from '@repos/user-repo';
-import pwdUtil from '@util/pwd-util';
-import EnvVars from '@configurations/EnvVars';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import User, { UserRoles } from '@models/User';
-import { errors as authServiceErrs } from '@services/auth-service';
+import app from '@src/server';
+import authRoutes from '@src/routes/auth-routes';
+import userRepo from '@src/repos/user-repo';
+import pwdUtil from '@src/util/pwd-util';
+import EnvVars from '@src/configurations/EnvVars';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import User, { UserRoles } from '@src/models/User';
+import { errors as authServiceErrs } from '@src/services/auth-service';
 
 
 // **** Variables **** //

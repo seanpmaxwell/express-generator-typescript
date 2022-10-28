@@ -1,7 +1,7 @@
-import userRepo from '@repos/user-repo';
-import { IUser } from '@models/User';
-import { RouteError } from '@declarations/classes';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import userRepo from '@src/repos/user-repo';
+import { IUser } from '@src/models/User';
+import { RouteError } from '@src/declarations/classes';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 
 
 // **** Variables **** //

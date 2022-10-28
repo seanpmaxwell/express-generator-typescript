@@ -2,14 +2,14 @@ import supertest from 'supertest';
 import { SuperTest, Test, Response } from 'supertest';
 import logger from 'jet-logger';
 
-import app from '@server';
-import userRepo from '@repos/user-repo';
-import User, { IUser } from '@models/User';
-import userRoutes from '@routes/user-routes';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import app from '@src/server';
+import userRepo from '@src/repos/user-repo';
+import User, { IUser } from '@src/models/User';
+import userRoutes from '@src/routes/user-routes';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 import loginAgent from '../support/login-agent';
-import { paramInvalidErr } from '@routes/middlware/validate';
-import { userNotFoundErr } from '@services/user-service';
+import { paramInvalidErr } from '@src/routes/middlware/validate';
+import { userNotFoundErr } from '@src/services/user-service';
 
 
 // **** Variables **** //

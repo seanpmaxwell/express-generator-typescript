@@ -1,8 +1,8 @@
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 
-import userService from '@services/user-service';
-import { IUser } from '@models/User';
-import { IReq, IRes } from '@declarations/types';
+import userService from '@src/services/user-service';
+import { IUser } from '@src/models/User';
+import { IReq, IRes } from './shared/types';
 
 
 // **** Variables **** //

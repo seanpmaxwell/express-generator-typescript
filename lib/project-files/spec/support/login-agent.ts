@@ -1,8 +1,8 @@
 import { SuperTest, Test, Response } from 'supertest';
 
-import User, { UserRoles } from '@models/User';
-import userRepo from '@repos/user-repo';
-import pwdUtil from '@util/pwd-util';
+import User, { UserRoles } from '@src/models/User';
+import userRepo from '@src/repos/user-repo';
+import pwdUtil from '@src/util/pwd-util';
 
 
 // **** Variables **** //

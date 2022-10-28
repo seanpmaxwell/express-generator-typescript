@@ -1,4 +1,4 @@
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 
 
 /**

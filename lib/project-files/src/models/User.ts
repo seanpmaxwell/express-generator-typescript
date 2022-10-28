@@ -1,4 +1,4 @@
-import { TAll } from '@declarations/types';
+import { TAll } from '@src/declarations/types';
 
 
 // **** Variables **** //

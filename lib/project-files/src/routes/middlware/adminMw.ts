@@ -5,10 +5,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import EnvVars from '@configurations/EnvVars';
-import jwtUtil from '@util/jwt-util';
-import { IUser, UserRoles } from '@models/User';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import EnvVars from '@src/configurations/EnvVars';
+import jwtUtil from '@src/util/jwt-util';
+import { IUser, UserRoles } from '@src/models/User';
 
 
 // **** Variables **** //

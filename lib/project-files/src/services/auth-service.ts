@@ -1,8 +1,9 @@
-import userRepo from '@repos/user-repo';
-import jwtUtil from '@util/jwt-util';
-import pwdUtil from '@util/pwd-util';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import { RouteError } from '@declarations/classes';
+import userRepo from '@src/repos/user-repo';
+import jwtUtil from '@src/util/jwt-util';
+import pwdUtil from '@src/util/pwd-util';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import { RouteError } from '@src/declarations/classes';
+import { tick } from '@src/declarations/functions';
 
 
 // **** Variables **** //
@@ -32,6 +33,8 @@ async function getJwt(email: string, password: string): Promise<string> {
   const hash = (user.pwdHash ?? '');
   const pwdPassed = await pwdUtil.compare(password, hash);
   if (!pwdPassed) {
+    // If password failed, wait 500ms this will increase security
+    await tick(500);
     throw new RouteError(
       HttpStatusCodes.UNAUTHORIZED, 
       errors.unauth,

@@ -8,10 +8,10 @@ import 'express-async-errors';
 
 import BaseRouter from './routes/api';
 import logger from 'jet-logger';
-import EnvVars from '@configurations/EnvVars';
-import HttpStatusCodes from '@configurations/HttpStatusCodes';
-import { NodeEnvs } from '@declarations/enums';
-import { RouteError } from '@declarations/classes';
+import EnvVars from '@src/configurations/EnvVars';
+import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import { NodeEnvs } from '@src/declarations/enums';
+import { RouteError } from '@src/declarations/classes';
 
 
 // **** Init express **** //
