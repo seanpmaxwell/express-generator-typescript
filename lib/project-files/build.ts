@@ -7,7 +7,9 @@ import logger from 'jet-logger';
 import childProcess from 'child_process';
 
 
-// Start
+/**
+ * Start
+ */
 (async () => {
   try {
     // Remove current build

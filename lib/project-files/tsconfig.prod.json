@@ -6,6 +6,7 @@
   },
   "exclude": [
     "spec",
-    "src/public/"
+    "src/public/",
+    "build.ts"
   ]
 }
