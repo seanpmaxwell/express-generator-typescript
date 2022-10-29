@@ -75,7 +75,7 @@
   "include": [
     "src/**/*.ts",
     "spec/**/*.ts"
-, "src/routes/middlware"  ],
+  ],
   "exclude": [
     "src/public/"
   ]
