@@ -1,4 +1,4 @@
-import { TAll } from '@src/declarations/types';
+import { TAll } from 'jet-validator';
 
 
 // **** Variables **** //

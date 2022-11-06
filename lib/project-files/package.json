@@ -35,6 +35,7 @@
     "express-async-errors": "^3.1.1",
     "helmet": "^6.0.0",
     "jet-logger": "^1.2.3",
+    "jet-validator": "^1.0.3",
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",

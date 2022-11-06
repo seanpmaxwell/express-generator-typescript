@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import jetValidator from 'jet-validator';
 
-import adminMw from './middlware/adminMw';
-import validate from './middlware/validate';
+import adminMw from './shared/adminMw';
 import User from '@src/models/User';
 import authRoutes from './auth-routes';
 import userRoutes from './user-routes';
@@ -9,7 +9,8 @@ import userRoutes from './user-routes';
 
 // **** Init **** //
 
-const apiRouter = Router();
+const apiRouter = Router(),
+  validate = jetValidator();
 
 
 // **** Setup auth routes **** //

@@ -1,5 +1,5 @@
-import supertest from 'supertest';
-import { SuperTest, Test, Response } from 'supertest';
+import supertest, { SuperTest, Test, Response } from 'supertest';
+import { defaultErrMsg } from 'jet-validator';
 import logger from 'jet-logger';
 
 import app from '@src/server';
@@ -8,7 +8,6 @@ import User, { IUser } from '@src/models/User';
 import userRoutes from '@src/routes/user-routes';
 import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
 import loginAgent from '../support/login-agent';
-import { paramInvalidErr } from '@src/routes/middlware/validate';
 import { userNotFoundErr } from '@src/services/user-service';
 
 
@@ -44,7 +43,7 @@ const msgs = {
   addUserSuccess: 'should return a status code of ' + 
     `"${HttpStatusCodes.CREATED}" if the request was successful.`,
   addUserFailedMissingParam: 'should return a JSON object with an error ' +
-    `message of "${paramInvalidErr}" and a status code of ` +
+    `message of "${defaultErrMsg}" and a status code of ` +
     `"${HttpStatusCodes.BAD_REQUEST}" if the user param was missing.`,
   addUserFallbackErr: 'should return a JSON object with an error message ' + 
     `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the request ` + 
@@ -52,7 +51,7 @@ const msgs = {
   updateSuccess: `should return a status code of "${HttpStatusCodes.OK}" if ` + 
     'the request was successful.',
   updateParamMissing: 'should return a JSON object with an error message ' +
-    `of "${paramInvalidErr}" and a status code of ` + 
+    `of "${defaultErrMsg}" and a status code of ` + 
     `"${HttpStatusCodes.BAD_REQUEST}" if the user param was missing.`,
   updateUserNotFound: 'should return a JSON object with the error message ' +
     `of "${userNotFoundErr}" and a status code of ` +
@@ -160,7 +159,7 @@ describe('user-router', () => {
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(paramInvalidErr);
+          expect(res.body.error).toBe(defaultErrMsg);
           done();
         });
     });
@@ -208,7 +207,7 @@ describe('user-router', () => {
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(paramInvalidErr);
+          expect(res.body.error).toBe(defaultErrMsg);
           done();
         });
     });
@@ -280,7 +279,7 @@ describe('user-router', () => {
         .end((err: Error, res: Response) => {
           !!err && logger.err(err);
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(paramInvalidErr);
+          expect(res.body.error).toBe(defaultErrMsg);
           done();
         });
     });
