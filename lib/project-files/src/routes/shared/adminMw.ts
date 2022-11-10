@@ -5,8 +5,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
-import EnvVars from '@src/configurations/EnvVars';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
+import EnvVars from '@src/declarations/major/EnvVars';
 import jwtUtil from '@src/util/jwt-util';
 import { IUser, UserRoles } from '@src/models/User';
 

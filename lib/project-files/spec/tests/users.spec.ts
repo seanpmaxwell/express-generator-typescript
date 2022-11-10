@@ -6,7 +6,7 @@ import app from '@src/server';
 import userRepo from '@src/repos/user-repo';
 import User, { IUser } from '@src/models/User';
 import userRoutes from '@src/routes/user-routes';
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
 import loginAgent from '../support/login-agent';
 import { userNotFoundErr } from '@src/services/user-service';
 

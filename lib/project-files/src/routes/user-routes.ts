@@ -1,4 +1,4 @@
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
 
 import userService from '@src/services/user-service';
 import { IUser } from '@src/models/User';

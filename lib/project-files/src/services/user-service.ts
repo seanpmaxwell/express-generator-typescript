@@ -1,7 +1,7 @@
 import userRepo from '@src/repos/user-repo';
 import { IUser } from '@src/models/User';
 import { RouteError } from '@src/declarations/classes';
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
 
 
 // **** Variables **** //

@@ -1,7 +1,7 @@
 import userRepo from '@src/repos/user-repo';
 import jwtUtil from '@src/util/jwt-util';
 import pwdUtil from '@src/util/pwd-util';
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
 import { RouteError } from '@src/declarations/classes';
 import { tick } from '@src/declarations/functions';
 

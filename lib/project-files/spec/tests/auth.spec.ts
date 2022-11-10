@@ -5,8 +5,8 @@ import app from '@src/server';
 import authRoutes from '@src/routes/auth-routes';
 import userRepo from '@src/repos/user-repo';
 import pwdUtil from '@src/util/pwd-util';
-import EnvVars from '@src/configurations/EnvVars';
-import HttpStatusCodes from '@src/configurations/HttpStatusCodes';
+import EnvVars from '@src/declarations/major/EnvVars';
+import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
 import User, { UserRoles } from '@src/models/User';
 import { errors as authServiceErrs } from '@src/services/auth-service';
 

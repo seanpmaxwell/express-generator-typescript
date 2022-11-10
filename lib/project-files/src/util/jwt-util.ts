@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
-import EnvVars from '../configurations/EnvVars';
+import EnvVars from '../declarations/major/EnvVars';
 
 
 // **** Variables **** //
