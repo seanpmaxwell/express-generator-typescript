@@ -1,300 +1,221 @@
 import supertest, { SuperTest, Test, Response } from 'supertest';
-import { defaultErrMsg } from 'jet-validator';
-import logger from 'jet-logger';
+import { defaultErrMsg as ValidatorErr } from 'jet-validator';
+import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
-import userRepo from '@src/repos/user-repo';
-import User, { IUser } from '@src/models/User';
-import userRoutes from '@src/routes/user-routes';
-import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
-import loginAgent from '../support/login-agent';
-import { userNotFoundErr } from '@src/services/user-service';
+
+import UserRepo from '@src/repos/UserRepo';
+import User from '@src/models/User';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import FullPaths from '@src/routes/constants/FullPaths';
+
+import login from '../support/login';
+import { TReqBody } from 'spec/support/types';
 
 
 // **** Variables **** //
 
-// Misc
-const { paths } = userRoutes,
-  usersPath = ('/api' + paths.basePath),
-  getUsersPath = `${usersPath}${paths.get}`,
-  addUsersPath = `${usersPath}${paths.add}`,
-  updateUserPath = `${usersPath}${paths.update}`,
-  deleteUserPath = `${usersPath}${paths.delete}`;
+// Paths
+const {
+  Get,
+  Add,
+  Update,
+  Delete,
+} = FullPaths.Users;
+
+// StatusCodes
+const {
+  OK,
+  CREATED,
+  NOT_FOUND,
+  BAD_REQUEST,
+} = HttpStatusCodes;
 
 // Dummy users for GET req
-const dummyGetAllUsers = [
+const DummyGetAllUsers = [
   User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
   User.new('John Smith', 'john.smith@gmail.com'),
   User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
 ] as const;
 
 // Dummy update user
-const dummyUserData = {
+const DummyUserData = {
   user: User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
 } as const;
-
-// Test messages
-const msgs = {
-  getUsersSuccess: 'should return a JSON object with all the users and a ' +
-    `status code of "${HttpStatusCodes.OK}" if the request was successful.`,
-  getUsersBad: 'should return a JSON object containing an error message ' +
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the request ` + 
-    'was unsuccessful.',
-  addUserSuccess: 'should return a status code of ' + 
-    `"${HttpStatusCodes.CREATED}" if the request was successful.`,
-  addUserFailedMissingParam: 'should return a JSON object with an error ' +
-    `message of "${defaultErrMsg}" and a status code of ` +
-    `"${HttpStatusCodes.BAD_REQUEST}" if the user param was missing.`,
-  addUserFallbackErr: 'should return a JSON object with an error message ' + 
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the request ` + 
-    'was unsuccessful.',
-  updateSuccess: `should return a status code of "${HttpStatusCodes.OK}" if ` + 
-    'the request was successful.',
-  updateParamMissing: 'should return a JSON object with an error message ' +
-    `of "${defaultErrMsg}" and a status code of ` + 
-    `"${HttpStatusCodes.BAD_REQUEST}" if the user param was missing.`,
-  updateUserNotFound: 'should return a JSON object with the error message ' +
-    `of "${userNotFoundErr}" and a status code of ` +
-    `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
-  updateFallbackErr: 'should return a JSON object with an error message ' +
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the request ` + 
-    'was unsuccessful.',
-  deleteSuccessful: `should return a status code of "${HttpStatusCodes.OK}" ` + 
-    'if the request was successful.',
-  deleteUserNotFound: 'should return a JSON object with the error message ' +
-    `of "${userNotFoundErr}" and a status code of ` +
-    `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`,
-  deleteFallbackErr: 'should return a JSON object with an error message ' +
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the request ` + 
-    'was unsuccessful.',
-} as const;
-
-
-// **** Types **** //
-
-type TReqBody = string | object | undefined;
 
 
 // **** Tests **** //
 
-describe('user-router', () => {
+describe('UserRouter', () => {
 
-  let agent: SuperTest<Test>;
-  let jwtCookie: string;
-
+  let agent: SuperTest<Test>,
+    jwtCookie: string;
 
   // Run before all tests
   beforeAll((done) => {
     agent = supertest.agent(app);
-    loginAgent.login(agent, (cookie: string) => {
+    login(agent, (cookie: string) => {
       jwtCookie = cookie;
       done();
     });
   });
 
-  // Test get users
-  describe(`"GET:${getUsersPath}"`, () => {
+  // ** Get all users ** //
+  describe(`"GET:${Get}"`, () => {
 
     const callApi = () => 
-      agent.get(getUsersPath)
+      agent
+        .get(Get)
         .set('Cookie', jwtCookie);
 
-    // Get all users
-    it(msgs.getUsersSuccess, (done) => {
-      const ret = Promise.resolve([...dummyGetAllUsers]);
-      spyOn(userRepo, 'getAll').and.returnValue(ret);
-      // Call API
-      callApi().end((err: Error, res: Response) => {
-        !!err && logger.err(err);
-        expect(res.status).toBe(HttpStatusCodes.OK);
-        // Caste instance-objects to 'User' objects
-        const respUsers = res.body.users;
-        const retUsers = respUsers.map((user: IUser) => User.copy(user));
-        expect(retUsers).toEqual(dummyGetAllUsers);
-        expect(res.body.error).toBeUndefined();
-        done();
-      });
-    });
-
-    // Get all users bad
-    it(msgs.getUsersBad, (done) => {
-      const errMsg = 'Could not fetch users.';
-      spyOn(userRepo, 'getAll').and.throwError(errMsg);
+    // Success
+    it('should return a JSON object with all the users and a status code ' + 
+    `of "${OK}" if the request was successful.`, (done) => {
+      // Add spy
+      spyOn(UserRepo, 'getAll').and.resolveTo([...DummyGetAllUsers]);
       // Call API
       callApi()
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(errMsg);
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(OK);
+          for (let i = 0; i < res.body.users.length; i++) {
+            expect(res.body.users[i]).toEqual(DummyGetAllUsers[i]);
+          }
           done();
         });
     });
   });
 
   // Test add user
-  describe(`"POST:${addUsersPath}"`, () => {
-
-    // Consts
-    const callApi = (reqBody: TReqBody) => {
-      return agent.post(addUsersPath)
-        .set('Cookie', jwtCookie)
-        .type('form').send(reqBody);
-    };
-
-    // Test add user success
-    it(msgs.addUserSuccess, (done) => {
-      spyOn(userRepo, 'add').and.returnValue(Promise.resolve());
-      callApi(dummyUserData)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.CREATED);
-          expect(res.body.error).toBeUndefined();
-          done();
-        });
-    });
-
-    // Test add user failed due to missing param
-    it(msgs.addUserFailedMissingParam, (done) => {
-      callApi({})
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(defaultErrMsg);
-          done();
-        });
-    });
-
-    // Default error
-    it(msgs.addUserFallbackErr, (done) => {
-      const errMsg = 'Could not add user.';
-      spyOn(userRepo, 'add').and.throwError(errMsg);
-      // Call API
-      callApi(dummyUserData)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(errMsg);
-          done();
-        });
-    });
-  });
-
-  // Test update users
-  describe(`"PUT:${updateUserPath}"`, () => {
+  describe(`"POST:${Add}"`, () => {
 
     const callApi = (reqBody: TReqBody) => 
-      agent.put(updateUserPath)
+      agent
+        .post(Add)
         .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
 
-    // Test updating a user success
-    it(msgs.updateSuccess, (done) => {
-      spyOn(userRepo, 'update').and.returnValue(Promise.resolve());
-      spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
+    // Test add user success
+    it(`should return a status code of "${CREATED}" if the request was ` + 
+    'successful.', (done) => {
+      // Spy
+      spyOn(UserRepo, 'add').and.resolveTo();
       // Call api
-      callApi(dummyUserData)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.OK);
+      callApi(DummyUserData)
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(CREATED);
           expect(res.body.error).toBeUndefined();
           done();
         });
     });
 
-    // Test updating a user failed because a param was missing
-    it(msgs.updateParamMissing, (done) => {
+    // Missing param
+    it('should return a JSON object with an error message of ' + 
+    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    'param was missing.', (done) => {
+      // Call api
       callApi({})
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(defaultErrMsg);
-          done();
-        });
-    });
-
-    // Update user not found
-    it(msgs.updateUserNotFound, (done) => {
-      callApi(dummyUserData)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-          expect(res.body.error).toBe(userNotFoundErr);
-          done();
-        });
-    });
-
-    // Update fallback error
-    it(msgs.updateFallbackErr, (done) => {
-      const updateErrMsg = 'Could not update user.';
-      spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
-      spyOn(userRepo, 'update').and.throwError(updateErrMsg);
-      // Call API
-      callApi(dummyUserData)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(updateErrMsg);
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(BAD_REQUEST);
+          expect(res.body.error).toBe(ValidatorErr);
           done();
         });
     });
   });
 
-  // Test delete user
-  describe(`"DELETE:${deleteUserPath}"`, () => {
+  // ** Update users ** //
+  describe(`"PUT:${Update}"`, () => {
 
-    const callApi = (id: number) => {
-      const path = deleteUserPath.replace(':id', id.toString());
-      return agent.delete(path)
-        .set('Cookie', jwtCookie);
-    };
+    const callApi = (reqBody: TReqBody) => 
+      agent
+        .put(Update)
+        .set('Cookie', jwtCookie)
+        .type('form').send(reqBody);
 
-    // Delete user successful
-    it(msgs.deleteSuccessful, (done) => {
-      spyOn(userRepo, 'delete').and.returnValue(Promise.resolve());
-      spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
+    // Success
+    it(`should return a status code of "${OK}" if the request was successful.`, 
+      (done) => {
+        // Setup spies
+        spyOn(UserRepo, 'update').and.resolveTo();
+        spyOn(UserRepo, 'persists').and.resolveTo(true);
+        // Call api
+        callApi(DummyUserData)
+          .end((_: Error, res: Response) => {
+            expect(res.status).toBe(OK);
+            expect(res.body.error).toBeUndefined();
+            done();
+          });
+      });
+
+    // Param missing
+    it('should return a JSON object with an error message of ' +
+    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    'param was missing.', (done) => {
       // Call api
-      callApi(5)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.OK);
-          expect(res.body.error).toBeUndefined();
+      callApi({})
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(BAD_REQUEST);
+          expect(res.body.error).toBe(ValidatorErr);
           done();
         });
     });
 
-    // Delete, user not found error
-    it(msgs.deleteUserNotFound, (done) => {
+    // User not found
+    it('should return a JSON object with the error message of ' + 
+    `"${USER_NOT_FOUND_ERR}" and a status code of "${NOT_FOUND}" if the id ` + 
+    'was not found.', (done) => {
+      // Call api
+      callApi(DummyUserData)
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(NOT_FOUND);
+          expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+          done();
+        });
+    });
+  });
+
+  // ** Delete user ** //
+  describe(`"DELETE:${Delete}"`, () => {
+
+    const callApi = (id: number) => 
+      agent
+        .delete(insertUrlParams(Delete, { id }))
+        .set('Cookie', jwtCookie);
+
+    // Success
+    it(`should return a status code of "${OK}" if the request was successful.`, 
+      (done) => {
+        // Setup spies
+        spyOn(UserRepo, 'delete').and.resolveTo();
+        spyOn(UserRepo, 'persists').and.resolveTo(true);
+        // Call api
+        callApi(5)
+          .end((_: Error, res: Response) => {
+            expect(res.status).toBe(OK);
+            expect(res.body.error).toBeUndefined();
+            done();
+          });
+      });
+
+    // User not found
+    it('should return a JSON object with the error message of ' + 
+    `"${USER_NOT_FOUND_ERR}" and a status code of "${NOT_FOUND}" if the id ` + 
+    'was not found.', (done) => {
       callApi(-1)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
-          expect(res.body.error).toBe(userNotFoundErr);
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(NOT_FOUND);
+          expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
           done();
         });
     });
 
-    // Delete, not a valid number error
-    it(msgs.deleteUserNotFound, (done) => {
+    // Invalid param
+    it(`should return a status code of "${BAD_REQUEST}" and return an error ` + 
+    `message of "${ValidatorErr}" if the id was not a valid number`, (done) => {
       callApi('horse' as unknown as number)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(defaultErrMsg);
-          done();
-        });
-    });
-
-    // Delete user fallback error
-    it(msgs.deleteFallbackErr, (done) => {
-      spyOn(userRepo, 'persists').and.returnValue(Promise.resolve(true));
-      const deleteErrMsg = 'Could not delete user.';
-      spyOn(userRepo, 'delete').and.throwError(deleteErrMsg);
-      // Call API
-      callApi(1)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBe(deleteErrMsg);
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(BAD_REQUEST);
+          expect(res.body.error).toBe(ValidatorErr);
           done();
         });
     });

@@ -19,13 +19,20 @@ export interface IUser {
   role?: UserRoles;
 }
 
+export interface ISessionUser {
+  id: number;
+  email: string;
+  name: string;
+  role: IUser['role'];
+}
+
 
 // **** Functions **** //
 
 /**
  * Get a new User object.
  */
-function _new(
+function new_(
   name: string,
   email: string,
   role?: UserRoles,
@@ -71,7 +78,7 @@ function instanceOf(arg: TAll): boolean {
 // **** Export default **** //
 
 export default {
-  new: _new,
+  new: new_,
   copy,
   instanceOf,
 } as const;

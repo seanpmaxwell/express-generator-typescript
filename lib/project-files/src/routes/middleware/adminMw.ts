@@ -5,27 +5,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
-import EnvVars from '@src/declarations/major/EnvVars';
-import jwtUtil from '@src/util/jwt-util';
-import { IUser, UserRoles } from '@src/models/User';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import EnvVars from '@src/constants/EnvVars';
+
+import JwtUtil from '@src/util/JwtUtil';
+import { ISessionUser, UserRoles } from '@src/models/User';
 
 
 // **** Variables **** //
 
-const jwtNotPresentErr = 'JWT not present in signed cookie.',
-  userUnauthErr = 'User not authorized to perform this action';
-
-
-
-// **** Types **** //
-
-export interface ISessionUser extends JwtPayload {
-  id: number;
-  email: string;
-  name: string;
-  role: IUser['role'];
-}
+const JWT_NOT_PRESENT_ERR = 'JWT not present in signed cookie.',
+  USER_UNAUTHORIZED_ERR = 'User not authorized to perform this action';
 
 
 // **** Functions **** //
@@ -39,15 +29,15 @@ async function adminMw(
   next: NextFunction,
 ) {
   // Extract the token
-  const cookieName = EnvVars.cookieProps.key,
-    jwt = req.signedCookies[cookieName];
+  const { Key } = EnvVars.CookieProps,
+    jwt = req.signedCookies[Key];
   if (!jwt) {
     return res
       .status(HttpStatusCodes.UNAUTHORIZED)
-      .json({ error: jwtNotPresentErr });
+      .json({ error: JWT_NOT_PRESENT_ERR });
   }
   // Make sure user role is an admin
-  const clientData = await jwtUtil.decode<ISessionUser>(jwt);
+  const clientData = await JwtUtil.decode<ISessionUser & JwtPayload>(jwt);
   if (
     typeof clientData === 'object' &&
     clientData.role === UserRoles.Admin
@@ -58,7 +48,7 @@ async function adminMw(
   } else {
     return res
       .status(HttpStatusCodes.UNAUTHORIZED)
-      .json({ error: userUnauthErr });
+      .json({ error: USER_UNAUTHORIZED_ERR });
   }
 }
 

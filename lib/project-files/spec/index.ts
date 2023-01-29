@@ -1,18 +1,39 @@
-import './load-env';
+import dotenv from 'dotenv';
 import find from 'find';
 import Jasmine from 'jasmine';
-import commandLineArgs from 'command-line-args';
+import { parse } from 'ts-command-line-args';
 import logger from 'jet-logger';
 
 
-// Setup command line options
-const options = commandLineArgs([
-  {
-    name: 'testFile',
-    alias: 'f',
+// **** Types **** //
+
+interface IArgs {
+  testFile: string;
+}
+
+
+// **** Setup **** //
+
+// ** Init ** //
+
+// NOTE: MUST BE FIRST!! Load env vars
+const result2 = dotenv.config({
+  path: './env/test.env',
+});
+if (result2.error) {
+  throw result2.error;
+}
+
+// Setup command line options. 
+const args = parse<IArgs>({
+  testFile: {
     type: String,
+    defaultValue: '',
   },
-]);
+});
+
+
+// ** Start Jasmine ** //
 
 // Init Jasmine
 const jasmine = new Jasmine();
@@ -30,12 +51,11 @@ jasmine.loadConfig({
 
 // Run all or a single unit-test
 let execResp: Promise<jasmine.JasmineDoneInfo> | undefined;
-if (options.testFile) {
-  const testFile = options.testFile as string;
+if (args.testFile) {
+  const testFile = args.testFile;
   find.file(testFile + '.spec.ts', './spec', (files: string[]) => {
     if (files.length === 1) {
-      jasmine.specFiles = [files[0]];
-      jasmine.execute();
+      jasmine.execute([files[0]]);
     } else {
       logger.err('Test file not found!');
     }

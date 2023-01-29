@@ -1,16 +1,18 @@
-import userRepo from '@src/repos/user-repo';
-import jwtUtil from '@src/util/jwt-util';
-import pwdUtil from '@src/util/pwd-util';
-import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
-import { RouteError } from '@src/declarations/classes';
-import { tick } from '@src/declarations/functions';
+import UserRepo from '@src/repos/UserRepo';
+
+import JwtUtil from '@src/util/JwtUtil';
+import PwdUtil from '@src/util/PwdUtil';
+import { tick } from '@src/util/misc';
+
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { RouteError } from '@src/other/classes';
 
 
 // **** Variables **** //
 
 // Errors
-export const errors = {
-  unauth: 'Unauthorized',
+export const Errors = {
+  Unauth: 'Unauthorized',
   emailNotFound: (email: string) => `User with email "${email}" not found`,
 } as const;
 
@@ -22,26 +24,26 @@ export const errors = {
  */
 async function getJwt(email: string, password: string): Promise<string> {
   // Fetch user
-  const user = await userRepo.getOne(email);
+  const user = await UserRepo.getOne(email);
   if (!user) {
     throw new RouteError(
       HttpStatusCodes.UNAUTHORIZED,
-      errors.emailNotFound(email),
+      Errors.emailNotFound(email),
     );
   }
   // Check password
-  const hash = (user.pwdHash ?? '');
-  const pwdPassed = await pwdUtil.compare(password, hash);
+  const hash = (user.pwdHash ?? ''),
+    pwdPassed = await PwdUtil.compare(password, hash);
   if (!pwdPassed) {
     // If password failed, wait 500ms this will increase security
     await tick(500);
     throw new RouteError(
       HttpStatusCodes.UNAUTHORIZED, 
-      errors.unauth,
+      Errors.Unauth,
     );
   }
   // Setup Admin Cookie
-  return jwtUtil.sign({
+  return JwtUtil.sign({
     id: user.id,
     email: user.name,
     name: user.name,

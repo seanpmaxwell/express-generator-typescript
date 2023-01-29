@@ -1,66 +1,73 @@
 import { Router } from 'express';
 import jetValidator from 'jet-validator';
 
-import adminMw from './shared/adminMw';
+import adminMw from './middleware/adminMw';
+import Paths from './constants/Paths';
 import User from '@src/models/User';
-import authRoutes from './auth-routes';
-import userRoutes from './user-routes';
+import AuthRoutes from './AuthRoutes';
+import UserRoutes from './UserRoutes';
 
 
-// **** Init **** //
+// **** Variables **** //
 
 const apiRouter = Router(),
   validate = jetValidator();
 
 
-// **** Setup auth routes **** //
+// **** Setup **** //
 
 const authRouter = Router();
 
 // Login user
 authRouter.post(
-  authRoutes.paths.login,
+  Paths.Auth.Login,
   validate('email', 'password'),
-  authRoutes.login,
+  AuthRoutes.login,
 );
 
 // Logout user
-authRouter.get(authRoutes.paths.logout, authRoutes.logout);
+authRouter.get(
+  Paths.Auth.Logout,
+  AuthRoutes.logout,
+);
 
-// Add authRouter
-apiRouter.use(authRoutes.paths.basePath, authRouter);
+// Add AuthRouter
+apiRouter.use(Paths.Auth.Base, authRouter);
 
 
-// **** Setup user routes **** //
+// ** Add UserRouter ** //
 
 const userRouter = Router();
 
 // Get all users
-userRouter.get(userRoutes.paths.get, userRoutes.getAll);
+userRouter.get(
+  Paths.Users.Get,
+  UserRoutes.getAll,
+);
 
 // Add one user
 userRouter.post(
-  userRoutes.paths.add,
+  Paths.Users.Add,
   validate(['user', User.instanceOf]),
-  userRoutes.add,
+  UserRoutes.add,
 );
 
 // Update one user
 userRouter.put(
-  userRoutes.paths.update,
+  Paths.Users.Update,
   validate(['user', User.instanceOf]),
-  userRoutes.update,
+  UserRoutes.update,
 );
 
 // Delete one user
 userRouter.delete(
-  userRoutes.paths.delete,
+  Paths.Users.Delete,
   validate(['id', 'number', 'params']),
-  userRoutes.delete,
+  UserRoutes.delete,
 );
 
-// Add userRouter
-apiRouter.use(userRoutes.paths.basePath, adminMw, userRouter);
+// Add UserRouter
+apiRouter.use(Paths.Users.Base, adminMw, userRouter);
 
 
 // **** Export default **** //

@@ -1,13 +1,14 @@
 import { SuperTest, Test, Response } from 'supertest';
 
 import User, { UserRoles } from '@src/models/User';
-import userRepo from '@src/repos/user-repo';
-import pwdUtil from '@src/util/pwd-util';
+import UserRepo from '@src/repos/UserRepo';
+import PwdUtil from '@src/util/PwdUtil';
+import FullPaths from '@src/routes/constants/FullPaths';
 
 
 // **** Variables **** //
 
-const creds = {
+const LoginCreds = {
   email: 'jsmith@gmail.com',
   password: 'Password@1',
 } as const;
@@ -20,19 +21,17 @@ const creds = {
  */
 function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   // Setup dummy data
-  const role = UserRoles.Admin;
-  const pwdHash = pwdUtil.hashSync(creds.password);
-  const loginUser = User.new('john smith', creds.email, role, pwdHash);
-  spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
+  const role = UserRoles.Admin,
+    pwdHash = PwdUtil.hashSync(LoginCreds.password),
+    loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+  // Add spy
+  spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
   // Call Login API
   beforeAgent
-    .post('/api/auth/login')
+    .post(FullPaths.Auth.Login)
     .type('form')
-    .send(creds)
-    .end((err: Error, res: Response) => {
-      if (err) {
-        throw err;
-      }
+    .send(LoginCreds)
+    .end((_: Error, res: Response) => {
       const cookie = res.headers['set-cookie'][0];
       return done(cookie);
     });
@@ -41,6 +40,4 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
 
 // **** Export default **** //
 
-export default {
-  login,
-} as const;
+export default login;

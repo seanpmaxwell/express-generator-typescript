@@ -1,14 +1,8 @@
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
-import userService from '@src/services/user-service';
+import UserService from '@src/services/UserService';
 import { IUser } from '@src/models/User';
-import { IReq, IRes } from './shared/types';
-
-
-// **** Variables **** //
-
-// Paths
-
+import { IReq, IRes } from './types/express/misc';
 
 
 // **** Functions **** //
@@ -17,7 +11,7 @@ import { IReq, IRes } from './shared/types';
  * Get all users.
  */
 async function getAll(_: IReq, res: IRes) {
-  const users = await userService.getAll();
+  const users = await UserService.getAll();
   return res.status(HttpStatusCodes.OK).json({ users });
 }
 
@@ -26,7 +20,7 @@ async function getAll(_: IReq, res: IRes) {
  */
 async function add(req: IReq<{user: IUser}>, res: IRes) {
   const { user } = req.body;
-  await userService.addOne(user);
+  await UserService.addOne(user);
   return res.status(HttpStatusCodes.CREATED).end();
 }
 
@@ -35,16 +29,16 @@ async function add(req: IReq<{user: IUser}>, res: IRes) {
  */
 async function update(req: IReq<{user: IUser}>, res: IRes) {
   const { user } = req.body;
-  await userService.updateOne(user);
+  await UserService.updateOne(user);
   return res.status(HttpStatusCodes.OK).end();
 }
 
 /**
  * Delete one user.
  */
-async function _delete(req: IReq, res: IRes) {
+async function delete_(req: IReq, res: IRes) {
   const id = +req.params.id;
-  await userService.delete(id);
+  await UserService.delete(id);
   return res.status(HttpStatusCodes.OK).end();
 }
 
@@ -52,9 +46,8 @@ async function _delete(req: IReq, res: IRes) {
 // **** Export default **** //
 
 export default {
-  paths,
   getAll,
   add,
   update,
-  delete: _delete,
+  delete: delete_,
 } as const;

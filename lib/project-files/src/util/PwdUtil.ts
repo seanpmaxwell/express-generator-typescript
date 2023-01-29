@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 // **** Variables **** //
 
-const saltRounds = 12;
+const SALT_ROUNDS = 12;
 
 
 // **** Functions **** //
@@ -12,14 +12,14 @@ const saltRounds = 12;
  * Get a hash from the password.
  */
 function getHash(pwd: string): Promise<string> {
-  return bcrypt.hash(pwd, saltRounds);
+  return bcrypt.hash(pwd, SALT_ROUNDS);
 }
 
 /**
  * Useful for testing.
  */
 function hashSync(pwd: string): string {
-  return bcrypt.hashSync(pwd, saltRounds);
+  return bcrypt.hashSync(pwd, SALT_ROUNDS);
 }
 
 /**

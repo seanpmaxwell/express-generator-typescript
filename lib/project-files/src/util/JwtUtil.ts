@@ -1,17 +1,17 @@
 import jsonwebtoken from 'jsonwebtoken';
-import EnvVars from '../declarations/major/EnvVars';
+import EnvVars from '../constants/EnvVars';
 
 
 // **** Variables **** //
 
 // Errors
-const errors = {
-  validation: 'JSON-web-token validation failed.',
+const Errors = {
+  Validation: 'JSON-web-token validation failed.',
 } as const;
 
 // Options
-const options = {
-  expiresIn: EnvVars.jwt.exp,
+const Options = {
+  expiresIn: EnvVars.Jwt.Exp,
 };
 
 
@@ -22,7 +22,7 @@ const options = {
  */
 function sign(data: string | object | Buffer): Promise<string> {
   return new Promise((res, rej) => {
-    jsonwebtoken.sign(data, EnvVars.jwt.secret, options, (err, token) => {
+    jsonwebtoken.sign(data, EnvVars.Jwt.Secret, Options, (err, token) => {
       return err ? rej(err) : res(token || '');
     });
   });
@@ -33,8 +33,8 @@ function sign(data: string | object | Buffer): Promise<string> {
  */
 function decode<T>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
-    jsonwebtoken.verify(jwt, EnvVars.jwt.secret, (err, decoded) => {
-      return err ? rej(errors.validation) : res(decoded as T);
+    jsonwebtoken.verify(jwt, EnvVars.Jwt.Secret, (err, decoded) => {
+      return err ? rej(Errors.Validation) : res(decoded as T);
     });
   });
 }

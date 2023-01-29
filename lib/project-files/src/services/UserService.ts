@@ -1,12 +1,12 @@
-import userRepo from '@src/repos/user-repo';
+import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
-import { RouteError } from '@src/declarations/classes';
-import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
+import { RouteError } from '@src/other/classes';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 
 // **** Variables **** //
 
-export const userNotFoundErr = 'User not found';
+export const USER_NOT_FOUND_ERR = 'User not found';
 
 
 // **** Functions **** //
@@ -15,44 +15,44 @@ export const userNotFoundErr = 'User not found';
  * Get all users.
  */
 function getAll(): Promise<IUser[]> {
-  return userRepo.getAll();
+  return UserRepo.getAll();
 }
 
 /**
  * Add one user.
  */
 function addOne(user: IUser): Promise<void> {
-  return userRepo.add(user);
+  return UserRepo.add(user);
 }
 
 /**
  * Update one user.
  */
 async function updateOne(user: IUser): Promise<void> {
-  const persists = await userRepo.persists(user.id);
+  const persists = await UserRepo.persists(user.id);
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
-      userNotFoundErr,
+      USER_NOT_FOUND_ERR,
     );
   }
   // Return user
-  return userRepo.update(user);
+  return UserRepo.update(user);
 }
 
 /**
  * Delete a user by their id.
  */
 async function _delete(id: number): Promise<void> {
-  const persists = await userRepo.persists(id);
+  const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(
       HttpStatusCodes.NOT_FOUND,
-      userNotFoundErr,
+      USER_NOT_FOUND_ERR,
     );
   }
   // Delete user
-  return userRepo.delete(id);
+  return UserRepo.delete(id);
 }
 
 

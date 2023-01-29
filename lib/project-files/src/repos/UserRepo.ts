@@ -1,6 +1,6 @@
 import { IUser } from '@src/models/User';
-import { getRandomInt } from '@src/declarations/functions';
-import orm from './mock-orm';
+import { getRandomInt } from '@src/util/misc';
+import orm from './MockOrm';
 
 
 // **** Functions **** //
@@ -65,7 +65,7 @@ async function update(user: IUser): Promise<void> {
 /**
  * Delete one user.
  */
-async function _delete(id: number): Promise<void> {
+async function delete_(id: number): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -84,5 +84,5 @@ export default {
   getAll,
   add,
   update,
-  delete: _delete,
+  delete: delete_,
 } as const;

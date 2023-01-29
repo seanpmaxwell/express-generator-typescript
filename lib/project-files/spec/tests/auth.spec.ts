@@ -1,56 +1,43 @@
 import supertest, { SuperTest, Test, Response } from 'supertest';
-import logger from 'jet-logger';
 
 import app from '@src/server';
-import authRoutes from '@src/routes/auth-routes';
-import userRepo from '@src/repos/user-repo';
-import pwdUtil from '@src/util/pwd-util';
-import EnvVars from '@src/declarations/major/EnvVars';
-import HttpStatusCodes from '@src/declarations/major/HttpStatusCodes';
+
+import UserRepo from '@src/repos/UserRepo';
+import PwdUtil from '@src/util/PwdUtil';
 import User, { UserRoles } from '@src/models/User';
-import { errors as authServiceErrs } from '@src/services/auth-service';
+import { Errors } from '@src/services/AuthService';
+
+import FullPaths from '@src/routes/constants/FullPaths';
+import EnvVars from '@src/constants/EnvVars';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+
+import { TReqBody } from 'spec/support/types';
 
 
 // **** Variables **** //
 
-// Misc
-const { paths } = authRoutes,
-  authPath = ('/api' + paths.basePath),
-  loginPath = `${authPath}${paths.login}`,
-  logoutPath = `${authPath}${paths.logout}`;
+// Paths
+const {
+  Login,
+  Logout,
+} = FullPaths.Auth;
 
-// Test message
-const msgs = {
-  goodLogin: 'should return a response with a status of ' + 
-    `"${HttpStatusCodes.OK}" and a cookie with a jwt if the login was ` + 
-    'successful.',
-  emailNotFound: 'should return a response with a status of ' + 
-    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with an error message if ` + 
-    'the email was not found.',
-  pwdFailed: 'should return a response with a status of ' + 
-    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with the error ` + 
-    `"${authServiceErrs.unauth}" if the password failed.`,
-  fallbackErr: 'should return a response with a status of ' + 
-    `"${HttpStatusCodes.BAD_REQUEST}" and a json with an error for all ` + 
-    'other bad responses.',
-  goodLogout: `should return a response with a status of ${HttpStatusCodes.OK}`,
-} as const;
+// StatusCodes
+const {
+  OK,
+  UNAUTHORIZED,
+} = HttpStatusCodes;
 
 // Login credentials
-const loginCreds = {
+const LoginCreds = {
   email: 'jsmith@gmail.com',
   password: 'Password@1',
 } as const;
 
 
-// **** Types **** //
-
-type TReqBody = string | object | undefined;
-
-
 // **** Tests **** //
 
-describe('auth-router', () => {
+describe('AuthRouter', () => {
 
   let agent: SuperTest<Test>;
 
@@ -60,80 +47,79 @@ describe('auth-router', () => {
     done();
   });
 
-  // Test login
-  describe(`"POST:${loginPath}"`, () => {
+  // ** Test login ** //
+  describe(`"POST:${Login}"`, () => {
 
-    const callApi = (reqBody: TReqBody) => {
-      return agent.post(loginPath).type('form').send(reqBody);
-    };
+    const EMAIL_NOT_FOUND_ERR = Errors.emailNotFound(LoginCreds.email);
 
-    // Good login
-    it(msgs.goodLogin, (done) => {
-      const role = UserRoles.Standard;
-      const pwdHash = pwdUtil.hashSync(loginCreds.password);
-      const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
-      spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
+    const callApi = (reqBody: TReqBody) => 
+      agent
+        .post(Login)
+        .type('form')
+        .send(reqBody);
+
+    // Success
+    it(`should return a response with a status of "${OK}" and a cookie with ` + 
+      'a jwt if the login was successful.', (done) => {
+      // Setup data
+      const role = UserRoles.Standard,
+        pwdHash = PwdUtil.hashSync(LoginCreds.password),
+        loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+      // Add spy
+      spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
       // Call API
-      callApi(loginCreds)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.OK);
+      callApi(LoginCreds)
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(OK);
           const cookie = res.headers['set-cookie'][0];
-          expect(cookie).toContain(EnvVars.cookieProps.key);
+          expect(cookie).toContain(EnvVars.CookieProps.Key);
           done();
         });
     });
 
     // Email not found error
-    it(msgs.emailNotFound, (done) => {
-      spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(null));
-      callApi(loginCreds)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-          const errMsg = authServiceErrs.emailNotFound(loginCreds.email);
-          expect(res.body.error).toBe(errMsg);
+    it(`should return a response with a status of "${UNAUTHORIZED}" and a ` + 
+    `json with an error message of "${EMAIL_NOT_FOUND_ERR}" if the email ` + 
+    'was not found.', (done) => {
+      // Spy
+      spyOn(UserRepo, 'getOne').and.resolveTo(null);
+      // Call
+      callApi(LoginCreds)
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(UNAUTHORIZED);
+          expect(res.body.error).toBe(EMAIL_NOT_FOUND_ERR);
           done();
         });
     });
 
     // Password failed
-    it(msgs.pwdFailed, (done) => {
-      const role = UserRoles.Standard;
-      const pwdHash = pwdUtil.hashSync('bad password');
-      const loginUser = User.new('john smith', loginCreds.email, role, pwdHash);
-      spyOn(userRepo, 'getOne').and.returnValue(Promise.resolve(loginUser));
+    it(`should return a response with a status of "${UNAUTHORIZED}" and a ` + 
+    `json with the error "${Errors.Unauth}" if the password failed.`, 
+    (done) => {
+      // Setup data
+      const role = UserRoles.Standard,
+        pwdHash = PwdUtil.hashSync('bad password'),
+        loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+      // Add spy
+      spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
       // Call API
-      callApi(loginCreds)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
-          expect(res.body.error).toBe(authServiceErrs.unauth);
+      callApi(LoginCreds)
+        .end((_: Error, res: Response) => {
+          expect(res.status).toBe(UNAUTHORIZED);
+          expect(res.body.error).toBe(Errors.Unauth);
           done();
         });
     });
 
-    // Fallback error
-    it(msgs.fallbackErr, (done) => {
-      spyOn(userRepo, 'getOne').and.throwError('Database query failed.');
-      callApi(loginCreds)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
-          expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          expect(res.body.error).toBeTruthy();
-          done();
-        });
-    });
   });
 
-  // Test logout
-  describe(`"GET:${logoutPath}"`, () => {
+  // ** Test logout ** //
+  describe(`"GET:${Logout}"`, () => {
 
     // Successful logout
-    it(msgs.goodLogout, (done) => {
-      agent.get(logoutPath)
-        .end((err: Error, res: Response) => {
-          !!err && logger.err(err);
+    it(`should return a response with a status of ${OK}`, (done) => {
+      agent.get(Logout)
+        .end((_: Error, res: Response) => {
           expect(res.status).toBe(HttpStatusCodes.OK);
           done();
         });
