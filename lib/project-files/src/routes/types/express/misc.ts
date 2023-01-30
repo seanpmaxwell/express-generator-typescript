@@ -11,6 +11,6 @@ export interface IReq<T = void> extends e.Request {
 
 export interface IRes extends e.Response {
   locals: {
-    sessionUser: ISessionUser;
+    sessionUser?: ISessionUser;
   };
 }
