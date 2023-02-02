@@ -1,9 +1,8 @@
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
-
+import SessionUtil from '@src/util/SessionUtil';
 import AuthService from '@src/services/AuthService';
-import EnvVars from '@src/constants/EnvVars';
-import { IReq, IRes } from './types/express/misc';
 
+import { IReq, IRes } from './types/express/misc';
 
 
 // **** Types **** //
@@ -21,10 +20,15 @@ interface ILoginReq {
  */
 async function login(req: IReq<ILoginReq>, res: IRes) {
   const { email, password } = req.body;
-  // Add jwt to cookie
-  const jwt = await AuthService.getJwt(email, password);
-  const { Key, Options } = EnvVars.CookieProps;
-  res.cookie(Key, jwt, Options);
+  // Login
+  const user = await AuthService.login(email, password);
+  // Setup Admin Cookie
+  await SessionUtil.addSessionData(res, {
+    id: user.id,
+    email: user.name,
+    name: user.name,
+    role: user.role,
+  });
   // Return
   return res.status(HttpStatusCodes.OK).end();
 }
@@ -33,8 +37,7 @@ async function login(req: IReq<ILoginReq>, res: IRes) {
  * Logout the user.
  */
 function logout(_: IReq, res: IRes) {
-  const { Key, Options } = EnvVars.CookieProps;
-  res.clearCookie(Key, Options);
+  SessionUtil.clearCookie(res);
   return res.status(HttpStatusCodes.OK).end();
 }
 
