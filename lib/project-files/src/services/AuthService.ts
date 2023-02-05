@@ -13,7 +13,7 @@ import { RouteError } from '@src/other/classes';
 // Errors
 export const Errors = {
   Unauth: 'Unauthorized',
-  emailNotFound: (email: string) => `User with email "${email}" not found`,
+  EmailNotFound: (email: string) => `User with email "${email}" not found`,
 } as const;
 
 
@@ -28,7 +28,7 @@ async function getJwt(email: string, password: string): Promise<string> {
   if (!user) {
     throw new RouteError(
       HttpStatusCodes.UNAUTHORIZED,
-      Errors.emailNotFound(email),
+      Errors.EmailNotFound(email),
     );
   }
   // Check password

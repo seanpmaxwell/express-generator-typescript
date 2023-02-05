@@ -50,7 +50,7 @@ describe('AuthRouter', () => {
   // ** Test login ** //
   describe(`"POST:${Login}"`, () => {
 
-    const EMAIL_NOT_FOUND_ERR = Errors.emailNotFound(LoginCreds.email);
+    const EMAIL_NOT_FOUND_ERR = Errors.EmailNotFound(LoginCreds.email);
 
     const callApi = (reqBody: TReqBody) => 
       agent

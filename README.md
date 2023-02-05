@@ -12,6 +12,8 @@
 Creates a new express application similar to the _express-generator_ module. Except this new
 application is configured to use TypeScript instead of plain JavaScript. 
 
+This project complies with Typescript best practices listed <a href="https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md">here</a>.
+
 
 ## Why express-generator-typescript?
 
