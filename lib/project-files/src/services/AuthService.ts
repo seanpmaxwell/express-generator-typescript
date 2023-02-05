@@ -1,11 +1,11 @@
 import UserRepo from '@src/repos/UserRepo';
 
-import JwtUtil from '@src/util/JwtUtil';
 import PwdUtil from '@src/util/PwdUtil';
 import { tick } from '@src/util/misc';
 
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { RouteError } from '@src/other/classes';
+import { IUser } from '@src/models/User';
 
 
 // **** Variables **** //
@@ -22,7 +22,7 @@ export const Errors = {
 /**
  * Login a user.
  */
-async function getJwt(email: string, password: string): Promise<string> {
+async function login(email: string, password: string): Promise<IUser> {
   // Fetch user
   const user = await UserRepo.getOne(email);
   if (!user) {
@@ -42,18 +42,13 @@ async function getJwt(email: string, password: string): Promise<string> {
       Errors.Unauth,
     );
   }
-  // Setup Admin Cookie
-  return JwtUtil.sign({
-    id: user.id,
-    email: user.name,
-    name: user.name,
-    role: user.role,
-  });
+  // Return
+  return user;
 }
 
 
 // **** Export default **** //
 
 export default {
-  getJwt,
+  login,
 } as const;
