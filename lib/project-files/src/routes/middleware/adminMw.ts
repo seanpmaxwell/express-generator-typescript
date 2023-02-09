@@ -6,7 +6,6 @@ import { Request, Response, NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
-import EnvVars from '@src/constants/EnvVars';
 
 import SessionUtil from '@src/util/SessionUtil';
 import { ISessionUser, UserRoles } from '@src/models/User';

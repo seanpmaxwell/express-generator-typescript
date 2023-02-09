@@ -48,14 +48,14 @@ userRouter.get(
 // Add one user
 userRouter.post(
   Paths.Users.Add,
-  validate(['user', User.instanceOf]),
+  validate(['user', User.IsUserObj]),
   UserRoutes.add,
 );
 
 // Update one user
 userRouter.put(
   Paths.Users.Update,
-  validate(['user', User.instanceOf]),
+  validate(['user', User.IsUserObj]),
   UserRoutes.update,
 );
 

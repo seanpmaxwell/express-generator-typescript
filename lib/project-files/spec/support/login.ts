@@ -23,7 +23,7 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   // Setup dummy data
   const role = UserRoles.Admin,
     pwdHash = PwdUtil.hashSync(LoginCreds.password),
-    loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+    loginUser = new User('john smith', LoginCreds.email, role, pwdHash);
   // Add spy
   spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
   // Call Login API

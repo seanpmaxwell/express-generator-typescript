@@ -1,7 +1,7 @@
-import { TAll } from 'jet-validator';
-
-
 // **** Variables **** //
+
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+  'with the appropriate user keys.';
 
 export enum UserRoles {
   Standard,
@@ -27,58 +27,57 @@ export interface ISessionUser {
 }
 
 
-// **** Functions **** //
+// **** User **** //
 
-/**
- * Get a new User object.
- */
-function new_(
-  name: string,
-  email: string,
-  role?: UserRoles,
-  pwdHash?: string,
-): IUser {
-  return {
-    id: -1,
-    email,
-    name,
-    role: (role ?? UserRoles.Standard),
-    pwdHash: (pwdHash ?? ''),
-  };
-}
+class User implements IUser {
 
-/**
- * Copy a user object.
- */
-function copy(user: IUser): IUser {
-  return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    role: user.role,
-    pwdHash: user.pwdHash,
-  };
-}
+  public id: number;
+  public name: string;
+  public email: string;
+  public role?: UserRoles;
+  public pwdHash?: string;
 
-/**
- * See if an object is an instance of User.
- */
-function instanceOf(arg: TAll): boolean {
-  return (
-    !!arg &&
-    typeof arg === 'object' &&
-    'id' in arg &&
-    'email' in arg &&
-    'name' in arg &&
-    'role' in arg
-  );
+  constructor(
+    nameOrObj: string | object,
+    email?: string,
+    role?: UserRoles,
+    pwdHash?: string,
+    id?: number,
+  ) {
+    if (typeof nameOrObj === 'string') {
+      this.name = nameOrObj;
+      this.email = (email ?? '');
+      this.role = (role ?? UserRoles.Standard);
+      this.pwdHash = (pwdHash ?? '');
+      this.id = (id ?? -1);
+    } else if (User.IsUserObj(nameOrObj)) {
+      const o = nameOrObj as IUser;
+      this.name = o.name;
+      this.email = (o.email ?? '');
+      this.role = (o.role ?? UserRoles.Standard);
+      this.pwdHash = (o.pwdHash ?? '');
+      this.id = (o.id ?? -1);
+    } else {
+      throw new Error(INVALID_CONSTRUCTOR_PARAM);
+    }
+  }
+
+  /**
+   * Is this an object which contains all the user keys.
+   */
+  public static IsUserObj(this: void, arg: unknown): boolean {
+    return (
+      !!arg &&
+      typeof arg === 'object' &&
+      'id' in arg &&
+      'email' in arg &&
+      'name' in arg &&
+      'role' in arg
+    );
+  }
 }
 
 
 // **** Export default **** //
 
-export default {
-  new: new_,
-  copy,
-  instanceOf,
-} as const;
+export default User;
