@@ -41,13 +41,13 @@ class User implements IUser {
    * Constructor()
    */
   constructor(
-    name: string,
+    name?: string,
     email?: string,
     role?: UserRoles,
     pwdHash?: string,
     id?: number, // id last cause usually set by db
   ) {
-    this.name = name;
+    this.name = (name ?? '');
     this.email = (email ?? '');
     this.role = (role ?? UserRoles.Standard);
     this.pwdHash = (pwdHash ?? '');
