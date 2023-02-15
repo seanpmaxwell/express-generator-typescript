@@ -40,7 +40,7 @@ class User implements IUser {
   /**
    * Constructor()
    */
-  constructor(
+  public constructor(
     name?: string,
     email?: string,
     role?: UserRoles,
