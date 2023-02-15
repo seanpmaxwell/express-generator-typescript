@@ -79,7 +79,7 @@ describe('UserRouter', () => {
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(OK);
           for (let i = 0; i < res.body.users.length; i++) {
-            const user = new User(res.body.users[i]);
+            const user = User.from(res.body.users[i]);
             expect(user).toEqual(DummyGetAllUsers[i]);
           }
           done();

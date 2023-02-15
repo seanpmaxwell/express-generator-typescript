@@ -37,35 +37,40 @@ class User implements IUser {
   public role?: UserRoles;
   public pwdHash?: string;
 
+  /**
+   * Constructor()
+   */
   constructor(
-    nameOrObj: string | object,
+    name: string,
     email?: string,
     role?: UserRoles,
     pwdHash?: string,
-    id?: number,
+    id?: number, // id last cause usually set by db
   ) {
-    if (typeof nameOrObj === 'string') {
-      this.name = nameOrObj;
-      this.email = (email ?? '');
-      this.role = (role ?? UserRoles.Standard);
-      this.pwdHash = (pwdHash ?? '');
-      this.id = (id ?? -1);
-    } else if (User.IsUserObj(nameOrObj)) {
-      const o = nameOrObj as IUser;
-      this.name = o.name;
-      this.email = (o.email ?? '');
-      this.role = (o.role ?? UserRoles.Standard);
-      this.pwdHash = (o.pwdHash ?? '');
-      this.id = (o.id ?? -1);
-    } else {
+    this.name = name;
+    this.email = (email ?? '');
+    this.role = (role ?? UserRoles.Standard);
+    this.pwdHash = (pwdHash ?? '');
+    this.id = (id ?? -1);
+  }
+
+  /**
+   * Get user instance from object.
+   */
+  public static from(param: object): User {
+    // Check is user
+    if (!User.isUser(param)) {
       throw new Error(INVALID_CONSTRUCTOR_PARAM);
     }
+    // Get user instance
+    const p = param as IUser;
+    return new User(p.name, p.email, p.role, p.pwdHash, p.id);
   }
 
   /**
    * Is this an object which contains all the user keys.
    */
-  public static IsUserObj(this: void, arg: unknown): boolean {
+  public static isUser(this: void, arg: unknown): boolean {
     return (
       !!arg &&
       typeof arg === 'object' &&
