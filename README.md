@@ -105,19 +105,26 @@ authentication started to get messy.
   - `@types/bcrypt`
   
 - Delete the files:
-  - `src/routes/middleware.ts`
-  - `src/routes/auth-router.ts`
+  - `src/routes/middleware/adminMw.ts`
+  - `src/routes/AuthRoutes.ts`
   - `spec/tests/auth.spec.ts`
-  - `spec/support/login-agent.ts`
-  - `public/scripts/login.js`
-  - `public/stylesheets/login.css`
-  - `public/views/login.html`
-
+  - `spec/support/login.ts`
+  - `src/public/scripts/login.js`
+  - `src/public/stylesheets/login.css`
+  - `src/views/login.html`
 - Update the files:
-  - In `src/routes/api`, delete the line: `apiRouter.use('/auth', authRouter);` and
-    remove the `adminMw,` from line 12. Remove the `adminMw` and `authRouter` imports as well.
-  - In `spec/tests/users.spec.ts`, remove all lines containing `loginAgent` and `setCookie`
-  - In `public/views/users.html` remove the `Logout` button.
+  - In `src/routes/api`
+      - Remove the `adminMw` and `AuthRoutes` imports.
+      - Delete the configuration and use of the `authRouter`.
+      - Remove the `adminMw,` from the `apiRouter.use` call configuring the `userRouteer`.
+  - In `spec/tests/users.spec.ts`
+      - Remove the `login` import.
+      - Remove all statements containing `cookie` and `jwtCookie`.
+  - In `src/views/users.html` remove the `Logout` button.
+  - In `src/routes/constants/Paths.ts` remove the entire `Auth` entry from the `Paths` object.
+  - In `src/server.ts`
+      - Update the default route to serve `users.html`.
+      - Remove redirect logic from the `/users` route so that it directly serves `res.sendFile('users.html', {root: viewsDir});`.
 
 
 ## Note for VS-Code users
