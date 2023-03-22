@@ -10,7 +10,6 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 import FullPaths from '@src/routes/constants/FullPaths';
 
-import login from '../support/login';
 import { TReqBody } from 'spec/support/types';
 
 
@@ -34,14 +33,14 @@ const {
 
 // Dummy users for GET req
 const DummyGetAllUsers = [
-  new User('Sean Maxwell', 'sean.maxwell@gmail.com'),
-  new User('John Smith', 'john.smith@gmail.com'),
-  new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
+  User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
+  User.new('John Smith', 'john.smith@gmail.com'),
+  User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
 ] as const;
 
 // Dummy update user
 const DummyUserData = {
-  user: new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
+  user: User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
 } as const;
 
 
@@ -49,25 +48,18 @@ const DummyUserData = {
 
 describe('UserRouter', () => {
 
-  let agent: SuperTest<Test>,
-    jwtCookie: string;
+  let agent: SuperTest<Test>;
 
   // Run before all tests
   beforeAll((done) => {
     agent = supertest.agent(app);
-    login(agent, (cookie: string) => {
-      jwtCookie = cookie;
-      done();
-    });
+    done();
   });
 
   // ** Get all users ** //
   describe(`"GET:${Get}"`, () => {
 
-    const callApi = () => 
-      agent
-        .get(Get)
-        .set('Cookie', jwtCookie);
+    const callApi = () => agent.get(Get);
 
     // Success
     it('should return a JSON object with all the users and a status code ' + 
@@ -79,7 +71,7 @@ describe('UserRouter', () => {
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(OK);
           for (let i = 0; i < res.body.users.length; i++) {
-            const user = User.from(res.body.users[i]);
+            const user = res.body.users[i];
             expect(user).toEqual(DummyGetAllUsers[i]);
           }
           done();
@@ -93,7 +85,6 @@ describe('UserRouter', () => {
     const callApi = (reqBody: TReqBody) => 
       agent
         .post(Add)
-        .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
 
     // Test add user success
@@ -130,7 +121,6 @@ describe('UserRouter', () => {
     const callApi = (reqBody: TReqBody) => 
       agent
         .put(Update)
-        .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
 
     // Success
@@ -180,8 +170,7 @@ describe('UserRouter', () => {
 
     const callApi = (id: number) => 
       agent
-        .delete(insertUrlParams(Delete, { id }))
-        .set('Cookie', jwtCookie);
+        .delete(insertUrlParams(Delete, { id }));
 
     // Success
     it(`should return a status code of "${OK}" if the request was successful.`, 

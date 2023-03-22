@@ -10,17 +10,29 @@ const path = require('path');
 const expressGenTs = require('../lib/express-generator-typescript');
 
 
-// Start
+//  **** Start **** //
+
 console.log('Setting up new Express/TypeScript project...');
+
+
+// **** Process Options **** //
+
+const args = process.argv.slice(2);
 
 // Setup use yarn
 let useYarn = false;
-const args = process.argv.slice(2);
-let idx = -1;
-idx = args.indexOf('--use-yarn');
-if (idx > -1) {
+const useYarnIdx = args.indexOf('--use-yarn');
+if (useYarnIdx > -1) {
   useYarn = true;
-  args.splice(idx, 1);
+  args.splice(useYarnIdx, 1);
+}
+
+// Setup include authentication
+let withAuth = false;
+const withAuthIdx = args.indexOf('--with-auth');
+if (withAuthIdx > -1) {
+  withAuth = true;
+  args.splice(withAuthIdx, 1);
 }
 
 // Setup destination
@@ -30,7 +42,10 @@ if (args.length > 0) {
 }
 destination = path.join(process.cwd(), destination);
 
+
+// **** Call the generator script **** //
+
 // Creating new project finished
-expressGenTs(destination, useYarn).then(() => {
+expressGenTs(destination, useYarn, withAuth).then(() => {
   console.log('Project setup complete!');
 });

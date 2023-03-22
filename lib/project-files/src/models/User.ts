@@ -1,7 +1,7 @@
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
-  'with the appropriate user keys.';
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an ' + 
+  'object with the appropriate user keys.';
 
 export enum UserRoles {
   Standard,
@@ -27,62 +27,59 @@ export interface ISessionUser {
 }
 
 
-// **** User **** //
+// **** Functions **** //
 
-class User implements IUser {
+/**
+ * Create new User.
+ */
+function new_(
+  name?: string,
+  email?: string,
+  role?: UserRoles,
+  pwdHash?: string,
+  id?: number, // id last cause usually set by db
+): IUser {
+  return {
+    id: (id ?? -1),
+    name: (name ?? ''),
+    email: (email ?? ''),
+    role: (role ?? UserRoles.Standard),
+    pwdHash: (pwdHash ?? ''),
+  };
+}
 
-  public id: number;
-  public name: string;
-  public email: string;
-  public role?: UserRoles;
-  public pwdHash?: string;
-
-  /**
-   * Constructor()
-   */
-  public constructor(
-    name?: string,
-    email?: string,
-    role?: UserRoles,
-    pwdHash?: string,
-    id?: number, // id last cause usually set by db
-  ) {
-    this.name = (name ?? '');
-    this.email = (email ?? '');
-    this.role = (role ?? UserRoles.Standard);
-    this.pwdHash = (pwdHash ?? '');
-    this.id = (id ?? -1);
+/**
+ * Get user instance from object.
+ */
+function from(param: object): IUser {
+  // Check is user
+  if (!isUser(param)) {
+    throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
+  // Get user instance
+  const p = param as IUser;
+  return new_(p.name, p.email, p.role, p.pwdHash, p.id);
+}
 
-  /**
-   * Get user instance from object.
-   */
-  public static from(param: object): User {
-    // Check is user
-    if (!User.isUser(param)) {
-      throw new Error(INVALID_CONSTRUCTOR_PARAM);
-    }
-    // Get user instance
-    const p = param as IUser;
-    return new User(p.name, p.email, p.role, p.pwdHash, p.id);
-  }
-
-  /**
-   * Is this an object which contains all the user keys.
-   */
-  public static isUser(this: void, arg: unknown): boolean {
-    return (
-      !!arg &&
-      typeof arg === 'object' &&
-      'id' in arg &&
-      'email' in arg &&
-      'name' in arg &&
-      'role' in arg
-    );
-  }
+/**
+ * See if the param meets criteria to be a user.
+ */
+function isUser(arg: unknown): boolean {
+  return (
+    !!arg &&
+    typeof arg === 'object' &&
+    'id' in arg &&
+    'email' in arg &&
+    'name' in arg &&
+    'role' in arg
+  );
 }
 
 
 // **** Export default **** //
 
-export default User;
+export default {
+  new: new_,
+  from,
+  isUser,
+} as const;

@@ -39,9 +39,9 @@ and `_moduleAliases` in _package.json_ if you want to add/edit the relative path
 
 When you run _express-generator-typescript_, it sets up a simple application with routes for
 adding, updating, deleting, and fetching user objects. This is just to demonstrate how routing is done
-with express. You will have to login before calling APIs on user objects. The app is 
-configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
-to store user-session data. 
+with express. 
+
+If you want a fully-secure application, you can pass the `--with-auth` option and you will have an application which requires you to login before calling APIs on user objects. The app is configured with production quality client-side security and uses signed-cookies and jsonwebtokens to store user-session data. If you're new to web-development and still learning about securing websites, I highly encourage to use this option.
 
 
 ## Installation
@@ -60,10 +60,9 @@ If you don't specify a project name, the default _express-gen-ts_ will be used i
 want to use `yarn` instead of `npm`, pass the option `--use-yarn`.
 
 Create the app:
+With no options: `$ npx express-generator-typescript`
+With all options (order doesn't matter): `$ npx express-generator-typescript --with-auth --use-yarn "project name"`
 
-```bash
-$ npx express-generator-typescript "project name (default is express-gen-ts)"
-```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
@@ -90,34 +89,6 @@ During development, _express-generator-typescript_ uses `nodemon` to restart the
 are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
 This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
 unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
-
-
-## If you don't want authentication:
-
-In previous version of __express-generator-typescript__ you could disregard authentication through the 
-command line options. But maintaining two separate project folders which contained and didn't contain 
-authentication started to get messy.
-
-- Remove the following modules from `package.json`:
-  - `jsonwebtoken`
-  - `@types/jsonwebtoken`
-  - `bcrypt`
-  - `@types/bcrypt`
-  
-- Delete the files:
-  - `src/routes/middleware.ts`
-  - `src/routes/auth-router.ts`
-  - `spec/tests/auth.spec.ts`
-  - `spec/support/login-agent.ts`
-  - `public/scripts/login.js`
-  - `public/stylesheets/login.css`
-  - `public/views/login.html`
-
-- Update the files:
-  - In `src/routes/api`, delete the line: `apiRouter.use('/auth', authRouter);` and
-    remove the `adminMw,` from line 12. Remove the `adminMw` and `authRouter` imports as well.
-  - In `spec/tests/users.spec.ts`, remove all lines containing `loginAgent` and `setCookie`
-  - In `public/views/users.html` remove the `Logout` button.
 
 
 ## Note for VS-Code users
