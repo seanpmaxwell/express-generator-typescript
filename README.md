@@ -59,8 +59,8 @@ The quickest way to get started is use npx and pass in the name of the project y
 If you don't specify a project name, the default _express-gen-ts_ will be used instead. If you
 want to use `yarn` instead of `npm`, pass the option `--use-yarn`.
 
-Create the app:
-With no options: `$ npx express-generator-typescript`
+Create the app:<br/>
+With no options: `$ npx express-generator-typescript`<br/>
 With all options (order doesn't matter): `$ npx express-generator-typescript --with-auth --use-yarn "project name"`
 
 
