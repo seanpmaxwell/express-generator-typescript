@@ -102,14 +102,15 @@ describe('UserRouter', () => {
     });
 
     // Missing param
+    const expectedErrorMessage = `${ValidatorErr}"user".`;
     it('should return a JSON object with an error message of ' + 
-    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    `"${expectedErrorMessage}" and a status code of "${BAD_REQUEST}" if the user ` + 
     'param was missing.', (done) => {
       // Call api
       callApi({})
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(expectedErrorMessage);
           done();
         });
     });
@@ -139,14 +140,15 @@ describe('UserRouter', () => {
       });
 
     // Param missing
+    const expectedErrorMessage = `${ValidatorErr}"user".`;
     it('should return a JSON object with an error message of ' +
-    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    `"${expectedErrorMessage}" and a status code of "${BAD_REQUEST}" if the user ` + 
     'param was missing.', (done) => {
       // Call api
       callApi({})
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(expectedErrorMessage);
           done();
         });
     });
@@ -200,12 +202,13 @@ describe('UserRouter', () => {
     });
 
     // Invalid param
+    const expectedErrorMessage = `${ValidatorErr}"id".`;
     it(`should return a status code of "${BAD_REQUEST}" and return an error ` + 
-    `message of "${ValidatorErr}" if the id was not a valid number`, (done) => {
+    `message of "${expectedErrorMessage}" if the id was not a valid number`, (done) => {
       callApi('horse' as unknown as number)
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(expectedErrorMessage);
           done();
         });
     });
