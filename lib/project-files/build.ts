@@ -21,6 +21,7 @@ import childProcess from 'child_process';
     await exec('tsc --build tsconfig.prod.json', './');
   } catch (err) {
     logger.err(err);
+    process.exit(1);
   }
 })();
 

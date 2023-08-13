@@ -82,6 +82,8 @@ describe('UserRouter', () => {
   // Test add user
   describe(`"POST:${Add}"`, () => {
 
+    const ERROR_MSG = `${ValidatorErr}"user".`;
+
     const callApi = (reqBody: TReqBody) => 
       agent
         .post(Add)
@@ -103,13 +105,13 @@ describe('UserRouter', () => {
 
     // Missing param
     it('should return a JSON object with an error message of ' + 
-    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    `"${ERROR_MSG}" and a status code of "${BAD_REQUEST}" if the user ` + 
     'param was missing.', (done) => {
       // Call api
       callApi({})
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(ERROR_MSG);
           done();
         });
     });
@@ -117,6 +119,8 @@ describe('UserRouter', () => {
 
   // ** Update users ** //
   describe(`"PUT:${Update}"`, () => {
+
+    const ERROR_MSG = `${ValidatorErr}"user".`;
 
     const callApi = (reqBody: TReqBody) => 
       agent
@@ -140,13 +144,13 @@ describe('UserRouter', () => {
 
     // Param missing
     it('should return a JSON object with an error message of ' +
-    `"${ValidatorErr}" and a status code of "${BAD_REQUEST}" if the user ` + 
+    `"${ERROR_MSG}" and a status code of "${BAD_REQUEST}" if the user ` + 
     'param was missing.', (done) => {
       // Call api
       callApi({})
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(ERROR_MSG);
           done();
         });
     });
@@ -167,6 +171,8 @@ describe('UserRouter', () => {
 
   // ** Delete user ** //
   describe(`"DELETE:${Delete}"`, () => {
+
+    const VALIDATOR_ERR = `${ValidatorErr}"id".`;
 
     const callApi = (id: number) => 
       agent
@@ -201,11 +207,11 @@ describe('UserRouter', () => {
 
     // Invalid param
     it(`should return a status code of "${BAD_REQUEST}" and return an error ` + 
-    `message of "${ValidatorErr}" if the id was not a valid number`, (done) => {
+    `message of "${VALIDATOR_ERR}" if the id was not a valid number`, (done) => {
       callApi('horse' as unknown as number)
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(BAD_REQUEST);
-          expect(res.body.error).toBe(ValidatorErr);
+          expect(res.body.error).toBe(VALIDATOR_ERR);
           done();
         });
     });
