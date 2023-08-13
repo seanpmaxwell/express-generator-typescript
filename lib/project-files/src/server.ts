@@ -34,12 +34,12 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser(EnvVars.CookieProps.Secret));
 
 // Show routes called in console during development
-if (EnvVars.NodeEnv === NodeEnvs.Dev) {
+if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (EnvVars.NodeEnv === NodeEnvs.Production) {
+if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
   app.use(helmet());
 }
 
@@ -54,7 +54,7 @@ app.use((
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
-  if (EnvVars.NodeEnv !== NodeEnvs.Test) {
+  if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
     logger.err(err, true);
   }
   let status = HttpStatusCodes.BAD_REQUEST;
