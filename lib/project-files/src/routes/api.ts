@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import jetValidator from 'jet-validator';
 
-import Paths from './constants/Paths';
+import Paths from '../constants/Paths';
 import User from '@src/models/User';
 import UserRoutes from './UserRoutes';
 

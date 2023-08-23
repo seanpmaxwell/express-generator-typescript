@@ -3,7 +3,8 @@ import { SuperTest, Test, Response } from 'supertest';
 import User, { UserRoles } from '@src/models/User';
 import UserRepo from '@src/repos/UserRepo';
 import PwdUtil from '@src/util/PwdUtil';
-import FullPaths from '@src/routes/constants/FullPaths';
+
+import Paths from './Paths';
 
 
 // **** Variables **** //
@@ -28,7 +29,7 @@ function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
   spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
   // Call Login API
   beforeAgent
-    .post(FullPaths.Auth.Login)
+    .post(Paths.Auth.Login)
     .type('form')
     .send(LoginCreds)
     .end((_: Error, res: Response) => {

@@ -2,11 +2,14 @@
  * Express router paths go here.
  */
 
-import { Immutable } from '@src/other/types';
 
-
-const Paths = {
+export default {
   Base: '/api',
+  Auth: {
+    Base: '/auth',
+    Login: '/login',
+    Logout: '/logout',
+  },
   Users: {
     Base: '/users',
     Get: '/all',
@@ -14,10 +17,4 @@ const Paths = {
     Update: '/update',
     Delete: '/delete/:id',
   },
-};
-
-
-// **** Export **** //
-
-export type TPaths = Immutable<typeof Paths>;
-export default Paths as TPaths;
+} as const;

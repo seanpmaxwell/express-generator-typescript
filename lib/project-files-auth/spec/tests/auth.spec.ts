@@ -7,20 +7,14 @@ import PwdUtil from '@src/util/PwdUtil';
 import User, { UserRoles } from '@src/models/User';
 import { Errors } from '@src/services/AuthService';
 
-import FullPaths from '@src/routes/constants/FullPaths';
 import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
+import Paths from 'spec/support/Paths';
 import { TReqBody } from 'spec/support/types';
 
 
 // **** Variables **** //
-
-// Paths
-const {
-  Login,
-  Logout,
-} = FullPaths.Auth;
 
 // StatusCodes
 const {
@@ -48,13 +42,13 @@ describe('AuthRouter', () => {
   });
 
   // ** Test login ** //
-  describe(`"POST:${Login}"`, () => {
+  describe(`"POST:${Paths.Auth.Login}"`, () => {
 
     const EMAIL_NOT_FOUND_ERR = Errors.EmailNotFound(LoginCreds.email);
 
     const callApi = (reqBody: TReqBody) => 
       agent
-        .post(Login)
+        .post(Paths.Auth.Login)
         .type('form')
         .send(reqBody);
 
@@ -114,11 +108,11 @@ describe('AuthRouter', () => {
   });
 
   // ** Test logout ** //
-  describe(`"GET:${Logout}"`, () => {
+  describe(`"GET:${Paths.Auth.Logout}"`, () => {
 
     // Successful logout
     it(`should return a response with a status of ${OK}`, (done) => {
-      agent.get(Logout)
+      agent.get(Paths.Auth.Logout)
         .end((_: Error, res: Response) => {
           expect(res.status).toBe(HttpStatusCodes.OK);
           done();

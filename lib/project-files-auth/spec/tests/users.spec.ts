@@ -8,21 +8,13 @@ import UserRepo from '@src/repos/UserRepo';
 import User from '@src/models/User';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
-import FullPaths from '@src/routes/constants/FullPaths';
 
 import login from '../support/login';
+import Paths from 'spec/support/Paths';
 import { TReqBody } from 'spec/support/types';
 
 
 // **** Variables **** //
-
-// Paths
-const {
-  Get,
-  Add,
-  Update,
-  Delete,
-} = FullPaths.Users;
 
 // StatusCodes
 const {
@@ -62,11 +54,11 @@ describe('UserRouter', () => {
   });
 
   // ** Get all users ** //
-  describe(`"GET:${Get}"`, () => {
+  describe(`"GET:${Paths.Users.Get}"`, () => {
 
     const callApi = () => 
       agent
-        .get(Get)
+        .get(Paths.Users.Get)
         .set('Cookie', jwtCookie);
 
     // Success
@@ -88,13 +80,13 @@ describe('UserRouter', () => {
   });
 
   // Test add user
-  describe(`"POST:${Add}"`, () => {
+  describe(`"POST:${Paths.Users.Add}"`, () => {
 
     const ERROR_MSG = `${ValidatorErr}"user".`;
 
     const callApi = (reqBody: TReqBody) => 
       agent
-        .post(Add)
+        .post(Paths.Users.Add)
         .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
 
@@ -127,13 +119,13 @@ describe('UserRouter', () => {
   });
 
   // ** Update users ** //
-  describe(`"PUT:${Update}"`, () => {
+  describe(`"PUT:${Paths.Users.Update}"`, () => {
 
     const ERROR_MSG = `${ValidatorErr}"user".`;
 
     const callApi = (reqBody: TReqBody) => 
       agent
-        .put(Update)
+        .put(Paths.Users.Update)
         .set('Cookie', jwtCookie)
         .type('form').send(reqBody);
 
@@ -180,13 +172,13 @@ describe('UserRouter', () => {
   });
 
   // ** Delete user ** //
-  describe(`"DELETE:${Delete}"`, () => {
+  describe(`"DELETE:${Paths.Users.Delete}"`, () => {
 
     const VALIDATOR_ERR = `${ValidatorErr}"id".`;
 
     const callApi = (id: number) => 
       agent
-        .delete(insertUrlParams(Delete, { id }))
+        .delete(insertUrlParams(Paths.Users.Delete, { id }))
         .set('Cookie', jwtCookie);
 
     // Success
