@@ -1,11 +1,12 @@
-import supertest, { SuperTest, Test, Response } from 'supertest';
+import supertest, { Test, Response } from 'supertest';
+import TestAgent from 'supertest/lib/agent';
 import { defaultErrMsg as ValidatorErr } from 'jet-validator';
 import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
-import User from '@src/models/User';
+import User, { IUser } from '@src/models/User';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
@@ -37,11 +38,21 @@ const DummyUserData = {
 } as const;
 
 
+// **** Types **** //
+
+type TRes = Omit<Response, 'body'> & {
+  body: {
+    users: IUser[];
+    error: string;
+  }
+};
+
+
 // **** Tests **** //
 
 describe('UserRouter', () => {
 
-  let agent: SuperTest<Test>,
+  let agent: TestAgent<Test>,
     jwtCookie: string;
 
   // Run before all tests
@@ -68,7 +79,7 @@ describe('UserRouter', () => {
       spyOn(UserRepo, 'getAll').and.resolveTo([...DummyGetAllUsers]);
       // Call API
       callApi()
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(OK);
           for (let i = 0; i < res.body.users.length; i++) {
             const user = res.body.users[i];
@@ -97,7 +108,7 @@ describe('UserRouter', () => {
       spyOn(UserRepo, 'add').and.resolveTo();
       // Call api
       callApi(DummyUserData)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(CREATED);
           expect(res.body.error).toBeUndefined();
           done();
@@ -110,7 +121,7 @@ describe('UserRouter', () => {
     'param was missing.', (done) => {
       // Call api
       callApi({})
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(ERROR_MSG);
           done();
@@ -137,7 +148,7 @@ describe('UserRouter', () => {
         spyOn(UserRepo, 'persists').and.resolveTo(true);
         // Call api
         callApi(DummyUserData)
-          .end((_: Error, res: Response) => {
+          .end((_: Error, res: TRes) => {
             expect(res.status).toBe(OK);
             expect(res.body.error).toBeUndefined();
             done();
@@ -150,7 +161,7 @@ describe('UserRouter', () => {
     'param was missing.', (done) => {
       // Call api
       callApi({})
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(ERROR_MSG);
           done();
@@ -163,7 +174,7 @@ describe('UserRouter', () => {
     'was not found.', (done) => {
       // Call api
       callApi(DummyUserData)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(NOT_FOUND);
           expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
           done();
@@ -189,7 +200,7 @@ describe('UserRouter', () => {
         spyOn(UserRepo, 'persists').and.resolveTo(true);
         // Call api
         callApi(5)
-          .end((_: Error, res: Response) => {
+          .end((_: Error, res: TRes) => {
             expect(res.status).toBe(OK);
             expect(res.body.error).toBeUndefined();
             done();
@@ -201,7 +212,7 @@ describe('UserRouter', () => {
     `"${USER_NOT_FOUND_ERR}" and a status code of "${NOT_FOUND}" if the id ` + 
     'was not found.', (done) => {
       callApi(-1)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(NOT_FOUND);
           expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
           done();
@@ -210,9 +221,10 @@ describe('UserRouter', () => {
 
     // Invalid param
     it(`should return a status code of "${BAD_REQUEST}" and return an error ` + 
-    `message of "${VALIDATOR_ERR}" if the id was not a valid number`, (done) => {
+      `message of "${VALIDATOR_ERR}" if the id was not a valid number`, 
+    (done) => {
       callApi('horse' as unknown as number)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(BAD_REQUEST);
           expect(res.body.error).toBe(VALIDATOR_ERR);
           done();

@@ -2,3 +2,5 @@
 lib/**/package-lock.json
 
 lib/**/dist
+
+test/

@@ -1,4 +1,4 @@
-import supertest, { SuperTest, Test, Response } from 'supertest';
+import supertest, { Test, Response } from 'supertest';
 
 import app from '@src/server';
 
@@ -12,6 +12,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 import Paths from 'spec/support/Paths';
 import { TReqBody } from 'spec/support/types';
+import TestAgent from 'supertest/lib/agent';
 
 
 // **** Variables **** //
@@ -29,11 +30,20 @@ const LoginCreds = {
 } as const;
 
 
+// **** Types **** //
+
+type TRes = Omit<Response, 'body'> & {
+  body: {
+    error: string;
+  }
+};
+
+
 // **** Tests **** //
 
 describe('AuthRouter', () => {
 
-  let agent: SuperTest<Test>;
+  let agent: TestAgent<Test>;
 
   // Run before all tests
   beforeAll((done) => {
@@ -79,7 +89,7 @@ describe('AuthRouter', () => {
       spyOn(UserRepo, 'getOne').and.resolveTo(null);
       // Call
       callApi(LoginCreds)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(UNAUTHORIZED);
           expect(res.body.error).toBe(EMAIL_NOT_FOUND_ERR);
           done();
@@ -98,7 +108,7 @@ describe('AuthRouter', () => {
       spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
       // Call API
       callApi(LoginCreds)
-        .end((_: Error, res: Response) => {
+        .end((_: Error, res: TRes) => {
           expect(res.status).toBe(UNAUTHORIZED);
           expect(res.body.error).toBe(Errors.Unauth);
           done();

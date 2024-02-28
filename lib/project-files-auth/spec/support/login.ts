@@ -1,4 +1,5 @@
-import { SuperTest, Test, Response } from 'supertest';
+import { Test, Response } from 'supertest';
+import TestAgent from 'supertest/lib/agent';
 
 import User, { UserRoles } from '@src/models/User';
 import UserRepo from '@src/repos/UserRepo';
@@ -20,7 +21,7 @@ const LoginCreds = {
 /**
  * Login a user.
  */
-function login(beforeAgent: SuperTest<Test>, done: (arg: string) => void) {
+function login(beforeAgent: TestAgent<Test>, done: (arg: string) => void) {
   // Setup dummy data
   const role = UserRoles.Admin,
     pwdHash = PwdUtil.hashSync(LoginCreds.password),
