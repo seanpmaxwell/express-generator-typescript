@@ -22,19 +22,12 @@ body .add-user-col input {
   margin-bottom: 10px;
 }
 
-body .add-user-col #add-user-btn {
-  margin-top: 2px;
-  margin-bottom: 10px;
-}
-
-body .add-user-col #logout-btn {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
-
 
 /** Users Display Column **/
+
+.email-edit {
+  padding-bottom: 8px;
+}
 
 body .users-column .user-display-ele {
   padding-bottom: 10px;

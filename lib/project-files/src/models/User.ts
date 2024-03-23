@@ -1,12 +1,10 @@
+import moment from 'moment';
+
+
 // **** Variables **** //
 
-const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an ' + 
-  'object with the appropriate user keys.';
-
-export enum UserRoles {
-  Standard,
-  Admin,
-}
+const INVALID_CONSTRUCTOR_PARAM = 'nameOrObj arg must a string or an object ' + 
+  'with the appropriate user keys.';
 
 
 // **** Types **** //
@@ -15,15 +13,7 @@ export interface IUser {
   id: number;
   name: string;
   email: string;
-  pwdHash?: string;
-  role?: UserRoles;
-}
-
-export interface ISessionUser {
-  id: number;
-  email: string;
-  name: string;
-  role: IUser['role'];
+  created: Date;
 }
 
 
@@ -35,16 +25,14 @@ export interface ISessionUser {
 function new_(
   name?: string,
   email?: string,
-  role?: UserRoles,
-  pwdHash?: string,
+  created?: Date,
   id?: number, // id last cause usually set by db
 ): IUser {
   return {
     id: (id ?? -1),
     name: (name ?? ''),
     email: (email ?? ''),
-    role: (role ?? UserRoles.Standard),
-    pwdHash: (pwdHash ?? ''),
+    created: (created ? new Date(created) : new Date()),
   };
 }
 
@@ -52,13 +40,11 @@ function new_(
  * Get user instance from object.
  */
 function from(param: object): IUser {
-  // Check is user
   if (!isUser(param)) {
     throw new Error(INVALID_CONSTRUCTOR_PARAM);
   }
-  // Get user instance
   const p = param as IUser;
-  return new_(p.name, p.email, p.role, p.pwdHash, p.id);
+  return new_(p.name, p.email, p.created, p.id);
 }
 
 /**
@@ -68,10 +54,10 @@ function isUser(arg: unknown): boolean {
   return (
     !!arg &&
     typeof arg === 'object' &&
-    'id' in arg &&
-    'email' in arg &&
-    'name' in arg &&
-    'role' in arg
+    'id' in arg && typeof arg.id === 'number' && 
+    'email' in arg && typeof arg.email === 'string' && 
+    'name' in arg && typeof arg.name === 'string' &&
+    'created' in arg && moment(arg.created as string | Date).isValid()
   );
 }
 

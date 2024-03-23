@@ -1,4 +1,5 @@
 import supertest, { Test, Response } from 'supertest';
+import TestAgent from 'supertest/lib/agent';
 
 import app from '@src/server';
 
@@ -11,36 +12,18 @@ import EnvVars from '@src/constants/EnvVars';
 import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 import Paths from 'spec/support/Paths';
-import { TReqBody } from 'spec/support/types';
-import TestAgent from 'supertest/lib/agent';
+import apiCb from 'spec/support/apiCb';
+import { TApiCb } from 'spec/types/misc';
 
 
-// **** Variables **** //
-
-// StatusCodes
-const {
-  OK,
-  UNAUTHORIZED,
-} = HttpStatusCodes;
-
-// Login credentials
+// Login Creds
 const LoginCreds = {
   email: 'jsmith@gmail.com',
   password: 'Password@1',
 } as const;
 
 
-// **** Types **** //
-
-type TRes = Omit<Response, 'body'> & {
-  body: {
-    error: string;
-  }
-};
-
-
-// **** Tests **** //
-
+// Tests
 describe('AuthRouter', () => {
 
   let agent: TestAgent<Test>;
@@ -51,82 +34,82 @@ describe('AuthRouter', () => {
     done();
   });
 
-  // ** Test login ** //
+  // Login
   describe(`"POST:${Paths.Auth.Login}"`, () => {
 
     const EMAIL_NOT_FOUND_ERR = Errors.EmailNotFound(LoginCreds.email);
 
-    const callApi = (reqBody: TReqBody) => 
+    // Setup API 
+    const callApi = (creds: typeof LoginCreds, cb: TApiCb) => 
       agent
         .post(Paths.Auth.Login)
-        .type('form')
-        .send(reqBody);
+        .send(creds)
+        .end(apiCb(cb));
 
     // Success
-    it(`should return a response with a status of "${OK}" and a cookie with ` + 
-      'a jwt if the login was successful.', (done) => {
+    it(`should return a response with a status of "${HttpStatusCodes.OK}" ` + 
+      'and a cookie with a jwt if the login was successful.', done => {
       // Setup data
-      const role = UserRoles.Standard,
-        pwdHash = PwdUtil.hashSync(LoginCreds.password),
-        loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+      const pwdHash = PwdUtil.hashSync(LoginCreds.password),
+        loginUser = User.new('john smith', LoginCreds.email, new Date(), 
+          UserRoles.Standard, pwdHash);
       // Add spy
       spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
       // Call API
-      callApi(LoginCreds)
-        .end((_: Error, res: Response) => {
-          expect(res.status).toBe(OK);
-          const cookie = res.headers['set-cookie'][0];
-          expect(cookie).toContain(EnvVars.CookieProps.Key);
-          done();
-        });
+      callApi(LoginCreds, res => {
+        expect(res.status).toBe(HttpStatusCodes.OK);
+        const cookie = res.headers['set-cookie'][0];
+        expect(cookie).toContain(EnvVars.CookieProps.Key);
+        done();
+      });
     });
 
     // Email not found error
-    it(`should return a response with a status of "${UNAUTHORIZED}" and a ` + 
-    `json with an error message of "${EMAIL_NOT_FOUND_ERR}" if the email ` + 
-    'was not found.', (done) => {
+    it('should return a response with a status of ' + 
+    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with an error message of ` + 
+    `"${EMAIL_NOT_FOUND_ERR}" if the email was not found.`, done => {
       // Spy
       spyOn(UserRepo, 'getOne').and.resolveTo(null);
       // Call
-      callApi(LoginCreds)
-        .end((_: Error, res: TRes) => {
-          expect(res.status).toBe(UNAUTHORIZED);
-          expect(res.body.error).toBe(EMAIL_NOT_FOUND_ERR);
-          done();
-        });
+      callApi(LoginCreds, res => {
+        expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+        expect(res.body.error).toBe(EMAIL_NOT_FOUND_ERR);
+        done();
+      });
     });
 
     // Password failed
-    it(`should return a response with a status of "${UNAUTHORIZED}" and a ` + 
-    `json with the error "${Errors.Unauth}" if the password failed.`, 
-    (done) => {
+    it('should return a response with a status of ' + 
+    `"${HttpStatusCodes.UNAUTHORIZED}" and a json with the error ` + 
+    `"${Errors.Unauth}" if the password failed.`, done => {
       // Setup data
-      const role = UserRoles.Standard,
-        pwdHash = PwdUtil.hashSync('bad password'),
-        loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+      const pwdHash = PwdUtil.hashSync('bad password'),
+        loginUser = User.new('john smith', LoginCreds.email, new Date(), 
+          UserRoles.Standard, pwdHash);
       // Add spy
       spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
       // Call API
-      callApi(LoginCreds)
-        .end((_: Error, res: TRes) => {
-          expect(res.status).toBe(UNAUTHORIZED);
-          expect(res.body.error).toBe(Errors.Unauth);
-          done();
-        });
+      callApi(LoginCreds, res => {
+        expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED);
+        expect(res.body.error).toBe(Errors.Unauth);
+        done();
+      });
     });
 
   });
 
-  // ** Test logout ** //
+  // Test logout
   describe(`"GET:${Paths.Auth.Logout}"`, () => {
 
     // Successful logout
-    it(`should return a response with a status of ${OK}`, (done) => {
-      agent.get(Paths.Auth.Logout)
-        .end((_: Error, res: Response) => {
-          expect(res.status).toBe(HttpStatusCodes.OK);
-          done();
-        });
-    });
+    it(`should return a response with a status of ${HttpStatusCodes.OK}`, 
+      done => {
+        agent
+          .get(Paths.Auth.Logout)
+          .end((_: Error, res: Response) => {
+            expect(res.status).toBe(HttpStatusCodes.OK);
+            done();
+          });
+      });
   });
 });

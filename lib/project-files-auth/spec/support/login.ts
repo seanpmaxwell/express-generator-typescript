@@ -8,15 +8,11 @@ import PwdUtil from '@src/util/PwdUtil';
 import Paths from './Paths';
 
 
-// **** Variables **** //
-
+// Login Credentials
 const LoginCreds = {
   email: 'jsmith@gmail.com',
   password: 'Password@1',
 } as const;
-
-
-// **** Functions **** //
 
 /**
  * Login a user.
@@ -25,7 +21,8 @@ function login(beforeAgent: TestAgent<Test>, done: (arg: string) => void) {
   // Setup dummy data
   const role = UserRoles.Admin,
     pwdHash = PwdUtil.hashSync(LoginCreds.password),
-    loginUser = User.new('john smith', LoginCreds.email, role, pwdHash);
+    loginUser = User.new('john smith', LoginCreds.email, new Date(), role, 
+      pwdHash);
   // Add spy
   spyOn(UserRepo, 'getOne').and.resolveTo(loginUser);
   // Call Login API

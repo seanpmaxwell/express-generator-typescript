@@ -56,7 +56,12 @@ async function update(user: IUser): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
-      db.users[i] = user;
+      const dbUser = db.users[i];
+      db.users[i] = {
+        ...dbUser,
+        name: user.name,
+        email: user.email,
+      };
       return orm.saveDb(db);
     }
   }

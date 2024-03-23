@@ -35,11 +35,12 @@
     "helmet": "^6.0.0",
     "inserturlparams": "^1.0.1",
     "jet-logger": "^1.3.1",
-    "jet-validator": "^1.0.3",
     "jet-paths": "^1.0.5",
+    "jet-validator": "^1.0.3",
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
+    "moment": "^2.30.1",
     "morgan": "^1.10.0",
     "ts-command-line-args": "^2.4.2"
   },
