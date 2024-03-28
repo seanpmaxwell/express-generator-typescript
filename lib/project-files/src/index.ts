@@ -1,4 +1,5 @@
 import './pre-start'; // Must be the first import
+import 'module-alias/register';
 import logger from 'jet-logger';
 
 import EnvVars from '@src/constants/EnvVars';
