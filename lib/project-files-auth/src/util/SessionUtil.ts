@@ -77,7 +77,7 @@ function _sign(data: string | object | Buffer): Promise<string> {
 function _decode<T>(jwt: string): Promise<string | undefined | T> {
   return new Promise((res, rej) => {
     jsonwebtoken.verify(jwt, EnvVars.Jwt.Secret, (err, decoded) => {
-      return err ? rej(Errors.Validation) : res(decoded as T);
+      return err ? rej(new RouteError(HttpStatusCodes.UNAUTHORIZED,Errors.Validation)) : res(decoded as T);
     });
   });
 }
