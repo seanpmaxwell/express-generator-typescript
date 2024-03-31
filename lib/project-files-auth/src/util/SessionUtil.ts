@@ -33,6 +33,23 @@ function getSessionData<T>(req: Request): Promise<string | T | undefined> {
 }
 
 /**
+ * Decrypt JWT and extract client data.
+ */
+function _decode<T>(jwt: string): Promise<string | undefined | T> {
+  return new Promise((res, rej) => {
+    jsonwebtoken.verify(jwt, EnvVars.Jwt.Secret, (err, decoded) => {
+      if (!!err) {
+        const err = new RouteError(HttpStatusCodes.UNAUTHORIZED, 
+          Errors.Validation);
+        return rej(err);
+      } else {
+        return res(decoded as T);
+      }
+    });
+  });
+}
+
+/**
  * Add a JWT to the response 
  */
 async function addSessionData(
@@ -50,36 +67,22 @@ async function addSessionData(
 }
 
 /**
- * Remove cookie
- */
-function clearCookie(res: Response): Response {
-  const { Key, Options } = EnvVars.CookieProps;
-  return res.clearCookie(Key, Options);
-}
-
-
-// **** Helper Functions **** //
-
-/**
  * Encrypt data and return jwt.
  */
 function _sign(data: string | object | Buffer): Promise<string> {
   return new Promise((res, rej) => {
     jsonwebtoken.sign(data, EnvVars.Jwt.Secret, Options, (err, token) => {
-      return err ? rej(err) : res(token || '');
+      return (err ? rej(err) : res(token ?? ''));
     });
   });
 }
 
 /**
- * Decrypt JWT and extract client data.
+ * Remove cookie
  */
-function _decode<T>(jwt: string): Promise<string | undefined | T> {
-  return new Promise((res, rej) => {
-    jsonwebtoken.verify(jwt, EnvVars.Jwt.Secret, (err, decoded) => {
-      return err ? rej(Errors.Validation) : res(decoded as T);
-    });
-  });
+function clearCookie(res: Response): Response {
+  const { Key, Options } = EnvVars.CookieProps;
+  return res.clearCookie(Key, Options);
 }
 
 
