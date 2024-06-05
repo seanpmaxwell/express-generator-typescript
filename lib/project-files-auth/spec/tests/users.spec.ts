@@ -7,7 +7,7 @@ import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
 import Paths from 'spec/support/Paths';
@@ -51,7 +51,7 @@ describe('UserRouter', () => {
 
     // Success
     it('should return a JSON object with all the users and a status code ' + 
-    `of "${HttpStatusCodes.OK}" if the request was successful.`, (done) => {
+    `of "${HttpStatusCodes.OK}" if the request was successful.`, done => {
       // Add spy
       const data = getDummyUsers();
       spyOn(UserRepo, 'getAll').and.resolveTo(data);
@@ -79,7 +79,7 @@ describe('UserRouter', () => {
 
     // Test add user success
     it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
-    'request was successful.', (done) => {
+    'request was successful.', done => {
       // Spy
       spyOn(UserRepo, 'add').and.resolveTo();
       // Call api
@@ -92,7 +92,7 @@ describe('UserRouter', () => {
     // Missing param
     it(`should return a JSON object with an error message of "${ERROR_MSG}" ` + 
     `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
-    'param was missing.', (done) => {
+    'param was missing.', done => {
       // Call api
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
@@ -117,7 +117,7 @@ describe('UserRouter', () => {
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
-    'request was successful.', (done) => {
+    'request was successful.', done => {
       // Setup spies
       spyOn(UserRepo, 'update').and.resolveTo();
       spyOn(UserRepo, 'persists').and.resolveTo(true);
@@ -131,7 +131,7 @@ describe('UserRouter', () => {
     // Param missing
     it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
     `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
-    'param was missing.', (done) => {
+    'param was missing.', done => {
       // Call api
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);

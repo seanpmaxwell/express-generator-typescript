@@ -1,4 +1,4 @@
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UserService from '@src/services/UserService';
 import { IUser } from '@src/models/User';

@@ -7,7 +7,7 @@ import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
 import Paths from 'spec/support/Paths';

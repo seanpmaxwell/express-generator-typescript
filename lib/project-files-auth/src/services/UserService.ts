@@ -1,7 +1,8 @@
+import RouteError from '@src/common/RouteError';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
+
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
-import { RouteError } from '@src/other/classes';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 
 // **** Variables **** //
@@ -33,7 +34,6 @@ async function updateOne(user: IUser): Promise<void> {
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERR);
   }
-  // Return user
   return UserRepo.update(user);
 }
 
@@ -45,7 +45,6 @@ async function _delete(id: number): Promise<void> {
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERR);
   }
-  // Delete user
   return UserRepo.delete(id);
 }
 

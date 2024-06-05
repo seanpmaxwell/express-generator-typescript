@@ -1,14 +1,10 @@
-/**
- * Miscellaneous shared classes go here.
- */
-
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 
 /**
  * Error with status code and message
  */
-export class RouteError extends Error {
+class RouteError extends Error {
 
   public status: HttpStatusCodes;
 
@@ -17,3 +13,8 @@ export class RouteError extends Error {
     this.status = status;
   }
 }
+
+
+// **** Export default **** //
+
+export default RouteError;

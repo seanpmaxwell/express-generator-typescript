@@ -1,4 +1,4 @@
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import SessionUtil from '@src/util/SessionUtil';
 import AuthService from '@src/services/AuthService';
 

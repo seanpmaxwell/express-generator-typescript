@@ -1,7 +1,8 @@
+import RouteError from '@src/common/RouteError';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
+
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
-import { RouteError } from '@src/other/classes';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
 
 
 // **** Variables **** //

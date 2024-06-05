@@ -8,8 +8,8 @@ import PwdUtil from '@src/util/PwdUtil';
 import User, { UserRoles } from '@src/models/User';
 import { Errors } from '@src/services/AuthService';
 
-import EnvVars from '@src/constants/EnvVars';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import EnvVars from '@src/common/EnvVars';
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import Paths from 'spec/support/Paths';
 import apiCb from 'spec/support/apiCb';
