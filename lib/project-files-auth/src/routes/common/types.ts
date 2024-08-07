@@ -31,28 +31,13 @@ import { Response, Request } from 'express';
 import { ISessionUser } from '@src/models/User';
 
 
-// **** Express Request **** //
+// **** Express **** //
 
 type TPathParams = Record<string, string>;
 
-interface QryObj {
-  [key: string]: string | string[] | undefined;
-}
-
-type TQueryParams<U = void> =
-   U extends void 
-    ? QryObj 
-    : U extends QryObj 
-      ? U
-      : never;
-
-
-export interface IReq<T = void, U extends QryObj | void = void> extends Request<TPathParams, void, T, TQueryParams<U>> {
+export interface IReq<T = void> extends Request<TPathParams, void, T, TPathParams> {
   body: T;
 }
-
-
-// **** Express Response **** //
 
 interface ILocals {
   sessionUser: ISessionUser;
