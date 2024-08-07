@@ -2,7 +2,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import SessionUtil from '@src/util/SessionUtil';
 import AuthService from '@src/services/AuthService';
 
-import { IReq, IRes } from './types/express/misc';
+import { IReq, IRes } from './common/types';
 
 
 // **** Types **** //

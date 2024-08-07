@@ -2,33 +2,29 @@
  * Middleware to verify user logged in and is an an admin.
  */
 
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
 import SessionUtil from '@src/util/SessionUtil';
 import { ISessionUser, UserRoles } from '@src/models/User';
+
+import { IReq, IRes } from '../common/types';
 
 
 // **** Variables **** //
 
 const USER_UNAUTHORIZED_ERR = 'User not authorized to perform this action';
 
-
-// **** Types **** //
-
 type TSessionData = ISessionUser & JwtPayload;
 
-
-// **** Functions **** //
 
 /**
  * See note at beginning of file.
  */
 async function adminMw(
-  req: Request,
-  res: Response,
+  req: IReq,
+  res: IRes,
   next: NextFunction,
 ) {
   // Get session data
