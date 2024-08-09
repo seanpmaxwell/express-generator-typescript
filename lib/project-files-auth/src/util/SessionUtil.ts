@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import RouteError from '@src/common/RouteError';
+import { RouteError } from '@src/common/classes';
 import EnvVars from '@src/common/EnvVars';
+import { IReq, IRes } from '@src/routes/common/types';
 
 
 // **** Variables **** //
@@ -25,7 +25,7 @@ const Options = {
 /**
  * Get session data from request object (i.e. ISessionUser)
  */
-function getSessionData<T>(req: Request): Promise<string | T | undefined> {
+function getSessionData<T>(req: IReq): Promise<string | T | undefined> {
   const { Key } = EnvVars.CookieProps,
     jwt = req.signedCookies[Key];
   return _decode(jwt);
@@ -52,9 +52,9 @@ function _decode<T>(jwt: string): Promise<string | undefined | T> {
  * Add a JWT to the response 
  */
 async function addSessionData(
-  res: Response,
+  res: IRes,
   data: string | object,
-): Promise<Response> {
+): Promise<IRes> {
   if (!res || !data) {
     throw new RouteError(HttpStatusCodes.BAD_REQUEST, Errors.ParamFalsey);
   }
@@ -79,7 +79,7 @@ function _sign(data: string | object | Buffer): Promise<string> {
 /**
  * Remove cookie
  */
-function clearCookie(res: Response): Response {
+function clearCookie(res: IRes): IRes {
   const { Key, Options } = EnvVars.CookieProps;
   return res.clearCookie(Key, Options);
 }

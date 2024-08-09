@@ -8,13 +8,9 @@ import { Response, Request } from 'express';
 
 // **** Express **** //
 
-type TPathParams = Record<string, string>;
+type TObj = Record<string, unknown>;
 
-export interface IReq<T = void> extends Request<TPathParams, void, T, TPathParams> {
-  body: T;
-}
+export type IReq = Request<TObj, void, TObj, TObj>;
 
-export interface IRes extends Response {
-  locals: Record<string, unknown>;
-}
+export type IRes = Response<unknown, TObj>
 

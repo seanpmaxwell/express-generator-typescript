@@ -16,7 +16,7 @@ import BaseRouter from '@src/routes';
 import Paths from '@src/common/Paths';
 import EnvVars from '@src/common/EnvVars';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import RouteError from '@src/common/RouteError';
+import { RouteError } from '@src/common/classes';
 import { NodeEnvs } from '@src/common/misc';
 
 

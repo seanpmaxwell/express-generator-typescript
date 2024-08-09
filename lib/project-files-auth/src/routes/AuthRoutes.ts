@@ -3,14 +3,7 @@ import SessionUtil from '@src/util/SessionUtil';
 import AuthService from '@src/services/AuthService';
 
 import { IReq, IRes } from './common/types';
-
-
-// **** Types **** //
-
-interface ILoginReq {
-  email: string;
-  password: string;
-}
+import check from './common/check';
 
 
 // **** Functions **** //
@@ -18,10 +11,9 @@ interface ILoginReq {
 /**
  * Login a user.
  */
-async function login(req: IReq<ILoginReq>, res: IRes) {
-  const { email, password } = req.body;
-  // Login
-  const user = await AuthService.login(email, password);
+async function login(req: IReq, res: IRes) {
+  const [ email, password ] = check.isStr(req.body, ['email', 'password']),
+    user = await AuthService.login(email, password);
   // Setup Admin Cookie
   await SessionUtil.addSessionData(res, {
     id: user.id,

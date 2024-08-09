@@ -17,8 +17,8 @@ import Paths from '@src/common/Paths';
 import EnvVars from '@src/common/EnvVars';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { NodeEnvs } from '@src/common/misc';
-
-import RouteError from '@src/common/RouteError';
+import { RouteError } from '@src/common/classes';
+import { IReq, IRes } from './routes/common/types';
 
 
 // **** Variables **** //
@@ -81,7 +81,7 @@ app.get('/', (_: Request, res: Response) => {
 });
 
 // Redirect to login if not logged in.
-app.get('/users', (req: Request, res: Response) => {
+app.get('/users', (req: IReq, res: IRes) => {
   const jwt = req.signedCookies[EnvVars.CookieProps.Key];
   if (!jwt) {
     res.redirect('/');

@@ -1,6 +1,5 @@
 import supertest, { Test } from 'supertest';
 import TestAgent from 'supertest/lib/agent';
-import { defaultErrMsg as ValidatorErr } from 'jet-validator';
 import insertUrlParams from 'inserturlparams';
 
 import app from '@src/server';
@@ -14,6 +13,7 @@ import Paths from 'spec/support/Paths';
 import apiCb from 'spec/support/apiCb';
 import login from 'spec/support/login';
 import { TApiCb } from 'spec/types/misc';
+import { ValidationErr } from '@src/common/classes';
 
 
 // Dummy users for GET req
@@ -67,7 +67,7 @@ describe('UserRouter', () => {
   // Test add user
   describe(`"POST:${Paths.Users.Add}"`, () => {
 
-    const ERROR_MSG = `${ValidatorErr}"user".`,
+    const ERROR_MSG = ValidationErr.GetMsg('user'),
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
@@ -105,7 +105,7 @@ describe('UserRouter', () => {
   // Update users
   describe(`"PUT:${Paths.Users.Update}"`, () => {
 
-    const ERROR_MSG = `${ValidatorErr}"user".`,
+    const ERROR_MSG = ValidationErr.GetMsg('user'),
       DUMMY_USER = getDummyUsers()[0];
 
     // Setup API

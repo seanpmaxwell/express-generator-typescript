@@ -40,17 +40,16 @@ function new_(
  * Get user instance from object.
  */
 function from(param: object): IUser {
-  if (!isUser(param)) {
-    throw new Error(INVALID_CONSTRUCTOR_PARAM);
+  if (isUser(param)) {
+    return new_(param.name, param.email, param.created, param.id);
   }
-  const p = param as IUser;
-  return new_(p.name, p.email, p.created, p.id);
+  throw new Error(INVALID_CONSTRUCTOR_PARAM);
 }
 
 /**
  * See if the param meets criteria to be a user.
  */
-function isUser(arg: unknown): boolean {
+function isUser(arg: unknown): arg is IUser {
   return (
     !!arg &&
     typeof arg === 'object' &&
