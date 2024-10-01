@@ -1,39 +1,18 @@
-import dotenv from 'dotenv';
 import find from 'find';
 import Jasmine from 'jasmine';
 import { parse } from 'ts-command-line-args';
 import logger from 'jet-logger';
 
 
-// **** Types **** //
-
-interface IArgs {
-  testFile: string;
-}
-
-
-// **** Setup **** //
-
-// ** Init ** //
-
-// NOTE: MUST BE FIRST!! Load env vars
-const result2 = dotenv.config({
-  path: './env/test.env',
-});
-if (result2.error) {
-  throw result2.error;
-}
-
 // Setup command line options. 
-const args = parse<IArgs>({
+const args = parse<{
+  testFile: string;
+}>({
   testFile: {
     type: String,
     defaultValue: '',
   },
 });
-
-
-// ** Start Jasmine ** //
 
 // Init Jasmine
 const jasmine = new Jasmine();
