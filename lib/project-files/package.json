@@ -5,14 +5,14 @@
     "build": "ts-node ./scripts/build.ts",
     "dev": "NODE_ENV=development ts-node ./src",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src -e ts",
-    "lint": "npx eslint --ext .ts src/",
-    "lint:tests": "npx eslint --ext .ts spec/",
+    "lint": "npx eslint ./src/**/*.ts",
+    "lint:tests": "npx eslint ./spec/**/*.ts",
     "start": "NODE_ENV=production node -r ./preload.js ./dist",
     "test": "NODE_ENV=test ts-node ./spec",
     "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec -e ts"
   },
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -31,8 +31,10 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
+    "@types/eslint__js": "^8.42.3",
     "@types/express": "^4.17.13",
     "@types/find": "^0.2.1",
     "@types/fs-extra": "^9.0.13",
@@ -42,9 +44,8 @@
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.14",
     "@types/supertest": "^6.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
-    "eslint": "^8.23.0",
+    "eslint": "^9.11.1",
+    "eslint-plugin-n": "^17.10.3",
     "eslint-plugin-node": "^11.1.0",
     "find": "^0.3.0",
     "fs-extra": "^10.1.0",
@@ -54,6 +55,7 @@
     "ts-command-line-args": "^2.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.8.2"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.8.0"
   }
 }

@@ -1,7 +1,7 @@
 **/**/node_modules
 **/**/*.log
 lib/**/package-lock.json
-lib/**/dist
+**/**/dist
 
 test/
 **/**/.DS_Store
