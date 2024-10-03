@@ -4,3 +4,4 @@ lib/**/package-lock.json
 lib/**/dist
 
 test/
+**/**/.DS_STORE
