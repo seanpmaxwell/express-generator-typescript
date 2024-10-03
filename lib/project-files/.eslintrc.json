@@ -12,6 +12,10 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "ignores": [
+    "src/public/",
+    "preload.js"
+  ],
   "rules": {
     "@typescript-eslint/explicit-member-accessibility": "warn",
     "@typescript-eslint/no-misused-promises": 0,
