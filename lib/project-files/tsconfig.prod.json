@@ -7,6 +7,6 @@
   "exclude": [
     "spec",
     "src/public/",
-    "build.ts"
+    "scripts"
   ]
 }

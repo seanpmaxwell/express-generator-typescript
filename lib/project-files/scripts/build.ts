@@ -14,9 +14,9 @@ import childProcess from 'child_process';
   try {
     // Remove current build
     await remove('./dist/');
-    // Copy back-end files
+    await exec('npx eslint --ext .ts src/', './');
     await exec('tsc --build tsconfig.prod.json', './');
-    // Copy front-end files
+    // Copy
     await copy('./src/public', './dist/public');
     await copy('./src/views', './dist/views');
   } catch (err) {

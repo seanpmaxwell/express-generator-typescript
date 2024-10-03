@@ -32,7 +32,7 @@ are packaged with this library.
 
 In addition, relative paths are also setup, so you don't have to go through the trouble of installing
 and configuring _tsconfig-paths_ and _module-alias_. Just make sure to update `paths` in _tsconfig.json_
-and `_moduleAliases` in _package.json_ if you want to add/edit the relative paths.
+and `_moduleAliases` in _preload.js_ if you want to add/edit the relative paths.
 
 
 ## Sample-project
@@ -74,13 +74,11 @@ $ cd "project name" && npm run dev
 ## Available commands for the server.
 
 - Run the server in development mode: `npm run dev`.
-- Run all unit-tests with hot-reloading: `npm test`.
+- Run all unit-tests: `npm test`.
 - Run a single unit-test: `npm test -- --testFile="name of test file" (i.e. --testFile=Users)`.
-- Run all unit-tests without hot-reloading: `npm run test:no-reloading`
 - Check for linting errors: `npm run lint`.
 - Build the project for production: `npm run build`.
 - Run the production build: `npm start`.
-- Run production build with a different env file `npm start -- --env="name of env file" (default is production)`.
 
 
 ## Debugging
@@ -89,34 +87,6 @@ During development, _express-generator-typescript_ uses `nodemon` to restart the
 are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
 This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
 unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
-
-
-## Note for VS-Code users
-
-A lot of users have asked about _launch.json_ configurations for running this in VS-Code, so
-here's a snippet of the launch.json configuration you need to bypass nodemon and run directly with
-VS-Code. 
-
-```JSON
-  {
-        "type": "pwa-node",
-        "request": "launch",
-        "name": "Debug Dev Env",
-        "runtimeArgs": [
-            "-r",
-            "ts-node/register",
-            "-r",
-            "tsconfig-paths/register",
-        ],
-        "args": [
-            "${workspaceFolder:express-gen-ts}/src/index.ts"
-        ],
-        "resolveSourceMapLocations": [
-            "${workspaceFolder}/**",
-            "!**/node_modules/**"
-        ],
-   }
-```
 
 
 ## Note for windows users

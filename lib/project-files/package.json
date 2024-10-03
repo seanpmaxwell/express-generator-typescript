@@ -2,18 +2,14 @@
   "name": "express-typescript-example",
   "version": "0.0.0",
   "scripts": {
-    "_ts": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register -r ./dotenv.config.js",
-    "build": "npx ts-node build.ts",
-    "dev": "npm run _ts -- ./src",
-    "dev:hot": "nodemon",
+    "build": "ts-node ./scripts/build.ts",
+    "dev": "NODE_ENV=development ts-node ./src",
+    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src -e ts",
     "lint": "npx eslint --ext .ts src/",
     "lint:tests": "npx eslint --ext .ts spec/",
-    "start": "NODE_ENV=production node -r module-alias/register -r ./dotenv.config.js ./dist",
-    "test": "NODE_ENV=test npm run _ts -- ./spec",
-    "test:hot": "nodemon --config ./nodemon.spec.json"
-  },
-  "_moduleAliases": {
-    "@src": "dist"
+    "start": "NODE_ENV=production node -r ./preload.js ./dist",
+    "test": "NODE_ENV=test ts-node ./spec",
+    "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec -e ts"
   },
   "engines": {
     "node": ">=8.10.0"
