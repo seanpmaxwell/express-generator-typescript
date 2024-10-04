@@ -1,7 +1,3 @@
-/**
- * Remove old files, copy front-end ones.
- */
-
 import fs from 'fs-extra';
 import logger from 'jet-logger';
 import childProcess from 'child_process';
@@ -14,13 +10,14 @@ import childProcess from 'child_process';
   try {
     // Remove current build
     await remove('./dist/');
-    await exec('npx eslint --ext .ts src/', './');
+    await exec('npm run lint', './');
     await exec('tsc --build tsconfig.prod.json', './');
     // Copy
     await copy('./src/public', './dist/public');
     await copy('./src/views', './dist/views');
   } catch (err) {
     logger.err(err);
+    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
   }
 })();
@@ -30,7 +27,7 @@ import childProcess from 'child_process';
  */
 function remove(loc: string): Promise<void> {
   return new Promise((res, rej) => {
-    return fs.remove(loc, (err) => {
+    return fs.remove(loc, err => {
       return (!!err ? rej(err) : res());
     });
   });
@@ -41,7 +38,7 @@ function remove(loc: string): Promise<void> {
  */
 function copy(src: string, dest: string): Promise<void> {
   return new Promise((res, rej) => {
-    return fs.copy(src, dest, (err) => {
+    return fs.copy(src, dest, err => {
       return (!!err ? rej(err) : res());
     });
   });

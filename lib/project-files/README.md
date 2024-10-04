@@ -13,7 +13,7 @@ Run the server in development mode.
 
 Run all unit-tests.
 
-### `npm test -- --testFile="name of test file" (i.e. --testFile=Users).`
+### `npm test -- "name of test file" (i.e. users).`
 
 Run a single unit-test.
 

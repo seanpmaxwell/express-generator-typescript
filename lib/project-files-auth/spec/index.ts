@@ -1,18 +1,8 @@
 import find from 'find';
 import Jasmine from 'jasmine';
-import { parse } from 'ts-command-line-args';
 import logger from 'jet-logger';
+import { argv } from 'process';
 
-
-// Setup command line options. 
-const args = parse<{
-  testFile: string;
-}>({
-  testFile: {
-    type: String,
-    defaultValue: '',
-  },
-});
 
 // Init Jasmine
 const jasmine = new Jasmine();
@@ -30,8 +20,8 @@ jasmine.loadConfig({
 
 // Run all or a single unit-test
 let execResp: Promise<jasmine.JasmineDoneInfo> | undefined;
-if (args.testFile) {
-  const testFile = args.testFile;
+if (!!argv[2]) {
+  const testFile = argv[2];
   find.file(testFile + '.spec.ts', './spec', (files: string[]) => {
     if (files.length === 1) {
       jasmine.execute([files[0]]);
