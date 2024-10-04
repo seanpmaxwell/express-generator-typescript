@@ -1,5 +1,4 @@
 import { Response } from 'supertest';
-
 import { IUser } from '@src/models/User';
 
 
