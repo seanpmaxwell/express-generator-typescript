@@ -14,7 +14,7 @@ import check from './common/check';
  */
 async function getAll(_: IReq, res: IRes) {
   const users = await UserService.getAll();
-  return res.status(HttpStatusCodes.OK).json({ users });
+  res.status(HttpStatusCodes.OK).json({ users });
 }
 
 /**
@@ -23,7 +23,7 @@ async function getAll(_: IReq, res: IRes) {
 async function add(req: IReq, res: IRes) {
   const user = check.isValid(req.body, 'user', User.isUser);
   await UserService.addOne(user);
-  return res.status(HttpStatusCodes.CREATED).end();
+  res.status(HttpStatusCodes.CREATED).end();
 }
 
 /**
@@ -32,7 +32,7 @@ async function add(req: IReq, res: IRes) {
 async function update(req: IReq, res: IRes) {
   const user = check.isValid(req.body, 'user', User.isUser);
   await UserService.updateOne(user);
-  return res.status(HttpStatusCodes.OK).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 /**
@@ -41,7 +41,7 @@ async function update(req: IReq, res: IRes) {
 async function delete_(req: IReq, res: IRes) {
   const id = check.isNum(req.params, 'id');
   await UserService.delete(id);
-  return res.status(HttpStatusCodes.OK).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 

@@ -22,7 +22,7 @@ async function login(req: IReq, res: IRes) {
     role: user.role,
   });
   // Return
-  return res.status(HttpStatusCodes.OK).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 /**
@@ -30,7 +30,7 @@ async function login(req: IReq, res: IRes) {
  */
 function logout(_: IReq, res: IRes) {
   SessionUtil.clearCookie(res);
-  return res.status(HttpStatusCodes.OK).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 

@@ -47,21 +47,16 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 app.use(Paths.Base, BaseRouter);
 
 // Add error handler
-app.use((
-  err: Error,
-  _: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction,
-) => {
+app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
     logger.err(err, true);
   }
   let status = HttpStatusCodes.BAD_REQUEST;
   if (err instanceof RouteError) {
     status = err.status;
+    res.status(status).json({ error: err.message });
   }
-  return res.status(status).json({ error: err.message });
+  return next(err);
 });
 
 
