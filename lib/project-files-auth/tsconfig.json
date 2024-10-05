@@ -79,7 +79,6 @@
     "src/**/*.ts",
     "spec/**/*.ts",
     "scripts",
-    "eslint.config.js",
     "preload.js"
   ],
   "exclude": [

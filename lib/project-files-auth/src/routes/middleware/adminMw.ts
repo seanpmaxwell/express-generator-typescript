@@ -1,7 +1,3 @@
-/**
- * Middleware to verify user logged in and is an an admin.
- */
-
 import { NextFunction } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
