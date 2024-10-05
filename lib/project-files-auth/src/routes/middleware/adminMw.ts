@@ -38,9 +38,10 @@ async function adminMw(
     return next();
   // Return an unauth error if user is not an admin
   } else {
-    return res
+    res
       .status(HttpStatusCodes.UNAUTHORIZED)
       .json({ error: USER_UNAUTHORIZED_ERR });
+    return;
   }
 }
 
