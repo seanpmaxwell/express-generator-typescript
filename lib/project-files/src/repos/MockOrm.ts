@@ -1,5 +1,3 @@
-
-
 import jsonfile from 'jsonfile';
 
 import { IUser } from '@src/models/User';

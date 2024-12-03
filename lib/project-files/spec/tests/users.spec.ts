@@ -6,23 +6,23 @@ import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { safeJsonParse } from '@src/util/validators';
+
+import HttpStatusCodes from '@src/common/HttpStatusCodes';
+import { IValidationErrFormat, ValidationErr } from '@src/common/route-errors';
 
 import Paths from 'spec/support/Paths';
 import apiCb from 'spec/support/apiCb';
 import { TApiCb } from 'spec/types/misc';
-import { ValidationErr } from '@src/common/classes';
 
 
 // Dummy users for GET req
-const getDummyUsers = () => {
-  return [
-    User.new('Sean Maxwell', 'sean.maxwell@gmail.com'),
-    User.new('John Smith', 'john.smith@gmail.com'),
-    User.new('Gordan Freeman', 'gordan.freeman@gmail.com'),
-  ];
-};
+const getDummyUsers = () => [
+  User.new({ name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
+  User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
+  User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
+];
 
 
 // Tests
@@ -47,7 +47,7 @@ describe('UserRouter', () => {
 
     // Success
     it('should return a JSON object with all the users and a status code ' + 
-    `of "${HttpStatusCodes.OK}" if the request was successful.`, (done) => {
+    `of "${HttpStatusCodes.OK}" if the request was successful.`, done => {
       // Add spy
       const data = getDummyUsers();
       spyOn(UserRepo, 'getAll').and.resolveTo(data);
@@ -63,8 +63,7 @@ describe('UserRouter', () => {
   // Test add user
   describe(`"POST:${Paths.Users.Add}"`, () => {
 
-    const ERROR_MSG = ValidationErr.GetMsg('user'),
-      DUMMY_USER = getDummyUsers()[0];
+    const DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
     const callApi = (user: IUser | null, cb: TApiCb) => 
@@ -75,7 +74,7 @@ describe('UserRouter', () => {
 
     // Test add user success
     it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
-    'request was successful.', (done) => {
+    'request was successful.', done => {
       // Spy
       spyOn(UserRepo, 'add').and.resolveTo();
       // Call api
@@ -86,13 +85,15 @@ describe('UserRouter', () => {
     });
 
     // Missing param
-    it(`should return a JSON object with an error message of "${ERROR_MSG}" ` + 
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
-    'param was missing.', (done) => {
+    it('should return a JSON object with an error message of and a status ' + 
+      `code of "${HttpStatusCodes.BAD_REQUEST}" if the user param was ` + 
+      'missing.', done => {
       // Call api
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        expect(res.body.error).toBe(ERROR_MSG);
+        const errorObj = safeJsonParse<IValidationErrFormat>(res.body.error);
+        expect(errorObj.error).toBe(ValidationErr.MSG);
+        expect(errorObj.parameter).toBe('user');
         done();
       });
     });
@@ -101,8 +102,7 @@ describe('UserRouter', () => {
   // Update users
   describe(`"PUT:${Paths.Users.Update}"`, () => {
 
-    const ERROR_MSG =  ValidationErr.GetMsg('user'),
-      DUMMY_USER = getDummyUsers()[0];
+    const DUMMY_USER = getDummyUsers()[0];
 
     // Setup API
     const callApi = (user: IUser | null, cb: TApiCb) => 
@@ -113,11 +113,9 @@ describe('UserRouter', () => {
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
-    'request was successful.', (done) => {
-      // Setup spies
+    'request was successful.', done => {
       spyOn(UserRepo, 'update').and.resolveTo();
       spyOn(UserRepo, 'persists').and.resolveTo(true);
-      // Call api
       callApi(DUMMY_USER, res => {
         expect(res.status).toBe(HttpStatusCodes.OK);
         done();
@@ -125,13 +123,14 @@ describe('UserRouter', () => {
     });
 
     // Param missing
-    it(`should return a JSON object with an error message of "${ERROR_MSG}" ` +
-    `and a status code of "${HttpStatusCodes.BAD_REQUEST}" if the user ` + 
-    'param was missing.', (done) => {
-      // Call api
+    it('should return a JSON object with an error message and a status code ' +
+    `of "${HttpStatusCodes.BAD_REQUEST}" if the user param was missing`,
+    done => {
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        expect(res.body.error).toBe(ERROR_MSG);
+        const errorObj = safeJsonParse<IValidationErrFormat>(res.body.error);
+        expect(errorObj.error).toBe(ValidationErr.MSG);
+        expect(errorObj.parameter).toBe('user');
         done();
       });
     });
@@ -139,8 +138,7 @@ describe('UserRouter', () => {
     // User not found
     it('should return a JSON object with the error message of ' + 
     `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
-    `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, (done) => {
-      // Call api
+    `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
       callApi(DUMMY_USER, res => {
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
         expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
@@ -160,11 +158,9 @@ describe('UserRouter', () => {
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
-    'request was successful.', (done) => {
-      // Setup spies
+    'request was successful.', done => {
       spyOn(UserRepo, 'delete').and.resolveTo();
       spyOn(UserRepo, 'persists').and.resolveTo(true);
-      // Call api
       callApi(5, res => {
         expect(res.status).toBe(HttpStatusCodes.OK);
         done();
@@ -175,7 +171,6 @@ describe('UserRouter', () => {
     it('should return a JSON object with the error message of ' + 
     `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
     `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
-      // Setup spies
       callApi(-1, res => {
         expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
         expect(res.body.error).toBe(USER_NOT_FOUND_ERR);

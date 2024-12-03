@@ -1,4 +1,3 @@
-import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
@@ -9,11 +8,11 @@ import 'express-async-errors';
 
 import BaseRouter from '@src/routes';
 
-import Paths from '@src/common/Paths';
-import EnvVars from '@src/common/EnvVars';
+import Paths from '@src/routes/common/Paths';
+import Env from '@src/common/Env';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { RouteError } from '@src/common/classes';
-import { NodeEnvs } from '@src/common/misc';
+import { RouteError } from '@src/common/route-errors';
+import { NodeEnvs } from '@src/common/constants';
 
 
 // **** Variables **** //
@@ -26,15 +25,14 @@ const app = express();
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser(EnvVars.CookieProps.Secret));
 
 // Show routes called in console during development
-if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
+if (Env.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
+if (Env.NodeEnv === NodeEnvs.Production.valueOf()) {
   app.use(helmet());
 }
 
@@ -43,7 +41,7 @@ app.use(Paths.Base, BaseRouter);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-  if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
+  if (Env.NodeEnv !== NodeEnvs.Test.valueOf()) {
     logger.err(err, true);
   }
   let status = HttpStatusCodes.BAD_REQUEST;

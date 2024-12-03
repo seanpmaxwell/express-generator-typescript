@@ -1,4 +1,4 @@
-import { RouteError } from '@src/common/classes';
+import { RouteError } from '@src/common/route-errors';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 import UserRepo from '@src/repos/UserRepo';

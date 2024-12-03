@@ -1,9 +1,18 @@
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import UserService from '@src/services/UserService';
 import User from '@src/models/User';
+import { isNum, transform } from '@src/util/validators';
 
-import { IReq, IRes } from './common/types';
-import check from './common/check';
+import { reqParse, IReq, IRes } from './common';
+
+
+// **** Variables **** //
+
+const Validators = {
+  add: reqParse({ user: User.test }),
+  update: reqParse({ user: User.test }),
+  delete: reqParse({ id: transform(Number, isNum) }),
+} as const;
 
 
 // **** Functions **** //
@@ -20,7 +29,7 @@ async function getAll(_: IReq, res: IRes) {
  * Add one user.
  */
 async function add(req: IReq, res: IRes) {
-  const user = check.isValid(req.body, 'user', User.isUser);
+  const { user } = Validators.add(req.body);
   await UserService.addOne(user);
   res.status(HttpStatusCodes.CREATED).end();
 }
@@ -29,7 +38,7 @@ async function add(req: IReq, res: IRes) {
  * Update one user.
  */
 async function update(req: IReq, res: IRes) {
-  const user = check.isValid(req.body, 'user', User.isUser);
+  const { user } = Validators.update(req.body);
   await UserService.updateOne(user);
   res.status(HttpStatusCodes.OK).end();
 }
@@ -38,7 +47,7 @@ async function update(req: IReq, res: IRes) {
  * Delete one user.
  */
 async function delete_(req: IReq, res: IRes) {
-  const id = check.isNum(req.params, 'id');
+  const { id } = Validators.delete(req.params);
   await UserService.delete(id);
   res.status(HttpStatusCodes.OK).end();
 }

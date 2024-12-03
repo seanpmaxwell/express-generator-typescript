@@ -1,5 +1,5 @@
 import { CallbackHandler } from 'supertest';
-import moment from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import logger from 'jet-logger';
 
 import { TApiCb, TRes } from 'spec/types/misc';
@@ -51,11 +51,7 @@ function _iterate(param: unknown, prop: string): void {
   }
   // Check valid string or Date object. If undefined just skip
   const val = paramF[prop];
-  if (
-    (typeof val !== 'undefined') && 
-    !((typeof val === 'string') || (val instanceof Date)) && 
-    !moment(val as string | Date).isValid()
-  ) {
+  if (val !== undefined && !_isValidDate(val)) {
     throw new Error('Property must be a valid date-string or Date() object');
   }
   // Convert and iterate
@@ -67,6 +63,22 @@ function _iterate(param: unknown, prop: string): void {
     if (typeof oval === 'object' && key !== prop) {
       _iterate(oval, prop);
     }
+  }
+}
+
+/**
+ * Is date a valid date.
+ */
+function _isValidDate(date: unknown): boolean {
+  if (
+    typeof date === 'string' || 
+    (date instanceof Date) || 
+    (date instanceof Dayjs) || 
+    typeof date === 'number'
+  ) {
+    return dayjs(date).isValid();
+  } else {
+    return false;
   }
 }
 
