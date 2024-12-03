@@ -3,15 +3,15 @@ import UserService from '@src/services/UserService';
 import User from '@src/models/User';
 import { isNum, transform } from '@src/util/validators';
 
-import { reqParse, IReq, IRes } from './common';
+import { parseReq, IReq, IRes } from './common';
 
 
 // **** Variables **** //
 
 const Validators = {
-  add: reqParse({ user: User.test }),
-  update: reqParse({ user: User.test }),
-  delete: reqParse({ id: transform(Number, isNum) }),
+  add: parseReq({ user: User.test }),
+  update: parseReq({ user: User.test }),
+  delete: parseReq({ id: transform(Number, isNum) }),
 } as const;
 
 

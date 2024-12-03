@@ -28,7 +28,7 @@ export class ValidationErr extends RouteError {
   public static MSG = 'The following parameter was missing or invalid.';
 
   public constructor(parameter: string, value?: unknown, moreInfo?: string) {
-    const msgObj: Record<string, unknown> = {
+    const msgObj: IValidationErrFormat = {
       error: ValidationErr.MSG,
       parameter,
       value,

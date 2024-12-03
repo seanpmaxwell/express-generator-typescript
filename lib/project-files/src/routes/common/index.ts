@@ -16,14 +16,14 @@ export type IRes = Response<unknown, TObj>;
 /**
  * Parse a Request object property and throw a Validation error if it fails.
  */
-export function reqParse<U extends TSchema>(schema: U) {
-  return parseObj<U>(schema, reqParseOnError);
+export function parseReq<U extends TSchema>(schema: U) {
+  return parseObj<U>(schema, _parseReqOnError);
 }
 
 /**
  * Error handler for the request parse function above.
  */
-function reqParseOnError(
+function _parseReqOnError(
   prop = 'undefined',
   value?: unknown,
   caughtErr?: unknown,
