@@ -150,7 +150,7 @@ function _checkType<T>(type: string) {
  * Transform a value before checking it.
  */
 function _transform<T>(
-  transFn: TFunc,
+  transFn: (arg: unknown) => T,
   vldt: ((arg: unknown) => arg is T),
 ): TValidateWithTransform<T> {
   return (arg: unknown, cb?: (arg: T) => void): arg is T => {
