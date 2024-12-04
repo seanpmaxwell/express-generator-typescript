@@ -35,7 +35,7 @@ export const isObj = _checkType<object>('object');
 // Misc
 export const parseObj = <U extends TSchema>(arg: U, onError?: TParseOnError<false>) => 
   _parseObj<U, false, false, false>(arg, false, false, false, onError);
-export const isEnumVal = <T>(arg: T) => _isEnumValBase<T, false, false>(arg, false, false);
+export const isEnumVal = <T>(arg: T) => _isEnumVal<T, false, false>(arg, false, false);
 
 // Util
 export const transform = _transform;
@@ -85,7 +85,7 @@ function _isEnum(arg: unknown): arg is TEnum {
 /**
  * Check is value satisfies enum.
  */
-function _isEnumValBase<T, 
+function _isEnumVal<T, 
   O extends boolean,
   N extends boolean
 >(
