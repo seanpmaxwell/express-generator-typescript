@@ -49,7 +49,7 @@ The quickest way to get started is use npx and pass in the name of the project y
 
 Create the app:<br/>
 With no options: `$ npx express-generator-typescript`<br/>
-With all options (order doesn't matter): `$ npx express-generator-typescript --with-auth --use-yarn "project name"`
+With all options (order doesn't matter): `$ npx express-generator-typescript --use-yarn "project name"`
 
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
