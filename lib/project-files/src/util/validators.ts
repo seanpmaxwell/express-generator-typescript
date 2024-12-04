@@ -285,26 +285,26 @@ function _parseObjCoreHelper(
   schema: TSchema,
   arg: unknown,
   onError?: TParseOnError<false>,
-) {
+): unknown {
   if (!isObj(arg)) {
     return;
   }
-  const retVal: TBasicObj = {};
+  const retVal = (arg as TBasicObj);
   for (const key in schema) {
-    const schemaProp = schema[key];
-    let val = (arg as TBasicObj)[key];
+    const schemaProp = schema[key],
+      val = retVal[key];
     // Nested object
     if (typeof schemaProp === 'object') {
       const childVal = _parseObjCoreHelper(schemaProp, val, onError);
-      if (childVal !== undefined) {
-        val = childVal;
-      } else {
+      if (childVal === undefined) {
         return undefined;
       }
     // Run validator
     } else if (typeof schemaProp === 'function') {
       try {
-        if (!schemaProp(val, (tval: unknown) => val = tval)) {
+        if (!schemaProp(val, (tval: unknown) => {
+          retVal[key] = tval;
+        })) {
           return onError?.(key, val);
         }
       } catch (err) {
@@ -315,7 +315,12 @@ function _parseObjCoreHelper(
         }
       }
     }
-    retVal[key] = val;
+  }
+  // Purse keys not in schema
+  for (const key in retVal) {
+    if (!(key in schema)) {
+      Reflect.deleteProperty(arg, key);
+    }
   }
   // Return
   return retVal;
