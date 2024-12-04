@@ -8,8 +8,6 @@
 
 // **** Types **** //
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type TFunc = (...args: any[]) => any;
 type TBasicObj = Record<string, unknown>;
 type TEnum = Record<string, string | number>;
 
@@ -229,13 +227,13 @@ function _parseObj<
 /**
  * Validate the schema. 
  */
-function _parseObjCore(
+function _parseObjCore<A>(
   optional: boolean,
   nullable: boolean,
-  isArr: boolean,
+  isArr: A,
   schema: TSchema,
   arg: unknown,
-  onError?: TFunc,
+  onError?: TParseOnError<A>,
 ) {
   // Check "undefined"
   if (arg === undefined) {
@@ -272,9 +270,10 @@ function _parseObjCore(
       }
     }
     return resp;
-  }
   // Default
-  return _parseObjCoreHelper(schema, arg, onError);
+  } else {
+    return _parseObjCoreHelper(schema, arg, onError as TParseOnError<false>);
+  }
 }
 
 /**
