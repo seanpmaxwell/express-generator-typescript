@@ -17,21 +17,9 @@ function apiCb(
     if (printErr) {
       logger.err(err);
     }
-    _strToDate(res.body, dateParam);
+    _iterate(res.body, dateParam);
     return cb(res);
   };
-}
-
-/**
- * When date objects get sent through supertest they are converted to 
- * iso-strings. This will cause "toEqual()"" tests to fail, so we need to 
- * convert them back to Date objects.
- */
-function _strToDate(
-  param: unknown,
-  prop: string,
-): void {
-  return _iterate(param, prop);
 }
 
 /**
@@ -52,7 +40,7 @@ function _iterate(param: unknown, prop: string): void {
   // Check valid string or Date object. If undefined just skip
   const val = paramF[prop];
   if (val !== undefined && !_isValidDate(val)) {
-    throw new Error('Property must be a valid date-string or Date() object');
+    throw new Error('Property must be a valid date-string or Date object.');
   }
   // Convert and iterate
   if (typeof val !== 'undefined') {

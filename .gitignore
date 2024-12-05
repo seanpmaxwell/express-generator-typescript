@@ -2,6 +2,7 @@
 **/**/*.log
 lib/**/package-lock.json
 lib/project-files/.vscode
+lib/project-files/config.js
 **/**/dist
 
 test/
