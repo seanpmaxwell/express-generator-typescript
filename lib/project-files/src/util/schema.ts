@@ -1,11 +1,13 @@
 import jetSchema from 'jet-schema';
-import { isBool, isNum, isStr } from './validators';
+import { isNumber, isString, isBoolean } from 'jet-validators';
+import { isRelationalKey } from './validators';
 
 
 export default jetSchema({
   globals: [
-    { vf: isNum, default: 0 },
-    { vf: isStr, default: '' },
-    { vf: isBool, default: false },
+    { vf: isRelationalKey, default: -1 },
+    { vf: isNumber, default: 0 },
+    { vf: isString, default: '' },
+    { vf: isBoolean, default: false },
   ],
 });

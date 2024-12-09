@@ -1,21 +1,24 @@
 import supertest, { Test } from 'supertest';
 import TestAgent from 'supertest/lib/agent';
 import insertUrlParams from 'inserturlparams';
+import { safeJsonParse } from 'jet-validators/utils';
+import logger from 'jet-logger';
 
 import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
-import { safeJsonParse } from '@src/util/validators';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { IValidationErrFormat, ValidationErr } from '@src/common/route-errors';
 
 import Paths from 'spec/support/Paths';
-import apiCb from 'spec/support/apiCb';
-import { TApiCb } from 'spec/types/misc';
+import { convertValidDates } from 'spec/support';
+import { TApiCb, TRes } from 'spec/types/misc';
 
+
+// **** Setup **** //
 
 // Dummy users for GET req
 const getDummyUsers = () => [
@@ -24,8 +27,25 @@ const getDummyUsers = () => [
   User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
 ];
 
+// Convert "created" prop back to Date object
+const createdKeyToDate = convertValidDates('created');
 
-// Tests
+// Setup wrap-callback function
+const wrapCb = (cb: TApiCb) => (err: Error, res: TRes) => {
+  if (!!err) {
+    logger.err(err);
+  }
+  if (!!res.body.user) {
+    createdKeyToDate(res.body.user);
+  } else if (!!res.body.users) {
+    res.body.users?.map(user => createdKeyToDate(user));
+  }
+  return cb(res);
+};
+
+
+// **** Run Tests **** //
+
 describe('UserRouter', () => {
 
   let agent: TestAgent<Test>;
@@ -43,7 +63,7 @@ describe('UserRouter', () => {
     const api = (cb: TApiCb) => 
       agent
         .get(Paths.Users.Get)
-        .end(apiCb(cb));
+        .end(wrapCb(cb));
 
     // Success
     it('should return a JSON object with all the users and a status code ' + 
@@ -70,7 +90,7 @@ describe('UserRouter', () => {
       agent
         .post(Paths.Users.Add)
         .send({ user })
-        .end(apiCb(cb));
+        .end(wrapCb(cb));
 
     // Test add user success
     it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
@@ -109,7 +129,7 @@ describe('UserRouter', () => {
       agent
         .put(Paths.Users.Update)
         .send({ user })
-        .end(apiCb(cb));
+        .end(wrapCb(cb));
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
@@ -154,7 +174,7 @@ describe('UserRouter', () => {
     const callApi = (id: number, cb: TApiCb) => 
       agent
         .delete(insertUrlParams(Paths.Users.Delete, { id }))
-        .end(apiCb(cb));
+        .end(wrapCb(cb));
 
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 

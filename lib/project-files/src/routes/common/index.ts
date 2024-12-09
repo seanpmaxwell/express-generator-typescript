@@ -1,14 +1,14 @@
 import { Response, Request } from 'express';
+import { parseObject, TSchema } from 'jet-validators/utils';
 
-import { parseObj, TSchema } from '@src/util/validators';
 import { ValidationErr } from '@src/common/route-errors';
 
 
 // **** Types **** //
 
-type TObj = Record<string, unknown>;
-export type IReq = Request<TObj, void, TObj, TObj>;
-export type IRes = Response<unknown, TObj>;
+type TRecord = Record<string, unknown>;
+export type IReq = Request<TRecord, void, TRecord, TRecord>;
+export type IRes = Response<unknown, TRecord>;
 
 
 // **** Functions **** //
@@ -17,7 +17,7 @@ export type IRes = Response<unknown, TObj>;
  * Parse a Request object property and throw a Validation error if it fails.
  */
 export function parseReq<U extends TSchema>(schema: U) {
-  return parseObj<U>(schema, _parseReqOnError);
+  return parseObject<U>(schema, _parseReqOnError);
 }
 
 /**

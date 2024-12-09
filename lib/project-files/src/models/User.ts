@@ -1,5 +1,7 @@
+import { isString } from 'jet-validators';
+
 import schema from '@src/util/schema';
-import { isNum, isStr } from '@src/util/validators';
+import { isRelationalKey } from '@src/util/validators';
 
 
 export interface IUser {
@@ -10,10 +12,10 @@ export interface IUser {
 }
 
 const User = schema<IUser>({
-  id: isNum,
-  name: isStr,
+  id: isRelationalKey,
+  name: isString,
   created: Date,
-  email: isStr,
+  email: isString,
 });
 
 
