@@ -1,7 +1,7 @@
 import supertest, { Test } from 'supertest';
 import TestAgent from 'supertest/lib/agent';
 import insertUrlParams from 'inserturlparams';
-import { safeJsonParse } from 'jet-validators/utils';
+import { parseJson } from 'jet-validators/utils';
 import logger from 'jet-logger';
 
 import app from '@src/server';
@@ -35,11 +35,7 @@ const wrapCb = (cb: TApiCb) => (err: Error, res: TRes) => {
   if (!!err) {
     logger.err(err);
   }
-  if (!!res.body.user) {
-    createdKeyToDate(res.body.user);
-  } else if (!!res.body.users) {
-    res.body.users?.map(user => createdKeyToDate(user));
-  }
+  createdKeyToDate(res.body);
   return cb(res);
 };
 
@@ -111,7 +107,7 @@ describe('UserRouter', () => {
       // Call api
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        const errorObj = safeJsonParse<IValidationErrFormat>(res.body.error);
+        const errorObj = parseJson<IValidationErrFormat>(res.body.error);
         expect(errorObj.error).toBe(ValidationErr.MSG);
         expect(errorObj.parameter).toBe('user');
         done();
@@ -148,7 +144,7 @@ describe('UserRouter', () => {
     done => {
       callApi(null, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-        const errorObj = safeJsonParse<IValidationErrFormat>(res.body.error);
+        const errorObj = parseJson<IValidationErrFormat>(res.body.error);
         expect(errorObj.error).toBe(ValidationErr.MSG);
         expect(errorObj.parameter).toBe('user');
         done();
