@@ -4,7 +4,9 @@ import Env from '@src/common/Env';
 import server from './server';
 
 
-// **** Run **** //
+/******************************************************************************
+                                  Run
+******************************************************************************/
 
 const SERVER_START_MSG = ('Express server started on port: ' + 
   Env.Port.toString());

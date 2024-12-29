@@ -1,6 +1,10 @@
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 
+/******************************************************************************
+                                Types
+******************************************************************************/
+
 export interface IValidationErrFormat {
   error: string;
   parameter: string;
@@ -8,6 +12,10 @@ export interface IValidationErrFormat {
   'more-info'?: string;
 }
 
+
+/******************************************************************************
+                              Classes
+******************************************************************************/
 
 /**
  * Error with status code and message.

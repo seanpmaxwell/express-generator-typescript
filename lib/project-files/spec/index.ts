@@ -4,6 +4,10 @@ import logger from 'jet-logger';
 import { argv } from 'process';
 
 
+/******************************************************************************
+                              Run
+******************************************************************************/
+
 // Init Jasmine
 const jasmine = new Jasmine();
 jasmine.exitOnCompletion = false;

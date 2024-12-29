@@ -15,12 +15,14 @@ import { RouteError } from '@src/common/route-errors';
 import { NodeEnvs } from '@src/common/constants';
 
 
-// **** Variables **** //
+/******************************************************************************
+                                Variables
+******************************************************************************/
 
 const app = express();
 
 
-// **** Setup **** //
+// **** Setup
 
 // Basic middleware
 app.use(express.json());
@@ -53,7 +55,7 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 });
 
 
-// **** Front-End Content **** //
+// **** Front-End Content
 
 // Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');
@@ -74,6 +76,8 @@ app.get('/users', (_: Request, res: Response) => {
 });
 
 
-// **** Export default **** //
+/******************************************************************************
+                                Export default
+******************************************************************************/
 
 export default app;

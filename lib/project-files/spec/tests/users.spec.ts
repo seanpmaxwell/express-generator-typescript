@@ -18,7 +18,9 @@ import { convertValidDates } from 'spec/support';
 import { TApiCb, TRes } from 'spec/types/misc';
 
 
-// **** Setup **** //
+/******************************************************************************
+                               Setup
+******************************************************************************/
 
 // Dummy users for GET req
 const getDummyUsers = () => [
@@ -40,7 +42,9 @@ const wrapCb = (cb: TApiCb) => (err: Error, res: TRes) => {
 };
 
 
-// **** Run Tests **** //
+/******************************************************************************
+                                 Tests
+******************************************************************************/
 
 describe('UserRouter', () => {
 
