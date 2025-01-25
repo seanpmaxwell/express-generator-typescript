@@ -6,7 +6,7 @@
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
     "dev": "NODE_ENV=development ts-node ./src",
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
-    "lint": "eslint --flag unstable_ts_config",
+    "lint": "eslint .",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test ts-node ./spec",
     "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec --ext .ts",
