@@ -83,6 +83,28 @@ async function delete_(id: number): Promise<void> {
 }
 
 
+// **** Unit-Tests Only **** //
+
+/**
+ * Delete every user record.
+ */
+async function deleteAllUsers(): Promise<void> {
+  const db = await orm.openDb();
+  db.users = [];
+  return orm.saveDb(db);
+}
+
+/**
+ * Insert multiple users. Can't do multiple at once cause using a plain file 
+ * for nmow.
+ */
+async function insertMult(users: IUser[] | readonly IUser[]): Promise<void> {
+  const db = await orm.openDb();
+  db.users = [ ...db.users, ...users];
+  return orm.saveDb(db);
+}
+
+
 /******************************************************************************
                                 Export default
 ******************************************************************************/
@@ -94,4 +116,6 @@ export default {
   add,
   update,
   delete: delete_,
+  deleteAllUsers,
+  insertMult,
 } as const;

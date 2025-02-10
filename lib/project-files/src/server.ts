@@ -9,7 +9,7 @@ import 'express-async-errors';
 import BaseRouter from '@src/routes';
 
 import Paths from '@src/routes/common/Paths';
-import Env from '@src/common/Env';
+import ENV from '@src/common/ENV';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { RouteError } from '@src/common/route-errors';
 import { NodeEnvs } from '@src/common/constants';
@@ -29,12 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // Show routes called in console during development
-if (Env.NodeEnv === NodeEnvs.Dev.valueOf()) {
+if (ENV.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (Env.NodeEnv === NodeEnvs.Production.valueOf()) {
+if (ENV.NodeEnv === NodeEnvs.Production.valueOf()) {
   app.use(helmet());
 }
 
@@ -43,7 +43,7 @@ app.use(Paths.Base, BaseRouter);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-  if (Env.NodeEnv !== NodeEnvs.Test.valueOf()) {
+  if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
     logger.err(err, true);
   }
   let status = HttpStatusCodes.BAD_REQUEST;

@@ -2,18 +2,6 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 
 
 /******************************************************************************
-                                Types
-******************************************************************************/
-
-export interface IValidationErrFormat {
-  error: string;
-  parameter: string;
-  value?: unknown;
-  'more-info'?: string;
-}
-
-
-/******************************************************************************
                               Classes
 ******************************************************************************/
 
@@ -33,17 +21,13 @@ export class RouteError extends Error {
  * Validation in route layer errors.
  */
 export class ValidationErr extends RouteError {
-  public static MSG = 'The following parameter was missing or invalid.';
+  public static MSG = 'One or more parameters were missing or invalid.';
 
-  public constructor(parameter: string, value?: unknown, moreInfo?: string) {
-    const msgObj: IValidationErrFormat = {
-      error: ValidationErr.MSG,
-      parameter,
-      value,
-    };
-    if (!!moreInfo) {
-      msgObj['more-info'] = moreInfo;
-    }
-    super(HttpStatusCodes.BAD_REQUEST, JSON.stringify(msgObj));
+  public constructor(errObj: unknown) {
+    const msg = JSON.stringify({
+      message: ValidationErr.MSG,
+      parameters: errObj,
+    });
+    super(HttpStatusCodes.BAD_REQUEST, msg);
   }
 }

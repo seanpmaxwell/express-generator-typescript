@@ -1,5 +1,7 @@
 import jsonfile from 'jsonfile';
 
+import ENV from '@src/common/ENV';
+import { NodeEnvs } from '@src/common/constants';
 import { IUser } from '@src/models/User';
 
 
@@ -7,7 +9,11 @@ import { IUser } from '@src/models/User';
                                 Variables
 ******************************************************************************/
 
-const DB_FILE_NAME = 'database.json';
+const DB_FILE_NAME = (
+  ENV.NodeEnv === NodeEnvs.Test 
+  ? 'database.test.json' 
+  : 'database.json'
+);
 
 
 /******************************************************************************
