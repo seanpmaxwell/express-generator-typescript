@@ -64,7 +64,7 @@ describe('UserRouter', () => {
     // Test add user success
     it(`should return a status code of "${HttpStatusCodes.CREATED}" if the ` + 
     'request was successful.', done => {
-      const user = User.new({ id: 4, name: 'a', email: 'a@a.com' });
+      const user = User.new({ name: 'a', email: 'a@a.com' });
       agent
         .post(Paths.Users.Add)
         .send({ user })
