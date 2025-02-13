@@ -1,5 +1,6 @@
 import { IUser } from '@src/models/User';
 import { getRandomInt } from '@src/util/misc';
+
 import orm from './MockOrm';
 
 
@@ -98,12 +99,19 @@ async function deleteAllUsers(): Promise<void> {
  * Insert multiple users. Can't do multiple at once cause using a plain file 
  * for nmow.
  */
-async function insertMult(users: IUser[] | readonly IUser[]): Promise<void> {
-  const db = await orm.openDb();
-  db.users = [ ...db.users, ...users];
-  return orm.saveDb(db);
+async function insertMult(
+  users: IUser[] | readonly IUser[],
+): Promise<IUser[]> {
+  const db = await orm.openDb(),
+    usersF = [ ...users ];
+  for (const user of usersF) {
+    user.id = getRandomInt();
+    user.created = new Date();
+  }
+  db.users = [ ...db.users, ...users ];
+  await orm.saveDb(db);
+  return usersF;
 }
-
 
 
 /******************************************************************************

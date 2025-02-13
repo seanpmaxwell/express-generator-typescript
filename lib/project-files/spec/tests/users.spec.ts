@@ -1,18 +1,18 @@
 import supertest from 'supertest';
 import insertUrlParams from 'inserturlparams';
-import { parseJson } from 'jet-validators/utils';
+import { parseJson, customDeepCompare } from 'jet-validators/utils';
 
 import app from '@src/server';
 
 import UserRepo from '@src/repos/UserRepo';
-import User from '@src/models/User';
+import User, { IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { ValidationErr } from '@src/common/route-errors';
 
 import Paths from 'spec/support/Paths';
-import { cleanDatabase, IValidationErr, parseResBody } from 'spec/support';
+import { cleanDatabase, IValidationErr } from 'spec/support';
 
 
 /******************************************************************************
@@ -21,24 +21,34 @@ import { cleanDatabase, IValidationErr, parseResBody } from 'spec/support';
 
 // Dummy users for GET req
 const DB_USERS = [
-  User.new({ id: 1, name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
-  User.new({ id: 2, name: 'John Smith', email: 'john.smith@gmail.com' }),
-  User.new({ id: 3, name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
+  User.new({ name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
+  User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
+  User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
 ] as const;
+
+// Don't compare "id" and "created" cause those are set dynamically by the 
+// database
+const compareUserArrays = customDeepCompare({
+  onlyCompareProps: ['name', 'email'],
+})
 
 
 /******************************************************************************
                                  Tests
+  IMPORTANT: Following TypeScript best practices, we test all scenarios that 
+  can be triggered by a user under normal circumstances. Not all theoretically
+  scenarios (i.e. a failed database connection). 
 ******************************************************************************/
 
 describe('UserRouter', () => {
 
   const agent = supertest.agent(app);
+  let dbUsers: IUser[] = [];
 
   // Run before all tests
   beforeEach(async () => {
     await cleanDatabase();
-    await UserRepo.insertMult(DB_USERS);
+    dbUsers = await UserRepo.insertMult(DB_USERS);
   });
 
   // Get all users
@@ -50,9 +60,8 @@ describe('UserRouter', () => {
       agent
         .get(Paths.Users.Get)
         .end((_, res) => {
-          parseResBody(res.body);
           expect(res.status).toBe(HttpStatusCodes.OK);
-          expect(res.body).toEqual({ users: DB_USERS });
+          expect(compareUserArrays(res.body.users, DB_USERS)).toBeTruthy();
           done();
         });
     });
@@ -143,11 +152,14 @@ describe('UserRouter', () => {
   // Delete User
   describe(`"DELETE:${Paths.Users.Delete}"`, () => {
 
+    const getPath = (id: number) => insertUrlParams(Paths.Users.Delete, { id });
+
     // Success
     it(`should return a status code of "${HttpStatusCodes.OK}" if the ` + 
     'request was successful.', done => {
+      const id = dbUsers[0].id;
       agent
-        .delete(insertUrlParams(Paths.Users.Delete, { id: 3 }))
+        .delete(getPath(id))
         .end((_, res) => {
           expect(res.status).toBe(HttpStatusCodes.OK);
           done();
@@ -159,7 +171,7 @@ describe('UserRouter', () => {
     `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
     `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
       agent
-        .delete(insertUrlParams(Paths.Users.Delete, { id: -1 }))
+        .delete(getPath(-1))
         .end((_, res) => {
           expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
           expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
