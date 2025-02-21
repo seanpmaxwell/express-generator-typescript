@@ -8,7 +8,7 @@ import 'express-async-errors';
 
 import BaseRouter from '@src/routes';
 
-import Paths from '@src/routes/common/Paths';
+import Paths from '@src/common/Paths';
 import ENV from '@src/common/ENV';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { RouteError } from '@src/common/route-errors';
@@ -16,25 +16,25 @@ import { NodeEnvs } from '@src/common/constants';
 
 
 /******************************************************************************
-                                Variables
+                                Setup
 ******************************************************************************/
 
 const app = express();
 
 
-// **** Setup
+// **** Middleware **** //
 
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // Show routes called in console during development
-if (ENV.NodeEnv === NodeEnvs.Dev.valueOf()) {
+if (ENV.NodeEnv === NodeEnvs.Dev) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (ENV.NodeEnv === NodeEnvs.Production.valueOf()) {
+if (ENV.NodeEnv === NodeEnvs.Production) {
   app.use(helmet());
 }
 
@@ -55,7 +55,7 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 });
 
 
-// **** Front-End Content
+// **** FrontEnd Content **** //
 
 // Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');

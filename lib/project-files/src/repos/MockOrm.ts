@@ -11,8 +11,8 @@ import { IUser } from '@src/models/User';
 
 const DB_FILE_NAME = (
   ENV.NodeEnv === NodeEnvs.Test 
-  ? 'database.test.json' 
-  : 'database.json'
+    ? 'database.test.json' 
+    : 'database.json'
 );
 
 

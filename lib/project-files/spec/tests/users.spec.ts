@@ -12,7 +12,8 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import { ValidationErr } from '@src/common/route-errors';
 
 import Paths from 'spec/support/Paths';
-import { cleanDatabase, IValidationErr } from 'spec/support';
+import { cleanDatabase, IValidationErr, TRes } from 'spec/support';
+import { isObject } from 'jet-validators';
 
 
 /******************************************************************************
@@ -30,7 +31,7 @@ const DB_USERS = [
 // database
 const compareUserArrays = customDeepCompare({
   onlyCompareProps: ['name', 'email'],
-})
+});
 
 
 /******************************************************************************
@@ -59,7 +60,7 @@ describe('UserRouter', () => {
     `of "${HttpStatusCodes.OK}" if the request was successful.`, done => {
       agent
         .get(Paths.Users.Get)
-        .end((_, res) => {
+        .end((_, res: TRes<{ users: IUser[]}>) => {
           expect(res.status).toBe(HttpStatusCodes.OK);
           expect(compareUserArrays(res.body.users, DB_USERS)).toBeTruthy();
           done();
@@ -90,11 +91,12 @@ describe('UserRouter', () => {
       agent
         .post(Paths.Users.Add)
         .send({ user: null })
-        .end((_, res) => {
+        .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          const errorObj = parseJson<IValidationErr>(res.body.error);
+          const errorObj = parseJson<IValidationErr>(res.body.error),
+            parseErr = errorObj.parameters[0];
           expect(errorObj.message).toBe(ValidationErr.MSG);
-          expect(errorObj.parameters[0].prop).toBe('user');
+          expect(isObject(parseErr) && parseErr.prop === 'user').toBeTruthy();
           done();
         });
     });
@@ -124,11 +126,12 @@ describe('UserRouter', () => {
       agent
         .put(Paths.Users.Update)
         .send({ user: null })
-        .end((_, res) => {
+        .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          const errorObj = parseJson<IValidationErr>(res.body.error);
+          const errorObj = parseJson<IValidationErr>(res.body.error),
+            parseErr = errorObj.parameters[0];
           expect(errorObj.message).toBe(ValidationErr.MSG);
-          expect(errorObj.parameters[0].prop).toBe('user');
+          expect(isObject(parseErr) && parseErr.prop === 'user').toBeTruthy();
           done();
         });
     });
@@ -141,7 +144,7 @@ describe('UserRouter', () => {
       agent
         .put(Paths.Users.Update)
         .send({ user })
-        .end((_, res) => {
+        .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
           expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
           done();
@@ -172,7 +175,7 @@ describe('UserRouter', () => {
     `"${HttpStatusCodes.NOT_FOUND}" if the id was not found.`, done => {
       agent
         .delete(getPath(-1))
-        .end((_, res) => {
+        .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.NOT_FOUND);
           expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
           done();
