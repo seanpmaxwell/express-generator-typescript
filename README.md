@@ -67,7 +67,7 @@ $ cd "project name" && npm run dev
 - Check for linting errors: `npm run lint`.
 - Build the project for production: `npm run build`.
 - Run the production build: `npm start`.
-- Check for typescript errors: `npm run type-check"`.
+- Check for typescript errors: `npm run type-check`.
 
 
 ## Debugging
