@@ -1,5 +1,10 @@
-import { isNumber } from 'jet-validators';
+import { isNumber, isDate } from 'jet-validators';
+import { transform } from 'jet-validators/utils';
 
+
+/******************************************************************************
+                                Functions
+******************************************************************************/
 
 /**
  * Database relational key.
@@ -7,3 +12,11 @@ import { isNumber } from 'jet-validators';
 export function isRelationalKey(arg: unknown): arg is number {
   return isNumber(arg) && arg >= -1;
 }
+
+/**
+ * Convert to date object then check is a validate date.
+ */
+export const tranIsDate = transform(
+  arg => new Date(arg as string),
+  arg => isDate(arg),
+);
