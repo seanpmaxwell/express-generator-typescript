@@ -1,9 +1,11 @@
 {
   "name": "express-generator-typescript",
-  "version": "2.5.16",
+  "version": "2.5.17",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
     "express-generator-typescript": "node bin/cli.js",
+    "pre-publish": "mv README.md README-git && mv README-npm README.md",
+    "post-publish": "mv README.md README-npm && mv README-git README.md",
     "start": "node bin/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

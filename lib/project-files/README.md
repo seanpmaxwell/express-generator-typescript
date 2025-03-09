@@ -2,6 +2,19 @@
 
 This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
 
+**IMPORTANT** for demo purposes I had to disable `helmet` in production. In any real world app you should change these 3 lines of code in `src/server.ts`:
+```ts
+// eslint-disable-next-line n/no-process-env
+if (!process.env.DISABLE_HELMET) {
+  app.use(helmet());
+}
+```
+
+To just this:
+```ts
+app.use(helmet());
+```
+
 
 ## Available Scripts
 

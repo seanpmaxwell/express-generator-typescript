@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import insertUrlParams from 'inserturlparams';
+import { isObject } from 'jet-validators';
 import { parseJson, customDeepCompare } from 'jet-validators/utils';
 
 import app from '@src/server';
@@ -7,13 +8,11 @@ import app from '@src/server';
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
-
+import { IParseRequestError } from '@src/routes/common';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { ValidationErr } from '@src/common/route-errors';
 
 import Paths from 'spec/support/Paths';
-import { cleanDatabase, IValidationErr, TRes } from 'spec/support';
-import { isObject } from 'jet-validators';
+import { cleanDatabase, TRes } from 'spec/support';
 
 
 /******************************************************************************
@@ -93,10 +92,10 @@ describe('UserRouter', () => {
         .send({ user: null })
         .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          const errorObj = parseJson<IValidationErr>(res.body.error),
-            parseErr = errorObj.parameters[0];
-          expect(errorObj.message).toBe(ValidationErr.MSG);
-          expect(isObject(parseErr) && parseErr.prop === 'user').toBeTruthy();
+          const errorObj = parseJson<IParseRequestError>(res.body.error),
+            errItem = errorObj.errors[0];
+          expect(errorObj.message).toBe('Parse request validation failed');
+          expect(isObject(errItem) && errItem.prop === 'user').toBeTruthy();
           done();
         });
     });
@@ -128,10 +127,10 @@ describe('UserRouter', () => {
         .send({ user: null })
         .end((_, res: TRes) => {
           expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
-          const errorObj = parseJson<IValidationErr>(res.body.error),
-            parseErr = errorObj.parameters[0];
-          expect(errorObj.message).toBe(ValidationErr.MSG);
-          expect(isObject(parseErr) && parseErr.prop === 'user').toBeTruthy();
+          const errorObj = parseJson<IParseRequestError>(res.body.error),
+            errItem = errorObj.errors[0];
+          expect(errorObj.message).toBe('Parse request validation failed');
+          expect(isObject(errItem) && errItem.prop === 'user').toBeTruthy();
           done();
         });
     });

@@ -5,7 +5,7 @@ import HttpStatusCodes from '@src/common/HttpStatusCodes';
 import UserService from '@src/services/UserService';
 import User from '@src/models/User';
 
-import { parseReq, IReq, IRes } from './common';
+import { IReq, IRes, parseReq } from './common';
 
 
 /******************************************************************************

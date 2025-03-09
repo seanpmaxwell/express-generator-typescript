@@ -35,7 +35,10 @@ if (ENV.NodeEnv === NodeEnvs.Dev) {
 
 // Security
 if (ENV.NodeEnv === NodeEnvs.Production) {
-  app.use(helmet());
+  // eslint-disable-next-line n/no-process-env
+  if (!process.env.DISABLE_HELMET) {
+    app.use(helmet());
+  }
 }
 
 // Add APIs, must be after middleware

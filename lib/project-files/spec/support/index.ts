@@ -1,5 +1,4 @@
 import { Response } from 'supertest';
-import { TParseReqErr } from '@src/routes/common';
 import UserRepo from '@src/repos/UserRepo';
 
 
@@ -15,11 +14,6 @@ export type TRes<T = object> = Omit<Response, 'body'> & {
 interface IErrObj {
   message: string;
   [key: string]: unknown;
-}
-
-export interface IValidationErr {
-  message: string;
-  parameters: TParseReqErr[];
 }
 
 
