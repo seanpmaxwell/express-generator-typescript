@@ -1,14 +1,22 @@
 import { Response, Request } from 'express';
+import { parseObject, TSchema } from 'jet-validators/utils';
 
-import {
-  ParseObjectError,
-  TParseErrorItem,
-  TSchema,
-  parseObjectPlus,
-} from 'jet-validators/utils';
+import { ValidationError } from '@src/common/route-errors';
 
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { RouteError } from '@src/common/route-errors';
+
+/******************************************************************************
+                              Functions
+******************************************************************************/
+
+/**
+ * Throw a "ParseObjError" when "parseObject" fails. Also extract a nested 
+ * "ParseObjError" and add it to the nestedErrors array.
+ */
+export function parseReq<U extends TSchema>(schema: U) {
+  return parseObject(schema, errors => {
+    throw new ValidationError(errors);
+  });
+}
 
 
 /******************************************************************************
@@ -18,37 +26,3 @@ import { RouteError } from '@src/common/route-errors';
 type TRecord = Record<string, unknown>;
 export type IReq = Request<TRecord, void, TRecord, TRecord>;
 export type IRes = Response<unknown, TRecord>;
-
-export interface IParseRequestError {
-  message: 'Parse request validation failed';
-  errors: TParseErrorItem[];
-}
-
-
-/******************************************************************************
-                                Functions
-******************************************************************************/
-
-/**
- * Parse an incoming route request object.
- */
-export function parseReq<U extends TSchema>(schema: U) {
-  const parse = parseObjectPlus(schema);
-  return (arg: unknown) => {
-    let retVal;
-    try {
-      retVal = parse(arg);
-    } catch (err) {
-      if (err instanceof ParseObjectError) {
-        const errObj: IParseRequestError = {
-          message: 'Parse request validation failed',
-          errors: err.getErrors(),
-        };
-        const msg = JSON.stringify(errObj);
-        throw new RouteError(HttpStatusCodes.BAD_REQUEST, msg);
-      }
-      throw err;
-    }
-    return retVal;
-  };
-}

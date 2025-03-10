@@ -1,7 +1,7 @@
 import { isString } from 'jet-validators';
-import { parseObjectPlus, TParser } from 'jet-validators/utils';
+import { parseObject, TParseOnError } from 'jet-validators/utils';
 
-import { isRelationalKey, tranIsDate } from '@src/util/validators';
+import { isRelationalKey, transIsDate } from '@src/util/validators';
 
 
 /******************************************************************************
@@ -35,26 +35,26 @@ export interface IUser {
 /**
  * New user object.
  */
-function newUser(user: Partial<IUser>): IUser {
+function newUser(user?: Partial<IUser>): IUser {
   const retVal = { ...DEFAULT_USER_VALS(), ...user };
   return parseUser(retVal);
 }
 
 /**
- * Validate user object but return type predicate.
+ * Check is a user object.
  */
-function testIsUser(arg: unknown): arg is IUser {
-  return !!parseUser(arg);
+function testUser(arg: unknown, errCb?: TParseOnError): arg is IUser {
+  return !!parseUser(arg, errCb);
 }
 
 /**
  * Validate a user object.
  */
-const parseUser: TParser<IUser> = parseObjectPlus({
+const parseUser = parseObject<IUser>({
   id: isRelationalKey,
   name: isString,
   email: isString,
-  created: tranIsDate,
+  created: transIsDate,
 });
 
 
@@ -64,6 +64,5 @@ const parseUser: TParser<IUser> = parseObjectPlus({
 
 export default {
   new: newUser,
-  parse: parseUser,
-  test: testIsUser,
+  test: testUser,
 } as const;

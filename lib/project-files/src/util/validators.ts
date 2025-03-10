@@ -16,7 +16,7 @@ export function isRelationalKey(arg: unknown): arg is number {
 /**
  * Convert to date object then check is a validate date.
  */
-export const tranIsDate = transform(
+export const transIsDate = transform(
   arg => new Date(arg as string),
   arg => isDate(arg),
 );

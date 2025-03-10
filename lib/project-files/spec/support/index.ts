@@ -1,5 +1,7 @@
 import { Response } from 'supertest';
 import UserRepo from '@src/repos/UserRepo';
+import { IParseObjectError, parseJson } from 'jet-validators/utils';
+import { isString } from 'jet-validators';
 
 
 /******************************************************************************
@@ -16,6 +18,11 @@ interface IErrObj {
   [key: string]: unknown;
 }
 
+interface IValidationErr {
+  message: string;
+  errors: IParseObjectError[];
+}
+
 
 /******************************************************************************
                                 Functions
@@ -28,4 +35,14 @@ export async function cleanDatabase(): Promise<void> {
   await Promise.all([
     UserRepo.deleteAllUsers(),
   ]);
+}
+
+/**
+ * JSON parse a validation error.
+ */
+export function parseValidationErr(arg: unknown): IValidationErr {
+  if (!isString(arg)) {
+    throw new Error('Not a string');
+  }
+  return parseJson<IValidationErr>(arg);
 }
