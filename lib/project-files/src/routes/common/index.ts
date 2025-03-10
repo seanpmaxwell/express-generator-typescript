@@ -5,6 +5,15 @@ import { ValidationError } from '@src/common/route-errors';
 
 
 /******************************************************************************
+                                Types
+******************************************************************************/
+
+type TRecord = Record<string, unknown>;
+export type IReq = Request<TRecord, void, TRecord, TRecord>;
+export type IRes = Response<unknown, TRecord>;
+
+
+/******************************************************************************
                               Functions
 ******************************************************************************/
 
@@ -17,12 +26,3 @@ export function parseReq<U extends TSchema>(schema: U) {
     throw new ValidationError(errors);
   });
 }
-
-
-/******************************************************************************
-                                Types
-******************************************************************************/
-
-type TRecord = Record<string, unknown>;
-export type IReq = Request<TRecord, void, TRecord, TRecord>;
-export type IRes = Response<unknown, TRecord>;

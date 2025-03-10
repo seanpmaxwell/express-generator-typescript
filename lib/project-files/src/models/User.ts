@@ -37,31 +37,31 @@ export interface IUser {
  */
 function newUser(user?: Partial<IUser>): IUser {
   const retVal = { ...DEFAULT_USER_VALS(), ...user };
-  return parseUser(true)(retVal);
+  return parseWithErrs(retVal);
 }
 
 /**
  * Check is a user object. For the route validation.
  */
 function testUser(arg: unknown, errCb?: TParseOnError): arg is IUser {
-  return !!parseUser()(arg, errCb);
+  return !!parseWoErrs(arg, errCb);
 }
 
 /**
  * Parse a user object.
  */
-function parseUser(throwErr?: boolean) {
-  return parseObject<IUser>({
-    id: isRelationalKey,
-    name: isString,
-    email: isString,
-    created: transIsDate,
-  }, errors => {
-    if (throwErr) {
-      throw new Error(JSON.stringify(errors));
-    }
-  });
-}
+const parseUser = (throwErr?: boolean) => parseObject<IUser>({
+  id: isRelationalKey,
+  name: isString,
+  email: isString,
+  created: transIsDate,
+}, errors => {
+  if (throwErr) {
+    throw new Error(JSON.stringify(errors, null, 2));
+  }
+}),
+  parseWithErrs = parseUser(true),
+  parseWoErrs = parseUser();
 
 
 /******************************************************************************
