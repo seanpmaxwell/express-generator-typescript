@@ -32,6 +32,19 @@ export interface IUser {
                                  Functions
 ******************************************************************************/
 
+// Initialize the parse function
+const parseUser = parseObject<IUser>({
+  id: isRelationalKey,
+  name: isString,
+  email: isString,
+  created: transIsDate,
+});
+
+
+/******************************************************************************
+                                 Functions
+******************************************************************************/
+
 /**
  * New user object.
  */
@@ -48,16 +61,6 @@ function newUser(user?: Partial<IUser>): IUser {
 function testUser(arg: unknown, errCb?: TParseOnError): arg is IUser {
   return !!parseUser(arg, errCb);
 }
-
-/**
- * Parse a user object.
- */
-const parseUser = parseObject<IUser>({
-  id: isRelationalKey,
-  name: isString,
-  email: isString,
-  created: transIsDate,
-});
 
 
 /******************************************************************************
