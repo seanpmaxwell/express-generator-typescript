@@ -8,11 +8,11 @@ import 'express-async-errors';
 
 import BaseRouter from '@src/routes';
 
-import Paths from '@src/common/Paths';
-import ENV from '@src/common/ENV';
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import { RouteError } from '@src/common/route-errors';
-import { NodeEnvs } from '@src/common/constants';
+import Paths from '@src/constants/Paths';
+import ENV from '@src/constants/ENV';
+import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { RouteError } from '@src/util/route-errors';
+import { NodeEnvs } from '@src/constants';
 
 
 /******************************************************************************

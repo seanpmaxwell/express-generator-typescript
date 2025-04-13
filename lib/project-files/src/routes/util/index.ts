@@ -1,16 +1,6 @@
-import { Response, Request } from 'express';
 import { parseObject, TSchema } from 'jet-validators/utils';
 
-import { ValidationError } from '@src/common/route-errors';
-
-
-/******************************************************************************
-                                Types
-******************************************************************************/
-
-type TRecord = Record<string, unknown>;
-export type IReq = Request<TRecord, void, TRecord, TRecord>;
-export type IRes = Response<unknown, TRecord>;
+import { ValidationError } from '@src/util/route-errors';
 
 
 /******************************************************************************
