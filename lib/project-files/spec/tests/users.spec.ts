@@ -16,7 +16,7 @@ import { cleanDatabase, parseValidationErr, TRes } from 'spec/support';
 
 
 /******************************************************************************
-                               Variables
+                               Constants
 ******************************************************************************/
 
 // Dummy users for GET req

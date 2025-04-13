@@ -5,7 +5,7 @@ import { isRelationalKey, transIsDate } from '@src/util/validators';
 
 
 /******************************************************************************
-                                 Variables
+                                 Constants
 ******************************************************************************/
 
 const DEFAULT_USER_VALS = (): IUser => ({
@@ -29,10 +29,10 @@ export interface IUser {
 
 
 /******************************************************************************
-                                 Functions
+                                  Setup
 ******************************************************************************/
 
-// Initialize the parse function
+// Initialize the "parseUser" function
 const parseUser = parseObject<IUser>({
   id: isRelationalKey,
   name: isString,

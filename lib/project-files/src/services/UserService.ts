@@ -6,7 +6,7 @@ import { IUser } from '@src/models/User';
 
 
 /******************************************************************************
-                                Variables
+                                Constants
 ******************************************************************************/
 
 export const USER_NOT_FOUND_ERR = 'User not found';
