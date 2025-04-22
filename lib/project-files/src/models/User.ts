@@ -1,7 +1,8 @@
 import { isString } from 'jet-validators';
 import { parseObject, TParseOnError } from 'jet-validators/utils';
 
-import { isRelationalKey, transIsDate } from '@src/util/validators';
+import { isRelationalKey, transIsDate } from '@src/common/util/validators';
+import { IModel } from './common/types';
 
 
 /******************************************************************************
@@ -20,11 +21,9 @@ const DEFAULT_USER_VALS = (): IUser => ({
                                   Types
 ******************************************************************************/
 
-export interface IUser {
-  id: number;
+export interface IUser extends IModel {
   name: string;
   email: string;
-  created: Date;
 }
 
 

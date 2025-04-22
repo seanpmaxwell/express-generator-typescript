@@ -1,5 +1,5 @@
 import { IUser } from '@src/models/User';
-import { getRandomInt } from '@src/util/misc';
+import { getRandomInt } from '@src/common/util/misc';
 
 import orm from './MockOrm';
 

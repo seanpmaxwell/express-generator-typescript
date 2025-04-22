@@ -1,6 +1,6 @@
 import { IParseObjectError } from 'jet-validators/utils';
 
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 
 
 /******************************************************************************

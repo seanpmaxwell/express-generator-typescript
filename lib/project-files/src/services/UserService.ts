@@ -1,5 +1,5 @@
-import { RouteError } from '@src/util/route-errors';
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
+import { RouteError } from '@src/common/util/route-errors';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';

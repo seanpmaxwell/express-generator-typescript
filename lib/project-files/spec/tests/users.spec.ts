@@ -8,8 +8,8 @@ import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
-import HttpStatusCodes from '@src/constants/HttpStatusCodes';
-import { ValidationError } from '@src/util/route-errors';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import { ValidationError } from '@src/common/util/route-errors';
 
 import Paths from 'spec/support/Paths';
 import { cleanDatabase, parseValidationErr, TRes } from 'spec/support';
