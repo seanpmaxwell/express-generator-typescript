@@ -4,8 +4,6 @@ import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import logger from 'jet-logger';
 
-import 'express-async-errors';
-
 import BaseRouter from '@src/routes';
 
 import Paths from '@src/common/constants/Paths';
