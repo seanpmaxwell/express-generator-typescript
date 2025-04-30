@@ -43,6 +43,13 @@ function saveDb(db: IDb): Promise<void> {
   return jsonfile.writeFile((__dirname + '/' + DB_FILE_NAME), db);
 }
 
+/**
+ * Empty the database
+ */
+function cleanDb(): Promise<void> {
+  return jsonfile.writeFile((__dirname + '/' + DB_FILE_NAME), {});
+}
+
 
 /******************************************************************************
                                 Export default
@@ -51,4 +58,5 @@ function saveDb(db: IDb): Promise<void> {
 export default {
   openDb,
   saveDb,
+  cleanDb,
 } as const;

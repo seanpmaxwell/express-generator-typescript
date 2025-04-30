@@ -44,6 +44,7 @@ describe('UserRouter', () => {
 
   // Run before all tests
   beforeEach(async () => {
+    await UserRepo.deleteAllUsers();
     dbUsers = await UserRepo.insertMult(DB_USERS);
   });
 

@@ -1,5 +1,4 @@
 import { Response } from 'supertest';
-import UserRepo from '@src/repos/UserRepo';
 
 
 /******************************************************************************
@@ -15,19 +14,3 @@ interface IErrObj {
   message: string;
   [key: string]: unknown;
 }
-
-
-/******************************************************************************
-                                Functions
-******************************************************************************/
-
-/**
- * Delete all records for unit testing.
- */
-export async function cleanDatabase(): Promise<void> {
-  await Promise.all([
-    UserRepo.deleteAllUsers(),
-  ]);
-}
-
-
