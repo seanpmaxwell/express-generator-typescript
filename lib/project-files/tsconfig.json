@@ -11,7 +11,8 @@
     "paths": {
       "@src/*": ["src/*"]
     },
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "types": ["vitest/globals"],
   },
   "ts-node": {
     "swc": true,
@@ -22,10 +23,11 @@
   },
   "include": [
     "src/**/*.ts",
-    "spec/**/*.ts",
+    "tests/**/*.ts",
     "config.ts",
     "scripts",
-    "eslint.config.ts"
+    "eslint.config.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     "src/public/*"

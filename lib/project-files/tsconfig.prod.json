@@ -21,9 +21,10 @@
     "config.ts"
   ],
   "exclude": [
-    "spec",
+    "tests",
     "src/public/",
     "scripts",
-    "eslint.config.ts"
+    "eslint.config.ts",
+    "vitest.config.js"
   ]
 }

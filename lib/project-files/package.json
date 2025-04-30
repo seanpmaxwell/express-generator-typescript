@@ -8,8 +8,7 @@
     "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
     "lint": "eslint .",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
-    "test": "NODE_ENV=test ts-node ./spec",
-    "test:hot": "nodemon --exec \"npm run test\" --watch ./src --watch ./spec --ext .ts",
+    "test": "NODE_ENV=test vitest",
     "type-check": "tsc --noEmit"
   },
   "engines": {
@@ -38,7 +37,6 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/find": "^0.2.4",
     "@types/fs-extra": "^11.0.4",
-    "@types/jasmine": "^5.1.7",
     "@types/jsonfile": "^6.1.4",
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.9",
@@ -48,13 +46,13 @@
     "eslint-plugin-n": "^17.17.0",
     "find": "^0.3.0",
     "fs-extra": "^11.3.0",
-    "jasmine": "^5.6.0",
     "jiti": "^2.4.2",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.31.0"
+    "typescript-eslint": "^8.31.0",
+    "vitest": "^3.1.2"
   }
 }
