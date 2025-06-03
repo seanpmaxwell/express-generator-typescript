@@ -5,10 +5,23 @@ import server from './server';
 
 
 /******************************************************************************
+                                Constants
+******************************************************************************/
+
+const SERVER_START_MSG = (
+  'Express server started on port: ' + ENV.Port.toString()
+);
+
+
+/******************************************************************************
                                   Run
 ******************************************************************************/
 
-const SERVER_START_MSG = ('Express server started on port: ' + 
-  ENV.Port.toString());
-
-server.listen(ENV.Port, () => logger.info(SERVER_START_MSG));
+// Start the server
+server.listen(ENV.Port, err => {
+  if (!!err) {
+    logger.err(err.message);
+  } else {
+    logger.info(SERVER_START_MSG);
+  }
+});
