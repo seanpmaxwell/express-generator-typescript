@@ -74,16 +74,6 @@ $ cd "project name" && npm run dev
 
 During development, _express-generator-typescript_ uses `nodemon` to restart the server when changes are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations. This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
 
-
-## Note for VSCode users
-
-In order to use eslint as a typescript file with VSCode, you need to add a setting to your eslint options. At the root of your project, add a `.vscode/settings.json` file (if you don't have one already) and add the option `unstable_ts_config`:
-
-```typescript
-  "eslint.options": {
-    "flags": ["unstable_ts_config"]
-  }
-```
 <br/>
 
 
