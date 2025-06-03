@@ -47,7 +47,7 @@ const parseUser = parseObject<IUser>({
 /**
  * New user object.
  */
-function newUser(user?: Partial<IUser>): IUser {
+function __new__(user?: Partial<IUser>): IUser {
   const retVal = { ...DEFAULT_USER_VALS(), ...user };
   return parseUser(retVal, errors => {
     throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
@@ -57,7 +57,7 @@ function newUser(user?: Partial<IUser>): IUser {
 /**
  * Check is a user object. For the route validation.
  */
-function testUser(arg: unknown, errCb?: TParseOnError): arg is IUser {
+function test(arg: unknown, errCb?: TParseOnError): arg is IUser {
   return !!parseUser(arg, errCb);
 }
 
@@ -67,6 +67,6 @@ function testUser(arg: unknown, errCb?: TParseOnError): arg is IUser {
 ******************************************************************************/
 
 export default {
-  new: newUser,
-  test: testUser,
+  new: __new__,
+  test,
 } as const;
