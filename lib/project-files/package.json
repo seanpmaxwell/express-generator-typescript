@@ -1,11 +1,12 @@
 {
   "name": "express-typescript-example",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "dev": "NODE_ENV=development ts-node ./src",
-    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
+    "dev": "NODE_ENV=development tsx ./src",
+    "dev:hot": "NODE_ENV=development tsx -r ./config.ts watch ./src",
     "lint": "eslint .",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test vitest",
@@ -24,7 +25,7 @@
     "jet-env": "^1.1.4",
     "jet-logger": "^2.0.1",
     "jet-paths": "^1.1.0",
-    "jet-validators": "^1.4.0",
+    "jet-validators": "^1.4.2",
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0"
@@ -33,7 +34,6 @@
     "@eslint/js": "^9.25.1",
     "@stylistic/eslint-plugin-js": "^4.2.0",
     "@stylistic/eslint-plugin-ts": "^4.2.0",
-    "@swc/core": "^1.11.22",
     "@types/cookie-parser": "^1.4.8",
     "@types/find": "^0.2.4",
     "@types/fs-extra": "^11.0.4",
@@ -47,10 +47,8 @@
     "find": "^0.3.0",
     "fs-extra": "^11.3.0",
     "jiti": "^2.4.2",
-    "nodemon": "^3.1.10",
     "supertest": "^7.1.0",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.0",
     "vitest": "^3.1.2"

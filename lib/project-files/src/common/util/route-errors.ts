@@ -1,4 +1,4 @@
-import { IParseObjectError } from 'jet-validators/utils';
+import type { IParseObjectError } from 'jet-validators/utils';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 

@@ -1,20 +1,28 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "lib": ["ES2020"],                        
+    // Base options
+    "target": "es2022",
+    "module": "nodenext",
+    "lib": [ "es2022" ],
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "removeComments": true,
+
+    // Linting
     "strict": true,
+    
+    // Types
+    "types": ["vitest/globals"],
+    "useUnknownInCatchVariables": false,
+
+    // Directory
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "outDir": "temp",
-    "esModuleInterop": true,                 
-    "skipLibCheck": true,                     
-    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@src/*": ["src/*"]
     },
-    "useUnknownInCatchVariables": false,
-    "sourceMap": false,
-    "removeComments": true
   },
   "include": [
     "src/**/*.ts",
