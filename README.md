@@ -22,7 +22,7 @@ There are some other tools out there to generate express apps with TypeScript su
 
 Due to the heavy use of single-page-applications, no view-engine is configured by default. Express is only setup with the minimal settings for calling APIs and serving an index.html file. All the tools you need to run for development (while restarting on changes), building, testing, and running for production are packaged with this library. 
 
-In addition, relative paths are also setup, so you don't have to go through the trouble of installing and configuring _tsconfig-paths_ and _module-alias_. Just make sure to update `paths` in _tsconfig.json_ and `_moduleAliases` in _preload.js_ if you want to add/edit the relative paths.
+In addition, relative paths are also setup, so you don't have to go through the trouble of installing and configuring _tsconfig-paths_ and _module-alias_. Just make sure to update `paths` in _tsconfig.json_ and `_moduleAliases` in _config.ts_ if you want to add/edit the relative paths.
 
 
 ## Sample-project
