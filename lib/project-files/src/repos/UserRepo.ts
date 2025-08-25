@@ -97,7 +97,7 @@ async function deleteAllUsers(): Promise<void> {
 
 /**
  * Insert multiple users. Can't do multiple at once cause using a plain file 
- * for nmow.
+ * for now.
  */
 async function insertMult(
   users: IUser[] | readonly IUser[],
@@ -128,3 +128,4 @@ export default {
   deleteAllUsers,
   insertMult,
 } as const;
+
