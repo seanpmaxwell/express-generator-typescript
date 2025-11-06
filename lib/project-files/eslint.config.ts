@@ -1,7 +1,6 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import stylisticJs from '@stylistic/eslint-plugin-js';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
+import stylistic from '@stylistic/eslint-plugin';
 import nodePlugin from 'eslint-plugin-n';
 
 export default tseslint.config(
@@ -9,7 +8,7 @@ export default tseslint.config(
   nodePlugin.configs['flat/recommended-script'],
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  { 
+  {
     ignores: [
       '**/node_modules/*',
       '**/*.mjs',
@@ -26,8 +25,7 @@ export default tseslint.config(
   },
   {
     plugins: {
-      '@stylistic/js': stylisticJs,
-      '@stylistic/ts': stylisticTs,
+      '@stylistic': stylistic,
     },
   },
   {
@@ -49,15 +47,15 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-unsafe-enum-comparison': 0,
       '@typescript-eslint/no-unnecessary-type-parameters': 0,
-      '@stylistic/js/no-extra-semi': 'warn',
+      '@stylistic/no-extra-semi': 'warn',
       'max-len': [
         'warn',
         {
           'code': 80,
         },
       ],
-      '@stylistic/ts/semi': ['warn', 'always'],
-      '@stylistic/ts/member-delimiter-style': ['warn', {
+      '@stylistic/semi': ['warn', 'always'],
+      '@stylistic/member-delimiter-style': ['warn', {
         'multiline': {
           'delimiter': 'comma',
           'requireLast': true,
