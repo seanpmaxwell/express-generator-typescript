@@ -1,5 +1,5 @@
 import { RouteError } from '@src/common/util/route-errors';
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
 
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
@@ -37,7 +37,7 @@ async function updateOne(user: IUser): Promise<void> {
   const persists = await UserRepo.persists(user.id);
   if (!persists) {
     throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
+      HTTP_STATUS_CODES.NotFound,
       USER_NOT_FOUND_ERR,
     );
   }
@@ -52,7 +52,7 @@ async function _delete(id: number): Promise<void> {
   const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
+      HTTP_STATUS_CODES.NotFound,
       USER_NOT_FOUND_ERR,
     );
   }

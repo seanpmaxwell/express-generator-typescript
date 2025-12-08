@@ -1,6 +1,8 @@
 import { IParseObjectError } from 'jet-validators/utils';
 
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import HTTP_STATUS_CODES, {
+  HttpStatusCodes,
+} from '@src/common/constants/HTTP_STATUS_CODES';
 
 
 /******************************************************************************
@@ -32,6 +34,6 @@ export class ValidationError extends RouteError {
       message: ValidationError.MESSAGE,
       errors,
     });
-    super(HttpStatusCodes.BAD_REQUEST, msg);
+    super(HTTP_STATUS_CODES.BadRequest, msg);
   }
 }

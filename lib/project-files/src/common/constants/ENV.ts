@@ -1,7 +1,7 @@
 import jetEnv, { num } from 'jet-env';
-import { isEnumVal } from 'jet-validators';
+import { isValueOf } from 'jet-validators';
 
-import { NodeEnvs } from '.';
+import { NODE_ENVS } from '.';
 
 
 /******************************************************************************
@@ -9,7 +9,7 @@ import { NodeEnvs } from '.';
 ******************************************************************************/
 
 const ENV = jetEnv({
-  NodeEnv: isEnumVal(NodeEnvs),
+  NodeEnv: isValueOf(NODE_ENVS),
   Port: num,
 });
 

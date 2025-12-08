@@ -6,11 +6,13 @@ import logger from 'jet-logger';
 
 import BaseRouter from '@src/routes';
 
-import Paths from '@src/common/constants/Paths';
+import Paths from '@src/common/constants/PATHS';
 import ENV from '@src/common/constants/ENV';
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import HTTP_STATUS_CODES, {
+  HttpStatusCodes,
+} from '@src/common/constants/HTTP_STATUS_CODES';
 import { RouteError } from '@src/common/util/route-errors';
-import { NodeEnvs } from '@src/common/constants';
+import { NODE_ENVS } from '@src/common/constants';
 
 
 /******************************************************************************
@@ -27,12 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // Show routes called in console during development
-if (ENV.NodeEnv === NodeEnvs.Dev) {
+if (ENV.NodeEnv === NODE_ENVS.Dev) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (ENV.NodeEnv === NodeEnvs.Production) {
+if (ENV.NodeEnv === NODE_ENVS.Production) {
   // eslint-disable-next-line n/no-process-env
   if (!process.env.DISABLE_HELMET) {
     app.use(helmet());
@@ -44,10 +46,10 @@ app.use(Paths.Base, BaseRouter);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-  if (ENV.NodeEnv !== NodeEnvs.Test.valueOf()) {
+  if (ENV.NodeEnv !== NODE_ENVS.Test.valueOf()) {
     logger.err(err, true);
   }
-  let status = HttpStatusCodes.BAD_REQUEST;
+  let status: HttpStatusCodes = HTTP_STATUS_CODES.BadRequest;
   if (err instanceof RouteError) {
     status = err.status;
     res.status(status).json({ error: err.message });
