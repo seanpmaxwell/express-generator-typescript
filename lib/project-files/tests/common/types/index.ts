@@ -7,10 +7,10 @@ import { Response } from 'supertest';
 
 // Use generics to add properties to 'body'
 export type TRes<T = object> = Omit<Response, 'body'> & {
-  body: T & { error?: string | IErrObj },
+  body: T & { error?: string | IErrorObject },
 };
 
-interface IErrObj {
+interface IErrorObject {
   message: string;
   [key: string]: unknown;
 }

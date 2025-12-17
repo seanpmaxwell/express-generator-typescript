@@ -1,7 +1,6 @@
 import { isNumber, isDate } from 'jet-validators';
 import { transform } from 'jet-validators/utils';
 
-
 /******************************************************************************
                                 Functions
 ******************************************************************************/

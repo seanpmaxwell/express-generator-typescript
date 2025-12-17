@@ -3,7 +3,6 @@ import { Router } from 'express';
 import PATHS from '@src/common/constants/PATHS';
 import UserRoutes from './UserRoutes';
 
-
 /******************************************************************************
                                 Setup
 ******************************************************************************/
@@ -23,8 +22,7 @@ userRouter.put(PATHS.Users.Update, UserRoutes.update);
 userRouter.delete(PATHS.Users.Delete, UserRoutes.delete);
 
 // Add UserRouter
-apiRouter.use(PATHS.Users.Base, userRouter);
-
+apiRouter.use(PATHS.Users._, userRouter);
 
 /******************************************************************************
                                 Export default

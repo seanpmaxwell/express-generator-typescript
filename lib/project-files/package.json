@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test vitest",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc -b --noEmit"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -22,9 +22,9 @@
     "helmet": "^8.1.0",
     "inserturlparams": "^2.0.5",
     "jet-env": "^1.1.4",
-    "jet-logger": "^2.0.1",
-    "jet-paths": "^1.1.0",
-    "jet-validators": "^1.5.0",
+    "jet-logger": "^2.1.1",
+    "jet-paths": "^2.0.1",
+    "jet-validators": "^1.6.5",
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0"

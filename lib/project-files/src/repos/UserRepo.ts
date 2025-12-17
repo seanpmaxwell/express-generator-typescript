@@ -3,7 +3,6 @@ import { getRandomInt } from '@src/common/util/misc';
 
 import orm from './MockOrm';
 
-
 /******************************************************************************
                                 Functions
 ******************************************************************************/
@@ -88,6 +87,9 @@ async function delete_(id: number): Promise<void> {
 
 /**
  * Delete every user record.
+ * 
+ * @internal
+ * Test-only helper. Do not use in production code.
  */
 async function deleteAllUsers(): Promise<void> {
   const db = await orm.openDb();
@@ -98,6 +100,9 @@ async function deleteAllUsers(): Promise<void> {
 /**
  * Insert multiple users. Can't do multiple at once cause using a plain file 
  * for now.
+ * 
+ * @internal
+ * Test-only helper. Do not use in production code.
  */
 async function insertMult(
   users: IUser[] | readonly IUser[],
@@ -113,7 +118,6 @@ async function insertMult(
   return usersF;
 }
 
-
 /******************************************************************************
                                 Export default
 ******************************************************************************/
@@ -128,4 +132,3 @@ export default {
   deleteAllUsers,
   insertMult,
 } as const;
-

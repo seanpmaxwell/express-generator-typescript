@@ -1,11 +1,15 @@
+import jetPaths from 'jet-paths';
 
-export default {
-  Base: '/api',
+const PATHS = {
+  _: '/api',
   Users: {
-    Base: '/users',
+    _: '/users',
     Get: '/all',
     Add: '/add',
     Update: '/update',
     Delete: '/delete/:id',
   },
 } as const;
+
+export const JET_PATHS = jetPaths(PATHS);
+export default PATHS;

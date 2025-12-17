@@ -1,18 +1,16 @@
-<img alt='overnightjs' src='https://github.com/seanpmaxwell/express-generator-typescript/raw/master/express-typescript.png' border='0'>
+<p align="center">
+  <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/master/express-typescript.png" width="420">
+</p>
 
-[Express](https://www.npmjs.com/package/express) with [TypeScript's](https://www.npmjs.com/package/typescript) application generator.
+<p align="center">
+  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/v/express-generator-typescript.svg?style=for-the-badge&logo=npm" alt="NPM Version"></a>
+  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/dm/express-generator-typescript.svg?style=for-the-badge" alt="NPM Downloads"></a>
+  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/l/express-generator-typescript.svg?style=for-the-badge" alt="License"></a>
+</p>
 
-<a href="https://www.npmjs.com/package/express-generator-typescript" target="_blank"><img src="https://img.shields.io/npm/v/express-generator-typescript.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/package/express-generator-typescript" target="_blank"><img src="https://img.shields.io/npm/l/express-generator-typescript.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/package/express-generator-typescript" target="_blank"><img src="https://img.shields.io/npm/dm/express-generator-typescript.svg" alt="NPM Downloads" /></a>
+# express-generator-typescript
 
-
-## What is it?
-
-Creates a new express application similar to the _express-generator_ module. Except this new application is configured to use TypeScript instead of plain JavaScript. 
-
-This project complies with Typescript best practices listed <a href="https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md">here</a>.
-<br/>
+Production-ready Express application scaffolding with TypeScript baked in. Generate a modern API starter in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md) used to build this tool.
 
 
 ## Documenation

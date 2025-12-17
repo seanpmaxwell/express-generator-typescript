@@ -1,5 +1,4 @@
 import insertUrlParams from 'inserturlparams';
-import { customDeepCompare } from 'jet-validators/utils';
 
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
@@ -7,11 +6,11 @@ import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
 
 import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
 import { ValidationError } from '@src/common/util/route-errors';
+import { JET_PATHS as Paths }  from '@src/common/constants/PATHS';
 
-import Paths from './common/Paths';
-import { parseValidationErr, TRes } from './common/util';
+import { compareUserArrays, parseValidationError } from './common/util';
 import { agent } from './support/setup';
-
+import { TRes } from './common/types';
 
 /******************************************************************************
                                Constants
@@ -23,13 +22,6 @@ const DB_USERS = [
   User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
   User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
 ] as const;
-
-// Don't compare "id" and "created" cause those are set dynamically by the 
-// database
-const compareUserArrays = customDeepCompare({
-  onlyCompareProps: ['name', 'email'],
-});
-
 
 /******************************************************************************
                                  Tests
@@ -77,7 +69,7 @@ describe('UserRouter', () => {
       'missing.', async () => {
       const res: TRes = await agent.post(Paths.Users.Add).send({ user: null });
       expect(res.status).toBe(HTTP_STATUS_CODES.BadRequest);
-      const errorObj = parseValidationErr(res.body.error);
+      const errorObj = parseValidationError(res.body.error);
       expect(errorObj.message).toBe(ValidationError.MESSAGE);
       expect(errorObj.errors[0].prop).toBe('user');
     });
@@ -103,7 +95,7 @@ describe('UserRouter', () => {
       user.id = ('5' as unknown as number);
       const res: TRes = await agent.put(Paths.Users.Update).send({ user });
       expect(res.status).toBe(HTTP_STATUS_CODES.BadRequest);
-      const errorObj = parseValidationErr(res.body.error);
+      const errorObj = parseValidationError(res.body.error);
       expect(errorObj.message).toBe(ValidationError.MESSAGE);
       expect(errorObj.errors[0].prop).toBe('user');
       expect(errorObj.errors[0].children?.[0].prop).toBe('id');
@@ -121,9 +113,9 @@ describe('UserRouter', () => {
   });
 
   // Delete User
-  describe(`"DELETE:${Paths.Users.Delete}"`, () => {
+  describe(`"DELETE:${Paths.Users.Delete()}"`, () => {
 
-    const getPath = (id: number) => insertUrlParams(Paths.Users.Delete, 
+    const getPath = (id: number) => insertUrlParams(Paths.Users.Delete({ id}), 
       { id });
 
     // Success

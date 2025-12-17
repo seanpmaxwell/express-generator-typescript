@@ -4,13 +4,11 @@ import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
 import UserRepo from '@src/repos/UserRepo';
 import { IUser } from '@src/models/User';
 
-
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
 export const USER_NOT_FOUND_ERR = 'User not found';
-
 
 /******************************************************************************
                                 Functions
@@ -59,7 +57,6 @@ async function _delete(id: number): Promise<void> {
   // Delete user
   return UserRepo.delete(id);
 }
-
 
 /******************************************************************************
                                 Export default

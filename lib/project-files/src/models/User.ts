@@ -4,18 +4,16 @@ import { parseObject, TParseOnError } from 'jet-validators/utils';
 import { isRelationalKey, transIsDate } from '@src/common/util/validators';
 import { IModel } from './common/types';
 
-
 /******************************************************************************
                                  Constants
 ******************************************************************************/
 
-const DEFAULT_USER_VALS = (): IUser => ({
+const DEFAULT_USER_VALS: IUser = {
   id: -1,
   name: '',
   created: new Date(),
   email: '',
-});
-
+} as const;
 
 /******************************************************************************
                                   Types
@@ -25,7 +23,6 @@ export interface IUser extends IModel {
   name: string;
   email: string;
 }
-
 
 /******************************************************************************
                                   Setup
@@ -39,7 +36,6 @@ const parseUser = parseObject<IUser>({
   created: transIsDate,
 });
 
-
 /******************************************************************************
                                  Functions
 ******************************************************************************/
@@ -48,7 +44,9 @@ const parseUser = parseObject<IUser>({
  * New user object.
  */
 function __new__(user?: Partial<IUser>): IUser {
-  const retVal = { ...DEFAULT_USER_VALS(), ...user };
+  const defaults = { ...DEFAULT_USER_VALS };
+  defaults.created = new Date();
+  const retVal = { ...defaults, ...user };
   return parseUser(retVal, errors => {
     throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
   });
@@ -60,7 +58,6 @@ function __new__(user?: Partial<IUser>): IUser {
 function test(arg: unknown, errCb?: TParseOnError): arg is IUser {
   return !!parseUser(arg, errCb);
 }
-
 
 /******************************************************************************
                                 Export default
