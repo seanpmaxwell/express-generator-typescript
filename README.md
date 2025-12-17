@@ -52,7 +52,6 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 | ----------------- | --------------------------------------------------------------------------- |
 | `project name`    | Folder to create. Defaults to `express-gen-ts` if omitted.                  |
 | `--use-yarn`      | Installs dependencies with Yarn instead of npm.                             |
-| `--version`       | Prints the generator version.                                               |
 
 > The historical `--with-auth` switch was removed in v2.5+. For an auth-ready example see the [express-jsonwebtoken-demo](https://github.com/seanpmaxwell/express-jsonwebtoken-demo) project.
 
