@@ -3,3 +3,4 @@ dist/
 temp/
 **/**/*.log
 config.js
+tsconfig.tsbuildinfo
