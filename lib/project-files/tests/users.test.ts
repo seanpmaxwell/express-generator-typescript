@@ -1,5 +1,3 @@
-import insertUrlParams from 'inserturlparams';
-
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
 import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
@@ -8,8 +6,8 @@ import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
 import { ValidationError } from '@src/common/util/route-errors';
 import { JET_PATHS as Paths }  from '@src/common/constants/PATHS';
 
-import { compareUserArrays, parseValidationError } from './common/util';
-import { agent } from './support/setup';
+import { compareUserArrays, parseValidationError } from './common/utils';
+import { agent } from './aux/setup';
 import { TRes } from './common/types';
 
 /******************************************************************************
@@ -115,14 +113,11 @@ describe('UserRouter', () => {
   // Delete User
   describe(`"DELETE:${Paths.Users.Delete()}"`, () => {
 
-    const getPath = (id: number) => insertUrlParams(Paths.Users.Delete({ id}), 
-      { id });
-
     // Success
     it(`should return a status code of "${HTTP_STATUS_CODES.Ok}" if the ` + 
     'request was successful.', async () => {
       const id = dbUsers[0].id,
-        res = await agent.delete(getPath(id));
+        res = await agent.delete(Paths.Users.Delete(id));
       expect(res.status).toBe(HTTP_STATUS_CODES.Ok);
     });
 
@@ -130,7 +125,7 @@ describe('UserRouter', () => {
     it('should return a JSON object with the error message of ' + 
     `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
     `"${HTTP_STATUS_CODES.NotFound}" if the id was not found.`, async () => {
-      const res: TRes = await agent.delete(getPath(-1));
+      const res: TRes = await agent.delete(Paths.Users.Delete(-1));
       expect(res.status).toBe(HTTP_STATUS_CODES.NotFound);
       expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
     });

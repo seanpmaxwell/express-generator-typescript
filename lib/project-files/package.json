@@ -20,7 +20,6 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "inserturlparams": "^2.0.5",
     "jet-env": "^1.1.4",
     "jet-logger": "^2.1.1",
     "jet-paths": "^2.0.1",

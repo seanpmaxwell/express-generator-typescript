@@ -10,7 +10,7 @@
 
 # express-generator-typescript
 
-Production-ready Express application scaffolding with TypeScript baked in. Generate a modern API starter in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md) used to build this tool.
+Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
 
 
 ## Documenation
