@@ -1,0 +1,18 @@
+
+# Ignore here and in lib/project-files
+**/**/.vscode
+**/**/dist
+**/**/node_modules
+**/**/package-lock.json
+lib/project-files/tsconfig.tsbuildinfo
+lib/project-files/**/*.js
+lib/project-files/**/*.log
+
+
+# Ignore here
+README-git
+README-npm
+express-typescript.png
+test
+.gitignore
+.npmignore

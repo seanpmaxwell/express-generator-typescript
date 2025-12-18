@@ -2,8 +2,8 @@
 **/**/*.log
 lib/**/package-lock.json
 lib/project-files/.vscode
-lib/project-files/config.js
-**/**/
+lib/project-files/**/*.js
+**/**/dist
 **/**/tsconfig.tsbuildinfo
 
 test/
