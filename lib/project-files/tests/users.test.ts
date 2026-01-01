@@ -14,12 +14,18 @@ import { TRes } from './common/types';
                                Constants
 ******************************************************************************/
 
-// Dummy users for GET req
-const DB_USERS = [
+const DUMMY_USERS = [
   User.new({ name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
   User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
   User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
 ] as const;
+
+const {
+  BadRequest,
+  Created,
+  Ok: OK,
+  NotFound,
+} = HTTP_STATUS_CODES;
 
 /******************************************************************************
                                  Tests
@@ -32,101 +38,85 @@ describe('UserRouter', () => {
 
   let dbUsers: IUser[] = [];
 
-  // Run before all tests
   beforeEach(async () => {
     await UserRepo.deleteAllUsers();
-    dbUsers = await UserRepo.insertMult(DB_USERS);
+    dbUsers = await UserRepo.insertMultiple(DUMMY_USERS);
   });
 
-  // Get all users
   describe(`"GET:${Paths.Users.Get}"`, () => {
 
-    // Success
-    it('should return a JSON object with all the users and a status code ' + 
-    `of "${HTTP_STATUS_CODES.Ok}" if the request was successful.`, async () => {
+    it('should return a JSON object with all the users and a status code of ' + 
+    `"${OK}" if the request was successful.`, async () => {
       const res: TRes<{ users: IUser[]}> = await agent.get(Paths.Users.Get);
-      expect(res.status).toBe(HTTP_STATUS_CODES.Ok);
-      expect(compareUserArrays(res.body.users, DB_USERS)).toBeTruthy();
+      expect(res.status).toBe(OK);
+      expect(compareUserArrays(res.body.users, DUMMY_USERS)).toBeTruthy();
     });
   });
 
-  // Test add user
   describe(`"POST:${Paths.Users.Add}"`, () => {
 
-    // Test add user success
-    it(`should return a status code of "${HTTP_STATUS_CODES.Created}" if ` + 
-    'the request was successful.', async () => {
+    it(`should return a status code of "${Created}" if the request was ` + 
+    'successful.', async () => {
       const user = User.new({ name: 'a', email: 'a@a.com' }),
         res = await agent.post(Paths.Users.Add).send({ user });
-      expect(res.status).toBe(HTTP_STATUS_CODES.Created);
+      expect(res.status).toBe(Created);
     });
 
-    // Missing param
     it('should return a JSON object with an error message of and a status ' + 
-      `code of "${HTTP_STATUS_CODES.BadRequest}" if the user param was ` + 
-      'missing.', async () => {
+      `code of "${BadRequest}" if the user param was missing.`, async () => {
       const res: TRes = await agent.post(Paths.Users.Add).send({ user: null });
-      expect(res.status).toBe(HTTP_STATUS_CODES.BadRequest);
-      const errorObj = parseValidationError(res.body.error);
-      expect(errorObj.message).toBe(ValidationError.MESSAGE);
-      expect(errorObj.errors[0].prop).toBe('user');
+      expect(res.status).toBe(BadRequest);
+      const errorObject = parseValidationError(res.body.error);
+      expect(errorObject.message).toBe(ValidationError.MESSAGE);
+      expect(errorObject.errors[0].key).toStrictEqual('user');
     });
   });
 
-  // Update users
   describe(`"PUT:${Paths.Users.Update}"`, () => {
 
-    // Success
-    it(`should return a status code of "${HTTP_STATUS_CODES.Ok}" if the ` + 
-    'request was successful.', async () => {
-      const user = DB_USERS[0];
-      user.name = 'Bill';
-      const res = await agent.put(Paths.Users.Update).send({ user });
-      expect(res.status).toBe(HTTP_STATUS_CODES.Ok);
-    });
+    it(`should return a status code of "${OK}" if the request was successfull`, 
+      async () => {
+        const user = DUMMY_USERS[0];
+        user.name = 'Bill';
+        const res = await agent.put(Paths.Users.Update).send({ user });
+        expect(res.status).toBe(OK);
+      });
 
-    // Id is the wrong data type
     it('should return a JSON object with an error message and a status code ' +
-    `of "${HTTP_STATUS_CODES.BadRequest}" if the user param was missing`, 
-    async () => {
+    `of "${BadRequest}" if id is the wrong data type`, async () => {
       const user = User.new();
       user.id = ('5' as unknown as number);
       const res: TRes = await agent.put(Paths.Users.Update).send({ user });
-      expect(res.status).toBe(HTTP_STATUS_CODES.BadRequest);
+      expect(res.status).toBe(BadRequest);
       const errorObj = parseValidationError(res.body.error);
       expect(errorObj.message).toBe(ValidationError.MESSAGE);
-      expect(errorObj.errors[0].prop).toBe('user');
-      expect(errorObj.errors[0].children?.[0].prop).toBe('id');
+      expect(errorObj.errors[0].keyPath).toStrictEqual(['user', 'id']);
     });
 
-    // User not found
     it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
-    `"${HTTP_STATUS_CODES.NotFound}" if the id was not found.`, async () => {
+    `"${USER_NOT_FOUND_ERR}" and a status code of "${NotFound}" if the id ` + 
+    'was not found.', async () => {
       const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
         res: TRes = await agent.put(Paths.Users.Update).send({ user });
-      expect(res.status).toBe(HTTP_STATUS_CODES.NotFound);
+      expect(res.status).toBe(NotFound);
       expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
     });
   });
 
-  // Delete User
   describe(`"DELETE:${Paths.Users.Delete()}"`, () => {
 
-    // Success
-    it(`should return a status code of "${HTTP_STATUS_CODES.Ok}" if the ` + 
-    'request was successful.', async () => {
-      const id = dbUsers[0].id,
-        res = await agent.delete(Paths.Users.Delete(id));
-      expect(res.status).toBe(HTTP_STATUS_CODES.Ok);
-    });
+    it(`should return a status code of "${OK}" if the request was successful.`, 
+      async () => {
+        const id = dbUsers[0].id,
+          res = await agent.delete(Paths.Users.Delete(id));
+        expect(res.status).toBe(OK);
+      });
 
-    // User not found
     it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of ` + 
-    `"${HTTP_STATUS_CODES.NotFound}" if the id was not found.`, async () => {
+    `"${USER_NOT_FOUND_ERR}" and a status code of "${NotFound}" if the id ` + 
+    'was not found.', async () => {
       const res: TRes = await agent.delete(Paths.Users.Delete(-1));
-      expect(res.status).toBe(HTTP_STATUS_CODES.NotFound);
+      expect(res.status).toBe(NotFound);
       expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
     });
   });

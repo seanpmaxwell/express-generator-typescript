@@ -1,4 +1,4 @@
-import { IParseObjectError, parseJson } from 'jet-validators/utils';
+import { ParseError, parseJson } from 'jet-validators/utils';
 import { isString } from 'jet-validators';
 import { IUser } from '@src/models/User';
 
@@ -10,7 +10,7 @@ type TUserArray = IUser[] | readonly IUser[];
 
 interface IValidationError {
   message: string;
-  errors: IParseObjectError[];
+  errors: ParseError[];
 }
 
 /******************************************************************************

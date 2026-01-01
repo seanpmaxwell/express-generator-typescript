@@ -1,4 +1,4 @@
-import { IParseObjectError } from 'jet-validators/utils';
+import { ParseError } from 'jet-validators/utils';
 
 import HTTP_STATUS_CODES, {
   HttpStatusCodes,
@@ -28,7 +28,7 @@ export class ValidationError extends RouteError {
   public static MESSAGE = 'The parseObj() function discovered one or ' + 
     'more errors.';
 
-  public constructor(errors: IParseObjectError[]) {
+  public constructor(errors: ParseError[]) {
     const msg = JSON.stringify({
       message: ValidationError.MESSAGE,
       errors,

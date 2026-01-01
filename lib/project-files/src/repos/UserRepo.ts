@@ -72,7 +72,7 @@ async function update(user: IUser): Promise<void> {
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<void> {
+async function __delete__(id: number): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -81,7 +81,6 @@ async function delete_(id: number): Promise<void> {
     }
   }
 }
-
 
 // **** Unit-Tests Only **** //
 
@@ -104,7 +103,7 @@ async function deleteAllUsers(): Promise<void> {
  * @internal
  * Test-only helper. Do not use in production code.
  */
-async function insertMult(
+async function insertMultiple(
   users: IUser[] | readonly IUser[],
 ): Promise<IUser[]> {
   const db = await orm.openDb(),
@@ -128,7 +127,7 @@ export default {
   getAll,
   add,
   update,
-  delete: delete_,
+  delete: __delete__,
   deleteAllUsers,
-  insertMult,
+  insertMultiple,
 } as const;
