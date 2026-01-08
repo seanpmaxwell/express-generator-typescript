@@ -70,10 +70,8 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 ## Generated Template 🧩 
 
 The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for Linting, transpiling, and running tests are all configured for you.
-<br/><br/>
 
-
-## Available Scripts 📜 
+### Available `package.json` Scripts
 
 - `npm run dev` / `npm run dev:hot` – Run the server with live reload.
 - `npm run test` / `npm run test:hot` – Execute all Jest tests, optionally with watch mode.
