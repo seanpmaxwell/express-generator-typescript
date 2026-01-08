@@ -11,13 +11,13 @@
 # express-generator-typescript
 
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
-<br/>
+<br/><br/>
 
 
 ## Overview 🧭
 
 `express-generator-typescript` creates a new Express application similar to the classic `express-generator` package, but the generated project is fully wired for TypeScript. You get strict typing, linting, hot reloading, production builds, testing utilities, and sane defaults that focus on APIs (no view engine or opinionated ORM). Path aliases are preconfigured through `tsconfig-paths` and `_moduleAliases`, so referencing modules stays clean even as the app grows.
-<br/>
+<br/><br/>
 
 
 ## Features ✨
@@ -53,7 +53,7 @@ npm run dev
 ```
 
 Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the generator creates `express-gen-ts`.
-<br/>
+<br/><br/>
 
 
 ## CLI Options 🖥️ 
@@ -70,7 +70,7 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 ## Generated Template 🧩 
 
 The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for Linting, transpiling, and running tests are all configured for you.
-<br/>
+<br/><br/>
 
 
 ## Available Scripts 📜 
@@ -88,7 +88,7 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 ## Debugging 🐞
 
 Development uses `nodemon` so the server restarts when files change. To enable the Node.js inspector, edit `nodemonConfig` in `package.json` (and `spec/nodemon.json` for tests) and change the `exec` value from `ts-node` to `node --inspect -r ts-node/register`.
-<br/>
+<br/><br/>
 
 
 ## License 📄
