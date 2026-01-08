@@ -69,7 +69,7 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 
 ## Generated Template 🧩 
 
-The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for Linting, transpiling, and running tests are all configured for you.
+The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for linting, transpiling, and hot-reloading are all configured for you.
 
 ### Available `package.json` Scripts
 
