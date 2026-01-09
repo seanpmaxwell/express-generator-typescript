@@ -11,36 +11,36 @@
 # express-generator-typescript
 
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
-<br/><br/>
 
+<br/><b>***</b><br/>
 
-## Overview 🧭
+## 🧭 Overview 
 
 `express-generator-typescript` creates a new Express application similar to the classic `express-generator` package, but the generated project is fully wired for TypeScript. You get strict typing, linting, hot reloading, production builds, testing utilities, and sane defaults that focus on APIs (no view engine or opinionated ORM). Path aliases are preconfigured through `tsconfig-paths` and `_moduleAliases`, so referencing modules stays clean even as the app grows.
 <br/><br/>
 
 
-## Features ✨
+## ✨ Features
 
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults ready to go.
 - **API-centric** – no view engine or extra dependencies; ideal for SPAs, mobile backends, or services.
 - **Productivity tooling** – includes nodemon, ts-node, hot reload scripts, Jest, ESLint, and production builds.
 - **Path aliases** – aliases configured in `tsconfig.json` and `preload.js` so you can import modules cleanly.
 - **Keeps dependencies lean** – no bundled ORM or UI layers; only the essentials for Express + TS development.
-<br/>
 
+<br/><b>***</b><br/>
 
-## Installation 📦
+## 📦 Installation
 
 ```bash
 npx express-generator-typescript
 # or install globally
 npm install -g express-generator-typescript
 ```
-<br/>
 
+<br/><b>***</b><br/>
 
-## Quick Start ⚡
+## ⚡ Quick Start
 
 ```bash
 # generate a project (defaults to express-gen-ts)
@@ -53,10 +53,10 @@ npm run dev
 ```
 
 Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the generator creates `express-gen-ts`.
-<br/><br/>
 
+<br/><b>***</b><br/>
 
-## CLI Options 🖥️ 
+## 🖥️ CLI Options
 
 | Option            | Description                                                                 |
 | ----------------- | --------------------------------------------------------------------------- |
@@ -64,10 +64,10 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 | `--use-yarn`      | Installs dependencies with Yarn instead of npm.                             |
 
 > The historical `--with-auth` switch was removed in v2.5+. For an auth-ready example see the [express-jsonwebtoken-demo](https://github.com/seanpmaxwell/express-jsonwebtoken-demo) project.
-<br/>
 
+<br/><b>***</b><br/>
 
-## Generated Template 🧩 
+## 🧩 Generated Template
 
 The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for linting, transpiling, and hot-reloading are all configured for you.
 
@@ -80,15 +80,15 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 - `npm run build` – Compile the project for production.
 - `npm start` – Serve the built project.
 - `npm run type-check` – Run the TypeScript compiler without emitting files.
-<br/>
 
+<br/><b>***</b><br/>
 
-## Debugging 🐞
+## 🐞 Debugging
 
 Development uses `nodemon` so the server restarts when files change. To enable the Node.js inspector, edit `nodemonConfig` in `package.json` (and `spec/nodemon.json` for tests) and change the `exec` value from `ts-node` to `node --inspect -r ts-node/register`.
-<br/><br/>
 
+<br/><b>***</b><br/>
 
-## License 📄
+## 📄 License
 
 [MIT](LICENSE)
