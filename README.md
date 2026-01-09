@@ -17,8 +17,8 @@ Command line tool which generates production-ready express templates with TypeSc
 ## 🧭 Overview 
 
 `express-generator-typescript` creates a new Express application similar to the classic `express-generator` package, but the generated project is fully wired for TypeScript. You get strict typing, linting, hot reloading, production builds, testing utilities, and sane defaults that focus on APIs (no view engine or opinionated ORM). Path aliases are preconfigured through `tsconfig-paths` and `_moduleAliases`, so referencing modules stays clean even as the app grows.
-<br/><br/>
 
+<br/><b>***</b><br/>
 
 ## ✨ Features
 
