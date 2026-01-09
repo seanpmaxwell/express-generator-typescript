@@ -11,8 +11,7 @@
 # express-generator-typescript
 
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
-
-<br/><b>***</b><br/>
+<br/>
 
 ## 🧭 Overview 
 
