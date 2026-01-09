@@ -88,6 +88,6 @@ Development uses `nodemon` so the server restarts when files change. To enable t
 
 <br/><b>***</b><br/>
 
-## 📄 License
+## License
 
 [MIT](LICENSE)
