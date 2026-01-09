@@ -85,9 +85,3 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 ## 🐞 Debugging
 
 Development uses `nodemon` so the server restarts when files change. To enable the Node.js inspector, edit `nodemonConfig` in `package.json` (and `spec/nodemon.json` for tests) and change the `exec` value from `ts-node` to `node --inspect -r ts-node/register`.
-
-<br/><b>***</b><br/>
-
-## License
-
-[MIT](LICENSE)
