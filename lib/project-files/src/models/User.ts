@@ -1,19 +1,23 @@
-import { isString, isUnsignedInteger } from 'jet-validators';
-import { parseObject, OnErrorCallback } from 'jet-validators/utils';
+import { isNonEmptyString, isString, isUnsignedInteger } from 'jet-validators';
+import {
+  parseObject,
+  Schema,
+  testObject,
+} from 'jet-validators/utils';
 
-import { transformIsDate } from '@src/common/util/validators';
+import { transformIsDate } from '@src/common/utils/validators';
 import { IModel } from './common/types';
 
 /******************************************************************************
                                  Constants
 ******************************************************************************/
 
-const DEFAULT_USER_VALS: IUser = {
+const GetDefaults = (): IUser => ({
   id: 0,
   name: '',
-  created: new Date(),
   email: '',
-} as const;
+  created: new Date(),
+});
 
 /******************************************************************************
                                   Types
@@ -28,12 +32,21 @@ export interface IUser extends IModel {
                                   Setup
 ******************************************************************************/
 
-// Initialize the "parseUser" function
-const parseUser = parseObject<IUser>({
+const schema: Schema<IUser> = {
   id: isUnsignedInteger,
   name: isString,
   email: isString,
   created: transformIsDate,
+};
+
+// Set the "parseUser" function
+const parseUser = parseObject<IUser>(schema);
+
+// For the APIs make sure the right fields are complete
+const testIsCompleteUser = testObject<IUser>({
+  ...schema,
+  name: isNonEmptyString,
+  email: isNonEmptyString,
 });
 
 /******************************************************************************
@@ -44,20 +57,9 @@ const parseUser = parseObject<IUser>({
  * New user object.
  */
 function __new__(user?: Partial<IUser>): IUser {
-  const defaults = { ...DEFAULT_USER_VALS };
-  defaults.created = new Date();
-  return parseUser({ ...defaults, ...user }, errors => {
+  return parseUser({ ...GetDefaults(), ...user }, errors => {
     throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
   });
-}
-
-/**
- * Check is a user object. For the route validation.
- */
-
-// because this isn't marked with the symbol, the errors are not bubbling up
-function test(arg: unknown, errCb?: OnErrorCallback): arg is IUser {
-  return !!parseUser(arg, errCb);
 }
 
 /******************************************************************************
@@ -66,5 +68,5 @@ function test(arg: unknown, errCb?: OnErrorCallback): arg is IUser {
 
 export default {
   new: __new__,
-  test,
+  isComplete: testIsCompleteUser,
 } as const;

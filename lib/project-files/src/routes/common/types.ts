@@ -1,10 +1,10 @@
 import { Response, Request } from 'express';
+import { PlainObject } from 'jet-validators';
 
 /******************************************************************************
                                 Types
 ******************************************************************************/
 
-type TRecord = Record<string, unknown>;
-export type IReq = Request<TRecord, void, TRecord, TRecord>;
-export type IRes = Response<unknown, TRecord>;
+export type IReq = Request<PlainObject, void, PlainObject, PlainObject>;
+export type IRes = Response<unknown, PlainObject>;
 

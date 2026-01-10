@@ -1,14 +1,14 @@
 import jetEnv, { num } from 'jet-env';
 import { isValueOf } from 'jet-validators';
 
-import { NODE_ENVS } from '.';
+import { NodeEnvs } from '.';
 
 /******************************************************************************
                                  Setup
 ******************************************************************************/
 
-const ENV = jetEnv({
-  NodeEnv: isValueOf(NODE_ENVS),
+const EnvVars = jetEnv({
+  NodeEnv: isValueOf(NodeEnvs),
   Port: num,
 });
 
@@ -16,4 +16,4 @@ const ENV = jetEnv({
                             Export default
 ******************************************************************************/
 
-export default ENV;
+export default EnvVars;

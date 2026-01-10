@@ -1,6 +1,6 @@
 import logger from 'jet-logger';
 
-import ENV from '@src/common/constants/ENV';
+import EnvVars from '@src/common/constants/EnvVars';
 import server from './server';
 
 
@@ -9,7 +9,7 @@ import server from './server';
 ******************************************************************************/
 
 const SERVER_START_MSG = (
-  'Express server started on port: ' + ENV.Port.toString()
+  'Express server started on port: ' + EnvVars.Port.toString()
 );
 
 
@@ -18,7 +18,7 @@ const SERVER_START_MSG = (
 ******************************************************************************/
 
 // Start the server
-server.listen(ENV.Port, err => {
+server.listen(EnvVars.Port, err => {
   if (!!err) {
     logger.err(err.message);
   } else {

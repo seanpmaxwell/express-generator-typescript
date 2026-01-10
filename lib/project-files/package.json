@@ -21,9 +21,9 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "jet-env": "^1.1.4",
-    "jet-logger": "^2.1.1",
+    "jet-logger": "^2.2.1",
     "jet-paths": "^2.0.1",
-    "jet-validators": "^2.0.9",
+    "jet-validators": "^2.1.0",
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0"

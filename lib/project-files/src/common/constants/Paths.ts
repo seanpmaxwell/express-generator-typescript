@@ -1,6 +1,6 @@
 import jetPaths from 'jet-paths';
 
-const PATHS = {
+const Paths = {
   _: '/api',
   Users: {
     _: '/users',
@@ -11,5 +11,5 @@ const PATHS = {
   },
 } as const;
 
-export const JET_PATHS = jetPaths(PATHS);
-export default PATHS;
+export const JetPaths = jetPaths(Paths);
+export default Paths;

@@ -1,8 +1,6 @@
 import { ParseError } from 'jet-validators/utils';
 
-import HTTP_STATUS_CODES, {
-  HttpStatusCodes,
-} from '@src/common/constants/HTTP_STATUS_CODES';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 
 /******************************************************************************
                                  Classes
@@ -33,6 +31,6 @@ export class ValidationError extends RouteError {
       message: ValidationError.MESSAGE,
       errors,
     });
-    super(HTTP_STATUS_CODES.BadRequest, msg);
+    super(HttpStatusCodes.BAD_REQUEST, msg);
   }
 }

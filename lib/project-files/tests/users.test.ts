@@ -1,10 +1,10 @@
 import UserRepo from '@src/repos/UserRepo';
 import User, { IUser } from '@src/models/User';
-import { USER_NOT_FOUND_ERR } from '@src/services/UserService';
+import { USER_NOT_FOUND_ERROR } from '@src/services/UserService/constants';
 
-import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
-import { ValidationError } from '@src/common/util/route-errors';
-import { JET_PATHS as Paths }  from '@src/common/constants/PATHS';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import { ValidationError } from '@src/common/utils/route-errors';
+import { JetPaths as Paths }  from '@src/common/constants/Paths';
 
 import { compareUserArrays, parseValidationError } from './common/utils';
 import { agent } from './aux/setup';
@@ -21,11 +21,11 @@ const DUMMY_USERS = [
 ] as const;
 
 const {
-  BadRequest,
-  Created,
-  Ok: OK,
-  NotFound,
-} = HTTP_STATUS_CODES;
+  BAD_REQUEST,
+  CREATED,
+  OK,
+  NOT_FOUND,
+} = HttpStatusCodes;
 
 /******************************************************************************
                                  Tests
@@ -55,17 +55,17 @@ describe('UserRouter', () => {
 
   describe(`"POST:${Paths.Users.Add}"`, () => {
 
-    it(`should return a status code of "${Created}" if the request was ` + 
+    it(`should return a status code of "${CREATED}" if the request was ` + 
     'successful.', async () => {
       const user = User.new({ name: 'a', email: 'a@a.com' }),
         res = await agent.post(Paths.Users.Add).send({ user });
-      expect(res.status).toBe(Created);
+      expect(res.status).toBe(CREATED);
     });
 
     it('should return a JSON object with an error message of and a status ' + 
-      `code of "${BadRequest}" if the user param was missing.`, async () => {
+      `code of "${BAD_REQUEST}" if the user param was missing.`, async () => {
       const res: TRes = await agent.post(Paths.Users.Add).send({ user: null });
-      expect(res.status).toBe(BadRequest);
+      expect(res.status).toBe(BAD_REQUEST);
       const errorObject = parseValidationError(res.body.error);
       expect(errorObject.message).toBe(ValidationError.MESSAGE);
       expect(errorObject.errors[0].key).toStrictEqual('user');
@@ -83,23 +83,23 @@ describe('UserRouter', () => {
       });
 
     it('should return a JSON object with an error message and a status code ' +
-    `of "${BadRequest}" if id is the wrong data type`, async () => {
+    `of "${BAD_REQUEST}" if id is the wrong data type`, async () => {
       const user = User.new();
       user.id = ('5' as unknown as number);
       const res: TRes = await agent.put(Paths.Users.Update).send({ user });
-      expect(res.status).toBe(BadRequest);
+      expect(res.status).toBe(BAD_REQUEST);
       const errorObj = parseValidationError(res.body.error);
       expect(errorObj.message).toBe(ValidationError.MESSAGE);
       expect(errorObj.errors[0].keyPath).toStrictEqual(['user', 'id']);
     });
 
     it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of "${NotFound}" if the id ` + 
-    'was not found.', async () => {
+    `"${USER_NOT_FOUND_ERROR}" and a status code of "${NOT_FOUND}" if the ` + 
+    'id was not found.', async () => {
       const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
         res: TRes = await agent.put(Paths.Users.Update).send({ user });
-      expect(res.status).toBe(NotFound);
-      expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+      expect(res.status).toBe(NOT_FOUND);
+      expect(res.body.error).toBe(USER_NOT_FOUND_ERROR);
     });
   });
 
@@ -113,11 +113,11 @@ describe('UserRouter', () => {
       });
 
     it('should return a JSON object with the error message of ' + 
-    `"${USER_NOT_FOUND_ERR}" and a status code of "${NotFound}" if the id ` + 
-    'was not found.', async () => {
+    `"${USER_NOT_FOUND_ERROR}" and a status code of "${NOT_FOUND}" if the ` + 
+    'id was not found.', async () => {
       const res: TRes = await agent.delete(Paths.Users.Delete(-1));
-      expect(res.status).toBe(NotFound);
-      expect(res.body.error).toBe(USER_NOT_FOUND_ERR);
+      expect(res.status).toBe(NOT_FOUND);
+      expect(res.body.error).toBe(USER_NOT_FOUND_ERROR);
     });
   });
 });

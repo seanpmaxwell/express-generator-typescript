@@ -1,20 +1,20 @@
 import { isNumber } from 'jet-validators';
 import { transform } from 'jet-validators/utils';
 
-import HTTP_STATUS_CODES from '@src/common/constants/HTTP_STATUS_CODES';
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import UserService from '@src/services/UserService';
 import User from '@src/models/User';
 
 import { IReq, IRes } from './common/types';
-import { parseReq } from './common/util';
+import { parseReq } from './common/utils';
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
 const Validators = {
-  add: parseReq({ user: User.test }),
-  update: parseReq({ user: User.test }),
+  add: parseReq({ user: User.isComplete }),
+  update: parseReq({ user: User.isComplete }),
   delete: parseReq({ id: transform(Number, isNumber) }),
 } as const;
 
@@ -27,7 +27,7 @@ const Validators = {
  */
 async function getAll(_: IReq, res: IRes) {
   const users = await UserService.getAll();
-  res.status(HTTP_STATUS_CODES.Ok).json({ users });
+  res.status(HttpStatusCodes.OK).json({ users });
 }
 
 /**
@@ -36,7 +36,7 @@ async function getAll(_: IReq, res: IRes) {
 async function add(req: IReq, res: IRes) {
   const { user } = Validators.add(req.body);
   await UserService.addOne(user);
-  res.status(HTTP_STATUS_CODES.Created).end();
+  res.status(HttpStatusCodes.CREATED).end();
 }
 
 /**
@@ -45,16 +45,16 @@ async function add(req: IReq, res: IRes) {
 async function update(req: IReq, res: IRes) {
   const { user } = Validators.update(req.body);
   await UserService.updateOne(user);
-  res.status(HTTP_STATUS_CODES.Ok).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 /**
  * Delete one user.
  */
-async function delete_(req: IReq, res: IRes) {
+async function __delete__(req: IReq, res: IRes) {
   const { id } = Validators.delete(req.params);
   await UserService.delete(id);
-  res.status(HTTP_STATUS_CODES.Ok).end();
+  res.status(HttpStatusCodes.OK).end();
 }
 
 /******************************************************************************
@@ -65,5 +65,5 @@ export default {
   getAll,
   add,
   update,
-  delete: delete_,
+  delete: __delete__,
 } as const;

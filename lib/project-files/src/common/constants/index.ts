@@ -4,8 +4,8 @@
 ******************************************************************************/
 
 // NOTE: These need to match the names of your ".env" files
-export const NODE_ENVS = {
-  Dev: 'development',
-  Test: 'test',
-  Production: 'production',
+export const NodeEnvs = {
+  DEV: 'development',
+  TEST: 'test',
+  PRODUCTION: 'production',
 } as const;
