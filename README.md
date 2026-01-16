@@ -76,6 +76,7 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 - `npm run test` / `npm run test:hot` – Execute all Jest tests, optionally with watch mode.
 - `npm run test -- users.test.ts` – Target a single test file.
 - `npm run lint` – Run ESLint checks.
+- `npm run format` - Run prettier.
 - `npm run build` – Compile the project for production.
 - `npm start` – Serve the built project.
 - `npm run type-check` – Run the TypeScript compiler without emitting files.
