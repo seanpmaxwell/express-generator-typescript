@@ -1,8 +1,8 @@
-import { RouteError } from '@src/common/utils/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-
-import UserRepo from '@src/repos/UserRepo';
+import { RouteError } from '@src/common/utils/route-errors';
 import { IUser } from '@src/models/User';
+import UserRepo from '@src/repos/UserRepo';
+
 import { USER_NOT_FOUND_ERROR } from './constants';
 
 /******************************************************************************

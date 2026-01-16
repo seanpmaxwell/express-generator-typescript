@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
   <!-- Head -->
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Users</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/users.css" />
 
@@ -26,12 +25,9 @@
 
   <!-- Body -->
   <body>
-
     <!-- Add Users -->
     <div class="users-column add-user-col">
-      <div class="column-header">
-        Add User:
-      </div>
+      <div class="column-header">Add User:</div>
       <div>
         <input
           id="name-input"
@@ -49,74 +45,64 @@
         />
       </div>
       <div>
-        <button
-          id="add-user-btn"
-          class="btn btn-success"
-        >
-          Add
-        </button>
+        <button id="add-user-btn" class="btn btn-success">Add</button>
       </div>
     </div>
 
     <!-- Display Users -->
     <div class="users-column">
-      <div class="column-header">
-        Users:
-      </div>
+      <div class="column-header">Users:</div>
 
       <div id="all-users-anchor"></div>
-      <script
-        id="all-users-template"
-        type="text/x-handlebars-template"
-      >
+      <script id="all-users-template" type="text/x-handlebars-template">
         {{#each users}}
-          <div class="user-display-ele">
-            <div class="normal-view">
+          <div class='user-display-ele'>
+            <div class='normal-view'>
               <div><b>Name:</b> {{name}}</div>
               <div><b>Email:</b> {{email}}</div>
               <div><b>Created:</b> {{createdFormatted}}</div>
               <button
-                type="button"
-                class="btn btn-primary edit-user-btn"
-                data-user-id="{{id}}"
+                type='button'
+                class='btn btn-primary edit-user-btn'
+                data-user-id='{{id}}'
               >
                 Edit
               </button>
               <button
-                class="btn btn-danger delete-user-btn"
-                data-user-id="{{id}}"
+                class='btn btn-danger delete-user-btn'
+                data-user-id='{{id}}'
               >
                 Delete
               </button>
             </div>
 
-            <div class="edit-view">
+            <div class='edit-view'>
               <div>
                 Name:&nbsp;
                 <input
-                  type="text"
-                  class="form-control name-edit-input"
-                  value="{{name}}"
+                  type='text'
+                  class='form-control name-edit-input'
+                  value='{{name}}'
                 />
               </div>
-              <div class="email-edit">
+              <div class='email-edit'>
                 Email:&nbsp;
                 <input
-                  type="email"
-                  class="form-control email-edit-input"
-                  value="{{email}}"
+                  type='email'
+                  class='form-control email-edit-input'
+                  value='{{email}}'
                 />
               </div>
               <button
-                class="btn btn-primary submit-edit-btn"
-                data-user-id="{{id}}"
-                data-user-created="{{created}}"
+                class='btn btn-primary submit-edit-btn'
+                data-user-id='{{id}}'
+                data-user-created='{{created}}'
               >
                 Submit
               </button>
               <button
-                class="btn btn-secondary cancel-edit-btn"
-                data-user-id="{{id}}"
+                class='btn btn-secondary cancel-edit-btn'
+                data-user-id='{{id}}'
               >
                 Cancel
               </button>

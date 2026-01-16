@@ -9,6 +9,6 @@ import { transform } from 'jet-validators/utils';
  * Convert to date object then check is a validate date.
  */
 export const transformIsDate = transform(
-  arg => new Date(arg as string),
-  arg => isDate(arg),
+  (arg) => new Date(arg as string),
+  (arg) => isDate(arg),
 );

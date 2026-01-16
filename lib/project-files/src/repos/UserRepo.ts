@@ -1,5 +1,5 @@
-import { IUser } from '@src/models/User';
 import { getRandomInt } from '@src/common/utils/misc';
+import { IUser } from '@src/models/User';
 
 import orm from './MockOrm';
 
@@ -86,7 +86,7 @@ async function __delete__(id: number): Promise<void> {
 
 /**
  * Delete every user record.
- * 
+ *
  * @internal
  * Test-only helper. Do not use in production code.
  */
@@ -97,9 +97,9 @@ async function deleteAllUsers(): Promise<void> {
 }
 
 /**
- * Insert multiple users. Can't do multiple at once cause using a plain file 
+ * Insert multiple users. Can't do multiple at once cause using a plain file
  * for now.
- * 
+ *
  * @internal
  * Test-only helper. Do not use in production code.
  */
@@ -107,12 +107,12 @@ async function insertMultiple(
   users: IUser[] | readonly IUser[],
 ): Promise<IUser[]> {
   const db = await orm.openDb(),
-    usersF = [ ...users ];
+    usersF = [...users];
   for (const user of usersF) {
     user.id = getRandomInt();
     user.created = new Date();
   }
-  db.users = [ ...db.users, ...users ];
+  db.users = [...db.users, ...users];
   await orm.saveDb(db);
   return usersF;
 }

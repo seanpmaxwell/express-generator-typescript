@@ -1,11 +1,8 @@
 import { isNonEmptyString, isString, isUnsignedInteger } from 'jet-validators';
-import {
-  parseObject,
-  Schema,
-  testObject,
-} from 'jet-validators/utils';
+import { parseObject, Schema, testObject } from 'jet-validators/utils';
 
 import { transformIsDate } from '@src/common/utils/validators';
+
 import { IModel } from './common/types';
 
 /******************************************************************************
@@ -57,7 +54,7 @@ const testIsCompleteUser = testObject<IUser>({
  * New user object.
  */
 function __new__(user?: Partial<IUser>): IUser {
-  return parseUser({ ...GetDefaults(), ...user }, errors => {
+  return parseUser({ ...GetDefaults(), ...user }, (errors) => {
     throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
   });
 }

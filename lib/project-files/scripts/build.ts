@@ -1,4 +1,5 @@
 import logger from 'jet-logger';
+
 import { copy, copyFilesRec, exec, remove } from './common/utils';
 
 /******************************************************************************
@@ -9,8 +10,7 @@ import { copy, copyFilesRec, exec, remove } from './common/utils';
  * Start
  */
 (async () => {
-  try {
-    // Remove current build
+  // Remove current build
     await remove('./dist/');
     await exec('npm run lint', '../');
     await exec('tsc --project tsconfig.prod.json', '../');
@@ -19,10 +19,8 @@ import { copy, copyFilesRec, exec, remove } from './common/utils';
     await copy('./temp/config.js', './config.js');
     await copy('./temp/src', './dist');
     await remove('./temp/');
-  } catch (err) {
+})().catch((err) => {
     logger.err(err);
-    // eslint-disable-next-line n/no-process-exit
     process.exit(1);
-  }
-})();
+})
 

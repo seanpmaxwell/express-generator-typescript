@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Request, Response } from 'express';
 import { PlainObject } from 'jet-validators';
 
 /******************************************************************************
@@ -7,4 +7,3 @@ import { PlainObject } from 'jet-validators';
 
 export type IReq = Request<PlainObject, void, PlainObject, PlainObject>;
 export type IRes = Response<unknown, PlainObject>;
-

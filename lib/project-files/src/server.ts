@@ -1,17 +1,15 @@
+import express, { NextFunction, Request, Response } from 'express';
+import helmet from 'helmet';
+import logger from 'jet-logger';
 import morgan from 'morgan';
 import path from 'path';
-import helmet from 'helmet';
-import express, { Request, Response, NextFunction } from 'express';
-import logger from 'jet-logger';
 
-import BaseRouter from '@src/routes';
-
-import Paths from '@src/common/constants/Paths';
-import EnvVars from '@src/common/constants/EnvVars';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import Paths from '@src/common/constants/Paths';
 import { RouteError } from '@src/common/utils/route-errors';
-import { NodeEnvs } from '@src/common/constants';
+import BaseRouter from '@src/routes/apiRouter';
 
+import EnvVars, { NodeEnvs } from './common/constants/env';
 
 /******************************************************************************
                                 Setup
@@ -19,12 +17,11 @@ import { NodeEnvs } from '@src/common/constants';
 
 const app = express();
 
-
 // **** Middleware **** //
 
 // Basic middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Show routes called in console during development
 if (EnvVars.NodeEnv === NodeEnvs.DEV) {
@@ -33,7 +30,7 @@ if (EnvVars.NodeEnv === NodeEnvs.DEV) {
 
 // Security
 if (EnvVars.NodeEnv === NodeEnvs.PRODUCTION) {
-  // eslint-disable-next-line n/no-process-env
+  // eslint-disable-next-line no-process-env
   if (!process.env.DISABLE_HELMET) {
     app.use(helmet());
   }
@@ -55,7 +52,6 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   return next(err);
 });
 
-
 // **** FrontEnd Content **** //
 
 // Set views directory (html)
@@ -75,7 +71,6 @@ app.get('/', (_: Request, res: Response) => {
 app.get('/users', (_: Request, res: Response) => {
   return res.sendFile('users.html', { root: viewsDir });
 });
-
 
 /******************************************************************************
                                 Export default

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { ValueOf } from 'jet-validators';
 
 /******************************************************************************

@@ -68,7 +68,7 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 
 ## 🧩 Generated Template
 
-The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for linting, transpiling, and hot-reloading are all configured for you.
+The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for linting, transpiling, formatting, and hot-reloading are all configured for you.
 
 ### Available `package.json` Scripts
 
@@ -80,11 +80,71 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 - `npm start` – Serve the built project.
 - `npm run type-check` – Run the TypeScript compiler without emitting files.
 
+### Architecture
+
+Because this is a small CRUD app, **layered** is the architectural pattern of choice. However, you should consider switching to a **domain-based** layout if you plan on scaling. There is a good tutorial [here](https://github.com/seanpmaxwell/Typescript-Best-Practices/tree/main?tab=readme-ov-file#architecture) in the _Typescript Best Practices README_ about architectural patterns with TypeScript.
+
+Layers explained:
+```yml
+- tests/ <-- unit-tests
+- src/ <-- source code
+  - common/
+    - constants/
+      - Paths <-- Single source of truth for all API routes
+  - routes/ <-- extracting and validating values from express Request/Response objects
+  - services/ <-- Business logic (where everything comes together)
+  - repos/ <-- Talking to the database layer
+  - models/ <-- For describing/handling objects representing database records
+```
+
 <br/><b>***</b><br/>
 
-## 🐞 Debugging
+## Note for VSCode users
 
-Development uses `nodemon` so the server restarts when files change. To enable the Node.js inspector, edit `nodemonConfig` in `package.json` (and `spec/nodemon.json` for tests) and change the `exec` value from `ts-node` to `node --inspect -r ts-node/register`.
+The generated template uses `eslint`+`prettier`, so if you want features like _formatting on save_, you need to make sure to install the prettier extension for VSCode and set it as your default formatter in `setting.json`:
+
+```json
+// settings.json
+{
+  "editor.minimap.enabled": false,
+  "editor.rulers": [80],
+  "editor.tabSize": 2,
+
+  "workbench.sideBar.location": "right",
+  "workbench.editor.empty.hint": "hidden",
+
+  // Formatting: Prettier only
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ESLint: linting only (NO formatting)
+  "eslint.format.enable": false,
+  "eslint.nodePath": "node_modules",
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+
+  // Run ESLint fixes (non-formatting) on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Language overrides (keep Prettier)
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // JSDoc noise reduction
+  "javascript.suggest.completeJSDocs": false,
+  "javascript.suggest.jsdoc.generateReturns": false,
+  "typescript.suggest.completeJSDocs": false,
+  "typescript.suggest.jsdoc.generateReturns": false
+}
+```
 
 <br/><b>***</b><br/>
 

@@ -2,8 +2,8 @@ import { isNumber } from 'jet-validators';
 import { transform } from 'jet-validators/utils';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import UserService from '@src/services/UserService';
 import User from '@src/models/User';
+import UserService from '@src/services/UserService';
 
 import { IReq, IRes } from './common/types';
 import { parseReq } from './common/utils';

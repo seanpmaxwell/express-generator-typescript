@@ -1,6 +1,6 @@
+import childProcess from 'child_process';
 import fs from 'fs-extra';
 import logger from 'jet-logger';
-import childProcess from 'child_process';
 import path from 'path';
 
 /******************************************************************************
@@ -12,8 +12,8 @@ import path from 'path';
  */
 export function copy(src: string, dest: string): Promise<void> {
   return new Promise((res, rej) => {
-    return fs.copy(src, dest, err => {
-      return (!!err ? rej(err) : res());
+    return fs.copy(src, dest, (err) => {
+      return !!err ? rej(err) : res();
     });
   });
 }
@@ -23,8 +23,8 @@ export function copy(src: string, dest: string): Promise<void> {
  */
 export function remove(loc: string): Promise<void> {
   return new Promise((res, rej) => {
-    return fs.remove(loc, err => {
-      return (!!err ? rej(err) : res());
+    return fs.remove(loc, (err) => {
+      return !!err ? rej(err) : res();
     });
   });
 }
@@ -37,7 +37,7 @@ export function exec(cmd: string, loc = './'): Promise<string> {
   const callingDir = path.dirname(require.main?.filename ?? './'),
     cwd = path.join(callingDir, loc);
   // Wrap in promise
-  return new Promise((res, rej) => 
+  return new Promise((res, rej) =>
     childProcess.exec(cmd, { cwd }, (err, stdout, stderr) => {
       if (!!stdout) {
         logger.info(stdout);
@@ -57,18 +57,18 @@ export function exec(cmd: string, loc = './'): Promise<string> {
 }
 
 /**
- * Recursively search for a folder for all files and copy them to the new 
+ * Recursively search for a folder for all files and copy them to the new
  * destination keeping their paths relative to the "src" param.
- * 
- * Example: 
+ *
+ * Example:
  *  If file "./src/foo/bar.txt" exists then:
  *  copyFilesRec('./src', './dest') => ["./dest/foo/bar.txt"]
- * 
+ *
  * @param excludeExt Exlude a list of file extensions.
  */
 export async function copyFilesRec(
   src: string,
-  dest: string, 
+  dest: string,
   excludeExt?: string[],
 ): Promise<void> {
   const copyReqs: Promise<void>[] = [];

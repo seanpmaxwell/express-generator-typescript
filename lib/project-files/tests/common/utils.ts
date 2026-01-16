@@ -1,5 +1,6 @@
-import { ParseError, parseJson } from 'jet-validators/utils';
 import { isString } from 'jet-validators';
+import { ParseError, parseJson } from 'jet-validators/utils';
+
 import { IUser } from '@src/models/User';
 
 /******************************************************************************
@@ -28,7 +29,7 @@ export function parseValidationError(arg: unknown): IValidationError {
 }
 
 /**
- * Compare to user arrays. Order does not matter and this assumes the email 
+ * Compare to user arrays. Order does not matter and this assumes the email
  * field is unique
  */
 export function compareUserArrays(a: TUserArray, b: TUserArray): boolean {

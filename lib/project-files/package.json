@@ -4,9 +4,10 @@
   "scripts": {
     "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "dev": "NODE_ENV=development ts-node ./src",
-    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
+    "dev": "NODE_ENV=development ts-node ./src/main",
+    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src/main --ext .ts",
     "lint": "eslint .",
+    "format": "prettier --write .",
     "start": "NODE_ENV=production node -r ./config.js ./dist",
     "test": "NODE_ENV=test vitest",
     "type-check": "tsc -b --noEmit"
@@ -14,7 +15,7 @@
   "engines": {
     "node": ">=16.0.0"
   },
-"dependencies": {
+  "dependencies": {
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
@@ -23,15 +24,15 @@
     "jet-env": "^1.1.6",
     "jet-logger": "^2.2.3",
     "jet-paths": "^2.0.1",
-    "jet-validators": "^2.2.0",
+    "jet-validators": "file:../../../jet-validators",
     "jsonfile": "^6.2.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@stylistic/eslint-plugin": "^5.7.0",
     "@swc/core": "^1.15.8",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/find": "^0.2.4",
     "@types/fs-extra": "^11.0.4",
@@ -41,11 +42,13 @@
     "@types/node": "^25.0.5",
     "@types/supertest": "^6.0.3",
     "eslint": "^9.39.2",
-    "eslint-plugin-n": "^17.23.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^17.23.2",
     "find": "^0.3.0",
     "fs-extra": "^11.3.3",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.11",
+    "prettier": "^3.8.0",
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",

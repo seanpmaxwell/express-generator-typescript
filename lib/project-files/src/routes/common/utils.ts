@@ -1,4 +1,5 @@
 import { parseObject, Schema } from 'jet-validators/utils';
+
 import { ValidationError } from '@src/common/utils/route-errors';
 
 /******************************************************************************
@@ -6,11 +7,11 @@ import { ValidationError } from '@src/common/utils/route-errors';
 ******************************************************************************/
 
 /**
- * Throw a "ParseObjError" when "parseObject" fails. Also extract a nested 
+ * Throw a "ParseObjError" when "parseObject" fails. Also extract a nested
  * "ParseObjError" and add it to the nestedErrors array.
  */
 export function parseReq<U extends Schema>(schema: U) {
-  return parseObject(schema, errors => {
+  return parseObject(schema, (errors) => {
     throw new ValidationError(errors);
   });
 }

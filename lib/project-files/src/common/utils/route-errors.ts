@@ -22,9 +22,8 @@ export class RouteError extends Error {
  * Handle "parseObj" errors.
  */
 export class ValidationError extends RouteError {
-
-  public static MESSAGE = 'The parseObj() function discovered one or ' + 
-    'more errors.';
+  public static MESSAGE =
+    'The parseObj() function discovered one or ' + 'more errors.';
 
   public constructor(errors: ParseError[]) {
     const msg = JSON.stringify({
