@@ -3,11 +3,12 @@ import { JetPaths as Paths } from '@src/common/constants/Paths';
 import { ValidationError } from '@src/common/utils/route-errors';
 import User, { IUser } from '@src/models/User';
 import UserRepo from '@src/repos/UserRepo';
-import { USER_NOT_FOUND_ERROR } from '@src/services/UserService/constants';
 
-import { agent } from './aux/setup';
-import { IRes } from './common/types';
-import { compareUserArrays, parseValidationError } from './common/utils';
+import { agent } from './support/agent';
+import { IRes } from './common/supertest-types';
+import { parseValidationError } from './common/error-utils';
+import UserService from '@src/services/UserService';
+import { compareUserArrays } from './common/comparators';
 
 /******************************************************************************
                                Constants
@@ -98,13 +99,13 @@ describe('UserRouter', () => {
 
     it(
       'should return a JSON object with the error message of ' +
-        `"${USER_NOT_FOUND_ERROR}" and a status code of "${NOT_FOUND}" if the ` +
-        'id was not found.',
+        `"${UserService.Errors.USER_NOT_FOUND}" and a status code of ` +
+        `"${NOT_FOUND}" if the id was not found.`,
       async () => {
         const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
           res: IRes = await agent.put(Paths.Users.Update).send({ user });
         expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERROR);
+        expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);
       },
     );
   });
@@ -118,12 +119,12 @@ describe('UserRouter', () => {
 
     it(
       'should return a JSON object with the error message of ' +
-        `"${USER_NOT_FOUND_ERROR}" and a status code of "${NOT_FOUND}" if the ` +
-        'id was not found.',
+        `"${UserService.Errors.USER_NOT_FOUND}" and a status code of ` +
+        '"${NOT_FOUND}" if the id was not found.',
       async () => {
         const res: IRes = await agent.delete(Paths.Users.Delete(-1));
         expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(USER_NOT_FOUND_ERROR);
+        expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);
       },
     );
   });

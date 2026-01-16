@@ -1,6 +1,3 @@
-import { isString } from 'jet-validators';
-import { ParseError, parseJson } from 'jet-validators/utils';
-
 import { IUser } from '@src/models/User';
 
 /******************************************************************************
@@ -9,24 +6,9 @@ import { IUser } from '@src/models/User';
 
 type TUserArray = IUser[] | readonly IUser[];
 
-interface IValidationError {
-  message: string;
-  errors: ParseError[];
-}
-
 /******************************************************************************
                                 Functions
 ******************************************************************************/
-
-/**
- * JSON parse a validation error.
- */
-export function parseValidationError(arg: unknown): IValidationError {
-  if (!isString(arg)) {
-    throw new Error('Not a string');
-  }
-  return parseJson<IValidationError>(arg);
-}
 
 /**
  * Compare to user arrays. Order does not matter and this assumes the email
@@ -34,8 +16,8 @@ export function parseValidationError(arg: unknown): IValidationError {
  */
 export function compareUserArrays(a: TUserArray, b: TUserArray): boolean {
   if (a.length !== b.length) return false;
-  const aSorted = sortByEmail(a);
-  const bSorted = sortByEmail(b);
+  const aSorted = sortByEmail(a),
+    bSorted = sortByEmail(b);
   for (let i = 0; i < aSorted.length; i++) {
     const a = aSorted[i],
       b = bSorted[i];

@@ -3,7 +3,7 @@ import { parseObject, Schema, testObject } from 'jet-validators/utils';
 
 import { transformIsDate } from '@src/common/utils/validators';
 
-import { IModel } from './common/types';
+import { IModel } from './common/IModel';
 
 /******************************************************************************
                                  Constants

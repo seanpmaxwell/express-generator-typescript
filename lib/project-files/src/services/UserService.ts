@@ -3,7 +3,13 @@ import { RouteError } from '@src/common/utils/route-errors';
 import { IUser } from '@src/models/User';
 import UserRepo from '@src/repos/UserRepo';
 
-import { USER_NOT_FOUND_ERROR } from './constants';
+/******************************************************************************
+                                Constants
+******************************************************************************/
+
+const Errors = {
+  USER_NOT_FOUND: 'User not found',
+} as const;
 
 /******************************************************************************
                                 Functions
@@ -29,9 +35,8 @@ function addOne(user: IUser): Promise<void> {
 async function updateOne(user: IUser): Promise<void> {
   const persists = await UserRepo.persists(user.id);
   if (!persists) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERROR);
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
   }
-  // Return user
   return UserRepo.update(user);
 }
 
@@ -41,7 +46,7 @@ async function updateOne(user: IUser): Promise<void> {
 async function __delete__(id: number): Promise<void> {
   const persists = await UserRepo.persists(id);
   if (!persists) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, USER_NOT_FOUND_ERROR);
+    throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
   }
   return UserRepo.delete(id);
 }
@@ -51,6 +56,7 @@ async function __delete__(id: number): Promise<void> {
 ******************************************************************************/
 
 export default {
+  Errors,
   getAll,
   addOne,
   updateOne,

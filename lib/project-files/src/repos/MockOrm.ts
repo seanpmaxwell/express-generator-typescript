@@ -1,15 +1,17 @@
 import jsonfile from 'jsonfile';
 
-import { NodeEnvs } from '@src/common/constants';
-import EnvVars from '@src/common/constants/EnvVars';
+import EnvVars, { NodeEnvs } from '@src/common/constants/env';
 import { IUser } from '@src/models/User';
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
-const DB_FILE_NAME =
-  EnvVars.NodeEnv === NodeEnvs.TEST ? 'database.test.json' : 'database.json';
+const DATABASE_FILE_PATH = __dirname + '/common' + (
+  EnvVars.NodeEnv === NodeEnvs.TEST 
+  ? '/database.test.json' 
+  : '/database.json'
+);
 
 /******************************************************************************
                                 Types
@@ -27,23 +29,21 @@ interface IDatabase {
  * Fetch the json from the file.
  */
 function openDb(): Promise<IDatabase> {
-  return jsonfile.readFile(
-    __dirname + '/' + DB_FILE_NAME,
-  ) as Promise<IDatabase>;
+  return jsonfile.readFile(DATABASE_FILE_PATH) as Promise<IDatabase>;
 }
 
 /**
  * Update the file.
  */
 function saveDb(db: IDatabase): Promise<void> {
-  return jsonfile.writeFile(__dirname + '/' + DB_FILE_NAME, db);
+  return jsonfile.writeFile(DATABASE_FILE_PATH, db);
 }
 
 /**
  * Empty the database
  */
 function cleanDb(): Promise<void> {
-  return jsonfile.writeFile(__dirname + '/' + DB_FILE_NAME, {});
+  return jsonfile.writeFile( DATABASE_FILE_PATH, {});
 }
 
 /******************************************************************************

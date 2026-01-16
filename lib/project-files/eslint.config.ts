@@ -38,7 +38,7 @@ export default defineConfig([
       'no-extra-boolean-cast': 'off',
       'no-process-env': 'warn',
       // node correctness
-      'n/no-extraneous-import': 'error',
+      'n/no-extraneous-import': 'error'
     },
   },
   // MUST be last — disables ALL formatting rules

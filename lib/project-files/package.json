@@ -5,10 +5,10 @@
     "build": "ts-node ./scripts/build.ts",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
     "dev": "NODE_ENV=development ts-node ./src/main",
-    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src/main --ext .ts",
+    "dev:hot": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "start": "NODE_ENV=production node -r ./config.js ./dist",
+    "start": "NODE_ENV=production node -r ./config.js ./dist/main",
     "test": "NODE_ENV=test vitest",
     "type-check": "tsc -b --noEmit"
   },
@@ -24,7 +24,7 @@
     "jet-env": "^1.1.6",
     "jet-logger": "^2.2.3",
     "jet-paths": "^2.0.1",
-    "jet-validators": "file:../../../jet-validators",
+    "jet-validators": "2.2.5",
     "jsonfile": "^6.2.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.1"

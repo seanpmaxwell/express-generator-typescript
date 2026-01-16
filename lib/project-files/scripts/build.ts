@@ -6,9 +6,6 @@ import { copy, copyFilesRec, exec, remove } from './common/utils';
                                   Run
 ******************************************************************************/
 
-/**
- * Start
- */
 (async () => {
   // Remove current build
     await remove('./dist/');

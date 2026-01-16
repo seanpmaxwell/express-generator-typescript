@@ -5,8 +5,8 @@ import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import User from '@src/models/User';
 import UserService from '@src/services/UserService';
 
-import { IReq, IRes } from './common/types';
-import { parseReq } from './common/utils';
+import { IReq, IRes } from './common/express-types';
+import parseReq from './common/parseReq';
 
 /******************************************************************************
                                 Constants
@@ -24,6 +24,8 @@ const Validators = {
 
 /**
  * Get all users.
+ *
+ * @route GET /api/users/all
  */
 async function getAll(_: IReq, res: IRes) {
   const users = await UserService.getAll();
@@ -32,6 +34,8 @@ async function getAll(_: IReq, res: IRes) {
 
 /**
  * Add one user.
+ *
+ * @route POST /api/users/add
  */
 async function add(req: IReq, res: IRes) {
   const { user } = Validators.add(req.body);
@@ -41,6 +45,8 @@ async function add(req: IReq, res: IRes) {
 
 /**
  * Update one user.
+ *
+ * @route PUT /api/users/update
  */
 async function update(req: IReq, res: IRes) {
   const { user } = Validators.update(req.body);
@@ -50,6 +56,8 @@ async function update(req: IReq, res: IRes) {
 
 /**
  * Delete one user.
+ *
+ * @route DELETE /api/users/delete/:id
  */
 async function __delete__(req: IReq, res: IRes) {
   const { id } = Validators.delete(req.params);

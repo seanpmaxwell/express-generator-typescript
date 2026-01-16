@@ -1,4 +1,4 @@
-import dotenv from 'dotenv/lib/main';
+import dotenv from 'dotenv';
 import moduleAlias from 'module-alias';
 import path from 'path';
 
