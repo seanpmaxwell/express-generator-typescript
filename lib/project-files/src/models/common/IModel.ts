@@ -1,4 +1,4 @@
 export interface IModel {
-  id: number;
-  created: Date;
+  id: number; // @PK
+  created: Date | string; // @audit
 }

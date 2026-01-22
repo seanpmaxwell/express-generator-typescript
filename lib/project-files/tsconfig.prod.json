@@ -5,7 +5,7 @@
     "lib": ["ES2020"],
     "strict": true,
     "baseUrl": "./",
-    "outDir": "temp",
+    "outDir": "dist",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,7 +16,7 @@
     "sourceMap": false,
     "removeComments": true
   },
-  "include": ["src/**/*.ts", "config.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "tests",
     "src/public/",
