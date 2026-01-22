@@ -73,7 +73,7 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 ### Available `package.json` Scripts
 
 - `npm run dev` / `npm run dev:hot` – Run the server with live reload.
-- `npm run test` / `npm run test:hot` – Execute all Jest tests, optionally with watch mode.
+- `npm run test` - Run tests with vitest.
 - `npm run test -- users.test.ts` – Target a single test file.
 - `npm run lint` – Run ESLint checks.
 - `npm run format` - Run prettier.
@@ -87,15 +87,15 @@ Because this is a small CRUD app, **layered** is the architectural pattern of ch
 
 Layers explained:
 ```yml
-- tests/ <-- unit-tests
 - src/ <-- source code
   - common/
     - constants/
-      - Paths <-- Single source of truth for all API routes
+      - Paths.ts <-- Single source of truth for all API routes
   - routes/ <-- extracting and validating values from express Request/Response objects
   - services/ <-- Business logic (where everything comes together)
   - repos/ <-- Talking to the database layer
   - models/ <-- For describing/handling objects representing database records
+- tests/ <-- unit-tests
 ```
 
 <br/><b>***</b><br/>
