@@ -23,19 +23,15 @@ app.use(helmet());
 
 Remove the existing `node_modules/` folder, `package-lock.json`, and reinstall all library modules.
 
-### `npm run dev` or `npm run dev:hot` (hot reloading)
+### `npm run dev` or `npm run dev:watch` (hot reloading)
 
 Run the server in development mode.<br/>
 
 **IMPORTANT** development mode uses `swc` for performance reasons which DOES NOT check for typescript errors. Run `npm run type-check` to check for type errors. NOTE: you should use your IDE to prevent most type errors.
 
-### `npm test` or `npm run test:hot` (hot reloading)
+### `npm test`
 
-Run all unit-tests.
-
-### `npm test -- "name of test file" (i.e. users).`
-
-Run a single unit-test.
+Run unit-tests with <a href="https://vitest.dev/guide/">vitest</a>.
 
 ### `npm run lint`
 

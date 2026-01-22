@@ -4,7 +4,7 @@ import { IUser } from '@src/models/User';
                                 Types
 ******************************************************************************/
 
-type TUserArray = IUser[] | readonly IUser[];
+type UserArray = IUser[] | readonly IUser[];
 
 /******************************************************************************
                                 Functions
@@ -14,7 +14,7 @@ type TUserArray = IUser[] | readonly IUser[];
  * Compare to user arrays. Order does not matter and this assumes the email
  * field is unique
  */
-export function compareUserArrays(a: TUserArray, b: TUserArray): boolean {
+export function compareUserArrays(a: UserArray, b: UserArray): boolean {
   if (a.length !== b.length) return false;
   const aSorted = sortByEmail(a),
     bSorted = sortByEmail(b);
@@ -31,7 +31,7 @@ export function compareUserArrays(a: TUserArray, b: TUserArray): boolean {
 /**
  * Sort user array by email.
  */
-function sortByEmail(arr: TUserArray): IUser[] {
+function sortByEmail(arr: UserArray): IUser[] {
   return [...arr].sort((x, y) => {
     return x.email.localeCompare(y.email);
   });

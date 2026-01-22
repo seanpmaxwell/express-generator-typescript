@@ -85,10 +85,9 @@ async function __delete__(id: number): Promise<void> {
 // **** Unit-Tests Only **** //
 
 /**
+ * @testOnly
+ * 
  * Delete every user record.
- *
- * @internal
- * Test-only helper. Do not use in production code.
  */
 async function deleteAllUsers(): Promise<void> {
   const db = await orm.openDb();
@@ -97,11 +96,10 @@ async function deleteAllUsers(): Promise<void> {
 }
 
 /**
+ * @testOnly
+ * 
  * Insert multiple users. Can't do multiple at once cause using a plain file
  * for now.
- *
- * @internal
- * Test-only helper. Do not use in production code.
  */
 async function insertMultiple(
   users: IUser[] | readonly IUser[],

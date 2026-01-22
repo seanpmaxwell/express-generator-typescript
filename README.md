@@ -101,10 +101,12 @@ Layers explained:
 
 ## Note for VSCode users
 
-The generated template uses `eslint`+`prettier`, so if you want features like _formatting on save_, you need to make sure to install the prettier extension for VSCode and set it as your default formatter in `setting.json`:
+### Format on save
+
+The generated template uses `eslint`+`prettier`, so if you want features like _formatting on save_, you need to make sure to install the prettier extension for VSCode and set it as your default formatter in `.vscode/setting.json`:
 
 ```json
-// settings.json
+// .vscode/settings.json
 {
   "editor.minimap.enabled": false,
   "editor.rulers": [80],
@@ -143,6 +145,37 @@ The generated template uses `eslint`+`prettier`, so if you want features like _f
   "javascript.suggest.jsdoc.generateReturns": false,
   "typescript.suggest.completeJSDocs": false,
   "typescript.suggest.jsdoc.generateReturns": false
+}
+```
+
+### Debugging
+
+If you want to debug in VSCode with breakpoints you need to start the processes through `.vscode/launch.json`:
+
+```json
+// .vscode/launch.json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Dev - ts-node",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Test - Vitest",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    }
+  ]
 }
 ```
 

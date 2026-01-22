@@ -16,10 +16,20 @@ const GetDefaults = (): IUser => ({
   created: new Date(),
 });
 
+const schema: Schema<IUser> = {
+  id: isUnsignedInteger,
+  name: isString,
+  email: isString,
+  created: transformIsDate,
+};
+
 /******************************************************************************
                                   Types
 ******************************************************************************/
 
+/**
+ * @entity users
+ */
 export interface IUser extends IModel {
   name: string;
   email: string;
@@ -29,12 +39,6 @@ export interface IUser extends IModel {
                                   Setup
 ******************************************************************************/
 
-const schema: Schema<IUser> = {
-  id: isUnsignedInteger,
-  name: isString,
-  email: isString,
-  created: transformIsDate,
-};
 
 // Set the "parseUser" function
 const parseUser = parseObject<IUser>(schema);

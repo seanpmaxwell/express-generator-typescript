@@ -5,8 +5,11 @@ const config = defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    setupFiles: ['config.ts', './tests/support/agent.ts'],
+    setupFiles: ['dotenv/config', './tests/support/agent.ts'],
     isolate: true,
+    env: {
+      DOTENV_CONFIG_PATH: 'config/.env.test',
+    },
   },
   resolve: {
     alias: {
