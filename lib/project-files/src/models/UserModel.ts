@@ -3,20 +3,20 @@ import { parseObject, Schema, testObject } from 'jet-validators/utils';
 
 import { transformIsDate } from '@src/common/utils/validators';
 
-import { IModel } from './common/IModel';
+import { Entity } from './common/types';
 
 /******************************************************************************
                                  Constants
 ******************************************************************************/
 
-const GetDefaults = (): IUser => ({
+const GetDefaults = (): User => ({
   id: 0,
   name: '',
   email: '',
   created: new Date(),
 });
 
-const schema: Schema<IUser> = {
+const schema: Schema<User> = {
   id: isUnsignedInteger,
   name: isString,
   email: isString,
@@ -30,21 +30,20 @@ const schema: Schema<IUser> = {
 /**
  * @entity users
  */
-export interface IUser extends IModel {
+export type User = Entity & {
   name: string;
   email: string;
-}
+};
 
 /******************************************************************************
                                   Setup
 ******************************************************************************/
 
-
 // Set the "parseUser" function
-const parseUser = parseObject<IUser>(schema);
+const parseUser = parseObject<User>(schema);
 
 // For the APIs make sure the right fields are complete
-const testIsCompleteUser = testObject<IUser>({
+const isCompleteUser = testObject<User>({
   ...schema,
   name: isNonEmptyString,
   email: isNonEmptyString,
@@ -57,7 +56,7 @@ const testIsCompleteUser = testObject<IUser>({
 /**
  * New user object.
  */
-function __new__(user?: Partial<IUser>): IUser {
+function newUser(user?: Partial<User>): User {
   return parseUser({ ...GetDefaults(), ...user }, (errors) => {
     throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
   });
@@ -68,6 +67,6 @@ function __new__(user?: Partial<IUser>): IUser {
 ******************************************************************************/
 
 export default {
-  new: __new__,
-  isComplete: testIsCompleteUser,
+  new: newUser,
+  isComplete: isCompleteUser,
 } as const;

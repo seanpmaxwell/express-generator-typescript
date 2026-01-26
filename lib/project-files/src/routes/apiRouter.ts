@@ -10,7 +10,7 @@ import UserRoutes from './UserRoutes';
 
 const apiRouter = Router();
 
-// ----------------------- Add UserRouter ---------------------------------- //
+// ----------------------- Add UserRouter --------------------------------- //
 
 const userRouter = Router();
 
@@ -22,7 +22,7 @@ userRouter.delete(Paths.Users.Delete, UserRoutes.delete);
 apiRouter.use(Paths.Users._, userRouter);
 
 /******************************************************************************
-                                Export default
+                                Export
 ******************************************************************************/
 
 export default apiRouter;

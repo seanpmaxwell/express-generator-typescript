@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { RouteError } from '@src/common/utils/route-errors';
-import { IUser } from '@src/models/User';
+import { User } from '@src/models/UserModel';
 import UserRepo from '@src/repos/UserRepo';
 
 /******************************************************************************
@@ -18,21 +18,21 @@ const Errors = {
 /**
  * Get all users.
  */
-function getAll(): Promise<IUser[]> {
+function getAll(): Promise<User[]> {
   return UserRepo.getAll();
 }
 
 /**
  * Add one user.
  */
-function addOne(user: IUser): Promise<void> {
+function addOne(user: User): Promise<void> {
   return UserRepo.add(user);
 }
 
 /**
  * Update one user.
  */
-async function updateOne(user: IUser): Promise<void> {
+async function updateOne(user: User): Promise<void> {
   const persists = await UserRepo.persists(user.id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
@@ -43,7 +43,7 @@ async function updateOne(user: IUser): Promise<void> {
 /**
  * Delete a user by their id.
  */
-async function __delete__(id: number): Promise<void> {
+async function deleteOne(id: number): Promise<void> {
   const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
@@ -60,5 +60,5 @@ export default {
   getAll,
   addOne,
   updateOne,
-  delete: __delete__,
+  delete: deleteOne,
 } as const;

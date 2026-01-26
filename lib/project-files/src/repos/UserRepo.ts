@@ -1,5 +1,5 @@
 import { getRandomInt } from '@src/common/utils/number-utils';
-import { IUser } from '@src/models/User';
+import { User } from '@src/models/UserModel';
 
 import orm from './MockOrm';
 
@@ -10,7 +10,7 @@ import orm from './MockOrm';
 /**
  * Get one user.
  */
-async function getOne(email: string): Promise<IUser | null> {
+async function getOne(email: string): Promise<User | null> {
   const db = await orm.openDb();
   for (const user of db.users) {
     if (user.email === email) {
@@ -36,7 +36,7 @@ async function persists(id: number): Promise<boolean> {
 /**
  * Get all users.
  */
-async function getAll(): Promise<IUser[]> {
+async function getAll(): Promise<User[]> {
   const db = await orm.openDb();
   return db.users;
 }
@@ -44,7 +44,7 @@ async function getAll(): Promise<IUser[]> {
 /**
  * Add one user.
  */
-async function add(user: IUser): Promise<void> {
+async function add(user: User): Promise<void> {
   const db = await orm.openDb();
   user.id = getRandomInt();
   db.users.push(user);
@@ -54,7 +54,7 @@ async function add(user: IUser): Promise<void> {
 /**
  * Update a user.
  */
-async function update(user: IUser): Promise<void> {
+async function update(user: User): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
@@ -86,7 +86,7 @@ async function __delete__(id: number): Promise<void> {
 
 /**
  * @testOnly
- * 
+ *
  * Delete every user record.
  */
 async function deleteAllUsers(): Promise<void> {
@@ -97,13 +97,13 @@ async function deleteAllUsers(): Promise<void> {
 
 /**
  * @testOnly
- * 
+ *
  * Insert multiple users. Can't do multiple at once cause using a plain file
  * for now.
  */
 async function insertMultiple(
-  users: IUser[] | readonly IUser[],
-): Promise<IUser[]> {
+  users: User[] | readonly User[],
+): Promise<User[]> {
   const db = await orm.openDb(),
     usersF = [...users];
   for (const user of usersF) {

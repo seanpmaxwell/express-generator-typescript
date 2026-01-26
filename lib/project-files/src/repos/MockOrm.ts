@@ -1,25 +1,26 @@
 import jsonfile from 'jsonfile';
 
 import EnvVars, { NodeEnvs } from '@src/common/constants/env';
-import { IUser } from '@src/models/User';
+import { User } from '@src/models/UserModel';
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
-const DATABASE_FILE_PATH = __dirname + '/common' + (
-  EnvVars.NodeEnv === NodeEnvs.TEST 
-  ? '/database.test.json' 
-  : '/database.json'
-);
+const DATABASE_FILE_PATH =
+  __dirname +
+  '/common' +
+  (EnvVars.NodeEnv === NodeEnvs.TEST
+    ? '/database.test.json'
+    : '/database.json');
 
 /******************************************************************************
                                 Types
 ******************************************************************************/
 
-interface IDatabase {
-  users: IUser[];
-}
+type Database = {
+  users: User[];
+};
 
 /******************************************************************************
                                 Functions
@@ -28,14 +29,14 @@ interface IDatabase {
 /**
  * Fetch the json from the file.
  */
-function openDb(): Promise<IDatabase> {
-  return jsonfile.readFile(DATABASE_FILE_PATH) as Promise<IDatabase>;
+function openDb(): Promise<Database> {
+  return jsonfile.readFile(DATABASE_FILE_PATH) as Promise<Database>;
 }
 
 /**
  * Update the file.
  */
-function saveDb(db: IDatabase): Promise<void> {
+function saveDb(db: Database): Promise<void> {
   return jsonfile.writeFile(DATABASE_FILE_PATH, db);
 }
 
@@ -43,7 +44,7 @@ function saveDb(db: IDatabase): Promise<void> {
  * Empty the database
  */
 function cleanDb(): Promise<void> {
-  return jsonfile.writeFile( DATABASE_FILE_PATH, {});
+  return jsonfile.writeFile(DATABASE_FILE_PATH, {});
 }
 
 /******************************************************************************

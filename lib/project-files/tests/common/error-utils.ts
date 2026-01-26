@@ -5,7 +5,7 @@ import { ParseError, parseJson } from 'jet-validators/utils';
                                 Types
 ******************************************************************************/
 
-interface IValidationError {
+type ValidationError = {
   message: string;
   errors: ParseError[];
 }
@@ -17,9 +17,9 @@ interface IValidationError {
 /**
  * JSON parse a validation error.
  */
-export function parseValidationError(arg: unknown): IValidationError {
+export function parseValidationError(arg: unknown): ValidationError {
   if (!isString(arg)) {
     throw new Error('Not a string');
   }
-  return parseJson<IValidationError>(arg);
+  return parseJson<ValidationError>(arg);
 }
