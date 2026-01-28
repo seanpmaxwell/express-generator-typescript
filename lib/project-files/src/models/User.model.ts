@@ -33,7 +33,7 @@ const schema: Schema<IUser> = {
 export interface IUser extends Entity {
   name: string;
   email: string;
-};
+}
 
 /******************************************************************************
                                   Setup

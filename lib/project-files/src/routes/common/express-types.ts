@@ -5,5 +5,7 @@ import { PlainObject } from 'jet-validators';
                                 Types
 ******************************************************************************/
 
-export type Req = Request<PlainObject, void, PlainObject, PlainObject>;
-export type Res = Response<unknown, PlainObject>;
+type UrlParams = Record<string, string>;
+
+export type Req = Request<UrlParams, void, PlainObject>;
+export type Res = Response;
