@@ -5,7 +5,7 @@ import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import User from '@src/models/User.model';
 import UserService from '@src/services/UserService';
 
-import { IReq, IRes } from './common/express-types';
+import { Req, Res } from './common/express-types';
 import parseReq from './common/parseReq';
 
 /******************************************************************************
@@ -27,7 +27,7 @@ const reqValidators = {
  *
  * @route GET /api/users/all
  */
-async function getAll(_: IReq, res: IRes) {
+async function getAll(_: Req, res: Res) {
   const users = await UserService.getAll();
   res.status(HttpStatusCodes.OK).json({ users });
 }
@@ -37,7 +37,7 @@ async function getAll(_: IReq, res: IRes) {
  *
  * @route POST /api/users/add
  */
-async function add(req: IReq, res: IRes) {
+async function add(req: Req, res: Res) {
   const { user } = reqValidators.add(req.body);
   await UserService.addOne(user);
   res.status(HttpStatusCodes.CREATED).end();
@@ -48,7 +48,7 @@ async function add(req: IReq, res: IRes) {
  *
  * @route PUT /api/users/update
  */
-async function update(req: IReq, res: IRes) {
+async function update(req: Req, res: Res) {
   const { user } = reqValidators.update(req.body);
   await UserService.updateOne(user);
   res.status(HttpStatusCodes.OK).end();
@@ -59,7 +59,7 @@ async function update(req: IReq, res: IRes) {
  *
  * @route DELETE /api/users/delete/:id
  */
-async function delete_(req: IReq, res: IRes) {
+async function delete_(req: Req, res: Res) {
   const { id } = reqValidators.delete(req.params);
   await UserService.delete(id);
   res.status(HttpStatusCodes.OK).end();

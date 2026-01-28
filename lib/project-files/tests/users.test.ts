@@ -5,7 +5,7 @@ import User, { IUser } from '@src/models/User.model';
 import UserRepo from '@src/repos/UserRepo';
 
 import { agent } from './support/agent';
-import { IRes } from './common/supertest-types';
+import { TestRes } from './common/supertest-types';
 import { parseValidationError } from './common/error-utils';
 import UserService from '@src/services/UserService';
 import { compareUserArrays } from './common/comparators';
@@ -42,7 +42,7 @@ describe('UserRouter', () => {
       'should return a JSON object with all the users and a status code of ' +
         `"${OK}" if the request was successful.`,
       async () => {
-        const res: IRes<{ users: IUser[] }> = await agent.get(Paths.Users.Get);
+        const res: TestRes<{ users: IUser[] }> = await agent.get(Paths.Users.Get);
         expect(res.status).toBe(OK);
         expect(compareUserArrays(res.body.users, DUMMY_USERS)).toBeTruthy();
       },
@@ -64,7 +64,7 @@ describe('UserRouter', () => {
       'should return a JSON object with an error message of and a status ' +
         `code of "${BAD_REQUEST}" if the user param was missing.`,
       async () => {
-        const res: IRes = await agent
+        const res: TestRes = await agent
           .post(Paths.Users.Add)
           .send({ user: null });
         expect(res.status).toBe(BAD_REQUEST);
@@ -89,7 +89,7 @@ describe('UserRouter', () => {
       async () => {
         const user = User.new();
         user.id = '5' as unknown as number;
-        const res: IRes = await agent.put(Paths.Users.Update).send({ user });
+        const res: TestRes = await agent.put(Paths.Users.Update).send({ user });
         expect(res.status).toBe(BAD_REQUEST);
         const errorObj = parseValidationError(res.body.error);
         expect(errorObj.message).toBe(ValidationError.MESSAGE);
@@ -103,7 +103,7 @@ describe('UserRouter', () => {
         `"${NOT_FOUND}" if the id was not found.`,
       async () => {
         const user = User.new({ id: 4, name: 'a', email: 'a@a.com' }),
-          res: IRes = await agent.put(Paths.Users.Update).send({ user });
+          res: TestRes = await agent.put(Paths.Users.Update).send({ user });
         expect(res.status).toBe(NOT_FOUND);
         expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);
       },
@@ -122,7 +122,7 @@ describe('UserRouter', () => {
         `"${UserService.Errors.USER_NOT_FOUND}" and a status code of ` +
         '"${NOT_FOUND}" if the id was not found.',
       async () => {
-        const res: IRes = await agent.delete(Paths.Users.Delete(-1));
+        const res: TestRes = await agent.delete(Paths.Users.Delete(-1));
         expect(res.status).toBe(NOT_FOUND);
         expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);
       },

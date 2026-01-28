@@ -5,5 +5,5 @@ import { PlainObject } from 'jet-validators';
                                 Types
 ******************************************************************************/
 
-export type IReq = Request<PlainObject, void, PlainObject, PlainObject>;
-export type IRes = Response<unknown, PlainObject>;
+export type Req = Request<PlainObject, void, PlainObject, PlainObject>;
+export type Res = Response<unknown, PlainObject>;

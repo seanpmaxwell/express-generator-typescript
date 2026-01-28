@@ -5,7 +5,7 @@ import { Response } from 'supertest';
 ******************************************************************************/
 
 // Use generics to add properties to 'body'
-export interface IRes<T = object> extends Omit<Response, 'body'> {
+export interface TestRes<T = object> extends Omit<Response, 'body'> {
   body: T & { error?: string | ErrorObject };
 }
 
