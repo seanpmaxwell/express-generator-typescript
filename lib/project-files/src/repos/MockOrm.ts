@@ -1,7 +1,7 @@
 import jsonfile from 'jsonfile';
 
 import EnvVars, { NodeEnvs } from '@src/common/constants/env';
-import { User } from '@src/models/UserModel';
+import { IUser } from '@src/models/User.model';
 
 /******************************************************************************
                                 Constants
@@ -19,7 +19,7 @@ const DATABASE_FILE_PATH =
 ******************************************************************************/
 
 type Database = {
-  users: User[];
+  users: IUser[];
 };
 
 /******************************************************************************

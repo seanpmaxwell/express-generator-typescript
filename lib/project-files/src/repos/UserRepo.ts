@@ -1,5 +1,5 @@
 import { getRandomInt } from '@src/common/utils/number-utils';
-import { User } from '@src/models/UserModel';
+import { IUser } from '@src/models/User.model';
 
 import orm from './MockOrm';
 
@@ -10,7 +10,7 @@ import orm from './MockOrm';
 /**
  * Get one user.
  */
-async function getOne(email: string): Promise<User | null> {
+async function getOne(email: string): Promise<IUser | null> {
   const db = await orm.openDb();
   for (const user of db.users) {
     if (user.email === email) {
@@ -36,7 +36,7 @@ async function persists(id: number): Promise<boolean> {
 /**
  * Get all users.
  */
-async function getAll(): Promise<User[]> {
+async function getAll(): Promise<IUser[]> {
   const db = await orm.openDb();
   return db.users;
 }
@@ -44,7 +44,7 @@ async function getAll(): Promise<User[]> {
 /**
  * Add one user.
  */
-async function add(user: User): Promise<void> {
+async function add(user: IUser): Promise<void> {
   const db = await orm.openDb();
   user.id = getRandomInt();
   db.users.push(user);
@@ -54,7 +54,7 @@ async function add(user: User): Promise<void> {
 /**
  * Update a user.
  */
-async function update(user: User): Promise<void> {
+async function update(user: IUser): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
@@ -72,7 +72,7 @@ async function update(user: User): Promise<void> {
 /**
  * Delete one user.
  */
-async function __delete__(id: number): Promise<void> {
+async function delete_(id: number): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -102,8 +102,8 @@ async function deleteAllUsers(): Promise<void> {
  * for now.
  */
 async function insertMultiple(
-  users: User[] | readonly User[],
-): Promise<User[]> {
+  users: IUser[] | readonly IUser[],
+): Promise<IUser[]> {
   const db = await orm.openDb(),
     usersF = [...users];
   for (const user of usersF) {
@@ -125,7 +125,7 @@ export default {
   getAll,
   add,
   update,
-  delete: __delete__,
+  delete: delete_,
   deleteAllUsers,
   insertMultiple,
 } as const;

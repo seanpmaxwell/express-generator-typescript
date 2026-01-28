@@ -1,10 +1,10 @@
-import { User } from '@src/models/UserModel';
+import { IUser } from '@src/models/User.model';
 
 /******************************************************************************
                                 Types
 ******************************************************************************/
 
-type UserArray = User[] | readonly User[];
+type UserArray = IUser[] | readonly IUser[];
 
 /******************************************************************************
                                 Functions
@@ -31,7 +31,7 @@ export function compareUserArrays(a: UserArray, b: UserArray): boolean {
 /**
  * Sort user array by email.
  */
-function sortByEmail(arr: UserArray): User[] {
+function sortByEmail(arr: UserArray): IUser[] {
   return [...arr].sort((x, y) => {
     return x.email.localeCompare(y.email);
   });
