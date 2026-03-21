@@ -1,4 +1,5 @@
 import jsonfile from 'jsonfile';
+import tspo from 'tspo';
 
 import EnvVars, { NodeEnvs } from '@src/common/constants/env';
 import { IUser } from '@src/models/User.model';
@@ -29,8 +30,12 @@ type Database = {
 /**
  * Fetch the json from the file.
  */
-function openDb(): Promise<Database> {
-  return jsonfile.readFile(DATABASE_FILE_PATH) as Promise<Database>;
+async function openDb(): Promise<Database> {
+  const db = await (jsonfile.readFile(DATABASE_FILE_PATH) as Promise<Database>);
+  if (!('users' in db)) {
+    return tspo.addEntry(db, ['users', []]);
+  }
+  return db;
 }
 
 /**
