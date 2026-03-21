@@ -4,7 +4,6 @@ import logger from 'jet-logger';
 import morgan from 'morgan';
 import path from 'path';
 
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
 import { RouteError } from '@src/common/utils/route-errors';
 import BaseRouter from '@src/routes/apiRouter';
@@ -41,10 +40,8 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   if (EnvVars.NodeEnv !== NodeEnvs.TEST.valueOf()) {
     logger.err(err, true);
   }
-  let status: HttpStatusCodes = HttpStatusCodes.BAD_REQUEST;
   if (err instanceof RouteError) {
-    status = err.status;
-    res.status(status).json({ error: err.message });
+    res.status(err.status).json({ error: err.message });
   }
   return next(err);
 });

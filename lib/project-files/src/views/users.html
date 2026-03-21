@@ -6,12 +6,9 @@
     <title>Users</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/users.css" />
 
-    <!-- Handlebars -->
-    <script src="/scripts/lib/handlebars.min.js"></script>
-
     <!-- Bootstrap -->
     <link href="stylesheets/lib/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <script src="/scripts/lib/bootstrap.bundle.min.js"></script>
+    <script type="application/javascript" src="/scripts/lib/bootstrap.bundle.min.js"></script>
   </head>
 
   <!-- Body -->
@@ -43,67 +40,11 @@
     <!-- Display Users -->
     <div class="users-column">
       <div class="column-header">Users:</div>
-
       <div id="all-users-anchor"></div>
-      <script id="all-users-template" type="text/x-handlebars-template">
-        {{#each users}}
-          <div class='user-display-ele'>
-            <div class='normal-view'>
-              <div><b>Name:</b> {{name}}</div>
-              <div><b>Email:</b> {{email}}</div>
-              <div><b>Created:</b> {{createdFormatted}}</div>
-              <button
-                type='button'
-                class='btn btn-primary edit-user-btn'
-                data-user-id='{{id}}'
-              >
-                Edit
-              </button>
-              <button
-                class='btn btn-danger delete-user-btn'
-                data-user-id='{{id}}'
-              >
-                Delete
-              </button>
-            </div>
-
-            <div class='edit-view'>
-              <div>
-                Name:&nbsp;
-                <input
-                  type='text'
-                  class='form-control name-edit-input'
-                  value='{{name}}'
-                />
-              </div>
-              <div class='email-edit'>
-                Email:&nbsp;
-                <input
-                  type='email'
-                  class='form-control email-edit-input'
-                  value='{{email}}'
-                />
-              </div>
-              <button
-                class='btn btn-primary submit-edit-btn'
-                data-user-id='{{id}}'
-                data-user-created='{{created}}'
-              >
-                Submit
-              </button>
-              <button
-                class='btn btn-secondary cancel-edit-btn'
-                data-user-id='{{id}}'
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        {{/each}}
-      </script>
     </div>
   </body>
 
   <script src="/scripts/http.js"></script>
+  <script src="/scripts/render-users.js"></script>
   <script src="/scripts/users.js"></script>
 </html>
