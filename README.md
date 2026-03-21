@@ -72,7 +72,7 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 
 ### Available `package.json` Scripts
 
-- `npm run dev` / `npm run dev:hot` – Run the server with live reload.
+- `npm run dev` – Run the server in dev mode with live reload and browser refresh.
 - `npm run test` - Run tests with vitest.
 - `npm run test -- users.test.ts` – Target a single test file.
 - `npm run lint` – Run ESLint checks.

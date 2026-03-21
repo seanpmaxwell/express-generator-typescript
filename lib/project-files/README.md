@@ -2,30 +2,15 @@
 
 This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
 
-**IMPORTANT** for demo purposes I had to disable `helmet` in production. In any real world app you should change these 3 lines of code in `src/server.ts`:
-
-```ts
-// eslint-disable-next-line n/no-process-env
-if (!process.env.DISABLE_HELMET) {
-  app.use(helmet());
-}
-```
-
-To just this:
-
-```ts
-app.use(helmet());
-```
-
 ## Available Scripts
 
 ### `npm run clean-install`
 
 Remove the existing `node_modules/` folder, `package-lock.json`, and reinstall all library modules.
 
-### `npm run dev` or `npm run dev:watch` (hot reloading)
+### `npm run dev` 
 
-Run the server in development mode.<br/>
+Run the server in development with hot reloading and browser refresh (see `package.json` for all `npm run dev` variations)<br/>
 
 **IMPORTANT** development mode uses `swc` for performance reasons which DOES NOT check for typescript errors. Run `npm run type-check` to check for type errors. NOTE: you should use your IDE to prevent most type errors.
 

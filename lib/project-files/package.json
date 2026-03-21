@@ -4,11 +4,13 @@
   "scripts": {
     "build": "npm run lint && tsc --project tsconfig.prod.json",
     "clean-install": "rm -rf ./node_modules && rm -r package-lock.json && npm i",
-    "dev": "DOTENV_CONFIG_PATH=./config/.env.development ts-node ./src/main",
-    "dev:watch": "nodemon --exec \"npm run dev\" --watch ./src --ext .ts",
+    "dev:basic": "DOTENV_CONFIG_PATH=./config/.env.development ts-node ./src/main",
+    "dev:watch": "nodemon --exec \"npm run dev:basic\" --watch ./src --ext .ts",
+    "dev": "concurrently \"npm run dev:watch\" \"npm run sync\"",
     "lint": "eslint .",
     "format": "prettier --write .",
     "start": "DOTENV_CONFIG_PATH=./config/.env.production node -r dotenv/config -r module-alias/register ./dist/main.js",
+    "sync": "sleep 1 && browser-sync start --config bs-config.js",
     "test": "NODE_ENV=test vitest",
     "type-check": "tsc -b --noEmit"
   },
@@ -27,10 +29,11 @@
     "jet-env": "^1.1.6",
     "jet-logger": "^2.2.3",
     "jet-paths": "^2.0.1",
-    "jet-validators": "^2.2.5",
+    "jet-validators": "^2.3.1",
     "jsonfile": "^6.2.0",
     "module-alias": "^2.2.3",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "tspo": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -44,6 +47,8 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.0.9",
     "@types/supertest": "^6.0.3",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^17.23.2",

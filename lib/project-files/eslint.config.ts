@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   // global ignores
-  globalIgnores(['**/dist/**']),
+  globalIgnores(['**/dist/**', '**/public/**/lib/**']),
   // linting rules (code quality only)
   {
     files: ['**/*.{ts,tsx}'],

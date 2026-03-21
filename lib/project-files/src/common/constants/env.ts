@@ -1,5 +1,5 @@
 import jetEnv, { num } from 'jet-env';
-import { isValueOf } from 'jet-validators';
+import tspo from 'tspo';
 
 /******************************************************************************
                                  Constants
@@ -17,7 +17,7 @@ export const NodeEnvs = {
 ******************************************************************************/
 
 const EnvVars = jetEnv({
-  NodeEnv: isValueOf(NodeEnvs),
+  NodeEnv: (v) => tspo.isValue(NodeEnvs, v),
   Port: num,
 });
 
