@@ -5,6 +5,7 @@ lib/project-files/.vscode
 lib/project-files/dist
 **/**/dist
 **/**/tsconfig.tsbuildinfo
+.vscode
 
 test/
 **/**/.DS_Store
