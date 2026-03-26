@@ -21,10 +21,9 @@ Command line tool which generates production-ready express templates with TypeSc
 
 ## ✨ Features
 
-- **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults ready to go.
-- **API-centric** – no view engine or extra dependencies; ideal for SPAs, mobile backends, or services.
-- **Productivity tooling** – includes nodemon, ts-node, hot reload scripts, Jest, ESLint, and production builds.
-- **Path aliases** – aliases configured in `tsconfig.json` and `preload.js` so you can import modules cleanly.
+- **TypeScript first** – Sensible but minimal tsconfig defaults so you can start development right away.
+- **Productivity tooling** – cross-platform friendly, configures hot-reloading, browser refreshing, linting/formatting, and production building.
+- **Path aliases** – aliases configured in `tsconfig.json` so you can import modules cleanly.
 - **Keeps dependencies lean** – no bundled ORM or UI layers; only the essentials for Express + TS development.
 
 <br/><b>***</b><br/>
@@ -47,7 +46,7 @@ npx express-generator-typescript my-api
 
 cd my-api
 
-# start developing at http://localhost:3000
+# start the server in development mode
 npm run dev
 ```
 
