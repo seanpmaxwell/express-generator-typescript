@@ -1,5 +1,5 @@
 import jetid from 'jet-id';
-import { isNonEmptyString, isString, isUnsignedInteger } from 'jet-validators';
+import { isNonEmptyString, isString } from 'jet-validators';
 import { parseObject, Schema, testObject } from 'jet-validators/utils';
 
 import { getISOString, isISOString } from '@src/common/utils/date-utils';
@@ -36,6 +36,11 @@ export interface IUser extends Entity {
   email: string;
 }
 
+/**
+ * Fields a client supplies when creating a user; the server sets the rest.
+ */
+export type IUserInput = Pick<IUser, 'name' | 'email'>;
+
 // ========================================================================= //
 //                                 FUNCTIONS                                 //
 // ========================================================================= //
@@ -55,11 +60,19 @@ const isCompleteUser = testObject<IUser>({
 });
 
 /**
+ * Validate the fields a client sends to create a user.
+ */
+const isUserInput = testObject<IUserInput>({
+  name: isNonEmptyString,
+  email: isNonEmptyString,
+});
+
+/**
  * Test if an id is a valid user id.
  */
 function isUserId(val: unknown): val is string {
   return jetid.test(val);
-} 
+}
 
 /**
  * New user object.
@@ -78,4 +91,5 @@ export default {
   new: new_,
   isId: isUserId,
   isComplete: isCompleteUser,
+  isInput: isUserInput,
 } as const;

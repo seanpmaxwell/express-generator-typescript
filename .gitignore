@@ -9,3 +9,6 @@ lib/project-files/dist
 
 test/
 **/**/.DS_Store
+
+# Rewritten on every template test run
+lib/project-files/src/repos/common/database.test.json

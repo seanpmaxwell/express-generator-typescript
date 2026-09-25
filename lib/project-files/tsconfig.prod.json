@@ -4,24 +4,18 @@
     "module": "CommonJS",
     "lib": ["ES2020"],
     "strict": true,
-    "baseUrl": "./",
+    "rootDir": "./src",
     "outDir": "dist",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["./src/*"]
     },
     "useUnknownInCatchVariables": false,
     "sourceMap": false,
     "removeComments": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": [
-    "tests",
-    "src/public/",
-    "scripts",
-    "eslint.config.ts",
-    "vitest.config.js"
-  ]
+  "exclude": ["src/public/"]
 }

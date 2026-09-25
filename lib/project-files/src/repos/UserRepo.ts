@@ -1,26 +1,13 @@
 import jetid from 'jet-id';
 
+import { getISOString } from '@src/common/utils/date-utils';
 import { IUser } from '@src/models/User.model';
 
 import orm from './MockOrm';
-import { getISOString } from '@src/common/utils/date-utils';
 
 // ========================================================================= //
 //                                 FUNCTIONS                                 //
 // ========================================================================= //
-
-/**
- * Get one user.
- */
-async function getOne(email: string): Promise<IUser | null> {
-  const db = await orm.openDb();
-  for (const user of db.users) {
-    if (user.email === email) {
-      return user;
-    }
-  }
-  return null;
-}
 
 /**
  * See if a user with the given id exists.
@@ -48,7 +35,6 @@ async function getAll(): Promise<IUser[]> {
  */
 async function add(user: IUser): Promise<void> {
   const db = await orm.openDb();
-  user.id = jetid();
   db.users.push(user);
   return orm.saveDb(db);
 }
@@ -100,21 +86,20 @@ async function deleteAllUsers(): Promise<void> {
 /**
  * @testOnly
  *
- * Insert multiple users. Can't do multiple at once cause using a plain file
- * for now.
+ * Insert copies of `users` with fresh ids; the inputs are not modified.
  */
 async function insertMultiple(
   users: IUser[] | readonly IUser[],
 ): Promise<IUser[]> {
-  const db = await orm.openDb(),
-    usersF = [...users];
-  for (const user of usersF) {
-    user.id = jetid();
-    user.created = getISOString();
-  }
-  db.users = [...db.users, ...users];
+  const db = await orm.openDb();
+  const inserted = users.map((user) => ({
+    ...user,
+    id: jetid(),
+    created: getISOString(),
+  }));
+  db.users = [...db.users, ...inserted];
   await orm.saveDb(db);
-  return usersF;
+  return inserted;
 }
 
 // ========================================================================= //
@@ -122,7 +107,6 @@ async function insertMultiple(
 // ========================================================================= //
 
 export default {
-  getOne,
   persists,
   getAll,
   add,

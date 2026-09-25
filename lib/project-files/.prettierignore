@@ -3,10 +3,8 @@
 
 # Allow these folders
 !src/
-!test/
-!script/
+!tests/
 
 # Allow all files inside them
 !src/**
-!test/**
-!scripts/**
+!tests/**

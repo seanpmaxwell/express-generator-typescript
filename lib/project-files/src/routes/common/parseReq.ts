@@ -7,8 +7,8 @@ import { ValidationError } from '@src/common/utils/route-errors';
 // ========================================================================= //
 
 /**
- * Throw a "ParseObjError" when "parseObject" fails. Also extract a nested
- * "ParseObjError" and add it to the nestedErrors array.
+ * Build a request parser for `schema` that throws a `ValidationError`
+ * (400) listing every failed field.
  */
 function parseReq<U extends Schema>(schema: U) {
   return parseObject(schema, (errors) => {

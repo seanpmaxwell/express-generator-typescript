@@ -4,6 +4,7 @@ import logger from 'jet-logger';
 import morgan from 'morgan';
 import path from 'path';
 
+import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
 import { RouteError } from '@src/common/utils/route-errors';
 import BaseRouter from '@src/routes/apiRouter';
@@ -35,22 +36,26 @@ if (EnvVars.NodeEnv === NodeEnvs.PRODUCTION) {
 // Add APIs, must be after middleware
 app.use(Paths._, BaseRouter);
 
-// Add error handler
-app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-  if (EnvVars.NodeEnv !== NodeEnvs.TEST.valueOf()) {
+// Add error handler. `_next` must stay: Express only treats 4-arg middleware
+// as an error handler.
+app.use((err: Error, _: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof RouteError) {
+    return res
+      .status(err.status)
+      .json({ error: err.message, errors: err.errors });
+  }
+  if (EnvVars.NodeEnv !== NodeEnvs.TEST) {
     logger.err(err, true);
   }
-  if (err instanceof RouteError) {
-    res.status(err.status).json({ error: err.message });
-  }
-  return next(err);
+  return res
+    .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+    .json({ error: 'Internal Server Error' });
 });
 
 // =========================== Front-end Content =========================== //
 
-// Set views directory (html)
+// Views directory (html)
 const viewsDir = path.join(__dirname, 'views');
-app.set('views', viewsDir);
 
 // Set static directory (js and css).
 const staticDir = path.join(__dirname, 'public');
@@ -61,7 +66,7 @@ app.get('/', (_: Request, res: Response) => {
   return res.redirect('/users');
 });
 
-// Redirect to login if not logged in.
+// Users page
 app.get('/users', (_: Request, res: Response) => {
   return res.sendFile('users.html', { root: viewsDir });
 });

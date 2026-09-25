@@ -7,29 +7,31 @@ import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 // ========================================================================= //
 
 /**
- * Error with status code and message.
+ * Error with status code and message. `errors` (optional) is sent to the
+ * client alongside the message.
  */
 export class RouteError extends Error {
   public status: HttpStatusCodes;
+  public errors?: unknown[];
 
-  public constructor(status: HttpStatusCodes, message: string) {
+  public constructor(
+    status: HttpStatusCodes,
+    message: string,
+    errors?: unknown[],
+  ) {
     super(message);
     this.status = status;
+    this.errors = errors;
   }
 }
 
 /**
- * Handle "parseObj" errors.
+ * Request data failed schema validation.
  */
 export class ValidationError extends RouteError {
-  public static MESSAGE =
-    'The parseObj() function discovered one or ' + 'more errors.';
+  public static MESSAGE = 'Request validation failed.';
 
   public constructor(errors: ParseError[]) {
-    const msg = JSON.stringify({
-      message: ValidationError.MESSAGE,
-      errors,
-    });
-    super(HttpStatusCodes.BAD_REQUEST, msg);
+    super(HttpStatusCodes.BAD_REQUEST, ValidationError.MESSAGE, errors);
   }
 }

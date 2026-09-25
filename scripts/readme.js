@@ -1,5 +1,4 @@
 const fs = require('fs/promises');
-const logger = require('jet-logger').default;
 
 const onInit = require('./onInit');
 
@@ -55,7 +54,7 @@ async function swap() {
   }
   await fs.copyFile(ROOT_README, BACKUP);
   await fs.copyFile(NPM_README, ROOT_README);
-  logger.info('README swapped for the npm version.');
+  console.log('README swapped for the npm version.');
 }
 
 /**
@@ -71,7 +70,7 @@ async function restore() {
   if (await notExists(BACKUP)) return;
   await fs.copyFile(BACKUP, ROOT_README);
   await fs.rm(BACKUP, { force: true });
-  logger.info('README restored.');
+  console.log('README restored.');
 }
 
 // ============================= Shared Helpers ============================ //

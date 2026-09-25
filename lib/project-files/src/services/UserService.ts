@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { RouteError } from '@src/common/utils/route-errors';
-import { IUser } from '@src/models/User.model';
+import User, { IUser, IUserInput } from '@src/models/User.model';
 import UserRepo from '@src/repos/UserRepo';
 
 // ========================================================================= //
@@ -23,10 +23,12 @@ function getAll(): Promise<IUser[]> {
 }
 
 /**
- * Add one user.
+ * Create a user from client input; the id and created date are set here.
  */
-function addOne(user: IUser): Promise<void> {
-  return UserRepo.add(user);
+async function addOne(input: IUserInput): Promise<IUser> {
+  const user = User.new(input);
+  await UserRepo.add(user);
+  return user;
 }
 
 /**

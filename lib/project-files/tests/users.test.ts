@@ -1,15 +1,15 @@
+import jetid from 'jet-id';
+
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import { JetPaths as Paths } from '@src/common/constants/Paths';
 import { ValidationError } from '@src/common/utils/route-errors';
 import User, { IUser } from '@src/models/User.model';
 import UserRepo from '@src/repos/UserRepo';
-
-import { agent } from './support/agent';
-import { TestRes } from './common/supertest-types';
-import { parseValidationError } from './common/error-utils';
 import UserService from '@src/services/UserService';
+
 import { compareUserArrays } from './common/comparators';
-import jetid from 'jet-id';
+import { TestRes } from './common/supertest-types';
+import { agent } from './support/agent';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
@@ -21,7 +21,8 @@ const DUMMY_USERS = [
   User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
 ] as const;
 
-const { BAD_REQUEST, CREATED, OK, NOT_FOUND } = HttpStatusCodes;
+const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, OK, NOT_FOUND } =
+  HttpStatusCodes;
 
 // ========================================================================= //
 //                                   TESTS                                   //
@@ -38,15 +39,34 @@ describe('UserRouter', () => {
     dbUsers = await UserRepo.insertMultiple(DUMMY_USERS);
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   // ---- `Get`
   describe(`"GET:${Paths.Users.Get()}"`, () => {
     it(
       'should return a JSON object with all the users and a status code of ' +
         `"${OK}" if the request was successful.`,
       async () => {
-        const res: TestRes<{ users: IUser[] }> = await agent.get(Paths.Users.Get());
+        const res: TestRes<{ users: IUser[] }> = await agent.get(
+          Paths.Users.Get(),
+        );
         expect(res.status).toBe(OK);
         expect(compareUserArrays(res.body.users, DUMMY_USERS)).toBeTruthy();
+      },
+    );
+
+    it(
+      `should return a JSON error and a status code of ` +
+        `"${INTERNAL_SERVER_ERROR}" if an unexpected error is thrown.`,
+      async () => {
+        vi.spyOn(UserService, 'getAll').mockRejectedValueOnce(
+          new Error('boom'),
+        );
+        const res: TestRes = await agent.get(Paths.Users.Get());
+        expect(res.status).toBe(INTERNAL_SERVER_ERROR);
+        expect(res.body.error).toBe('Internal Server Error');
       },
     );
   });
@@ -54,50 +74,73 @@ describe('UserRouter', () => {
   // ---- `Add`
   describe(`"POST:${Paths.Users.Add()}"`, () => {
     it(
-      `should return a status code of "${CREATED}" if the request was ` +
-        'successful.',
+      `should return a status code of "${CREATED}" and persist the user ` +
+        'with a server-generated id if the request was successful.',
       async () => {
-        const user = User.new({ name: 'a', email: 'a@a.com' }),
-          res = await agent.post(Paths.Users.Add()).send({ user });
+        // Same payload shape the front-end sends
+        const input = { name: 'a', email: 'a@a.com' };
+        const res: TestRes<{ user: IUser }> = await agent
+          .post(Paths.Users.Add())
+          .send({ user: input });
         expect(res.status).toBe(CREATED);
+        expect(User.isId(res.body.user.id)).toBe(true);
+        const all = await UserRepo.getAll();
+        expect(all).toHaveLength(DUMMY_USERS.length + 1);
+        expect(all).toContainEqual(res.body.user);
       },
     );
 
     it(
-      'should return a JSON object with an error message of and a status ' +
+      'should return a JSON object with an error message and a status ' +
         `code of "${BAD_REQUEST}" if the user param was missing.`,
       async () => {
         const res: TestRes = await agent
           .post(Paths.Users.Add())
           .send({ user: null });
         expect(res.status).toBe(BAD_REQUEST);
-        const errorObject = parseValidationError(res.body.error);
-        expect(errorObject.message).toBe(ValidationError.MESSAGE);
-        expect(errorObject.errors[0].key).toStrictEqual('user');
+        expect(res.body.error).toBe(ValidationError.MESSAGE);
+        expect(res.body.errors?.[0].key).toStrictEqual('user');
+      },
+    );
+
+    it(
+      `should return a status code of "${BAD_REQUEST}" if the name is ` +
+        'empty.',
+      async () => {
+        const res: TestRes = await agent
+          .post(Paths.Users.Add())
+          .send({ user: { name: '', email: 'a@a.com' } });
+        expect(res.status).toBe(BAD_REQUEST);
+        expect(await UserRepo.getAll()).toHaveLength(DUMMY_USERS.length);
       },
     );
   });
 
   // ---- `Update`
   describe(`"PUT:${Paths.Users.Update()}"`, () => {
-    it(`should return a status code of "${OK}" if the request was successfull`, async () => {
-      const user = DUMMY_USERS[0];
-      user.name = 'Bill';
-      const res = await agent.put(Paths.Users.Update()).send({ user });
-      expect(res.status).toBe(OK);
-    });
+    it(
+      `should return a status code of "${OK}" and save the change if the ` +
+        'request was successful.',
+      async () => {
+        const user = { ...dbUsers[0], name: 'Bill' };
+        const res = await agent.put(Paths.Users.Update()).send({ user });
+        expect(res.status).toBe(OK);
+        const saved = (await UserRepo.getAll()).find((u) => u.id === user.id);
+        expect(saved?.name).toBe('Bill');
+      },
+    );
 
     it(
       'should return a JSON object with an error message and a status code ' +
-        `of "${BAD_REQUEST}" if id is the wrong data type`,
+        `of "${BAD_REQUEST}" if id is not a valid id`,
       async () => {
-        const user = User.new();
-        user.id = '5' as unknown as string;
-        const res: TestRes = await agent.put(Paths.Users.Update()).send({ user });
+        const user = { ...User.new(), name: 'a', email: 'a@a.com', id: '5' };
+        const res: TestRes = await agent
+          .put(Paths.Users.Update())
+          .send({ user });
         expect(res.status).toBe(BAD_REQUEST);
-        const errorObj = parseValidationError(res.body.error);
-        expect(errorObj.message).toBe(ValidationError.MESSAGE);
-        expect(errorObj.errors[0].keyPath).toStrictEqual(['user', 'id']);
+        expect(res.body.error).toBe(ValidationError.MESSAGE);
+        expect(res.body.errors?.[0].keyPath).toStrictEqual(['user', 'id']);
       },
     );
 
@@ -116,20 +159,46 @@ describe('UserRouter', () => {
 
   // ---- `Delete`
   describe(`"DELETE:${Paths.Users.Delete()}"`, () => {
-    it(`should return a status code of "${OK}" if the request was successful.`, async () => {
-      const id = dbUsers[0].id,
-        res = await agent.delete(Paths.Users.Delete({ id }));
-      expect(res.status).toBe(OK);
-    });
+    it(
+      `should return a status code of "${OK}" and remove the user if the ` +
+        'request was successful.',
+      async () => {
+        const id = dbUsers[0].id,
+          res = await agent.delete(Paths.Users.Delete({ id }));
+        expect(res.status).toBe(OK);
+        expect(await UserRepo.persists(id)).toBe(false);
+      },
+    );
 
     it(
       'should return a JSON object with the error message of ' +
         `"${UserService.Errors.USER_NOT_FOUND}" and a status code of ` +
         `"${NOT_FOUND}" if the id was not found.`,
       async () => {
-        const res: TestRes = await agent.delete(Paths.Users.Delete({ id: -1 }));
+        const res: TestRes = await agent.delete(
+          Paths.Users.Delete({ id: jetid() }),
+        );
         expect(res.status).toBe(NOT_FOUND);
         expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);
+      },
+    );
+
+    it(
+      `should return a status code of "${BAD_REQUEST}" if the id is not a ` +
+        'valid id.',
+      async () => {
+        const res = await agent.delete(Paths.Users.Delete({ id: -1 }));
+        expect(res.status).toBe(BAD_REQUEST);
+      },
+    );
+
+    it(
+      `should return a status code of "${BAD_REQUEST}" if the id query ` +
+        'param is missing.',
+      async () => {
+        const res: TestRes = await agent.delete(Paths.Users.Delete());
+        expect(res.status).toBe(BAD_REQUEST);
+        expect(res.body.errors?.[0].key).toStrictEqual('id');
       },
     );
   });

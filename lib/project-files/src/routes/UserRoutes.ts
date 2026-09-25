@@ -1,6 +1,3 @@
-import { isNumber, isString } from 'jet-validators';
-import { transform } from 'jet-validators/utils';
-
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import User from '@src/models/User.model';
 import UserService from '@src/services/UserService';
@@ -13,7 +10,7 @@ import parseReq from './common/parseReq';
 // ========================================================================= //
 
 const reqValidators = {
-  add: parseReq({ user: User.isComplete }),
+  add: parseReq({ user: User.isInput }),
   update: parseReq({ user: User.isComplete }),
   delete: parseReq({ id: User.isId }),
 } as const;
@@ -39,8 +36,8 @@ async function getAll(_: Req, res: Res) {
  */
 async function add(req: Req, res: Res) {
   const { user } = reqValidators.add(req.body);
-  await UserService.addOne(user);
-  res.status(HttpStatusCodes.CREATED).end();
+  const created = await UserService.addOne(user);
+  res.status(HttpStatusCodes.CREATED).json({ user: created });
 }
 
 /**
@@ -57,10 +54,10 @@ async function update(req: Req, res: Res) {
 /**
  * Delete one user.
  *
- * @route DELETE /api/users/delete/:id
+ * @route DELETE /api/users/delete?id=:id
  */
 async function delete_(req: Req, res: Res) {
-  const { id } = reqValidators.delete(req.params);
+  const { id } = reqValidators.delete(req.query);
   await UserService.delete(id);
   res.status(HttpStatusCodes.OK).end();
 }
