@@ -1,11 +1,13 @@
-import { getRandomInt } from '@src/common/utils/number-utils';
+import jetid from 'jet-id';
+
 import { IUser } from '@src/models/User.model';
 
 import orm from './MockOrm';
+import { getISOString } from '@src/common/utils/date-utils';
 
-/******************************************************************************
-                                Functions
-******************************************************************************/
+// ========================================================================= //
+//                                 FUNCTIONS                                 //
+// ========================================================================= //
 
 /**
  * Get one user.
@@ -23,7 +25,7 @@ async function getOne(email: string): Promise<IUser | null> {
 /**
  * See if a user with the given id exists.
  */
-async function persists(id: number): Promise<boolean> {
+async function persists(id: string): Promise<boolean> {
   const db = await orm.openDb();
   for (const user of db.users) {
     if (user.id === id) {
@@ -46,7 +48,7 @@ async function getAll(): Promise<IUser[]> {
  */
 async function add(user: IUser): Promise<void> {
   const db = await orm.openDb();
-  user.id = getRandomInt();
+  user.id = jetid();
   db.users.push(user);
   return orm.saveDb(db);
 }
@@ -72,7 +74,7 @@ async function update(user: IUser): Promise<void> {
 /**
  * Delete one user.
  */
-async function delete_(id: number): Promise<void> {
+async function delete_(id: string): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -82,7 +84,7 @@ async function delete_(id: number): Promise<void> {
   }
 }
 
-// **** Unit-Tests Only **** //
+// ============================ Unit-tests Only ============================ //
 
 /**
  * @testOnly
@@ -107,17 +109,17 @@ async function insertMultiple(
   const db = await orm.openDb(),
     usersF = [...users];
   for (const user of usersF) {
-    user.id = getRandomInt();
-    user.created = new Date();
+    user.id = jetid();
+    user.created = getISOString();
   }
   db.users = [...db.users, ...users];
   await orm.saveDb(db);
   return usersF;
 }
 
-/******************************************************************************
-                                Export default
-******************************************************************************/
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
 
 export default {
   getOne,

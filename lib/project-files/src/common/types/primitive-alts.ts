@@ -1,8 +1,6 @@
-import { Request, Response } from 'express';
-
 // ========================================================================= //
 //                                   TYPES                                   //
 // ========================================================================= //
 
-export type Req = Request<Record<string, string>, void, Record<string, string>>;
-export type Res = Response;
+export type ISOString =
+  `${number}-${number}-${number}T${number}:${number}:${number}${string}`;

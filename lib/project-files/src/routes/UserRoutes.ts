@@ -1,4 +1,4 @@
-import { isNumber } from 'jet-validators';
+import { isNumber, isString } from 'jet-validators';
 import { transform } from 'jet-validators/utils';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
@@ -8,19 +8,19 @@ import UserService from '@src/services/UserService';
 import { Req, Res } from './common/express-types';
 import parseReq from './common/parseReq';
 
-/******************************************************************************
-                                Constants
-******************************************************************************/
+// ========================================================================= //
+//                                   EXEC                                    //
+// ========================================================================= //
 
 const reqValidators = {
   add: parseReq({ user: User.isComplete }),
   update: parseReq({ user: User.isComplete }),
-  delete: parseReq({ id: transform(Number, isNumber) }),
+  delete: parseReq({ id: User.isId }),
 } as const;
 
-/******************************************************************************
-                                Functions
-******************************************************************************/
+// ========================================================================= //
+//                                 FUNCTIONS                                 //
+// ========================================================================= //
 
 /**
  * Get all users.
@@ -65,9 +65,9 @@ async function delete_(req: Req, res: Res) {
   res.status(HttpStatusCodes.OK).end();
 }
 
-/******************************************************************************
-                                Export default
-******************************************************************************/
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
 
 export default {
   getAll,

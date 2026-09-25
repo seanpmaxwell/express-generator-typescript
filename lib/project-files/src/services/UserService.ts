@@ -3,17 +3,17 @@ import { RouteError } from '@src/common/utils/route-errors';
 import { IUser } from '@src/models/User.model';
 import UserRepo from '@src/repos/UserRepo';
 
-/******************************************************************************
-                                Constants
-******************************************************************************/
+// ========================================================================= //
+//                                 CONSTANTS                                 //
+// ========================================================================= //
 
 const Errors = {
   USER_NOT_FOUND: 'User not found',
 } as const;
 
-/******************************************************************************
-                                Functions
-******************************************************************************/
+// ========================================================================= //
+//                                 FUNCTIONS                                 //
+// ========================================================================= //
 
 /**
  * Get all users.
@@ -43,7 +43,7 @@ async function updateOne(user: IUser): Promise<void> {
 /**
  * Delete a user by their id.
  */
-async function deleteOne(id: number): Promise<void> {
+async function deleteOne(id: string): Promise<void> {
   const persists = await UserRepo.persists(id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
@@ -51,9 +51,9 @@ async function deleteOne(id: number): Promise<void> {
   return UserRepo.delete(id);
 }
 
-/******************************************************************************
-                                Export default
-******************************************************************************/
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
 
 export default {
   Errors,

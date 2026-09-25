@@ -10,13 +10,13 @@ import BaseRouter from '@src/routes/apiRouter';
 
 import EnvVars, { NodeEnvs } from './common/constants/env';
 
-/******************************************************************************
-                                Setup
-******************************************************************************/
+// ========================================================================= //
+//                                   EXEC                                    //
+// ========================================================================= //
 
 const app = express();
 
-// **** Middleware **** //
+// =============================== Middleware ============================== //
 
 // Basic middleware
 app.use(express.json());
@@ -46,7 +46,7 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
   return next(err);
 });
 
-// **** FrontEnd Content **** //
+// =========================== Front-end Content =========================== //
 
 // Set views directory (html)
 const viewsDir = path.join(__dirname, 'views');
@@ -66,8 +66,8 @@ app.get('/users', (_: Request, res: Response) => {
   return res.sendFile('users.html', { root: viewsDir });
 });
 
-/******************************************************************************
-                                Export default
-******************************************************************************/
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
 
 export default app;

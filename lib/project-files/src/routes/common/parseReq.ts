@@ -2,9 +2,9 @@ import { parseObject, Schema } from 'jet-validators/utils';
 
 import { ValidationError } from '@src/common/utils/route-errors';
 
-/******************************************************************************
-                              Functions
-******************************************************************************/
+// ========================================================================= //
+//                                 FUNCTIONS                                 //
+// ========================================================================= //
 
 /**
  * Throw a "ParseObjError" when "parseObject" fails. Also extract a nested
@@ -15,5 +15,9 @@ function parseReq<U extends Schema>(schema: U) {
     throw new ValidationError(errors);
   });
 }
+
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
 
 export default parseReq;

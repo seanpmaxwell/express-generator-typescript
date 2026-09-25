@@ -4,6 +4,10 @@ import n from 'eslint-plugin-n';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
+
 export default defineConfig([
   // global ignores
   globalIgnores(['**/dist/**', '**/public/**/lib/**']),
