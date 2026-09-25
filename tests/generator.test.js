@@ -3,7 +3,7 @@ const childProcess = require('child_process');
 const fs = require('fs/promises');
 const os = require('os');
 const path = require('path');
-const { afterEach, beforeEach, describe, it } = require('test');
+const { afterEach, beforeEach, describe, it } = require('node:test');
 
 const expressGenTs = require('../lib/express-generator-typescript');
 
@@ -124,14 +124,14 @@ describe('published package', () => {
     const files = new Set(JSON.parse(out)[0].files.map((f) => f.path));
     for (const file of REQUIRED_TEMPLATE_FILES) {
       assert.ok(
-        files.has('lib/project-files/' + file),
-        `missing from tarball: lib/project-files/${file}`,
+        files.has('lib/template/' + file),
+        `missing from tarball: lib/template/${file}`,
       );
     }
     for (const file of files) {
       assert.doesNotMatch(
         file,
-        /project-files\/(node_modules|dist|\.vscode)\/|package-lock\.json$/,
+        /template\/(node_modules|dist|\.vscode)\/|package-lock\.json$/,
       );
     }
   });

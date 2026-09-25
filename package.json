@@ -20,13 +20,13 @@
   "files": [
     "bin/",
     "lib/",
-    "!lib/project-files/node_modules/",
-    "!lib/project-files/package-lock.json",
-    "!lib/project-files/dist/",
-    "!lib/project-files/.vscode/",
-    "!lib/project-files/tsconfig.tsbuildinfo",
-    "!lib/project-files/**/*.log",
-    "!lib/project-files/src/repos/common/database.test.json"
+    "!lib/template/node_modules/",
+    "!lib/template/package-lock.json",
+    "!lib/template/dist/",
+    "!lib/template/.vscode/",
+    "!lib/template/tsconfig.tsbuildinfo",
+    "!lib/template/**/*.log",
+    "!lib/template/src/repos/common/database.test.json"
   ],
   "engines": {
     "node": ">=22.12.0"
