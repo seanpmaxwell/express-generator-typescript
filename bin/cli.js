@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-
-const path = require('path'),
-  expressGenTs = require('../lib/express-generator-typescript');
-
+const path = require('path');
+const expressGenTs = require('../lib/express-generator-typescript');
 
 // ========================================================================= //
-//                                    Run                                    //
+//                                    EXEC                                   //
 // ========================================================================= //
+// CLI entry point published as the `express-generator-typescript` bin.
+// Parses the command-line args and hands off to `expressGenTs`.
 
 // Init
 console.log('Setting up new Express/TypeScript project...');
@@ -21,13 +21,13 @@ if (useYarnIdx > -1) {
 }
 
 // Setup destination
-let destination = 'express-gen-ts';
+let dest = 'express-gen-ts';
 if (args.length > 0) {
-  destination = args[0];
+  dest = args[0];
 }
-destination = path.join(process.cwd(), destination);
+dest = path.join(process.cwd(), dest);
 
 // Creating new project finished
-expressGenTs(destination, useYarn).then(() => {
+expressGenTs(dest, useYarn).then(() => {
   console.log('Project setup complete!');
 });

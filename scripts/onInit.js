@@ -35,7 +35,7 @@ async function onInit(cb, cbName) {
 onInit.skip = async function skip(_, __) {};
 
 // ========================================================================= //
-//                                   EXPORT                                  //
+//                                  EXPORT                                   //
 // ========================================================================= //
 
 module.exports = onInit;
