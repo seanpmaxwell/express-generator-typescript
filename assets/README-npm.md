@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/master/express-typescript.png" width="420">
+  <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/master/assets/express-typescript.png" width="420">
 </p>
 
 <p align="center">

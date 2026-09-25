@@ -7,11 +7,12 @@
  * runs immediately and may be async; await the result. If it throws or
  * rejects, the error is logged with `cbName` for context and then rethrown
  * so the process still exits non-zero.
+ *
+ * @param {() => void | Promise<void>} cb
+ * @param {string} [cbName]
+ * @returns {Promise<void>}
  */
-async function onInit(
-  cb: () => void | Promise<void>,
-  cbName?: string,
-): Promise<void> {
+async function onInit(cb, cbName) {
   if (cbName) {
     Object.defineProperty(cb, 'name', { value: cbName, configurable: true });
   }
@@ -24,14 +25,17 @@ async function onInit(
   }
 }
 
-// Useful for temporarily disabling the callback (e.g. in playgrounds)
-onInit.skip = async function skip(
-  _: () => void | Promise<void>,
-  __?: string,
-): Promise<void> {};
+/**
+ * Useful for temporarily disabling the callback (e.g. in playgrounds).
+ *
+ * @param {() => void | Promise<void>} _
+ * @param {string} [__]
+ * @returns {Promise<void>}
+ */
+onInit.skip = async function skip(_, __) {};
 
 // ========================================================================= //
-//                                  EXPORT                                   //
+//                                   EXPORT                                  //
 // ========================================================================= //
 
-export default onInit;
+module.exports = onInit;

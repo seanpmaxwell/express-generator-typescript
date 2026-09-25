@@ -12,7 +12,7 @@ lib/project-files/**/*.log
 # Ignore here
 README-git
 README-npm
-express-typescript.png
+assets/express-typescript.png
 test
 .gitignore
 .npmignore

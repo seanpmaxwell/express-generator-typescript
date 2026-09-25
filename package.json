@@ -8,8 +8,8 @@
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
     "prepack": "npm run readme:swap",
     "postpack": "npm run readme:restore",
-    "readme:swap": "tsx scripts/readme.ts swap",
-    "readme:restore": "tsx scripts/readme.ts restore",
+    "readme:swap": "node scripts/readme.js swap",
+    "readme:restore": "node scripts/readme.js restore",
     "typecheck": "tsc"
   },
   "main": "lib/cli.js",

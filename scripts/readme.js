@@ -1,7 +1,7 @@
-import fs from 'fs/promises';
-import logger from 'jet-logger';
+const fs = require('fs/promises');
+const logger = require('jet-logger').default;
 
-import onInit from './onInit';
+const onInit = require('./onInit');
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
@@ -15,7 +15,7 @@ const BACKUP = './assets/README.backup.md';
 //                                   EXEC                                    //
 // ========================================================================= //
 
-await onInit(async () => {
+onInit(async () => {
   const command = process.argv[2];
   if (command === 'swap') {
     return swap();
@@ -23,7 +23,7 @@ await onInit(async () => {
   if (command === 'restore') {
     return restore();
   }
-  throw new Error(`Usage: tsx scripts/readme.ts <swap|restore>`);
+  throw new Error(`Usage: node scripts/readme.js <swap|restore>`);
 }, 'readme');
 
 // ========================================================================= //
@@ -37,8 +37,10 @@ await onInit(async () => {
  * still readable somewhere. Refuses to run when a backup already exists,
  * because that means an earlier swap never got restored and overwriting
  * the backup would lose the only copy of the real README.
+ *
+ * @returns {Promise<void>}
  */
-async function swap(): Promise<void> {
+async function swap() {
   if (await exists(BACKUP)) {
     throw new Error(
       `"${BACKUP}" already exists, so a previous swap was never restored. ` +
@@ -62,8 +64,10 @@ async function swap(): Promise<void> {
  * A no-op when no backup exists. That case is normal, not an error: npm
  * fires `postpack` on every pack, including ones that never swapped, and an
  * unguarded restore is what used to overwrite the files it meant to protect.
+ *
+ * @returns {Promise<void>}
  */
-async function restore(): Promise<void> {
+async function restore() {
   if (await notExists(BACKUP)) return;
   await fs.copyFile(BACKUP, ROOT_README);
   await fs.rm(BACKUP, { force: true });
@@ -74,15 +78,21 @@ async function restore(): Promise<void> {
 
 /**
  * Whether a path exists.
+ *
+ * @param {string} path
+ * @returns {Promise<boolean>}
  */
-async function notExists(path: string): Promise<boolean> {
+async function notExists(path) {
   return !(await exists(path));
 }
 
 /**
  * Whether a path exists.
+ *
+ * @param {string} path
+ * @returns {Promise<boolean>}
  */
-async function exists(path: string): Promise<boolean> {
+async function exists(path) {
   try {
     await fs.access(path);
     return true;
