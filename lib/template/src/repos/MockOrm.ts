@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import jsonfile from 'jsonfile';
 import path from 'path';
 
-import { EnvVars, NodeEnvs } from '@src/common/constants/env.inv';
+import { EnvVars, NodeEnvs } from '@src/common/constants/env-inv';
 import { IUser } from '@src/models/User.model';
 
 // ========================================================================= //
