@@ -1,4 +1,4 @@
-import { ISOString } from '@src/common/types/primitive-alts';
+import { ISOString } from "@src/common/utils/date-utils";
 
 // ========================================================================= //
 //                                   TYPES                                   //

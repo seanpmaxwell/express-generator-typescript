@@ -2,6 +2,9 @@
 
 This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript). It requires Node.js 22.12 or newer.
 
+<p align="center">· · ·</p>
+
+
 ## Available Scripts
 
 ### `npm run install:clean`
@@ -37,6 +40,9 @@ Run the production build (Must be built first).
 ### `npm run typecheck`
 
 Check for typescript errors.
+
+<p align="center">· · ·</p>
+
 
 ## Additional Notes
 

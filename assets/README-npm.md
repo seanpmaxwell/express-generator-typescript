@@ -2,15 +2,14 @@
   <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/master/assets/express-typescript.png" width="420">
 </p>
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/v/express-generator-typescript.svg?style=for-the-badge&logo=npm" alt="NPM Version"></a>
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/dm/express-generator-typescript.svg?style=for-the-badge" alt="NPM Downloads"></a>
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/l/express-generator-typescript.svg?style=for-the-badge" alt="License"></a>
-</p>
-
 # express-generator-typescript
 
+[![npm version](https://img.shields.io/npm/v/express-generator-typescript?logo=npm&label=npm)](https://www.npmjs.com/package/express-generator-typescript)
+[![npm downloads](https://img.shields.io/npm/dm/express-generator-typescript?color=orange)](https://www.npmjs.com/package/express-generator-typescript)
+[![License](https://img.shields.io/npm/l/express-generator-typescript)](https://github.com/seanpmaxwell/express-generator-typescript/blob/master/LICENSE)
+
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
+<br/>
 
 
 ## Documenation

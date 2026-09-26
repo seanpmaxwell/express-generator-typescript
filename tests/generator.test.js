@@ -22,7 +22,7 @@ const REQUIRED_TEMPLATE_FILES = [
   'gitignore',
   'src/main.ts',
   'src/public/scripts/http.js',
-  'src/public/scripts/render-users.js',
+  'src/public/scripts/renderUsers.js',
   'src/public/scripts/users.js',
   'src/public/scripts/lib/bootstrap.bundle.min.js',
   'src/views/users.html',
@@ -88,7 +88,7 @@ describe('expressGenTs', () => {
   });
 });
 
-// ================================ Test `CLI` ============================= //
+// =============================== Test `CLI` ============================== //
 
 describe('cli', () => {
   const run = (...args) =>

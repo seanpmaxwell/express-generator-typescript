@@ -1,7 +1,7 @@
 import jetid from 'jet-id';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import { JetPaths as Paths } from '@src/common/constants/Paths';
+import Paths from '@src/common/constants/Paths';
 import { ValidationError } from '@src/common/utils/route-errors';
 import User, { IUser } from '@src/models/User.model';
 import UserRepo from '@src/repos/UserRepo';
