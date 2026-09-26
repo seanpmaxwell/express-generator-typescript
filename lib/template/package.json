@@ -1,0 +1,68 @@
+{
+  "name": "express-typescript-example",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "shx rm -rf dist && npm run lint && tsc --project tsconfig.prod.json && npm run build:copy-static",
+    "build:copy-static": "shx mkdir -p dist/public dist/views && shx cp -r src/public/* dist/public && shx cp -r src/views/* dist/views",
+    "install:clean": "shx rm -rf ./node_modules package-lock.json && npm i",
+    "dev:basic": "cross-env DOTENV_CONFIG_PATH=./config/.env.development ts-node ./src/main",
+    "dev:watch": "nodemon --exec \"npm run dev:basic\" --watch ./src --ext .ts",
+    "dev": "concurrently \"npm run dev:watch\" \"npm run sync\"",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "start": "cross-env DOTENV_CONFIG_PATH=./config/.env.production node -r dotenv/config -r module-alias/register ./dist/main.js",
+    "sync": "delay 1s && browser-sync start --config bs-config.js",
+    "test": "cross-env NODE_ENV=test vitest",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "_moduleAliases": {
+    "@src": "dist"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "jet-env": "^1.1.6",
+    "jet-id": "^1.3.1",
+    "jet-logger": "3.0.0",
+    "jet-paths": "^4.0.1",
+    "jet-validators": "^2.3.1",
+    "jsonfile": "^6.2.1",
+    "module-alias": "^2.3.4",
+    "morgan": "^1.12.1",
+    "tspo": "^1.0.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@swc/core": "^1.16.2",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/express": "^5.0.6",
+    "@types/jsonfile": "^6.1.4",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.6.2",
+    "@types/supertest": "^7.2.1",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^10.0.5",
+    "delay-cli": "^3.0.0",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.3.0",
+    "jiti": "^2.7.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.9.9",
+    "shx": "^0.4.0",
+    "supertest": "^7.3.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.2"
+  },
+  "allowScripts": {
+    "@swc/core@1.16.2": true
+  }
+}

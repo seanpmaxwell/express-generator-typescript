@@ -1,20 +1,35 @@
 {
   "name": "express-generator-typescript",
-  "version": "2.8.1",
+  "version": "2.9.0",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
-    "commit": "npm run format && git add -A && git commit -m \"dev commit\"",
+    "commit": "git add -A && git commit -m \"dev commit\"",
     "commit:push": "npm run commit && git push",
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
     "prepack": "npm run readme:swap",
     "postpack": "npm run readme:restore",
-    "readme:swap": "tsx scripts/readme.ts swap",
-    "readme:restore": "tsx scripts/readme.ts restore",
-    "typecheck": "tsc"
+    "readme:swap": "node scripts/readme.js swap",
+    "readme:restore": "node scripts/readme.js restore",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "test:e2e": "node scripts/e2e.js"
   },
-  "main": "lib/cli.js",
+  "main": "lib/express-generator-typescript.js",
   "bin": {
     "express-generator-typescript": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "!lib/template/node_modules/",
+    "!lib/template/package-lock.json",
+    "!lib/template/dist/",
+    "!lib/template/.vscode/",
+    "!lib/template/tsconfig.tsbuildinfo",
+    "!lib/template/**/*.log",
+    "!lib/template/src/repos/common/database.test.json"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
   },
   "repository": {
     "type": "git",
@@ -39,20 +54,16 @@
     "starter",
     "template",
     "express-ts",
+    "express5",
     "server",
-    "tooling"
+    "tooling",
+    "vitest",
+    "eslint"
   ],
   "author": "sean maxwell",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/seanpmaxwell/express-generator-typescript/issues"
   },
-  "homepage": "https://github.com/seanpmaxwell/express-generator-typescript#readme",
-  "dependencies": {
-    "dts-bundle-generator": "^9.5.1",
-    "edit-json-file": "^1.7.0",
-    "esbuild": "^0.28.2",
-    "ncp": "^2.0.0",
-    "jet-logger": "3.0.0"
-  }
+  "homepage": "https://github.com/seanpmaxwell/express-generator-typescript#readme"
 }

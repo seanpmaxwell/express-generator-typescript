@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "2HF7W6BZV-23RYN-0GY0E-80X19N",
+      "name": "Sean Maxwell",
+      "email": "smaxwell@example.com",
+      "created": "2024-03-22T05:14:36.252Z"
+    },
+    {
+      "id": "56N1CSRF5-SG3XG-M7CEY-TE5G45",
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "created": "2024-03-22T05:20:55.079Z"
+    },
+    {
+      "id": "Q78BTED9D-HBPJQ-GFEYQ-3EVFJF",
+      "name": "Gordan Freeman",
+      "email": "nova@prospect.com",
+      "created": "2024-03-22T05:42:18.895Z"
+    },
+    {
+      "id": "NEQXY1EYZ-66K6S-AMGXW-BWKYAY",
+      "name": "asdf",
+      "email": "asdf",
+      "created": "2026-09-25T22:31:30.844Z"
+    }
+  ]
+}

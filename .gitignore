@@ -1,11 +1,14 @@
 **/**/node_modules
 **/**/*.log
 lib/**/package-lock.json
-lib/project-files/.vscode
-lib/project-files/dist
+lib/template/.vscode
+lib/template/dist
 **/**/dist
 **/**/tsconfig.tsbuildinfo
 .vscode
 
 test/
 **/**/.DS_Store
+
+# Rewritten on every template test run
+lib/template/src/repos/common/database.test.json
