@@ -107,7 +107,8 @@ Layers explained:
 
 ## Notes for VSCode users
 
-### Format on save
+<details>
+<summary><h3 style="display: inline;">Format on save</h3></summary>
 
 The generated template uses `eslint`+`prettier`, so if you want features like _formatting on save_, you need to make sure to install the prettier extension for VSCode and set it as your default formatter in `.vscode/setting.json`:
 
@@ -154,7 +155,10 @@ The generated template uses `eslint`+`prettier`, so if you want features like _f
 }
 ```
 
-### Debugging
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Debugging</h3></summary>
 
 If you want to debug in VSCode with breakpoints you need to start the processes through `.vscode/launch.json`:
 
@@ -184,6 +188,8 @@ If you want to debug in VSCode with breakpoints you need to start the processes 
   ]
 }
 ```
+
+</details>
 
 <p align="center">· · ·</p>
 
