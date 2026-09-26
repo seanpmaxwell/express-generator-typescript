@@ -9,6 +9,7 @@ lib/template/dist
 
 test/
 **/**/.DS_Store
+workflows
 
 # Rewritten on every template test run
 lib/template/src/repos/common/database.test.json
