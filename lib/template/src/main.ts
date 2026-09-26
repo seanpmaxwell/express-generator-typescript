@@ -1,6 +1,6 @@
 import logger from 'jet-logger';
 
-import EnvVars from './common/constants/env';
+import { EnvVars } from './common/constants/env.inv';
 import server from './server';
 
 // ========================================================================= //

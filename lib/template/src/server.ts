@@ -9,7 +9,7 @@ import Paths from '@src/common/constants/Paths';
 import { RouteError } from '@src/common/utils/route-errors';
 import BaseRouter from '@src/routes/apiRouter';
 
-import EnvVars, { NodeEnvs } from './common/constants/env';
+import { EnvVars, NodeEnvs } from './common/constants/env.inv';
 
 // ========================================================================= //
 //                                   EXEC                                    //

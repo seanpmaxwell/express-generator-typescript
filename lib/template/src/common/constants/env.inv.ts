@@ -1,5 +1,5 @@
 import jetEnv, { num } from 'jet-env';
-import tspo from 'tspo';
+import { ValueOf } from '../types/utility-types';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
@@ -11,18 +11,21 @@ export const NodeEnvs = {
   TEST: 'test',
   PRODUCTION: 'production',
 } as const;
+export type NodeEnvs = ValueOf<typeof NodeEnvs>;
 
 // ========================================================================= //
 //                                   EXEC                                    //
 // ========================================================================= //
 
-const EnvVars = jetEnv({
-  NodeEnv: (v) => tspo.isValue(NodeEnvs, v),
+// Setup the is `NodeEnvs` validator
+const isNodeEnv = (() => {
+  const vals = Object.values(NodeEnvs);
+  const valsFin = vals.map((item) => item.toLowerCase());
+  const set = new Set(valsFin);
+  return (val: unknown): val is NodeEnvs => set.has(val as NodeEnvs);
+})();
+
+export const EnvVars = jetEnv({
+  NodeEnv: isNodeEnv,
   Port: num,
 });
-
-// ========================================================================= //
-//                                  EXPORT                                   //
-// ========================================================================= //
-
-export default EnvVars;
