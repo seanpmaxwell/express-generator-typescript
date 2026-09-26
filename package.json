@@ -6,10 +6,6 @@
     "commit": "git add -A && git commit -m \"dev commit\"",
     "commit:push": "npm run commit && git push",
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
-    "prepack": "npm run readme:swap",
-    "postpack": "npm run readme:restore",
-    "readme:swap": "node scripts/readme.js swap",
-    "readme:restore": "node scripts/readme.js restore",
     "test": "node --test \"tests/**/*.test.js\"",
     "test:e2e": "node scripts/e2e.js"
   },

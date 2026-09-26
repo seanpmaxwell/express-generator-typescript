@@ -9,7 +9,8 @@
 [![License](https://img.shields.io/npm/l/express-generator-typescript)](https://github.com/seanpmaxwell/express-generator-typescript/blob/main/LICENSE)
 
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
-<br/>
+
+<p align="center">· · ·</p>
 
 ## 🧭 Overview 
 
