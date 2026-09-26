@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Allow these folders
+!src/
+!tests/
+
+# Allow all files inside them
+!src/**
+!tests/**

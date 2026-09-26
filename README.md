@@ -1,14 +1,12 @@
 <p align="center">
-  <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/master/express-typescript.png" width="420">
-</p>
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/v/express-generator-typescript.svg?style=for-the-badge&logo=npm" alt="NPM Version"></a>
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/dm/express-generator-typescript.svg?style=for-the-badge" alt="NPM Downloads"></a>
-  <a href="https://www.npmjs.com/package/express-generator-typescript"><img src="https://img.shields.io/npm/l/express-generator-typescript.svg?style=for-the-badge" alt="License"></a>
+  <img alt="express-generator-typescript" src="https://github.com/seanpmaxwell/express-generator-typescript/raw/main/assets/express-typescript.png" width="420">
 </p>
 
 # express-generator-typescript
+
+[![npm version](https://img.shields.io/npm/v/express-generator-typescript?logo=npm&label=npm)](https://www.npmjs.com/package/express-generator-typescript)
+[![npm downloads](https://img.shields.io/npm/dm/express-generator-typescript?color=orange)](https://www.npmjs.com/package/express-generator-typescript)
+[![License](https://img.shields.io/npm/l/express-generator-typescript)](https://github.com/seanpmaxwell/express-generator-typescript/blob/main/LICENSE)
 
 Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
 <br/>
@@ -17,19 +15,21 @@ Command line tool which generates production-ready express templates with TypeSc
 
 `express-generator-typescript` creates a new Express application similar to the classic `express-generator` package, but the generated project is fully wired for TypeScript. You get strict typing, linting, hot reloading, production builds, testing utilities, and sane defaults that focus on APIs (no view engine or opinionated ORM). Path aliases are preconfigured through `tsconfig-paths` and `_moduleAliases`, so referencing modules stays clean even as the app grows.
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## ✨ Features
 
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults ready to go.
 - **API-centric** – no view engine or extra dependencies; ideal for SPAs, mobile backends, or services.
-- **Productivity tooling** – includes nodemon, ts-node, hot reload scripts, Jest, ESLint, and production builds.
-- **Path aliases** – aliases configured in `tsconfig.json` and `preload.js` so you can import modules cleanly.
+- **Productivity tooling** – includes nodemon, ts-node, hot reload scripts, Vitest, ESLint, and production builds.
+- **Path aliases** – `@src/*` aliases configured in `tsconfig.json` (and `_moduleAliases` in `package.json` for production) so you can import modules cleanly.
 - **Keeps dependencies lean** – no bundled ORM or UI layers; only the essentials for Express + TS development.
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## 📦 Installation
+
+Requires Node.js 22.12 or newer.
 
 ```bash
 npx express-generator-typescript
@@ -37,7 +37,7 @@ npx express-generator-typescript
 npm install -g express-generator-typescript
 ```
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## ⚡ Quick Start
 
@@ -53,7 +53,7 @@ npm run dev
 
 Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the generator creates `express-gen-ts`.
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## 🖥️ CLI Options
 
@@ -61,10 +61,13 @@ Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the 
 | ----------------- | --------------------------------------------------------------------------- |
 | `project name`    | Folder to create. Defaults to `express-gen-ts` if omitted.                  |
 | `--use-yarn`      | Installs dependencies with Yarn instead of npm.                             |
+| `--force`         | Writes into the target folder even if it is not empty (existing files with the same names are overwritten). |
+| `-h`, `--help`    | Shows usage.                                                                |
+| `-v`, `--version` | Shows the generator version.                                                |
 
-> The historical `--with-auth` switch was removed in v2.5+. For an auth-ready example see the [express-jsonwebtoken-demo](https://github.com/seanpmaxwell/express-jsonwebtoken-demo) project.
+> The generator refuses to write into a folder that already has files in it, so it can't overwrite your work by accident.
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## 🧩 Generated Template
 
@@ -79,7 +82,8 @@ The generated template is a CRUD app for the `User` record to demonstrate model,
 - `npm run format` - Run prettier.
 - `npm run build` – Compile the project for production.
 - `npm start` – Serve the built project.
-- `npm run type-check` – Run the TypeScript compiler without emitting files.
+- `npm run typecheck` – Run the TypeScript compiler without emitting files.
+- `npm run install:clean` – Delete `node_modules` and the lockfile, then reinstall.
 
 ### Architecture
 
@@ -98,9 +102,9 @@ Layers explained:
 - tests/ <-- unit-tests
 ```
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
-## Note for VSCode users
+## Notes for VSCode users
 
 ### Format on save
 
@@ -180,7 +184,7 @@ If you want to debug in VSCode with breakpoints you need to start the processes 
 }
 ```
 
-<br/><b>***</b><br/>
+<p align="center">· · ·</p>
 
 ## 📄 License 
 

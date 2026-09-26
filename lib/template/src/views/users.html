@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <!-- Head -->
+  <head>
+    <meta charset="UTF-8" />
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/users.css" />
+
+    <!-- Bootstrap -->
+    <link
+      href="stylesheets/lib/bootstrap.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <script
+      type="application/javascript"
+      src="/scripts/lib/bootstrap.bundle.min.js"
+    ></script>
+  </head>
+
+  <!-- Body -->
+  <body>
+    <!-- Add Users -->
+    <div class="users-column add-user-col">
+      <div class="column-header">Add User:</div>
+      <div>
+        <input
+          id="name-input"
+          type="text"
+          class="form-control"
+          placeholder="Name"
+        />
+      </div>
+      <div>
+        <input
+          id="email-input"
+          type="email"
+          class="form-control"
+          placeholder="Email"
+        />
+      </div>
+      <div>
+        <button id="add-user-btn" class="btn btn-success">Add</button>
+      </div>
+    </div>
+
+    <!-- Display Users -->
+    <div class="users-column">
+      <div class="column-header">Users:</div>
+      <div id="all-users-anchor"></div>
+    </div>
+
+    <script src="/scripts/http.js"></script>
+    <script src="/scripts/renderUsers.js"></script>
+    <script src="/scripts/users.js"></script>
+  </body>
+</html>
