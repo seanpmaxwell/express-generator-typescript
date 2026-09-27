@@ -1,4 +1,4 @@
-import { ParseError } from 'jet-validators/utils';
+import type { ParseError } from 'jet-validators/utils';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 

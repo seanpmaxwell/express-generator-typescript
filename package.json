@@ -1,6 +1,6 @@
 {
   "name": "express-generator-typescript",
-  "version": "2.9.1",
+  "version": "3.0.1",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
     "commit": "git add -A && git commit -m \"dev commit\"",

@@ -17,11 +17,10 @@ const CLI = path.join(ROOT, 'bin', 'cli.js');
 // Files the generated app can't run without (they once went missing from the
 // published tarball).
 const REQUIRED_TEMPLATE_FILES = [
-  'bs-config.js',
   'package.json',
   'gitignore',
   'src/main.ts',
-  'src/public/scripts/http.js',
+  'src/public/scripts/HttpClient.js',
   'src/public/scripts/renderUsers.js',
   'src/public/scripts/users.js',
   'src/public/scripts/lib/bootstrap.bundle.min.js',

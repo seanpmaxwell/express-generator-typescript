@@ -2,13 +2,13 @@ import jetid from 'jet-id';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
-import { ValidationError } from '@src/common/utils/route-errors';
-import User, { IUser } from '@src/models/User.model';
+import { ValidationError } from '@src/common/classes/route-errors';
+import User, { type UserEntity } from '@src/entities/User';
 import UserRepo from '@src/repos/UserRepo';
 import UserService from '@src/services/UserService';
 
 import { compareUserArrays } from './common/comparators';
-import { TestRes } from './common/supertest-types';
+import type { TestRes } from './common/supertest-types';
 import { agent } from './support/agent';
 
 // ========================================================================= //
@@ -16,9 +16,9 @@ import { agent } from './support/agent';
 // ========================================================================= //
 
 const DUMMY_USERS = [
-  User.new({ name: 'Sean Maxwell', email: 'sean.maxwell@gmail.com' }),
-  User.new({ name: 'John Smith', email: 'john.smith@gmail.com' }),
-  User.new({ name: 'Gordan Freeman', email: 'gordan.freeman@gmail.com' }),
+  User.of('Sean Maxwell', 'sean.maxwell@gmail.com'),
+  User.of('John Smith', 'john.smith@gmail.com'),
+  User.of('Gordan Freeman', 'gordan.freeman@gmail.com'),
 ] as const;
 
 const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, OK, NOT_FOUND } =
@@ -32,7 +32,7 @@ const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, OK, NOT_FOUND } =
 //  scenarios (i.e. a failed database connection).
 
 describe('UserRouter', () => {
-  let dbUsers: IUser[] = [];
+  let dbUsers: UserEntity[] = [];
 
   beforeEach(async () => {
     await UserRepo.deleteAllUsers();
@@ -49,7 +49,7 @@ describe('UserRouter', () => {
       'should return a JSON object with all the users and a status code of ' +
         `"${OK}" if the request was successful.`,
       async () => {
-        const res: TestRes<{ users: IUser[] }> = await agent.get(
+        const res: TestRes<{ users: UserEntity[] }> = await agent.get(
           Paths.Users.Get(),
         );
         expect(res.status).toBe(OK);
@@ -79,7 +79,7 @@ describe('UserRouter', () => {
       async () => {
         // Same payload shape the front-end sends
         const input = { name: 'a', email: 'a@a.com' };
-        const res: TestRes<{ user: IUser }> = await agent
+        const res: TestRes<{ user: UserEntity }> = await agent
           .post(Paths.Users.Add())
           .send({ user: input });
         expect(res.status).toBe(CREATED);
@@ -134,7 +134,7 @@ describe('UserRouter', () => {
       'should return a JSON object with an error message and a status code ' +
         `of "${BAD_REQUEST}" if id is not a valid id`,
       async () => {
-        const user = { ...User.new(), name: 'a', email: 'a@a.com', id: '5' };
+        const user = { ...User.create(), name: 'a', email: 'a@a.com', id: '5' };
         const res: TestRes = await agent
           .put(Paths.Users.Update())
           .send({ user });
@@ -149,7 +149,7 @@ describe('UserRouter', () => {
         `"${UserService.Errors.USER_NOT_FOUND}" and a status code of ` +
         `"${NOT_FOUND}" if the id was not found.`,
       async () => {
-        const user = User.new({ id: jetid(), name: 'a', email: 'a@a.com' }),
+        const user = User.create({ id: jetid(), name: 'a', email: 'a@a.com' }),
           res: TestRes = await agent.put(Paths.Users.Update()).send({ user });
         expect(res.status).toBe(NOT_FOUND);
         expect(res.body.error).toBe(UserService.Errors.USER_NOT_FOUND);

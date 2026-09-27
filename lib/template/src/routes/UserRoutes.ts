@@ -1,8 +1,8 @@
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import User from '@src/models/User.model';
+import User from '@src/entities/User';
 import UserService from '@src/services/UserService';
 
-import { Req, Res } from './common/express-types';
+import type { Req, Res } from './common/express-types';
 import parseReq from './common/parseReq';
 
 // ========================================================================= //

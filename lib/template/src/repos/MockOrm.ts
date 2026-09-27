@@ -3,14 +3,14 @@ import jsonfile from 'jsonfile';
 import path from 'path';
 
 import { EnvVars, NodeEnvs } from '@src/common/constants/env-inv';
-import { IUser } from '@src/models/User.model';
+import type { UserEntity } from '@src/entities/User';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
 // ========================================================================= //
 
 const DATABASE_FILE_PATH = path.join(
-  __dirname,
+  import.meta.dirname,
   'common',
   EnvVars.NodeEnv === NodeEnvs.TEST ? 'database.test.json' : 'database.json',
 );
@@ -20,7 +20,7 @@ const DATABASE_FILE_PATH = path.join(
 // ========================================================================= //
 
 type Database = {
-  users: IUser[];
+  users: UserEntity[];
 };
 
 // ========================================================================= //

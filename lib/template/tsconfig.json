@@ -1,27 +1,26 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020"],
-    "strict": true,
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "lib": ["ES2022"],
+    "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@src/*": ["./src/*"]
     },
+    // tsx transpiles one file at a time, so type-only imports must say so
+    "verbatimModuleSyntax": true,
     "useUnknownInCatchVariables": false,
-    "types": ["vitest/globals"]
-  },
-  "ts-node": {
-    "swc": true,
-    "require": ["tsconfig-paths/register", "dotenv/config"],
+    "types": ["node", "vitest/globals"]
   },
   "include": [
     "src/**/*.ts",
     "tests/**/*.ts",
     "eslint.config.ts",
-    "vitest.config.mts"
+    "vitest.config.ts"
   ],
   "exclude": ["src/public/*"]
 }

@@ -1,5 +1,6 @@
 import jetEnv, { num } from 'jet-env';
-import { ValueOf } from '../types/utility-types';
+
+import type { ValueOf } from '../types/utility-types';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

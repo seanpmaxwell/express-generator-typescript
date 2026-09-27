@@ -1,4 +1,4 @@
-import { ISOString } from "@src/common/utils/date-utils";
+import type { ISOString } from '@src/common/utils/date-utils';
 
 // ========================================================================= //
 //                                   TYPES                                   //

@@ -1,10 +1,10 @@
-import { IUser } from '@src/models/User.model';
+import type { UserEntity } from '@src/entities/User';
 
 // ========================================================================= //
 //                                   TYPES                                   //
 // ========================================================================= //
 
-type UserArray = IUser[] | readonly IUser[];
+type UserArray = UserEntity[] | readonly UserEntity[];
 
 // ========================================================================= //
 //                                 FUNCTIONS                                 //
@@ -31,7 +31,7 @@ export function compareUserArrays(a: UserArray, b: UserArray): boolean {
 /**
  * Sort user array by email.
  */
-function sortByEmail(arr: UserArray): IUser[] {
+function sortByEmail(arr: UserArray): UserEntity[] {
   return [...arr].sort((x, y) => {
     return x.email.localeCompare(y.email);
   });

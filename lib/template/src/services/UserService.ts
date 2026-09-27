@@ -1,6 +1,6 @@
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import { RouteError } from '@src/common/utils/route-errors';
-import User, { IUser, IUserInput } from '@src/models/User.model';
+import { RouteError } from '@src/common/classes/route-errors';
+import User, { type UserEntity, type UserInput } from '@src/entities/User';
 import UserRepo from '@src/repos/UserRepo';
 
 // ========================================================================= //
@@ -18,15 +18,15 @@ const Errors = {
 /**
  * Get all users.
  */
-function getAll(): Promise<IUser[]> {
+function getAll(): Promise<UserEntity[]> {
   return UserRepo.getAll();
 }
 
 /**
  * Create a user from client input; the id and created date are set here.
  */
-async function addOne(input: IUserInput): Promise<IUser> {
-  const user = User.new(input);
+async function addOne(input: UserInput): Promise<UserEntity> {
+  const user = User.create(input);
   await UserRepo.add(user);
   return user;
 }
@@ -34,7 +34,7 @@ async function addOne(input: IUserInput): Promise<IUser> {
 /**
  * Update one user.
  */
-async function updateOne(user: IUser): Promise<void> {
+async function updateOne(user: UserEntity): Promise<void> {
   const persists = await UserRepo.persists(user.id);
   if (!persists) {
     throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);

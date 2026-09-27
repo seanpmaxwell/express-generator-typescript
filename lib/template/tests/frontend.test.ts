@@ -20,7 +20,7 @@ describe('Front-end content', () => {
   });
 
   it.each([
-    '/scripts/http.js',
+    '/scripts/HttpClient.js',
     '/scripts/renderUsers.js',
     '/scripts/users.js',
     '/scripts/lib/bootstrap.bundle.min.js',
