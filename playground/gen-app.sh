@@ -7,26 +7,12 @@ set -uo pipefail
 
 PLAYGROUND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$PLAYGROUND_DIR/my-app.tmp"
-NPX_CACHE="$(npm config get cache)/_npx"
 
 FAILED=()
 
 # ========================================================================= //
 #                                 FUNCTIONS                                 //
 # ========================================================================= //
-
-# Remove every npx-cache entry whose package.json depends on
-# express-generator-typescript, so the run below can't reuse a stale copy.
-clear_npx_cache() {
-  [ -d "$NPX_CACHE" ] || return 0
-  for entry in "$NPX_CACHE"/*/; do
-    [ -f "${entry}package.json" ] || continue
-    if grep -q '"express-generator-typescript"' "${entry}package.json"; then
-      echo "    removing $entry"
-      rm -rf "$entry"
-    fi
-  done
-}
 
 # Delete any leftover *.tmp folders from previous runs of this script.
 clean_tmp_folders() {
@@ -54,7 +40,7 @@ run_check() {
 # ========================================================================= //
 
 echo "==> Clearing express-generator-typescript from the npx cache"
-clear_npx_cache
+npx clear-npx-cache;
 
 echo "==> Removing stale *.tmp folders in $PLAYGROUND_DIR"
 clean_tmp_folders
