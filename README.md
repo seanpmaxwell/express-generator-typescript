@@ -89,16 +89,24 @@ The generated project is a small CRUD app for a `User` record. It shows how to s
 The app uses a **layered** architecture, which suits a small CRUD app. If you plan to grow it, consider switching to a **domain-based** layout. The [Typescript Best Practices README](https://github.com/seanpmaxwell/Typescript-Best-Practices/tree/main?tab=readme-ov-file#architecture) explains both patterns.
 
 Layers explained:
-```yml
-- src/ <-- Source code
-  - common/
+```md
+- config/         → .env files for each environment
+- src/            → Source code
+  - common/       → Shared code
+    - classes/    → Shared classes (e.g. route errors)
     - constants/
-      - Paths.ts <-- Single source of truth for all API routes
-  - routes/ <-- Read and validate values from Express requests; send responses
-  - services/ <-- Business logic (where everything comes together)
-  - repos/ <-- Talk to the database
-  - models/ <-- Describe and handle database records
-- tests/ <-- Tests
+      - Paths.ts  → Single source of truth for all API routes
+    - types/      → Shared types
+    - utils/      → Shared helper functions
+  - entities/     → Describe and handle database records (one folder per entity)
+  - routes/       → Read and validate values from Express requests; send responses
+  - services/     → Business logic (where everything comes together)
+  - repos/        → Talk to the database
+  - public/       → Front-end scripts and styles
+  - views/        → HTML pages
+  - main.ts       → Starts the server
+  - server.ts     → Sets up the Express app
+- tests/          → Tests
 ```
 
 <p align="center">· · ·</p>
