@@ -1,6 +1,6 @@
-import { parseObject, Schema } from 'jet-validators/utils';
+import { parseObject, type Schema } from 'jet-validators/utils';
 
-import { ValidationError } from '@src/common/utils/route-errors';
+import { ValidationError } from '@src/common/classes/route-errors';
 
 // ========================================================================= //
 //                                 FUNCTIONS                                 //

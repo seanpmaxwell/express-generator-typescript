@@ -1,4 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from 'express';
 import helmet from 'helmet';
 import logger from 'jet-logger';
 import morgan from 'morgan';
@@ -6,7 +10,7 @@ import path from 'path';
 
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
-import { RouteError } from '@src/common/utils/route-errors';
+import { RouteError } from '@src/common/classes/route-errors';
 import BaseRouter from '@src/routes/apiRouter';
 
 import { EnvVars, NodeEnvs } from './common/constants/env-inv';
@@ -55,10 +59,18 @@ app.use((err: Error, _: Request, res: Response, _next: NextFunction) => {
 // =========================== Front-end Content =========================== //
 
 // Views directory (html)
-const viewsDir = path.join(__dirname, 'views');
+const viewsDir = path.join(import.meta.dirname, 'views');
 
 // Set static directory (js and css).
-const staticDir = path.join(__dirname, 'public');
+const staticDir = path.join(import.meta.dirname, 'public');
+
+// Refresh the browser on changes. Imported lazily because livereload is a
+// dev dependency and isn't installed in production.
+if (EnvVars.NodeEnv === NodeEnvs.DEV) {
+  const { setupLiveReload } = await import('@src/common/utils/dev-only');
+  setupLiveReload(app, [staticDir, viewsDir]);
+}
+
 app.use(express.static(staticDir));
 
 // Nav to users pg by default

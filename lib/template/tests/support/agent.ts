@@ -1,5 +1,5 @@
-import supertest, { Test } from 'supertest';
-import TestAgent from 'supertest/lib/agent';
+import supertest, { type Test } from 'supertest';
+import type TestAgent from 'supertest/lib/agent.js';
 import { beforeAll } from 'vitest';
 
 import MockOrm from '@src/repos/MockOrm';

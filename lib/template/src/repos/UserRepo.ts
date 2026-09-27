@@ -1,7 +1,7 @@
 import jetid from 'jet-id';
 
 import { getISOString } from '@src/common/utils/date-utils';
-import { IUser } from '@src/models/User.model';
+import type { UserEntity } from '@src/entities/User';
 
 import orm from './MockOrm';
 
@@ -25,7 +25,7 @@ async function persists(id: string): Promise<boolean> {
 /**
  * Get all users.
  */
-async function getAll(): Promise<IUser[]> {
+async function getAll(): Promise<UserEntity[]> {
   const db = await orm.openDb();
   return db.users;
 }
@@ -33,7 +33,7 @@ async function getAll(): Promise<IUser[]> {
 /**
  * Add one user.
  */
-async function add(user: IUser): Promise<void> {
+async function add(user: UserEntity): Promise<void> {
   const db = await orm.openDb();
   db.users.push(user);
   return orm.saveDb(db);
@@ -42,7 +42,7 @@ async function add(user: IUser): Promise<void> {
 /**
  * Update a user.
  */
-async function update(user: IUser): Promise<void> {
+async function update(user: UserEntity): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
@@ -89,8 +89,8 @@ async function deleteAllUsers(): Promise<void> {
  * Insert copies of `users` with fresh ids; the inputs are not modified.
  */
 async function insertMultiple(
-  users: IUser[] | readonly IUser[],
-): Promise<IUser[]> {
+  users: UserEntity[] | readonly UserEntity[],
+): Promise<UserEntity[]> {
   const db = await orm.openDb();
   const inserted = users.map((user) => ({
     ...user,

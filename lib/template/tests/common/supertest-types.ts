@@ -1,5 +1,5 @@
-import { ParseError } from 'jet-validators/utils';
-import { Response } from 'supertest';
+import type { ParseError } from 'jet-validators/utils';
+import type { Response } from 'supertest';
 
 // ========================================================================= //
 //                                   TYPES                                   //

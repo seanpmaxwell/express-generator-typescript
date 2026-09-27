@@ -8,23 +8,23 @@
 [![npm downloads](https://img.shields.io/npm/dm/express-generator-typescript?color=orange)](https://www.npmjs.com/package/express-generator-typescript)
 [![License](https://img.shields.io/npm/l/express-generator-typescript)](https://github.com/seanpmaxwell/express-generator-typescript/blob/main/LICENSE)
 
-Command line tool which generates production-ready express templates with TypeScript baked in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices/blob/main/README.md).
+A command-line tool that generates production-ready Express projects with TypeScript built in. Spin up a web server in seconds that follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices).
 
 <p align="center">· · ·</p>
 
 ## 🧭 Overview 
 
-`express-generator-typescript` creates a new Express application similar to the classic `express-generator` package, but the generated project is fully wired for TypeScript. You get strict typing, linting, hot reloading, production builds, testing utilities, and sane defaults that focus on APIs (no view engine or opinionated ORM). Path aliases are preconfigured through `tsconfig-paths` and `_moduleAliases`, so referencing modules stays clean even as the app grows.
+`express-generator-typescript` works like the classic `express-generator` package, but the project it creates is fully set up for TypeScript. You get strict typing, linting, hot reloading, testing, and production builds, with defaults aimed at APIs. The project is an ES module and comes with an `@src/*` import alias, so imports stay clean as the app grows.
 
 <p align="center">· · ·</p>
 
 ## ✨ Features
 
-- **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults ready to go.
-- **API-centric** – no view engine or extra dependencies; ideal for SPAs, mobile backends, or services.
-- **Productivity tooling** – includes nodemon, ts-node, hot reload scripts, Vitest, ESLint, and production builds.
-- **Path aliases** – `@src/*` aliases configured in `tsconfig.json` (and `_moduleAliases` in `package.json` for production) so you can import modules cleanly.
-- **Keeps dependencies lean** – no bundled ORM or UI layers; only the essentials for Express + TS development.
+- **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults, ready to go.
+- **Built for APIs** – ideal for SPAs, mobile backends, or services.
+- **Fast development** – runs TypeScript directly with tsx (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
+- **Path aliases** – import from `@src/*` anywhere. It works in development, tests, and production builds.
+- **Lean dependencies** – no view engine, ORM, or UI layer; only the essentials for Express + TypeScript.
 
 <p align="center">· · ·</p>
 
@@ -52,65 +52,63 @@ cd my-api
 npm run dev
 ```
 
-Use `--use-yarn` if you prefer Yarn over npm. If you omit the project name, the generator creates `express-gen-ts`.
-
 <p align="center">· · ·</p>
 
 ## 🖥️ CLI Options
 
-| Option            | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `project name`    | Folder to create. Defaults to `express-gen-ts` if omitted.                  |
-| `--use-yarn`      | Installs dependencies with Yarn instead of npm.                             |
-| `--force`         | Writes into the target folder even if it is not empty (existing files with the same names are overwritten). |
-| `-h`, `--help`    | Shows usage.                                                                |
-| `-v`, `--version` | Shows the generator version.                                                |
+| Option            | Description                                                        |
+| ----------------- | ------------------------------------------------------------------ |
+| `project name`    | Folder to create. Defaults to `express-gen-ts`.                    |
+| `--use-yarn`      | Install dependencies with Yarn instead of npm.                     |
+| `--force`         | Write into a folder that isn't empty. Files with the same name are overwritten. |
+| `-h`, `--help`    | Show usage.                                                        |
+| `-v`, `--version` | Show the generator version.                                        |
 
-> The generator refuses to write into a folder that already has files in it, so it can't overwrite your work by accident.
+> Without `--force`, the generator won't write into a folder that already has files in it, so it can't overwrite your work by accident.
 
 <p align="center">· · ·</p>
 
 ## 🧩 Generated Template
 
-The generated template is a CRUD app for the `User` record to demonstrate model, services, and routing patterns in Express + TypeScript. Commands for linting, transpiling, formatting, and hot-reloading are all configured for you.
+The generated project is a small CRUD app for a `User` record. It shows how to structure models, services, and routes in Express + TypeScript. Linting, formatting, building, and hot reloading are all set up for you.
 
 ### Available `package.json` Scripts
 
-- `npm run dev` – Run the server in dev mode with live reload and browser refresh.
-- `npm run test` - Run tests with vitest.
-- `npm run test -- users.test.ts` – Target a single test file.
-- `npm run lint` – Run ESLint checks.
-- `npm run format` - Run prettier.
-- `npm run build` – Compile the project for production.
-- `npm start` – Serve the built project.
-- `npm run typecheck` – Run the TypeScript compiler without emitting files.
+- `npm run dev` – Run the server in development with live reload and browser refresh.
+- `npm test` – Run the tests with Vitest.
+- `npm test -- users.test.ts` – Run a single test file.
+- `npm run lint` – Check the code with ESLint.
+- `npm run format` – Format the code with Prettier.
+- `npm run build` – Build the project for production.
+- `npm start` – Run the production build.
+- `npm run typecheck` – Check for TypeScript errors without building.
 - `npm run install:clean` – Delete `node_modules` and the lockfile, then reinstall.
 
 ### Architecture
 
-Because this is a small CRUD app, **layered** is the architectural pattern of choice. However, you should consider switching to a **domain-based** layout if you plan on scaling. There is a good tutorial [here](https://github.com/seanpmaxwell/Typescript-Best-Practices/tree/main?tab=readme-ov-file#architecture) in the _Typescript Best Practices README_ about architectural patterns with TypeScript.
+The app uses a **layered** architecture, which suits a small CRUD app. If you plan to grow it, consider switching to a **domain-based** layout. The [Typescript Best Practices README](https://github.com/seanpmaxwell/Typescript-Best-Practices/tree/main?tab=readme-ov-file#architecture) explains both patterns.
 
 Layers explained:
 ```yml
-- src/ <-- source code
+- src/ <-- Source code
   - common/
     - constants/
       - Paths.ts <-- Single source of truth for all API routes
-  - routes/ <-- extracting and validating values from express Request/Response objects
+  - routes/ <-- Read and validate values from Express requests; send responses
   - services/ <-- Business logic (where everything comes together)
-  - repos/ <-- Talking to the database layer
-  - models/ <-- For describing/handling objects representing database records
-- tests/ <-- unit-tests
+  - repos/ <-- Talk to the database
+  - models/ <-- Describe and handle database records
+- tests/ <-- Tests
 ```
 
 <p align="center">· · ·</p>
 
-## Notes for VSCode users
+## Notes for VS Code users
 
 <details>
 <summary>Format on save</summary>
 
-The generated template uses `eslint`+`prettier`, so if you want features like _formatting on save_, you need to make sure to install the prettier extension for VSCode and set it as your default formatter in `.vscode/setting.json`:
+The generated project uses ESLint for linting and Prettier for formatting. To format on save, install the Prettier extension for VS Code and set it as the default formatter in `.vscode/settings.json`:
 
 ```json
 // .vscode/settings.json
@@ -160,7 +158,7 @@ The generated template uses `eslint`+`prettier`, so if you want features like _f
 <details>
 <summary>Debugging</summary>
 
-If you want to debug in VSCode with breakpoints you need to start the processes through `.vscode/launch.json`:
+To debug with breakpoints in VS Code, start the app or tests from `.vscode/launch.json`:
 
 ```json
 // .vscode/launch.json
@@ -168,7 +166,7 @@ If you want to debug in VSCode with breakpoints you need to start the processes 
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Dev - ts-node",
+      "name": "Dev",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",

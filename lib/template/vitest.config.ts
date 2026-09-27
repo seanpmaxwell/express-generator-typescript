@@ -1,7 +1,11 @@
 import path from 'path';
 import { defineConfig } from 'vitest/config';
 
-const config = defineConfig({
+// ========================================================================= //
+//                                  EXPORT                                   //
+// ========================================================================= //
+
+export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
@@ -15,9 +19,7 @@ const config = defineConfig({
   },
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, './src'),
+      '@src': path.resolve(import.meta.dirname, './src'),
     },
   },
 });
-
-export default config;
