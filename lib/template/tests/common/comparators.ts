@@ -16,14 +16,12 @@ type UserArray = UserEntity[] | readonly UserEntity[];
  */
 export function compareUserArrays(a: UserArray, b: UserArray): boolean {
   if (a.length !== b.length) return false;
-  const aSorted = sortByEmail(a),
-    bSorted = sortByEmail(b);
+  const aSorted = sortByEmail(a);
+  const bSorted = sortByEmail(b);
   for (let i = 0; i < aSorted.length; i++) {
-    const a = aSorted[i],
-      b = bSorted[i];
-    if (a.email !== b.email || a.name !== b.name) {
-      return false;
-    }
+    const a = aSorted[i];
+    const b = bSorted[i];
+    if (a.email !== b.email || a.name !== b.name) return false;
   }
   return true;
 }

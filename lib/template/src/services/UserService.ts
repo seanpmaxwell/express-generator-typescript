@@ -1,5 +1,4 @@
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import { RouteError } from '@src/common/classes/route-errors';
+import { NotFoundError } from '@src/common/classes/route-errors';
 import User, { type UserEntity, type UserInput } from '@src/entities/User';
 import UserRepo from '@src/repos/UserRepo';
 
@@ -7,7 +6,7 @@ import UserRepo from '@src/repos/UserRepo';
 //                                 CONSTANTS                                 //
 // ========================================================================= //
 
-const Errors = {
+const UserServiceErrors = {
   USER_NOT_FOUND: 'User not found',
 } as const;
 
@@ -27,7 +26,7 @@ function getAll(): Promise<UserEntity[]> {
  */
 async function addOne(input: UserInput): Promise<UserEntity> {
   const user = User.create(input);
-  await UserRepo.add(user);
+  await UserRepo.addOne(user);
   return user;
 }
 
@@ -36,10 +35,8 @@ async function addOne(input: UserInput): Promise<UserEntity> {
  */
 async function updateOne(user: UserEntity): Promise<void> {
   const persists = await UserRepo.persists(user.id);
-  if (!persists) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
-  }
-  return UserRepo.update(user);
+  if (!persists) throw new NotFoundError(UserServiceErrors.USER_NOT_FOUND);
+  return UserRepo.updateOne(user);
 }
 
 /**
@@ -47,10 +44,8 @@ async function updateOne(user: UserEntity): Promise<void> {
  */
 async function deleteOne(id: string): Promise<void> {
   const persists = await UserRepo.persists(id);
-  if (!persists) {
-    throw new RouteError(HttpStatusCodes.NOT_FOUND, Errors.USER_NOT_FOUND);
-  }
-  return UserRepo.delete(id);
+  if (!persists) throw new NotFoundError(UserServiceErrors.USER_NOT_FOUND);
+  return UserRepo.deleteOne(id);
 }
 
 // ========================================================================= //
@@ -58,9 +53,9 @@ async function deleteOne(id: string): Promise<void> {
 // ========================================================================= //
 
 export default {
-  Errors,
+  Errors: UserServiceErrors,
   getAll,
   addOne,
   updateOne,
-  delete: deleteOne,
+  deleteOne,
 } as const;

@@ -45,45 +45,59 @@ describe('expressGenTs', () => {
   it('copies the template, renames gitignore and sets the name', async () => {
     const dest = path.join(tmp, 'my-app');
     await expressGenTs(dest, { skipInstall: true });
-    for (const file of REQUIRED_TEMPLATE_FILES.filter((f) => f !== 'gitignore')) {
-      await fs.access(path.join(dest, file));
+    const requiredFiles = REQUIRED_TEMPLATE_FILES.filter(
+      (file) => file !== 'gitignore',
+    );
+    for (const file of requiredFiles) {
+      const filePath = path.join(dest, file);
+      await fs.access(filePath);
     }
-    await fs.access(path.join(dest, '.gitignore'));
-    await assert.rejects(fs.access(path.join(dest, 'gitignore')));
-    const pkg = JSON.parse(await fs.readFile(path.join(dest, 'package.json')));
+    const gitignorePath = path.join(dest, '.gitignore');
+    await fs.access(gitignorePath);
+    const templateGitignorePath = path.join(dest, 'gitignore');
+    const templateGitignoreAccess = fs.access(templateGitignorePath);
+    await assert.rejects(templateGitignoreAccess);
+    const packagePath = path.join(dest, 'package.json');
+    const packageJson = await fs.readFile(packagePath);
+    const pkg = JSON.parse(packageJson);
     assert.equal(pkg.name, 'my-app');
-    assert.ok(Object.keys(pkg.dependencies).length > 0);
+    const dependencyNames = Object.keys(pkg.dependencies);
+    assert.ok(dependencyNames.length > 0);
   });
 
   it('does not copy local build artifacts', async () => {
     const dest = path.join(tmp, 'app');
     await expressGenTs(dest, { skipInstall: true });
     for (const name of ['node_modules', 'dist', 'package-lock.json']) {
-      await assert.rejects(fs.access(path.join(dest, name)));
+      const artifactPath = path.join(dest, name);
+      const artifactAccess = fs.access(artifactPath);
+      await assert.rejects(artifactAccess);
     }
-    await assert.rejects(
-      fs.access(path.join(dest, 'src/repos/common/database.test.json')),
-    );
+    const databasePath = path.join(dest, 'src/repos/common/database.test.json');
+    const databaseAccess = fs.access(databasePath);
+    await assert.rejects(databaseAccess);
   });
 
   it('refuses to write into a non-empty folder', async () => {
     const dest = path.join(tmp, 'existing');
     await fs.mkdir(dest);
-    await fs.writeFile(path.join(dest, 'README.md'), 'mine');
-    await assert.rejects(
-      expressGenTs(dest, { skipInstall: true }),
-      /not empty/,
-    );
-    assert.equal(await fs.readFile(path.join(dest, 'README.md'), 'utf8'), 'mine');
+    const readmePath = path.join(dest, 'README.md');
+    await fs.writeFile(readmePath, 'mine');
+    const generation = expressGenTs(dest, { skipInstall: true });
+    await assert.rejects(generation, /not empty/);
+    const readme = await fs.readFile(readmePath, 'utf8');
+    assert.equal(readme, 'mine');
   });
 
   it('writes into a non-empty folder with force', async () => {
     const dest = path.join(tmp, 'existing');
     await fs.mkdir(dest);
-    await fs.writeFile(path.join(dest, 'notes.txt'), 'keep');
+    const notesPath = path.join(dest, 'notes.txt');
+    await fs.writeFile(notesPath, 'keep');
     await expressGenTs(dest, { skipInstall: true, force: true });
-    await fs.access(path.join(dest, 'src/main.ts'));
-    await fs.access(path.join(dest, 'notes.txt'));
+    const mainPath = path.join(dest, 'src/main.ts');
+    await fs.access(mainPath);
+    await fs.access(notesPath);
   });
 });
 
@@ -104,7 +118,9 @@ describe('cli', () => {
   it('prints the version', () => {
     const res = run('-v');
     assert.equal(res.status, 0);
-    assert.equal(res.stdout.trim(), require('../package.json').version);
+    const stdout = res.stdout.trim();
+    const pkg = require('../package.json');
+    assert.equal(stdout, pkg.version);
   });
 
   it('rejects unknown options instead of using them as the folder name', () => {
@@ -120,10 +136,14 @@ describe('published package', () => {
       'npm pack --dry-run --json --ignore-scripts',
       { cwd: ROOT, encoding: 'utf8' },
     );
-    const files = new Set(JSON.parse(out)[0].files.map((f) => f.path));
+    const packageInfo = JSON.parse(out);
+    const filePaths = packageInfo[0].files.map((file) => file.path);
+    const files = new Set(filePaths);
     for (const file of REQUIRED_TEMPLATE_FILES) {
+      const packagePath = 'lib/template/' + file;
+      const isIncluded = files.has(packagePath);
       assert.ok(
-        files.has('lib/template/' + file),
+        isIncluded,
         `missing from tarball: lib/template/${file}`,
       );
     }

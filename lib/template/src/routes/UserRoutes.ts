@@ -9,7 +9,7 @@ import parseReq from './common/parseReq';
 //                                   EXEC                                    //
 // ========================================================================= //
 
-const reqValidators = {
+const validators = {
   add: parseReq({ user: User.isInput }),
   update: parseReq({ user: User.isComplete }),
   delete: parseReq({ id: User.isId }),
@@ -34,8 +34,8 @@ async function getAll(_: Req, res: Res) {
  *
  * @route POST /api/users/add
  */
-async function add(req: Req, res: Res) {
-  const { user } = reqValidators.add(req.body);
+async function addOne(req: Req, res: Res) {
+  const { user } = validators.add(req.body);
   const created = await UserService.addOne(user);
   res.status(HttpStatusCodes.CREATED).json({ user: created });
 }
@@ -45,8 +45,8 @@ async function add(req: Req, res: Res) {
  *
  * @route PUT /api/users/update
  */
-async function update(req: Req, res: Res) {
-  const { user } = reqValidators.update(req.body);
+async function updateOne(req: Req, res: Res) {
+  const { user } = validators.update(req.body);
   await UserService.updateOne(user);
   res.status(HttpStatusCodes.OK).end();
 }
@@ -54,11 +54,11 @@ async function update(req: Req, res: Res) {
 /**
  * Delete one user.
  *
- * @route DELETE /api/users/delete?id=:id
+ * @route DELETE /api/users/delete/:id
  */
-async function delete_(req: Req, res: Res) {
-  const { id } = reqValidators.delete(req.query);
-  await UserService.delete(id);
+async function deleteOne(req: Req, res: Res) {
+  const { id } = validators.delete(req.params);
+  await UserService.deleteOne(id);
   res.status(HttpStatusCodes.OK).end();
 }
 
@@ -68,7 +68,7 @@ async function delete_(req: Req, res: Res) {
 
 export default {
   getAll,
-  add,
-  update,
-  delete: delete_,
+  addOne,
+  updateOne,
+  deleteOne,
 } as const;

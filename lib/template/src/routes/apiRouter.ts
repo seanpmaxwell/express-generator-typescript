@@ -14,12 +14,12 @@ const apiRouter = Router();
 
 const userRouter = Router();
 
-userRouter.get(Paths.Users.Get._, UserRoutes.getAll);
-userRouter.post(Paths.Users.Add._, UserRoutes.add);
-userRouter.put(Paths.Users.Update._, UserRoutes.update);
-userRouter.delete(Paths.Users.Delete._, UserRoutes.delete);
+userRouter.get(Paths.Users.Get.$path, UserRoutes.getAll);
+userRouter.post(Paths.Users.Add.$path, UserRoutes.addOne);
+userRouter.put(Paths.Users.Update.$path, UserRoutes.updateOne);
+userRouter.delete(Paths.Users.Delete.$path, UserRoutes.deleteOne);
 
-apiRouter.use(Paths.Users._, userRouter);
+apiRouter.use(Paths.Users.$path, userRouter);
 
 // ========================================================================= //
 //                                  EXPORT                                   //

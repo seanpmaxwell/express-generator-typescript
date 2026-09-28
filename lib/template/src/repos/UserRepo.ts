@@ -33,7 +33,7 @@ async function getAll(): Promise<UserEntity[]> {
 /**
  * Add one user.
  */
-async function add(user: UserEntity): Promise<void> {
+async function addOne(user: UserEntity): Promise<void> {
   const db = await orm.openDb();
   db.users.push(user);
   return orm.saveDb(db);
@@ -42,7 +42,7 @@ async function add(user: UserEntity): Promise<void> {
 /**
  * Update a user.
  */
-async function update(user: UserEntity): Promise<void> {
+async function updateOne(user: UserEntity): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === user.id) {
@@ -60,7 +60,7 @@ async function update(user: UserEntity): Promise<void> {
 /**
  * Delete one user.
  */
-async function delete_(id: string): Promise<void> {
+async function deleteOne(id: string): Promise<void> {
   const db = await orm.openDb();
   for (let i = 0; i < db.users.length; i++) {
     if (db.users[i].id === id) {
@@ -73,9 +73,9 @@ async function delete_(id: string): Promise<void> {
 // ============================ Unit-tests Only ============================ //
 
 /**
- * @testOnly
- *
  * Delete every user record.
+ *
+ * @testOnly
  */
 async function deleteAllUsers(): Promise<void> {
   const db = await orm.openDb();
@@ -84,9 +84,9 @@ async function deleteAllUsers(): Promise<void> {
 }
 
 /**
- * @testOnly
- *
  * Insert copies of `users` with fresh ids; the inputs are not modified.
+ *
+ * @testOnly
  */
 async function insertMultiple(
   users: UserEntity[] | readonly UserEntity[],
@@ -106,12 +106,15 @@ async function insertMultiple(
 //                                  EXPORT                                   //
 // ========================================================================= //
 
+export const UserRepoTestOnly = {
+  deleteAllUsers,
+  insertMultiple,
+} as const;
+
 export default {
   persists,
   getAll,
-  add,
-  update,
-  delete: delete_,
-  deleteAllUsers,
-  insertMultiple,
+  addOne,
+  updateOne,
+  deleteOne,
 } as const;

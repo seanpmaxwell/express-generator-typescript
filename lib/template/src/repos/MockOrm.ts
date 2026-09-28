@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import jsonfile from 'jsonfile';
 import path from 'path';
 
-import { EnvVars, NodeEnvs } from '@src/common/constants/env-inv';
+import { EnvVars, NodeEnvs } from '@src/common/constants/environment-consts';
 import type { UserEntity } from '@src/entities/User';
 
 // ========================================================================= //
@@ -12,7 +12,7 @@ import type { UserEntity } from '@src/entities/User';
 const DATABASE_FILE_PATH = path.join(
   import.meta.dirname,
   'common',
-  EnvVars.NodeEnv === NodeEnvs.TEST ? 'database.test.json' : 'database.json',
+  EnvVars.NODE_ENV === NodeEnvs.TEST ? 'database.test.json' : 'database.json',
 );
 
 // ========================================================================= //
