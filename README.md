@@ -74,7 +74,7 @@ The generated project is a small CRUD app for a `User` record. It shows how to s
 
 ---
 
-### Available `package.json` Scripts
+#### Available `package.json` scripts
 
 - `npm run dev` – Run the server in development with live reload and browser refresh.
 - `npm test` – Run the tests with Vitest.
@@ -88,7 +88,7 @@ The generated project is a small CRUD app for a `User` record. It shows how to s
 
 ---
 
-### Architecture
+#### Architecture
 
 The app uses a **layered** architecture, which suits a small CRUD app. If you plan to grow it, consider switching to a **domain-based** layout. The [Typescript Best Practices README](https://github.com/seanpmaxwell/Typescript-Best-Practices/tree/main?tab=readme-ov-file#architecture) explains both patterns.
 
