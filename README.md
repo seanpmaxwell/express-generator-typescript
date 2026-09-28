@@ -72,6 +72,8 @@ npm run dev
 
 The generated project is a small CRUD app for a `User` record. It shows how to structure models, services, and routes in Express + TypeScript. Linting, formatting, building, and hot reloading are all set up for you.
 
+---
+
 ### Available `package.json` Scripts
 
 - `npm run dev` – Run the server in development with live reload and browser refresh.
@@ -83,6 +85,8 @@ The generated project is a small CRUD app for a `User` record. It shows how to s
 - `npm start` – Run the production build.
 - `npm run typecheck` – Check for TypeScript errors without building.
 - `npm run install:clean` – Delete `node_modules` and the lockfile, then reinstall.
+
+---
 
 ### Architecture
 
