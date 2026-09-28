@@ -1,22 +1,16 @@
 import jetPaths from 'jet-paths';
 
 // ========================================================================= //
-//                                 CONSTANTS                                 //
-// ========================================================================= //
-
-const Paths = jetPaths({
-  _: '/api',
-  Users: {
-    _: '/users',
-    Get: '/all',
-    Add: '/add',
-    Update: '/update',
-    Delete: '/delete',
-  },
-} as const);
-
-// ========================================================================= //
 //                                  EXPORT                                   //
 // ========================================================================= //
 
-export default Paths;
+export default jetPaths({
+  $path: '/api',
+  Users: {
+    $path: '/users',
+    Get: '/all',
+    Add: '/add',
+    Update: '/update',
+    Delete: '/delete/:id',
+  },
+} as const);

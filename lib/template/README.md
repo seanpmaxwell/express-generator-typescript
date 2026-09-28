@@ -53,7 +53,7 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
   - **Request logging**: [morgan](https://github.com/expressjs/morgan) (development only)
   - **General logging**: [jet-logger](https://github.com/seanpmaxwell/jet-logger)
 - **Validation**: [jet-validators](https://github.com/seanpmaxwell/jet-validators)
-- **Environment variables**: [dotenv](https://github.com/motdotla/dotenv) loads `config/.env.*`, and [jet-env](https://github.com/seanpmaxwell/jet-env) validates them
+- **Environment variables**: [dotenv](https://github.com/motdotla/dotenv) loads `config/.env.*`
 - **Reloading**: [tsx](https://tsx.hirok.io) (`tsx watch` restarts the server) and [livereload](https://github.com/napcs/node-livereload) + [connect-livereload](https://github.com/intesso/connect-livereload) (refreshes the browser)
 - **Testing**: [Vitest](https://vitest.dev) + [Supertest](https://github.com/ladjs/supertest)
 - **Linting**: [ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint) and [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n)

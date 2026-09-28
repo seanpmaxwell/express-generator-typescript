@@ -1,4 +1,4 @@
-import type { ValueOf } from '../types/utility-types';
+import type { ValueOf } from '../utils/validators';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
@@ -386,13 +386,8 @@ const HttpStatusCodes = {
 } as const;
 
 // ========================================================================= //
-//                                   TYPES                                   //
-// ========================================================================= //
-
-type HttpStatusCodes = ValueOf<typeof HttpStatusCodes>;
-
-// ========================================================================= //
 //                                  EXPORT                                   //
 // ========================================================================= //
 
+type HttpStatusCodes = ValueOf<typeof HttpStatusCodes>;
 export default HttpStatusCodes;

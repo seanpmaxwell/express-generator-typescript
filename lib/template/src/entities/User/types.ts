@@ -1,4 +1,4 @@
-import type { Entity } from '@src/entities/common/types';
+import type { Entity } from '@src/entities/common/entity-base-types';
 
 // ========================================================================= //
 //                                   TYPES                                   //

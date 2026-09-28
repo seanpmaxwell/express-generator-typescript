@@ -26,6 +26,15 @@ export class RouteError extends Error {
 }
 
 /**
+ * Don't have to manually pass `HttpStatusCodes.NOT_FOUND` each time.
+ */
+export class NotFoundError extends RouteError {
+  public constructor(message: string) {
+    super(HttpStatusCodes.NOT_FOUND, message);
+  }
+}
+
+/**
  * Request data failed schema validation.
  */
 export class ValidationError extends RouteError {
