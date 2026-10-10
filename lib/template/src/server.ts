@@ -11,9 +11,9 @@ import path from 'path';
 import { RouteError } from '@src/common/classes/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
-import BaseRouter from '@src/routes/apiRouter';
+import BaseRouter from '@src/routers/api.router';
 
-import { EnvVars, NodeEnvs } from './common/constants/environment-consts';
+import { Env, NodeEnvs } from './common/constants/env.constants';
 
 // ========================================================================= //
 //                                   EXEC                                    //
@@ -28,17 +28,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Show routes called in console during development
-if (EnvVars.NODE_ENV === NodeEnvs.DEVELOPMENT) {
+if (Env.NODE_ENV === NodeEnvs.DEVELOPMENT) {
   app.use(morgan('dev'));
 }
 
 // Security
-if (EnvVars.NODE_ENV === NodeEnvs.PRODUCTION) {
+if (Env.NODE_ENV === NodeEnvs.PRODUCTION) {
   app.use(helmet());
 }
 
 // Add APIs, must be after middleware
-app.use(Paths.$path, BaseRouter);
+app.use(Paths.PATH, BaseRouter);
 
 // Add error handler. `_next` must stay: Express only treats 4-arg middleware
 // as an error handler.
@@ -48,7 +48,20 @@ app.use((err: Error, _: Request, res: Response, _next: NextFunction) => {
       .status(err.status)
       .json({ error: err.message, errors: err.errors });
   }
-  if (EnvVars.NODE_ENV !== NodeEnvs.TEST) {
+  // Body-parser errors are client errors; don't expose the rejected body.
+  if ('type' in err) {
+    if (err.type === 'entity.parse.failed') {
+      return res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .json({ error: 'Invalid JSON' });
+    }
+    if (err.type === 'entity.too.large') {
+      return res
+        .status(HttpStatusCodes.PAYLOAD_TOO_LARGE)
+        .json({ error: 'Request body too large' });
+    }
+  }
+  if (Env.NODE_ENV !== NodeEnvs.TEST) {
     logger.err(err, true);
   }
   return res
@@ -64,7 +77,7 @@ const staticDir = path.join(import.meta.dirname, 'public');
 
 // Refresh the browser on changes. Imported lazily because livereload is a
 // dev dependency and isn't installed in production.
-if (EnvVars.NODE_ENV === NodeEnvs.DEVELOPMENT) {
+if (Env.NODE_ENV === NodeEnvs.DEVELOPMENT) {
   const { setupLiveReload } = await import('@src/common/utils/dev-only');
   setupLiveReload(app, [staticDir, viewsDir]);
 }

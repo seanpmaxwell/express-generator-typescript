@@ -1,7 +1,4 @@
-import jetid from 'jet-id';
-
-import { getISOString } from '@src/common/utils/date-utils';
-import type { UserEntity } from '@src/entities/User';
+import { type UserEntity } from '@src/entities/User';
 
 import orm from './MockOrm';
 
@@ -15,9 +12,7 @@ import orm from './MockOrm';
 async function persists(id: string): Promise<boolean> {
   const db = await orm.openDb();
   for (const user of db.users) {
-    if (user.id === id) {
-      return true;
-    }
+    if (user.id === id) return true;
   }
   return false;
 }
@@ -27,7 +22,7 @@ async function persists(id: string): Promise<boolean> {
  */
 async function getAll(): Promise<UserEntity[]> {
   const db = await orm.openDb();
-  return db.users;
+  return db.users.sort((a, b) => a.id.localeCompare(b.id));
 }
 
 /**
@@ -92,14 +87,9 @@ async function insertMultiple(
   users: UserEntity[] | readonly UserEntity[],
 ): Promise<UserEntity[]> {
   const db = await orm.openDb();
-  const inserted = users.map((user) => ({
-    ...user,
-    id: jetid(),
-    created: getISOString(),
-  }));
-  db.users = [...db.users, ...inserted];
+  db.users = [...db.users, ...users];
   await orm.saveDb(db);
-  return inserted;
+  return [...users];
 }
 
 // ========================================================================= //

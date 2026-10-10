@@ -1,6 +1,6 @@
 ## About
 
-This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript). It requires Node.js 22.12 or newer.
+This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript). It requires Node.js 22.13+ (22.x), 24.x, or 26+.
 
 The original template follows the [TypeScript best practices](https://github.com/seanpmaxwell/Typescript-Best-Practices).
 
@@ -52,7 +52,8 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
 - **Logging**
   - **Request logging**: [morgan](https://github.com/expressjs/morgan) (development only)
   - **General logging**: [jet-logger](https://github.com/seanpmaxwell/jet-logger)
-- **Validation**: [jet-validators](https://github.com/seanpmaxwell/jet-validators)
+- **Validation**: [zod](https://github.com/colinhacks/zod)
+  - **Middleware Validation**: [express-zod-safe](https://github.com/AngaBlue/express-zod-safe)
 - **Environment variables**: [dotenv](https://github.com/motdotla/dotenv) loads `config/.env.*`
 - **Reloading**: [tsx](https://tsx.hirok.io) (`tsx watch` restarts the server) and [livereload](https://github.com/napcs/node-livereload) + [connect-livereload](https://github.com/intesso/connect-livereload) (refreshes the browser)
 - **Testing**: [Vitest](https://vitest.dev) + [Supertest](https://github.com/ladjs/supertest)

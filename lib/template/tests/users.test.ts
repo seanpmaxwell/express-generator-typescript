@@ -1,28 +1,47 @@
-import jetid from 'jet-id';
-
-import { ValidationError } from '@src/common/classes/route-errors';
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 import Paths from '@src/common/constants/Paths';
 import User, { type UserEntity } from '@src/entities/User';
 import UserRepo, { UserRepoTestOnly } from '@src/repos/UserRepo';
 import UserService from '@src/services/UserService';
 
-import { compareUserArrays } from './common/comparators';
-import type { TestRes } from './common/supertest-types';
 import { agent } from './support/agent';
+import {
+  extractErrMsg,
+  type TypedErrRes,
+  type TypedRes,
+} from './support/utils';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
 // ========================================================================= //
 
-// Path constants
-const PATH_USERS_GET = Paths.Users.Get();
-const PATH_USERS_ADD = Paths.Users.Add();
-const PATH_USERS_UPDATE = Paths.Users.Update();
-const PATH_USERS_DELETE = Paths.Users.Delete.$tmpl;
+// Shorthand the `Paths`
+const P = {
+  Get: {
+    CALL: Paths.Users.Get.FULL_PATH,
+    DISPLAY: Paths.Users.Get.DISPLAY,
+  },
+  Add: {
+    CALL: Paths.Users.Add.FULL_PATH,
+    DISPLAY: Paths.Users.Add.DISPLAY,
+  },
+  Update: {
+    CALL: Paths.Users.Update.FULL_PATH,
+    DISPLAY: Paths.Users.Update.DISPLAY,
+  },
+  Delete: {
+    CALL: Paths.Users.Delete.format,
+    DISPLAY: Paths.Users.Delete.DISPLAY,
+    FULL_PATH: Paths.Users.Delete.FULL_PATH,
+  },
+} as const;
 
 // Errors
-const ERR_USER_NOT_FOUND = UserService.Errors.USER_NOT_FOUND;
+const Errors = {
+  ...UserService.Errors,
+} as const;
+
+// Status codes
 const { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, OK, NOT_FOUND } =
   HttpStatusCodes;
 
@@ -51,15 +70,15 @@ describe('UserRouter', () => {
     vi.restoreAllMocks();
   });
 
-  // ---- `Get`
-  describe(`"GET - ${PATH_USERS_GET}"`, () => {
+  // --- `Get` ---
+  describe(P.Get.DISPLAY, () => {
     describe('on success', () => {
       it(`returns all users as JSON with status "${OK}"`, async () => {
-        const res: TestRes<{ users: UserEntity[] }> =
-          await agent.get(PATH_USERS_GET);
+        const res: TypedRes<{ users: UserEntity[] }> = await agent.get(
+          P.Get.CALL,
+        );
         expect(res.status).toBe(OK);
-        const usersMatch = compareUserArrays(res.body.users, DUMMY_USERS);
-        expect(usersMatch).toBeTruthy();
+        expect(res.body.users).toStrictEqual(DUMMY_USERS);
       });
     });
 
@@ -68,24 +87,24 @@ describe('UserRouter', () => {
         const error = new Error('boom');
         const getAllSpy = vi.spyOn(UserService, 'getAll');
         getAllSpy.mockRejectedValueOnce(error);
-        const res: TestRes = await agent.get(PATH_USERS_GET);
+        const res: TypedErrRes = await agent.get(P.Get.CALL);
         expect(res.status).toBe(INTERNAL_SERVER_ERROR);
         expect(res.body.error).toBe('Internal Server Error');
       });
     });
   });
 
-  // ---- `Add`
-  describe(`"POST - ${PATH_USERS_ADD}"`, () => {
+  // --- `Add` ---
+  describe(P.Add.DISPLAY, () => {
     describe('on success', () => {
       it(`persists the user and returns status "${CREATED}"`, async () => {
         // Same payload shape the front-end sends
         const input = { name: 'a', email: 'a@a.com' };
-        const res: TestRes<{ user: UserEntity }> = await agent
-          .post(PATH_USERS_ADD)
+        const res: TypedRes<{ user: UserEntity }> = await agent
+          .post(P.Add.CALL)
           .send({ user: input });
         expect(res.status).toBe(CREATED);
-        const isId = User.isId(res.body.user.id);
+        const isId = User.is.id(res.body.user.id);
         expect(isId).toBe(true);
         const all = await UserRepo.getAll();
         expect(all).toHaveLength(DUMMY_USERS.length + 1);
@@ -95,33 +114,63 @@ describe('UserRouter', () => {
 
     describe('when the user param is missing', () => {
       it('returns a validation error', async () => {
-        const res: TestRes = await agent
-          .post(PATH_USERS_ADD)
-          .send({ user: null });
+        const res = await agent.post(P.Add.CALL).send({ user: null });
         expect(res.status).toBe(BAD_REQUEST);
-        expect(res.body.error).toBe(ValidationError.MESSAGE);
-        expect(res.body.errors?.[0].key).toStrictEqual('user');
+        const errMsg = extractErrMsg(res);
+        expect(errMsg).toBe('Invalid input: expected object, received null');
       });
     });
 
     describe('when the name is empty', () => {
       it(`returns status "${BAD_REQUEST}"`, async () => {
-        const res: TestRes = await agent
-          .post(PATH_USERS_ADD)
+        const res = await agent
+          .post(P.Add.CALL)
           .send({ user: { name: '', email: 'a@a.com' } });
         expect(res.status).toBe(BAD_REQUEST);
+        // Verify it didn't persist in the database
         const allUsers = await UserRepo.getAll();
         expect(allUsers).toHaveLength(DUMMY_USERS.length);
       });
     });
+
+    describe('when the request body cannot be parsed', () => {
+      it('returns 400 for malformed JSON without persisting a user', async () => {
+        const res: TypedErrRes = await agent
+          .post(P.Add.CALL)
+          .set('Content-Type', 'application/json')
+          .send('{"user":');
+        expect(res.status).toBe(BAD_REQUEST);
+        expect(res.body).toStrictEqual({ error: 'Invalid JSON' });
+        expect(await UserRepo.getAll()).toStrictEqual(DUMMY_USERS);
+      });
+
+      it.each([
+        [
+          'application/json',
+          JSON.stringify({ user: { name: 'a'.repeat(110000) } }),
+        ],
+        [
+          'application/x-www-form-urlencoded',
+          `user[name]=${'a'.repeat(110000)}`,
+        ],
+      ])('returns 413 for an oversized %s body', async (contentType, body) => {
+        const res: TypedErrRes = await agent
+          .post(P.Add.CALL)
+          .set('Content-Type', contentType)
+          .send(body);
+        expect(res.status).toBe(HttpStatusCodes.PAYLOAD_TOO_LARGE);
+        expect(res.body).toStrictEqual({ error: 'Request body too large' });
+        expect(await UserRepo.getAll()).toStrictEqual(DUMMY_USERS);
+      });
+    });
   });
 
-  // ---- `Update`
-  describe(`"PUT - ${PATH_USERS_UPDATE}"`, () => {
+  // --- `Update` ---
+  describe(P.Update.DISPLAY, () => {
     describe('on success', () => {
       it(`saves the change and returns status "${OK}"`, async () => {
         const user = { ...dbUsers[0], name: 'Bill' };
-        const res = await agent.put(PATH_USERS_UPDATE).send({ user });
+        const res = await agent.put(P.Update.CALL).send({ user });
         expect(res.status).toBe(OK);
         const allUsers = await UserRepo.getAll();
         const saved = allUsers.find((u) => u.id === user.id);
@@ -138,30 +187,29 @@ describe('UserRouter', () => {
           email: 'a@a.com',
           id: '5',
         };
-        const res: TestRes = await agent.put(PATH_USERS_UPDATE).send({ user });
+        const res = await agent.put(P.Update.CALL).send({ user });
         expect(res.status).toBe(BAD_REQUEST);
-        expect(res.body.error).toBe(ValidationError.MESSAGE);
-        expect(res.body.errors?.[0].keyPath).toStrictEqual(['user', 'id']);
+        const errMsg = extractErrMsg(res);
+        expect(errMsg).toBe(errMsg);
       });
     });
 
     describe('when the user is not found', () => {
       it(`returns status "${NOT_FOUND}"`, async () => {
-        const id = jetid();
-        const user = User.create({ id, name: 'a', email: 'a@a.com' });
-        const res: TestRes = await agent.put(PATH_USERS_UPDATE).send({ user });
+        const user = User.create({ name: 'a', email: 'a@a.com' });
+        const res: TypedErrRes = await agent.put(P.Update.CALL).send({ user });
         expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(ERR_USER_NOT_FOUND);
+        expect(res.body.error).toBe(Errors.USER_NOT_FOUND);
       });
     });
   });
 
-  // ---- `Delete`
-  describe(`"DELETE - ${PATH_USERS_DELETE}"`, () => {
+  // --- `Delete` ---
+  describe(P.Delete.DISPLAY, () => {
     describe('on success', () => {
       it(`removes the user and returns status "${OK}"`, async () => {
         const id = dbUsers[0].id;
-        const path = Paths.Users.Delete({ id });
+        const path = P.Delete.CALL(id);
         const res = await agent.delete(path);
         expect(res.status).toBe(OK);
         const persists = await UserRepo.persists(id);
@@ -171,17 +219,17 @@ describe('UserRouter', () => {
 
     describe('when the user is not found', () => {
       it(`returns status "${NOT_FOUND}"`, async () => {
-        const id = jetid();
-        const path = Paths.Users.Delete({ id });
-        const res: TestRes = await agent.delete(path);
+        const id = User.genId();
+        const path = P.Delete.CALL(id);
+        const res: TypedErrRes = await agent.delete(path);
         expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(ERR_USER_NOT_FOUND);
+        expect(res.body.error).toBe(Errors.USER_NOT_FOUND);
       });
     });
 
     describe('when the id is invalid', () => {
       it(`returns status "${BAD_REQUEST}"`, async () => {
-        const path = Paths.Users.Delete({ id: -1 });
+        const path = P.Delete.CALL('asdf');
         const res = await agent.delete(path);
         expect(res.status).toBe(BAD_REQUEST);
       });
@@ -189,9 +237,10 @@ describe('UserRouter', () => {
 
     describe('when the id path param is missing', () => {
       it(`returns status "${BAD_REQUEST}"`, async () => {
-        const res: TestRes = await agent.delete(PATH_USERS_DELETE);
+        const res = await agent.delete(P.Delete.FULL_PATH);
         expect(res.status).toBe(BAD_REQUEST);
-        expect(res.body.errors?.[0].key).toStrictEqual('id');
+        const errMsg = extractErrMsg(res);
+        expect(errMsg).toStrictEqual('Not a valid uuid7 id');
       });
     });
   });

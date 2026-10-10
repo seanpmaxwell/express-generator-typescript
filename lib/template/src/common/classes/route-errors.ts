@@ -1,5 +1,3 @@
-import type { ParseError } from 'jet-validators/utils';
-
 import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
 
 // ========================================================================= //
@@ -31,16 +29,5 @@ export class RouteError extends Error {
 export class NotFoundError extends RouteError {
   public constructor(message: string) {
     super(HttpStatusCodes.NOT_FOUND, message);
-  }
-}
-
-/**
- * Request data failed schema validation.
- */
-export class ValidationError extends RouteError {
-  public static MESSAGE = 'Request validation failed.';
-
-  public constructor(errors: ParseError[]) {
-    super(HttpStatusCodes.BAD_REQUEST, ValidationError.MESSAGE, errors);
   }
 }
