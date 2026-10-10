@@ -190,7 +190,7 @@ describe('UserRouter', () => {
         const res = await agent.put(P.Update.CALL).send({ user });
         expect(res.status).toBe(BAD_REQUEST);
         const errMsg = extractErrMsg(res);
-        expect(errMsg).toBe(errMsg);
+        expect(errMsg).toBe('Not a valid uuid7 id');
       });
     });
 
