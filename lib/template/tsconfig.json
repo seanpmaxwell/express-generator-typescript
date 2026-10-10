@@ -9,12 +9,14 @@
     "forceConsistentCasingInFileNames": true,
     // Resolve "#src/*" (package.json "imports") to the .ts sources
     "customConditions": ["development"],
-    // Imports name the .ts files; the build rewrites relative ".ts" imports
-    // to ".js"
+    // Node runs the .ts files directly, so imports name them; the build
+    // rewrites relative ".ts" imports to ".js"
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
-    // tsx transpiles one file at a time, so type-only imports must say so
+    // Node strips types one file at a time, so type-only imports must say so
+    // and syntax that needs compiling (enums, namespaces...) isn't allowed
     "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "useUnknownInCatchVariables": false,
     "types": ["node", "vitest/globals"]
   },

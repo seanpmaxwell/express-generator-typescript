@@ -8,7 +8,7 @@ import livereload from 'livereload';
 
 /**
  * Development only: refresh the browser when front-end files change, and
- * after `tsx watch` restarts the server for a TypeScript change.
+ * after `node --watch` restarts the server for a TypeScript change.
  *
  * Must be registered before the routes that serve html so the reload script
  * gets injected into those pages.

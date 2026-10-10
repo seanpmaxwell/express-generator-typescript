@@ -22,7 +22,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults, ready to go.
 - **Built for APIs** – ideal for SPAs, mobile backends, or services.
-- **Fast development** – runs TypeScript directly with tsx (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
+- **Fast development** – runs TypeScript directly with Node's built-in type stripping (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
 - **Path aliases** – import from `#src/*` anywhere. It works in development, tests, and production builds.
 - **Lean dependencies** – no view engine, ORM, or UI layer; only the essentials for Express + TypeScript.
 
@@ -30,7 +30,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 ## 📦 Installation
 
-Requires Node.js 22.13+ (22.x), 24.x, or 26+.
+Requires Node.js 22.18+ (22.x), 24.x, or 26+.
 
 ```bash
 npx express-generator-typescript

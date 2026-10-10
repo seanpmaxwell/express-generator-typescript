@@ -6,7 +6,7 @@
     "build": "shx rm -rf dist && npm run lint && tsc --project tsconfig.prod.json && npm run build:copy-static",
     "build:copy-static": "shx mkdir -p dist/public dist/views && shx cp -r src/public/* dist/public && shx cp -r src/views/* dist/views",
     "install:clean": "shx rm -rf ./node_modules package-lock.json && npm i",
-    "dev": "cross-env DOTENV_CONFIG_PATH=./config/.env.development tsx watch --conditions=development --import dotenv/config ./src/main.ts",
+    "dev": "cross-env DOTENV_CONFIG_PATH=./config/.env.development node --conditions=development --import dotenv/config --watch src/main.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
     "start": "cross-env DOTENV_CONFIG_PATH=./config/.env.production node --import dotenv/config ./dist/main.js",
@@ -20,7 +20,7 @@
     }
   },
   "engines": {
-    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
+    "node": "^22.18.0 || ^24.0.0 || >=26.0.0"
   },
   "dependencies": {
     "cross-env": "^10.1.0",
@@ -53,12 +53,8 @@
     "prettier": "^3.9.9",
     "shx": "^0.4.0",
     "supertest": "^7.3.0",
-    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1",
     "vitest": "^5.0.2"
-  },
-  "allowScripts": {
-    "esbuild@0.28.2": true
   }
 }
