@@ -27,7 +27,6 @@
     "express-zod-safe": "^3.2.1",
     "helmet": "^8.3.0",
     "jet-logger": "3.0.0",
-    "jsonfile": "^6.2.1",
     "morgan": "^1.12.1",
     "uuid": "^14.0.2",
     "zod": "^4.6.5"
@@ -37,7 +36,6 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/connect-livereload": "^0.6.3",
     "@types/express": "^5.0.6",
-    "@types/jsonfile": "^6.1.4",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.10",
     "@types/node": "^26.6.2",

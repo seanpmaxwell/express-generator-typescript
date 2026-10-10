@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-import jsonfile from 'jsonfile';
 import path from 'path';
 
 import { Env, NodeEnvs } from '#src/common/constants/env.constants.ts';
@@ -37,7 +36,8 @@ type Database = {
 async function openDb(): Promise<Database> {
   let db: Partial<Database>;
   try {
-    db = (await jsonfile.readFile(DATABASE_FILE_PATH)) as Partial<Database>;
+    const json = await fs.readFile(DATABASE_FILE_PATH, 'utf8');
+    db = JSON.parse(json) as Partial<Database>;
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err;
     db = {};
@@ -50,7 +50,7 @@ async function openDb(): Promise<Database> {
  */
 async function saveDb(db: Database): Promise<void> {
   await fs.mkdir(path.dirname(DATABASE_FILE_PATH), { recursive: true });
-  return jsonfile.writeFile(DATABASE_FILE_PATH, db, { spaces: 2 });
+  await fs.writeFile(DATABASE_FILE_PATH, JSON.stringify(db, null, 2) + '\n');
 }
 
 /**
