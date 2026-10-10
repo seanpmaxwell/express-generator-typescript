@@ -54,7 +54,7 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
   - **General logging**: [jet-logger](https://github.com/seanpmaxwell/jet-logger)
 - **Validation**: [zod](https://github.com/colinhacks/zod)
   - **Middleware Validation**: [express-zod-safe](https://github.com/AngaBlue/express-zod-safe)
-- **Environment variables**: [dotenv](https://github.com/motdotla/dotenv) loads `config/.env.*`
+- **Environment variables**: Node's built-in [`--env-file`](https://nodejs.org/api/cli.html#--env-fileconfig) loads `config/.env.*`
 - **Reloading**: Node's built-in [`--watch`](https://nodejs.org/api/cli.html#--watch) (restarts the server) and [livereload](https://github.com/napcs/node-livereload) + [connect-livereload](https://github.com/intesso/connect-livereload) (refreshes the browser)
 - **Testing**: Node's built-in [`node:test`](https://nodejs.org/api/test.html) + [Supertest](https://github.com/ladjs/supertest)
 - **Linting**: [ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint) and [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n)
