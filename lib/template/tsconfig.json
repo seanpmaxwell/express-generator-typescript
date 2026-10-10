@@ -18,13 +18,8 @@
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
     "useUnknownInCatchVariables": false,
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "eslint.config.ts",
-    "vitest.config.ts"
-  ],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.ts"],
   "exclude": ["src/public/*"]
 }

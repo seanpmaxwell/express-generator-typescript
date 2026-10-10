@@ -38,6 +38,15 @@ export default defineConfig([
           ignoreRestSiblings: true,
         },
       ],
+      // node:test's `describe`/`it` return promises the runner already tracks
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: ['describe', 'it'], package: 'node:test' },
+          ],
+        },
+      ],
       'no-console': 'warn',
       'no-extra-boolean-cast': 'off',
       'no-process-env': 'warn',

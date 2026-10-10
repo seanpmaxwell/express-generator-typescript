@@ -22,7 +22,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults, ready to go.
 - **Built for APIs** – ideal for SPAs, mobile backends, or services.
-- **Fast development** – runs TypeScript directly with Node's built-in type stripping (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
+- **Fast development** – runs TypeScript directly with Node's built-in type stripping (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Testing with Node's built-in test runner, ESLint, and production builds are included.
 - **Path aliases** – import from `#src/*` anywhere. It works in development, tests, and production builds.
 - **Lean dependencies** – no view engine, ORM, or UI layer; only the essentials for Express + TypeScript.
 
@@ -77,8 +77,8 @@ The generated project is a small CRUD app for a `User` record. It shows how to s
 #### Available `package.json` scripts
 
 - `npm run dev` – Run the server in development with live reload and browser refresh.
-- `npm test` – Run the tests with Vitest.
-- `npm test -- users.test.ts` – Run a single test file.
+- `npm test` – Run the tests with Node's built-in test runner.
+- `npm test -- tests/users.test.ts` – Run a single test file.
 - `npm run lint` – Check the code with ESLint.
 - `npm run format` – Format the code with Prettier.
 - `npm run build` – Build the project for production.
@@ -187,7 +187,7 @@ To debug with breakpoints in VS Code, start the app or tests from `.vscode/launc
       "console": "integratedTerminal"
     },
     {
-      "name": "Test - Vitest",
+      "name": "Test",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",

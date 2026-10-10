@@ -1,3 +1,6 @@
+import assert from 'node:assert/strict';
+import { beforeEach, describe, it } from 'node:test';
+
 import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 import Paths from '#src/common/constants/Paths/index.ts';
 import User, { type UserEntity } from '#src/entities/User/index.ts';
@@ -66,10 +69,6 @@ describe('UserRouter', () => {
     dbUsers = await UserRepoTestOnly.insertMultiple(DUMMY_USERS);
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   // --- `Get` ---
   describe(P.Get.DISPLAY, () => {
     describe('on success', () => {
@@ -77,19 +76,19 @@ describe('UserRouter', () => {
         const res: TypedRes<{ users: UserEntity[] }> = await agent.get(
           P.Get.CALL,
         );
-        expect(res.status).toBe(OK);
-        expect(res.body.users).toStrictEqual(DUMMY_USERS);
+        assert.equal(res.status, OK);
+        assert.deepEqual(res.body.users, DUMMY_USERS);
       });
     });
 
     describe('when an unexpected error is thrown', () => {
-      it(`returns status "${INTERNAL_SERVER_ERROR}"`, async () => {
+      it(`returns status "${INTERNAL_SERVER_ERROR}"`, async (t) => {
         const error = new Error('boom');
-        const getAllSpy = vi.spyOn(UserService, 'getAll');
-        getAllSpy.mockRejectedValueOnce(error);
+        // Mocks made through `t.mock` are restored when the test ends
+        t.mock.method(UserService, 'getAll', () => Promise.reject(error));
         const res: TypedErrRes = await agent.get(P.Get.CALL);
-        expect(res.status).toBe(INTERNAL_SERVER_ERROR);
-        expect(res.body.error).toBe('Internal Server Error');
+        assert.equal(res.status, INTERNAL_SERVER_ERROR);
+        assert.equal(res.body.error, 'Internal Server Error');
       });
     });
   });
@@ -103,21 +102,22 @@ describe('UserRouter', () => {
         const res: TypedRes<{ user: UserEntity }> = await agent
           .post(P.Add.CALL)
           .send({ user: input });
-        expect(res.status).toBe(CREATED);
+        assert.equal(res.status, CREATED);
         const isId = User.is.id(res.body.user.id);
-        expect(isId).toBe(true);
+        assert.equal(isId, true);
         const all = await UserRepo.getAll();
-        expect(all).toHaveLength(DUMMY_USERS.length + 1);
-        expect(all).toContainEqual(res.body.user);
+        assert.equal(all.length, DUMMY_USERS.length + 1);
+        const saved = all.find((u) => u.id === res.body.user.id);
+        assert.deepEqual(saved, res.body.user);
       });
     });
 
     describe('when the user param is missing', () => {
       it('returns a validation error', async () => {
         const res = await agent.post(P.Add.CALL).send({ user: null });
-        expect(res.status).toBe(BAD_REQUEST);
+        assert.equal(res.status, BAD_REQUEST);
         const errMsg = extractErrMsg(res);
-        expect(errMsg).toBe('Invalid input: expected object, received null');
+        assert.equal(errMsg, 'Invalid input: expected object, received null');
       });
     });
 
@@ -126,10 +126,10 @@ describe('UserRouter', () => {
         const res = await agent
           .post(P.Add.CALL)
           .send({ user: { name: '', email: 'a@a.com' } });
-        expect(res.status).toBe(BAD_REQUEST);
+        assert.equal(res.status, BAD_REQUEST);
         // Verify it didn't persist in the database
         const allUsers = await UserRepo.getAll();
-        expect(allUsers).toHaveLength(DUMMY_USERS.length);
+        assert.equal(allUsers.length, DUMMY_USERS.length);
       });
     });
 
@@ -139,12 +139,12 @@ describe('UserRouter', () => {
           .post(P.Add.CALL)
           .set('Content-Type', 'application/json')
           .send('{"user":');
-        expect(res.status).toBe(BAD_REQUEST);
-        expect(res.body).toStrictEqual({ error: 'Invalid JSON' });
-        expect(await UserRepo.getAll()).toStrictEqual(DUMMY_USERS);
+        assert.equal(res.status, BAD_REQUEST);
+        assert.deepEqual(res.body, { error: 'Invalid JSON' });
+        assert.deepEqual(await UserRepo.getAll(), DUMMY_USERS);
       });
 
-      it.each([
+      const oversizedBodies = [
         [
           'application/json',
           JSON.stringify({ user: { name: 'a'.repeat(110000) } }),
@@ -153,15 +153,19 @@ describe('UserRouter', () => {
           'application/x-www-form-urlencoded',
           `user[name]=${'a'.repeat(110000)}`,
         ],
-      ])('returns 413 for an oversized %s body', async (contentType, body) => {
-        const res: TypedErrRes = await agent
-          .post(P.Add.CALL)
-          .set('Content-Type', contentType)
-          .send(body);
-        expect(res.status).toBe(HttpStatusCodes.PAYLOAD_TOO_LARGE);
-        expect(res.body).toStrictEqual({ error: 'Request body too large' });
-        expect(await UserRepo.getAll()).toStrictEqual(DUMMY_USERS);
-      });
+      ] as const;
+
+      for (const [contentType, body] of oversizedBodies) {
+        it(`returns 413 for an oversized ${contentType} body`, async () => {
+          const res: TypedErrRes = await agent
+            .post(P.Add.CALL)
+            .set('Content-Type', contentType)
+            .send(body);
+          assert.equal(res.status, HttpStatusCodes.PAYLOAD_TOO_LARGE);
+          assert.deepEqual(res.body, { error: 'Request body too large' });
+          assert.deepEqual(await UserRepo.getAll(), DUMMY_USERS);
+        });
+      }
     });
   });
 
@@ -171,10 +175,10 @@ describe('UserRouter', () => {
       it(`saves the change and returns status "${OK}"`, async () => {
         const user = { ...dbUsers[0], name: 'Bill' };
         const res = await agent.put(P.Update.CALL).send({ user });
-        expect(res.status).toBe(OK);
+        assert.equal(res.status, OK);
         const allUsers = await UserRepo.getAll();
         const saved = allUsers.find((u) => u.id === user.id);
-        expect(saved?.name).toBe('Bill');
+        assert.equal(saved?.name, 'Bill');
       });
     });
 
@@ -188,9 +192,9 @@ describe('UserRouter', () => {
           id: '5',
         };
         const res = await agent.put(P.Update.CALL).send({ user });
-        expect(res.status).toBe(BAD_REQUEST);
+        assert.equal(res.status, BAD_REQUEST);
         const errMsg = extractErrMsg(res);
-        expect(errMsg).toBe('Not a valid uuid7 id');
+        assert.equal(errMsg, 'Not a valid uuid7 id');
       });
     });
 
@@ -198,8 +202,8 @@ describe('UserRouter', () => {
       it(`returns status "${NOT_FOUND}"`, async () => {
         const user = User.create({ name: 'a', email: 'a@a.com' });
         const res: TypedErrRes = await agent.put(P.Update.CALL).send({ user });
-        expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(Errors.USER_NOT_FOUND);
+        assert.equal(res.status, NOT_FOUND);
+        assert.equal(res.body.error, Errors.USER_NOT_FOUND);
       });
     });
   });
@@ -211,9 +215,9 @@ describe('UserRouter', () => {
         const id = dbUsers[0].id;
         const path = P.Delete.CALL(id);
         const res = await agent.delete(path);
-        expect(res.status).toBe(OK);
+        assert.equal(res.status, OK);
         const persists = await UserRepo.persists(id);
-        expect(persists).toBe(false);
+        assert.equal(persists, false);
       });
     });
 
@@ -222,8 +226,8 @@ describe('UserRouter', () => {
         const id = User.genId();
         const path = P.Delete.CALL(id);
         const res: TypedErrRes = await agent.delete(path);
-        expect(res.status).toBe(NOT_FOUND);
-        expect(res.body.error).toBe(Errors.USER_NOT_FOUND);
+        assert.equal(res.status, NOT_FOUND);
+        assert.equal(res.body.error, Errors.USER_NOT_FOUND);
       });
     });
 
@@ -231,16 +235,16 @@ describe('UserRouter', () => {
       it(`returns status "${BAD_REQUEST}"`, async () => {
         const path = P.Delete.CALL('asdf');
         const res = await agent.delete(path);
-        expect(res.status).toBe(BAD_REQUEST);
+        assert.equal(res.status, BAD_REQUEST);
       });
     });
 
     describe('when the id path param is missing', () => {
       it(`returns status "${BAD_REQUEST}"`, async () => {
         const res = await agent.delete(P.Delete.FULL_PATH);
-        expect(res.status).toBe(BAD_REQUEST);
+        assert.equal(res.status, BAD_REQUEST);
         const errMsg = extractErrMsg(res);
-        expect(errMsg).toStrictEqual('Not a valid uuid7 id');
+        assert.equal(errMsg, 'Not a valid uuid7 id');
       });
     });
   });

@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "start": "cross-env DOTENV_CONFIG_PATH=./config/.env.production node --import dotenv/config ./dist/main.js",
-    "test": "cross-env NODE_ENV=test vitest",
+    "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=./config/.env.test node --conditions=development --import dotenv/config --test --test-concurrency=1",
     "typecheck": "tsc -b --noEmit"
   },
   "imports": {
@@ -54,7 +54,6 @@
     "shx": "^0.4.0",
     "supertest": "^7.3.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.2"
+    "typescript-eslint": "^8.70.1"
   }
 }

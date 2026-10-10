@@ -16,7 +16,7 @@ Run the server in development at http://localhost:3000. The server restarts when
 
 ### `npm test`
 
-Run the tests with [Vitest](https://vitest.dev/guide/).
+Run the tests with Node's built-in [test runner](https://nodejs.org/api/test.html). Pass a file to run only that file (`npm test -- tests/users.test.ts`), or `--test-name-pattern` to run only matching tests (`npm test -- --test-name-pattern="UserRouter"`).
 
 ### `npm run lint`
 
@@ -56,7 +56,7 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
   - **Middleware Validation**: [express-zod-safe](https://github.com/AngaBlue/express-zod-safe)
 - **Environment variables**: [dotenv](https://github.com/motdotla/dotenv) loads `config/.env.*`
 - **Reloading**: Node's built-in [`--watch`](https://nodejs.org/api/cli.html#--watch) (restarts the server) and [livereload](https://github.com/napcs/node-livereload) + [connect-livereload](https://github.com/intesso/connect-livereload) (refreshes the browser)
-- **Testing**: [Vitest](https://vitest.dev) + [Supertest](https://github.com/ladjs/supertest)
+- **Testing**: Node's built-in [`node:test`](https://nodejs.org/api/test.html) + [Supertest](https://github.com/ladjs/supertest)
 - **Linting**: [ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint) and [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n)
 - **Formatting**: [Prettier](https://prettier.io) with [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports)
 - **Building**: `tsc` (rewrites relative `.ts` imports to `.js` in `dist/`)

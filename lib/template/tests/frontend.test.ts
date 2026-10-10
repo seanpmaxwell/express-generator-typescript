@@ -1,6 +1,22 @@
+import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
+
 import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 
 import { agent } from './support/agent.ts';
+
+// ========================================================================= //
+//                                 CONSTANTS                                 //
+// ========================================================================= //
+
+const STATIC_ASSETS = [
+  '/scripts/HttpClient.js',
+  '/scripts/renderUsers.js',
+  '/scripts/users.js',
+  '/scripts/lib/bootstrap.bundle.min.js',
+  '/stylesheets/users.css',
+  '/stylesheets/lib/bootstrap.min.css',
+] as const;
 
 // ========================================================================= //
 //                                   TESTS                                   //
@@ -9,25 +25,20 @@ import { agent } from './support/agent.ts';
 describe('Front-end content', () => {
   it('should redirect "/" to the users page.', async () => {
     const res = await agent.get('/');
-    expect(res.status).toBe(HttpStatusCodes.FOUND);
-    expect(res.headers.location).toBe('/users');
+    assert.equal(res.status, HttpStatusCodes.FOUND);
+    assert.equal(res.headers.location, '/users');
   });
 
   it('should serve the users page.', async () => {
     const res = await agent.get('/users');
-    expect(res.status).toBe(HttpStatusCodes.OK);
-    expect(res.headers['content-type']).toMatch(/html/);
+    assert.equal(res.status, HttpStatusCodes.OK);
+    assert.match(res.headers['content-type'], /html/);
   });
 
-  it.each([
-    '/scripts/HttpClient.js',
-    '/scripts/renderUsers.js',
-    '/scripts/users.js',
-    '/scripts/lib/bootstrap.bundle.min.js',
-    '/stylesheets/users.css',
-    '/stylesheets/lib/bootstrap.min.css',
-  ])('should serve the static asset "%s".', async (asset) => {
-    const res = await agent.get(asset);
-    expect(res.status).toBe(HttpStatusCodes.OK);
-  });
+  for (const asset of STATIC_ASSETS) {
+    it(`should serve the static asset "${asset}".`, async () => {
+      const res = await agent.get(asset);
+      assert.equal(res.status, HttpStatusCodes.OK);
+    });
+  }
 });

@@ -54,7 +54,6 @@
     "express5",
     "server",
     "tooling",
-    "vitest",
     "eslint"
   ],
   "author": "sean maxwell",
