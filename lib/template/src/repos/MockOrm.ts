@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import jsonfile from 'jsonfile';
 import path from 'path';
 
-import { Env, NodeEnvs } from '@src/common/constants/env.constants';
-import type { UserEntity } from '@src/entities/User';
+import { Env, NodeEnvs } from '#src/common/constants/env.constants.ts';
+import type { UserEntity } from '#src/entities/User/index.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

@@ -1,4 +1,3 @@
-import path from 'path';
 import { defineConfig } from 'vitest/config';
 
 // ========================================================================= //
@@ -15,11 +14,6 @@ export default defineConfig({
     fileParallelism: false,
     env: {
       DOTENV_CONFIG_PATH: 'config/.env.test',
-    },
-  },
-  resolve: {
-    alias: {
-      '@src': path.resolve(import.meta.dirname, './src'),
     },
   },
 });

@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "nodenext",
     "esModuleInterop": true,
     "lib": ["ES2022"],
     "strict": true,
@@ -10,20 +9,16 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@src/*": ["./src/*"]
-    },
+    // "#src/*" imports stay as-is in dist/ and resolve to dist/*.js at runtime
+    // through package.json "imports"
+    "customConditions": ["development"],
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "verbatimModuleSyntax": true,
     "useUnknownInCatchVariables": false,
     "types": ["node"],
     "sourceMap": false,
     "removeComments": true
-  },
-  // After tsc, tsc-alias rewrites "@src/..." imports in dist/ to relative
-  // paths and adds the ".js" extensions Node's ESM loader requires (source
-  // imports are written without extensions)
-  "tsc-alias": {
-    "resolveFullPaths": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/public/"]

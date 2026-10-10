@@ -1,6 +1,6 @@
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
+import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
 
-import { agent } from './support/agent';
+import { agent } from './support/agent.ts';
 
 // ========================================================================= //
 //                                   TESTS                                   //

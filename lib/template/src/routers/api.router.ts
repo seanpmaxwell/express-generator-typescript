@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import Paths from '@src/common/constants/Paths';
+import Paths from '#src/common/constants/Paths/index.ts';
 
-import userRouter from './user.router';
+import userRouter from './user.router.ts';
 
 // ========================================================================= //
 //                                   EXEC                                    //

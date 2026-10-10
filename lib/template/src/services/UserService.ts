@@ -1,6 +1,9 @@
-import { NotFoundError } from '@src/common/classes/route-errors';
-import User, { type UserEntity, type UserInput } from '@src/entities/User';
-import UserRepo from '@src/repos/UserRepo';
+import { NotFoundError } from '#src/common/classes/route-errors.ts';
+import User, {
+  type UserEntity,
+  type UserInput,
+} from '#src/entities/User/index.ts';
+import UserRepo from '#src/repos/UserRepo.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

@@ -14,7 +14,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 ## 🧭 Overview 
 
-`express-generator-typescript` works like the classic `express-generator` package, but the project it creates is fully set up for TypeScript. You get strict typing, linting, hot reloading, testing, and production builds, with defaults aimed at APIs. The project is an ES module and comes with an `@src/*` import alias, so imports stay clean as the app grows.
+`express-generator-typescript` works like the classic `express-generator` package, but the project it creates is fully set up for TypeScript. You get strict typing, linting, hot reloading, testing, and production builds, with defaults aimed at APIs. The project is an ES module and comes with a `#src/*` import alias, so imports stay clean as the app grows.
 
 <p align="center">· · ·</p>
 
@@ -23,7 +23,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults, ready to go.
 - **Built for APIs** – ideal for SPAs, mobile backends, or services.
 - **Fast development** – runs TypeScript directly with tsx (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
-- **Path aliases** – import from `@src/*` anywhere. It works in development, tests, and production builds.
+- **Path aliases** – import from `#src/*` anywhere. It works in development, tests, and production builds.
 - **Lean dependencies** – no view engine, ORM, or UI layer; only the essentials for Express + TypeScript.
 
 <p align="center">· · ·</p>

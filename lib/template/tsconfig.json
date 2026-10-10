@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "nodenext",
     "esModuleInterop": true,
     "lib": ["ES2022"],
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@src/*": ["./src/*"]
-    },
+    // Resolve "#src/*" (package.json "imports") to the .ts sources
+    "customConditions": ["development"],
+    // Imports name the .ts files; the build rewrites relative ".ts" imports
+    // to ".js"
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     // tsx transpiles one file at a time, so type-only imports must say so
     "verbatimModuleSyntax": true,
     "useUnknownInCatchVariables": false,

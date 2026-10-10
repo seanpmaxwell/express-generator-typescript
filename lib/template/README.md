@@ -59,11 +59,12 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
 - **Testing**: [Vitest](https://vitest.dev) + [Supertest](https://github.com/ladjs/supertest)
 - **Linting**: [ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint) and [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n)
 - **Formatting**: [Prettier](https://prettier.io) with [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports)
-- **Building**: `tsc` + [tsc-alias](https://github.com/justkey007/tsc-alias) (rewrites `@src/*` imports in `dist/`)
+- **Building**: `tsc` (rewrites relative `.ts` imports to `.js` in `dist/`)
 
 <p align="center">· · ·</p>
 
 ## Additional Notes
 
+- Imports name the `.ts` file (`./server.ts`). `#src/*` imports are [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) set up in `package.json`: they point at `src/*.ts` in development and tests (the `development` condition) and at `dist/*.js` in production.
 - `config/.env.production` is in `.gitignore` so production secrets don't get committed. Keep it out of version control and supply its values through your deployment tooling.
 - The database is a JSON file meant only for the demo: `src/repos/common/database.json` in development, or `dist/repos/common/database.json` in production. It's created automatically if missing, but it isn't safe for simultaneous writes. Replace `src/repos/MockOrm.ts` with a real database before going to production.

@@ -1,15 +1,15 @@
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import Paths from '@src/common/constants/Paths';
-import User, { type UserEntity } from '@src/entities/User';
-import UserRepo, { UserRepoTestOnly } from '@src/repos/UserRepo';
-import UserService from '@src/services/UserService';
+import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
+import Paths from '#src/common/constants/Paths/index.ts';
+import User, { type UserEntity } from '#src/entities/User/index.ts';
+import UserRepo, { UserRepoTestOnly } from '#src/repos/UserRepo.ts';
+import UserService from '#src/services/UserService.ts';
 
-import { agent } from './support/agent';
+import { agent } from './support/agent.ts';
 import {
   extractErrMsg,
   type TypedErrRes,
   type TypedRes,
-} from './support/utils';
+} from './support/utils.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

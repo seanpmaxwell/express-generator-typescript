@@ -1,6 +1,6 @@
-import { type UserEntity } from '@src/entities/User';
+import { type UserEntity } from '#src/entities/User/index.ts';
 
-import orm from './MockOrm';
+import orm from './MockOrm.ts';
 
 // ========================================================================= //
 //                                 FUNCTIONS                                 //
