@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "install:clean": "shx rm -rf ./node_modules package-lock.json && npm i",
+    "install:clean": "node -e \"fs.rmSync('node_modules', { recursive: true, force: true }); fs.rmSync('package-lock.json', { force: true })\" && npm i",
     "dev": "node --env-file=config/.env.development --watch src/main.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -42,7 +42,6 @@
     "jiti": "^2.7.0",
     "livereload": "^0.10.3",
     "prettier": "^3.9.9",
-    "shx": "^0.4.0",
     "supertest": "^7.3.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1"
