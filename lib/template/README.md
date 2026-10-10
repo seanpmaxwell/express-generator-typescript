@@ -12,7 +12,7 @@ The original template follows the [TypeScript best practices](https://github.com
 
 Run the server in development at http://localhost:3000. The server restarts when you change server code, and the browser refreshes when you change server code or anything in `src/public` or `src/views`.
 
-> **Note:** development mode runs your `.ts` files directly with Node's built-in [type stripping](https://nodejs.org/api/typescript.html), which doesn't check for TypeScript errors. Run `npm run typecheck` to check for them, and let your editor catch most of them as you work.
+> **Note:** Node runs your `.ts` files directly with Node's built-in [type stripping](https://nodejs.org/api/typescript.html), which doesn't check for TypeScript errors. Run `npm run typecheck` to check for them, and let your editor catch most of them as you work.
 
 ### `npm test`
 
@@ -26,17 +26,13 @@ Check the code with ESLint.
 
 Format `src/` and `tests/` with Prettier.
 
-### `npm run build`
-
-Build the project for production.
-
 ### `npm start`
 
-Run the production build. Run `npm run build` first.
+Run the server in production mode. There's no build step: like `npm run dev`, this runs the `.ts` files in `src/` directly, so run `npm run typecheck` and `npm run lint` before you deploy.
 
 ### `npm run typecheck`
 
-Check for TypeScript errors without building.
+Check for TypeScript errors.
 
 ### `npm run install:clean`
 
@@ -59,12 +55,12 @@ Delete `node_modules/` and `package-lock.json`, then reinstall all dependencies.
 - **Testing**: Node's built-in [`node:test`](https://nodejs.org/api/test.html) + [Supertest](https://github.com/ladjs/supertest)
 - **Linting**: [ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint) and [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n)
 - **Formatting**: [Prettier](https://prettier.io) with [@trivago/prettier-plugin-sort-imports](https://github.com/trivago/prettier-plugin-sort-imports)
-- **Building**: `tsc` (rewrites relative `.ts` imports to `.js` in `dist/`)
+- **Type checking**: `tsc` (`npm run typecheck`). There's no build step.
 
 <p align="center">· · ·</p>
 
 ## Additional Notes
 
-- Imports name the `.ts` file (`./server.ts`), because Node runs the source files directly. `#src/*` imports are [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) set up in `package.json`: they point at `src/*.ts` in development and tests (the `development` condition) and at `dist/*.js` in production.
+- Imports name the `.ts` file (`./server.ts`), because Node runs the source files directly. `#src/*` imports are [subpath imports](https://nodejs.org/api/packages.html#subpath-imports) set up in `package.json` that point at `src/*`.
 - `config/.env.production` is in `.gitignore` so production secrets don't get committed. Keep it out of version control and supply its values through your deployment tooling.
-- The database is a JSON file meant only for the demo: `src/repos/common/database.json` in development, or `dist/repos/common/database.json` in production. It's created automatically if missing, but it isn't safe for simultaneous writes. Replace `src/repos/MockOrm.ts` with a real database before going to production.
+- The database is a JSON file meant only for the demo: `src/repos/common/database.json`. It's created automatically if missing, but it isn't safe for simultaneous writes. Replace `src/repos/MockOrm.ts` with a real database before going to production.

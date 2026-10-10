@@ -24,5 +24,5 @@ jobs:
       - run: npm ci
       # Generator unit tests + published-tarball contents check
       - run: npm test
-      # Pack, generate a project from the tarball, then typecheck/build/test it
+      # Pack, generate a project from the tarball, then typecheck/lint/test it
       - run: npm run test:e2e

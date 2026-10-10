@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, '..');
 // ========================================================================= //
 
 // Exercises exactly what a user gets: pack the tarball, generate a project
-// from it, then build and test that project.
+// from it, then typecheck, lint and test that project.
 onInit(() => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'egt-e2e-'));
   try {
@@ -29,7 +29,7 @@ onInit(() => {
       tmp,
     );
     run('npm run typecheck', app);
-    run('npm run build', app);
+    run('npm run lint', app);
     run('npm test', app, { CI: 'true' });
     console.log('\nE2E passed.');
   } finally {

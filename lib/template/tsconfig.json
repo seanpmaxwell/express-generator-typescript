@@ -7,12 +7,10 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    // Resolve "#src/*" (package.json "imports") to the .ts sources
-    "customConditions": ["development"],
-    // Node runs the .ts files directly, so imports name them; the build
-    // rewrites relative ".ts" imports to ".js"
+    // Node runs the .ts files directly and tsc only typechecks, so imports
+    // name the .ts files
+    "noEmit": true,
     "allowImportingTsExtensions": true,
-    "rewriteRelativeImportExtensions": true,
     // Node strips types one file at a time, so type-only imports must say so
     // and syntax that needs compiling (enums, namespaces...) isn't allowed
     "verbatimModuleSyntax": true,
