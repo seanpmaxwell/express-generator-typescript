@@ -30,7 +30,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 ## 📦 Installation
 
-Requires Node.js 22.12 or newer.
+Requires Node.js 22.13+ (22.x), 24.x, or 26+.
 
 ```bash
 npx express-generator-typescript

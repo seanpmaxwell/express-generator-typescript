@@ -1,13 +1,14 @@
 {
   "name": "express-generator-typescript",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
-    "commit": "git add -A && git commit -m \"dev commit\"",
-    "commit:push": "npm run commit && git push",
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
     "test": "node --test \"tests/**/*.test.js\"",
-    "test:e2e": "node scripts/e2e.js"
+    "test:e2e": "node scripts/e2e.js",
+    "_local:commit": "tsx --tsconfig ../my-tools/tsconfig.json ../my-tools/src/workflows/commit/run.ts",
+    "_local:commit:push": "npm run _local:commit -- -p",
+    "_local:squash-history": "tsx --tsconfig ../my-tools/tsconfig.json ../my-tools/src/workflows/squash-history/run.ts"
   },
   "main": "lib/express-generator-typescript.js",
   "bin": {
@@ -25,7 +26,7 @@
     "!lib/template/src/repos/common/database.test.json"
   ],
   "engines": {
-    "node": ">=22.12.0"
+    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
   },
   "repository": {
     "type": "git",

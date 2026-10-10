@@ -3,14 +3,13 @@ const path = require('path');
 const { parseArgs } = require('util');
 
 const expressGenTs = require('../lib/express-generator-typescript');
-const { version, engines } = require('../package.json');
+const { version } = require('../package.json');
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
 // ========================================================================= //
 
 const DEFAULT_DEST = 'express-gen-ts';
-const MIN_NODE = engines.node.replace(/^>=/, '');
 
 const HELP = `Usage: express-generator-typescript [project-name] [options]
 
@@ -62,7 +61,6 @@ async function main() {
   if (positionals.length > 1) {
     throw new Error('Expected at most one project name.\n\n' + HELP);
   }
-  assertNodeVersion();
 
   // ---- Run "express-generator-typescript"
   const dest = path.resolve(process.cwd(), positionals[0] ?? DEFAULT_DEST);
@@ -72,21 +70,4 @@ async function main() {
     force: values.force,
   });
   console.log('Project setup complete!');
-}
-
-/**
- * The generated project's tooling (vitest, eslint) requires a recent Node, so
- * fail fast instead of producing a project that can't run.
- *
- * @returns {void}
- */
-function assertNodeVersion() {
-  const toParts = (v) => v.split('.').map(Number);
-  const [maj, min] = toParts(process.versions.node);
-  const [reqMaj, reqMin] = toParts(MIN_NODE);
-  if (maj < reqMaj || (maj === reqMaj && min < reqMin)) {
-    throw new Error(
-      `Node ${MIN_NODE} or newer is required (found ${process.versions.node}).`,
-    );
-  }
 }

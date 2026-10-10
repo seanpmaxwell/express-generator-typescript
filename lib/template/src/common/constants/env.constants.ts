@@ -1,7 +1,6 @@
 /* eslint-disable no-process-env */
 import logger from 'jet-logger';
-
-import { isNumber, isValueOf, type ValueOf } from '../utils/validators';
+import { z } from 'zod';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
@@ -13,9 +12,9 @@ export const NodeEnvs = {
   TEST: 'test',
   PRODUCTION: 'production',
 } as const;
-export type NodeEnvs = ValueOf<typeof NodeEnvs>;
+export type NodeEnvs = z.infer<typeof NodeEnvsEnum>;
 
-export const EnvVars = {
+export const Env = {
   NODE_ENV: process.env.NODE_ENV?.toLowerCase(),
   PORT: Number(process.env.PORT),
 } as const;
@@ -24,19 +23,18 @@ export const EnvVars = {
 //                                   EXEC                                    //
 // ========================================================================= //
 
-// ---- Validation
-// Validate the "environment variables"
+const NodeEnvsEnum = z.enum(NodeEnvs, 'Not a valid node environment');
+
+const EnvSchema = z.object({
+  NODE_ENV: NodeEnvsEnum,
+  PORT: z.uint32('Express port must be a positive integer'),
+});
+
+// ===================== Validate Environment Variables ==================== //
+
 {
   try {
-    const isNodeEnv = isValueOf(NodeEnvs);
-    if (!isNodeEnv(EnvVars.NODE_ENV)) {
-      throw new Error(
-        'process.env.NODE_ENV must be "development", "test", or "production"',
-      );
-    }
-    if (!isNumber(EnvVars.PORT)) {
-      throw new Error('process.env.PORT must be a valid number');
-    }
+    EnvSchema.parse(Env);
   } catch (err) {
     logger.err(err);
     throw err;

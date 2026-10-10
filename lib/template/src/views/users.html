@@ -3,6 +3,7 @@
   <!-- Head -->
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Users</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/users.css" />
 
@@ -49,6 +50,13 @@
       <div class="column-header">Users:</div>
       <div id="all-users-anchor"></div>
     </div>
+
+    <!-- Error Display -->
+    <aside class="users-column errors-column" aria-labelledby="errors-heading">
+      <div id="errors-heading" class="column-header">Error Messages:</div>
+      <pre id="error-display" role="status" aria-live="polite">
+No errors to display.</pre>
+    </aside>
 
     <script src="/scripts/HttpClient.js"></script>
     <script src="/scripts/renderUsers.js"></script>

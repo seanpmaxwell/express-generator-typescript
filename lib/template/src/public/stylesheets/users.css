@@ -1,4 +1,7 @@
 body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
   padding: 100px;
   font:
     14px 'Lucida Grande',
@@ -9,7 +12,6 @@ body {
 
 body .users-column {
   display: inline-block;
-  margin-right: 2em;
   vertical-align: top;
 }
 
@@ -47,4 +49,25 @@ body .users-column .user-display-ele button {
 
 body .users-column .user-display-ele .edit-view {
   display: none;
+}
+
+/** Error Display Column **/
+
+body .errors-column {
+  flex: 1 1 320px;
+  min-width: 0;
+  color: #a61b29;
+}
+
+body .errors-column #error-display {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #e5a4aa;
+  border-radius: 6px;
+  background-color: #fff2f3;
+  color: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 65vh;
+  overflow-y: auto;
 }
