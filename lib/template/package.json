@@ -18,12 +18,12 @@
     "node": "^22.18.0 || ^24.0.0 || >=26.0.0"
   },
   "dependencies": {
-    "express": "^5.2.1",
+    "express": "^5.3.0",
     "express-zod-safe": "^3.2.1",
     "helmet": "^8.3.0",
     "jet-logger": "3.0.0",
     "morgan": "^1.12.1",
-    "uuid": "^14.0.2",
+    "uuid": "^14.0.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -33,17 +33,17 @@
     "@types/express": "^5.0.6",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "@types/supertest": "^7.2.1",
     "connect-livereload": "^0.6.1",
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-n": "^18.4.1",
     "jiti": "^2.7.0",
     "livereload": "^0.10.3",
-    "prettier": "^3.9.9",
-    "supertest": "^7.3.0",
+    "prettier": "^3.9.10",
+    "supertest": "^7.3.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript-eslint": "^8.71.1"
   }
 }
