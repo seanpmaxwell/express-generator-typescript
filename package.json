@@ -6,9 +6,9 @@
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
     "test": "node --test \"tests/**/*.test.js\"",
     "test:e2e": "node scripts/e2e.js",
-    "_local:commit": "tsx --tsconfig ../my-tools/tsconfig.json ../my-tools/src/workflows/commit/run.ts",
+    "_local:commit": "node ../my-tools/src/workflows/commit/run.ts",
     "_local:commit:push": "npm run _local:commit -- -p",
-    "_local:squash-history": "tsx --tsconfig ../my-tools/tsconfig.json ../my-tools/src/workflows/squash-history/run.ts"
+    "_local:squash-history": "node ../my-tools/src/workflows/squash-history/run.ts"
   },
   "main": "lib/express-generator-typescript.js",
   "bin": {
