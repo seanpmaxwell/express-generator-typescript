@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import validate from 'express-zod-safe';
 
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import Paths from '@src/common/constants/Paths';
-import User from '@src/entities/User';
-import UserService from '@src/services/UserService';
+import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
+import Paths from '#src/common/constants/Paths/index.ts';
+import User from '#src/entities/User/index.ts';
+import UserService from '#src/services/UserService.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

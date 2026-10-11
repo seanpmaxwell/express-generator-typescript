@@ -10,7 +10,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   // global ignores
-  globalIgnores(['**/dist/**', '**/public/**/lib/**']),
+  globalIgnores(['**/public/**/lib/**']),
   // linting rules (code quality only)
   {
     files: ['**/*.{ts,tsx}'],
@@ -36,6 +36,15 @@ export default defineConfig([
           caughtErrorsIgnorePattern: '^_',
           destructuredArrayIgnorePattern: '^_',
           ignoreRestSiblings: true,
+        },
+      ],
+      // node:test's `describe`/`it` return promises the runner already tracks
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: ['describe', 'it'], package: 'node:test' },
+          ],
         },
       ],
       'no-console': 'warn',

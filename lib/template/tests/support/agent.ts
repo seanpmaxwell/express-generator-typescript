@@ -1,9 +1,9 @@
+import { before } from 'node:test';
 import supertest, { type Test } from 'supertest';
 import type TestAgent from 'supertest/lib/agent.js';
-import { beforeAll } from 'vitest';
 
-import MockOrm from '@src/repos/MockOrm';
-import app from '@src/server';
+import MockOrm from '#src/repos/MockOrm.ts';
+import app from '#src/server.ts';
 
 // ========================================================================= //
 //                                   EXEC                                    //
@@ -11,7 +11,7 @@ import app from '@src/server';
 
 let agent: TestAgent<Test>;
 
-beforeAll(async () => {
+before(async () => {
   agent = supertest.agent(app);
   await MockOrm.cleanDb();
 });

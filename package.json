@@ -26,7 +26,7 @@
     "!lib/template/src/repos/common/database.test.json"
   ],
   "engines": {
-    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
+    "node": "^22.18.0 || ^24.0.0 || >=26.0.0"
   },
   "repository": {
     "type": "git",
@@ -54,7 +54,6 @@
     "express5",
     "server",
     "tooling",
-    "vitest",
     "eslint"
   ],
   "author": "sean maxwell",

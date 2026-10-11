@@ -1,1 +1,1 @@
-export { default as default } from './Paths';
+export { default as default } from './Paths.ts';

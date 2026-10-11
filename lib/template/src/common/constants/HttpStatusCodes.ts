@@ -1,4 +1,4 @@
-import type { ValueOf } from '../utils/validators';
+import type { ValueOf } from '../utils/validators.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

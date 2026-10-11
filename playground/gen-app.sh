@@ -53,8 +53,8 @@ npx --yes express-generator-typescript@latest "$APP_DIR" || {
 
 echo "==> Running checks in $APP_DIR"
 run_check lint npm run lint
-run_check test env VITE_CONFIG_NATIVE_IGNORE_WARNING=true npx vitest run
-run_check build npm run build
+run_check test npm test
+run_check typecheck npm run typecheck
 
 # ================================== Report ================================= #
 

@@ -3,29 +3,27 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "shx rm -rf dist && npm run lint && tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json && npm run build:copy-static",
-    "build:copy-static": "shx mkdir -p dist/public dist/views && shx cp -r src/public/* dist/public && shx cp -r src/views/* dist/views",
-    "install:clean": "shx rm -rf ./node_modules package-lock.json && npm i",
-    "dev": "cross-env DOTENV_CONFIG_PATH=./config/.env.development tsx watch --import dotenv/config ./src/main.ts",
+    "install:clean": "node -e \"fs.rmSync('node_modules', { recursive: true, force: true }); fs.rmSync('package-lock.json', { force: true })\" && npm i",
+    "dev": "node --env-file=config/.env.development --watch src/main.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "start": "cross-env DOTENV_CONFIG_PATH=./config/.env.production node --import dotenv/config ./dist/main.js",
-    "test": "cross-env NODE_ENV=test vitest",
+    "start": "node --env-file-if-exists=config/.env.production src/main.ts",
+    "test": "node --env-file=config/.env.test --test --test-concurrency=1",
     "typecheck": "tsc -b --noEmit"
   },
+  "imports": {
+    "#src/*": "./src/*"
+  },
   "engines": {
-    "node": "^22.13.0 || ^24.0.0 || >=26.0.0"
+    "node": "^22.18.0 || ^24.0.0 || >=26.0.0"
   },
   "dependencies": {
-    "cross-env": "^10.1.0",
-    "dotenv": "^18.0.4",
-    "express": "^5.2.1",
+    "express": "^5.3.0",
     "express-zod-safe": "^3.2.1",
     "helmet": "^8.3.0",
     "jet-logger": "3.0.0",
-    "jsonfile": "^6.2.1",
     "morgan": "^1.12.1",
-    "uuid": "^14.0.2",
+    "uuid": "^14.0.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -33,27 +31,19 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/connect-livereload": "^0.6.3",
     "@types/express": "^5.0.6",
-    "@types/jsonfile": "^6.1.4",
     "@types/livereload": "^0.9.5",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "@types/supertest": "^7.2.1",
     "connect-livereload": "^0.6.1",
-    "eslint": "^10.11.0",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-n": "^18.4.1",
     "jiti": "^2.7.0",
     "livereload": "^0.10.3",
-    "prettier": "^3.9.9",
-    "shx": "^0.4.0",
-    "supertest": "^7.3.0",
-    "tsc-alias": "^1.9.5",
-    "tsx": "^4.23.15",
+    "prettier": "^3.9.10",
+    "supertest": "^7.3.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.1",
-    "vitest": "^5.0.2"
-  },
-  "allowScripts": {
-    "esbuild@0.28.2": true
+    "typescript-eslint": "^8.71.1"
   }
 }

@@ -8,12 +8,12 @@ import logger from 'jet-logger';
 import morgan from 'morgan';
 import path from 'path';
 
-import { RouteError } from '@src/common/classes/route-errors';
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import Paths from '@src/common/constants/Paths';
-import BaseRouter from '@src/routers/api.router';
+import { RouteError } from '#src/common/classes/route-errors.ts';
+import HttpStatusCodes from '#src/common/constants/HttpStatusCodes.ts';
+import Paths from '#src/common/constants/Paths/index.ts';
+import BaseRouter from '#src/routers/api.router.ts';
 
-import { Env, NodeEnvs } from './common/constants/env.constants';
+import { Env, NodeEnvs } from './common/constants/env.constants.ts';
 
 // ========================================================================= //
 //                                   EXEC                                    //
@@ -78,7 +78,7 @@ const staticDir = path.join(import.meta.dirname, 'public');
 // Refresh the browser on changes. Imported lazily because livereload is a
 // dev dependency and isn't installed in production.
 if (Env.NODE_ENV === NodeEnvs.DEVELOPMENT) {
-  const { setupLiveReload } = await import('@src/common/utils/dev-only');
+  const { setupLiveReload } = await import('#src/common/utils/dev-only.ts');
   setupLiveReload(app, [staticDir, viewsDir]);
 }
 

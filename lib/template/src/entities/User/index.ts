@@ -1,2 +1,2 @@
-export { default as default } from './module';
-export type { UserEntity, UserInput } from './types';
+export { default as default } from './module.ts';
+export type { UserEntity, UserInput } from './types.ts';

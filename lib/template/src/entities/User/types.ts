@@ -1,4 +1,4 @@
-import type { Entity } from '@src/entities/common/entity-base-types';
+import type { Entity } from '#src/entities/common/entity-base-types.ts';
 
 // ========================================================================= //
 //                                   TYPES                                   //

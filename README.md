@@ -14,7 +14,7 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 ## 🧭 Overview 
 
-`express-generator-typescript` works like the classic `express-generator` package, but the project it creates is fully set up for TypeScript. You get strict typing, linting, hot reloading, testing, and production builds, with defaults aimed at APIs. The project is an ES module and comes with an `@src/*` import alias, so imports stay clean as the app grows.
+`express-generator-typescript` works like the classic `express-generator` package, but the project it creates is fully set up for TypeScript. You get strict typing, linting, hot reloading, and testing, with defaults aimed at APIs and no build step. The project is an ES module and comes with a `#src/*` import alias, so imports stay clean as the app grows.
 
 <p align="center">· · ·</p>
 
@@ -22,15 +22,15 @@ A command-line tool that generates production-ready Express projects with TypeSc
 
 - **TypeScript-first** – strict compiler settings, linting, and sensible tsconfig defaults, ready to go.
 - **Built for APIs** – ideal for SPAs, mobile backends, or services.
-- **Fast development** – runs TypeScript directly with tsx (no build step), restarts the server when you change it, and refreshes the browser when you change front-end files. Vitest, ESLint, and production builds are included.
-- **Path aliases** – import from `@src/*` anywhere. It works in development, tests, and production builds.
+- **Fast development** – runs TypeScript directly with Node's built-in type stripping (no build step, in development or production), restarts the server when you change it, and refreshes the browser when you change front-end files. Node's built-in test runner and ESLint are included.
+- **Path aliases** – import from `#src/*` anywhere. It works in development, tests, and production.
 - **Lean dependencies** – no view engine, ORM, or UI layer; only the essentials for Express + TypeScript.
 
 <p align="center">· · ·</p>
 
 ## 📦 Installation
 
-Requires Node.js 22.13+ (22.x), 24.x, or 26+.
+Requires Node.js 22.18+ (22.x), 24.x, or 26+.
 
 ```bash
 npx express-generator-typescript
@@ -70,20 +70,19 @@ npm run dev
 
 ## 🧩 Generated Template
 
-The generated project is a small CRUD app for a `User` record. It shows how to structure models, services, and routes in Express + TypeScript. Linting, formatting, building, and hot reloading are all set up for you.
+The generated project is a small CRUD app for a `User` record. It shows how to structure models, services, and routes in Express + TypeScript. Linting, formatting, testing, and hot reloading are all set up for you.
 
 ---
 
 #### Available `package.json` scripts
 
 - `npm run dev` – Run the server in development with live reload and browser refresh.
-- `npm test` – Run the tests with Vitest.
-- `npm test -- users.test.ts` – Run a single test file.
+- `npm test` – Run the tests with Node's built-in test runner.
+- `npm test -- tests/users.test.ts` – Run a single test file.
 - `npm run lint` – Check the code with ESLint.
 - `npm run format` – Format the code with Prettier.
-- `npm run build` – Build the project for production.
-- `npm start` – Run the production build.
-- `npm run typecheck` – Check for TypeScript errors without building.
+- `npm start` – Run the server in production mode (no build step).
+- `npm run typecheck` – Check for TypeScript errors.
 - `npm run install:clean` – Delete `node_modules` and the lockfile, then reinstall.
 
 ---
@@ -187,7 +186,7 @@ To debug with breakpoints in VS Code, start the app or tests from `.vscode/launc
       "console": "integratedTerminal"
     },
     {
-      "name": "Test - Vitest",
+      "name": "Test",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",

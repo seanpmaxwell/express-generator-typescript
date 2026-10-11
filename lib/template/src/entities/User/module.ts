@@ -5,9 +5,9 @@ import {
   getISOString,
   type ISOString,
   ISOStringSchema,
-} from '@src/common/utils/date.utils';
+} from '#src/common/utils/date.utils.ts';
 
-import type { UserEntity, UserInput } from './types';
+import type { UserEntity, UserInput } from './types.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //

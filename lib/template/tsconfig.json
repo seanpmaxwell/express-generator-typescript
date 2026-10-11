@@ -1,26 +1,23 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "nodenext",
     "esModuleInterop": true,
     "lib": ["ES2022"],
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@src/*": ["./src/*"]
-    },
-    // tsx transpiles one file at a time, so type-only imports must say so
+    // Node runs the .ts files directly and tsc only typechecks, so imports
+    // name the .ts files
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    // Node strips types one file at a time, so type-only imports must say so
+    // and syntax that needs compiling (enums, namespaces...) isn't allowed
     "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "useUnknownInCatchVariables": false,
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "eslint.config.ts",
-    "vitest.config.ts"
-  ],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.ts"],
   "exclude": ["src/public/*"]
 }

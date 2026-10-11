@@ -14,7 +14,7 @@ jobs:
         node: [22, 24, 26]
         include:
           - os: ubuntu-latest
-            node: '22.13.0'
+            node: '22.18.0'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -24,5 +24,5 @@ jobs:
       - run: npm ci
       # Generator unit tests + published-tarball contents check
       - run: npm test
-      # Pack, generate a project from the tarball, then typecheck/build/test it
+      # Pack, generate a project from the tarball, then typecheck/lint/test it
       - run: npm run test:e2e

@@ -1,7 +1,7 @@
 import logger from 'jet-logger';
 
-import { Env } from './common/constants/env.constants';
-import server from './server';
+import { Env } from './common/constants/env.constants.ts';
+import server from './server.ts';
 
 // ========================================================================= //
 //                                 CONSTANTS                                 //
