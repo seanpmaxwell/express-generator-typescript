@@ -1,6 +1,6 @@
 {
   "name": "express-generator-typescript",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Generate new Express applications similar to express-generate which but sets it up to use TypeScript instead",
   "scripts": {
     "install:clean": "rm -rf node_modules && rm -rf package-lock.json && npm i",
